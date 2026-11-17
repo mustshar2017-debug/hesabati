@@ -9,6 +9,7 @@ on:
       - 'manifest.webmanifest'
       - 'service-worker.js'
       - 'icons/**'
+      - 'assets/**'
       - 'package.json'
       - 'package-lock.json'
       - 'capacitor.config.json'
