@@ -628,7 +628,8 @@ body.dark .profit-toggle{color:var(--ink)}
   else state.manualAdjustments.push({id:'adj-'+Date.now()+'-'+Math.random().toString(36).slice(2,8),partner:selected,amount:signed,date,note:note||(signed<0?'خصم يدوي':'إضافة يدوية'),createdAt:new Date().toISOString()});
   save();closeAdjustment();render();renderAccount();
  });
- $('partnerAdjustmentModal').addEventListener('click',e=>{if(e.target===$('partnerAdjustmentModal'))closeAdjustment();});\n $('partnerAccountCard').addEventListener('click',e=>{if(e.target===$('partnerAccountCard')){$('partnerAccountCard').hidden=true;$('partnerAccountCard').style.display='none';}});
+ $('partnerAdjustmentModal').addEventListener('click',e=>{if(e.target===$('partnerAdjustmentModal'))closeAdjustment();});
+ $('partnerAccountCard').addEventListener('click',e=>{if(e.target===$('partnerAccountCard')){$('partnerAccountCard').hidden=true;$('partnerAccountCard').style.display='none';}});
  document.querySelector('#nav button[data-tab="partnership"]').addEventListener('click',()=>render());
  window.addEventListener('storage',render);render();
 })();
