@@ -20,9 +20,6 @@ for (const [density, size] of Object.entries(sizes)) {
     .png().toBuffer();
   await writeFile(join(dir, 'ic_launcher_foreground.png'), foreground);
 }
-const valuesDir = join(root, 'values');
-await mkdir(valuesDir, { recursive: true });
-await writeFile(join(valuesDir, 'ic_launcher_colors.xml'), '<resources><color name="ic_launcher_background">#006b32</color></resources>');
 const anydpi = join(root, 'mipmap-anydpi-v26');
 await mkdir(anydpi, { recursive: true });
 const adaptiveXml = `<?xml version="1.0" encoding="utf-8"?>
