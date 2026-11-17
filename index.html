@@ -170,6 +170,11 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 </div>
 <div class="hint" id="backupHint" hidden>البيانات محفوظة على هذا الجهاز والمتصفح. احفظ نسخة احتياطية بانتظام، خصوصاً قبل تغيير الهاتف أو مسح بيانات المتصفح.</div>
 <div class="card" id="settingsCard" hidden style="margin-top:12px">
+<h3>🔄 تحديث التطبيق</h3>
+<p class="muted">افحص التحديثات الجديدة. عند توفر تحديث للواجهة والوظائف، سيتم تنزيله وتفعيله مع الحفاظ على بياناتك المحلية.</p>
+<div class="actions"><button class="primary" type="button" id="checkAppUpdates">فحص التحديثات</button></div>
+<div class="muted" id="appUpdateStatus" aria-live="polite">سيتم فحص التحديثات تلقائياً عند فتح التطبيق.</div>
+<hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
 <h3>🔐 تغيير كلمة سر التطبيق</h3>
 <p class="muted">أدخل كلمة السر الحالية ثم كلمة سر جديدة من 4 إلى 8 أرقام.</p>
 <form id="changePinForm">
@@ -561,3 +566,36 @@ body.back-control-visible{padding-bottom:86px}
 })();
 </script>
 </body></html>
+<script id="hesabati-ota-updater">
+(function(){
+ const MANIFEST='https://raw.githubusercontent.com/mustshar2017-debug/hesabati/mobile-app/ota-manifest.json';
+ const VERSION_KEY='hisabati_ota_version_v1';
+ const status=document.getElementById('appUpdateStatus'),button=document.getElementById('checkAppUpdates');
+ const updater=()=>window.Capacitor?.Plugins?.CapacitorUpdater;
+ let checking=false;
+ function say(message){if(status)status.textContent=message;}
+ async function checkUpdates(show){
+  if(checking)return;
+  const api=updater();
+  if(!api||typeof api.download!=='function'||typeof api.set!=='function'){if(show)say('التحديث المباشر يتوفر داخل نسخة Android المحدّثة فقط.');return;}
+  checking=true;if(button)button.disabled=true;if(show)say('جارٍ البحث عن تحديث...');
+  try{
+   const response=await fetch(MANIFEST+'?t='+Date.now(),{cache:'no-store'});
+   if(!response.ok)throw new Error('تعذر الوصول إلى خادم التحديثات.');
+   const info=await response.json(),latest=Number(info.version),installed=Number(localStorage.getItem(VERSION_KEY)||'0');
+   if(!Number.isFinite(latest)||!info.url)throw new Error('بيانات التحديث غير صالحة.');
+   if(latest<=installed){if(show)say('تطبيقك محدّث بالفعل.');return;}
+   say('يوجد تحديث جديد. جارٍ تنزيله...');
+   const bundle=await api.download({url:info.url,version:String(info.version)});
+   if(!bundle||!bundle.id)throw new Error('لم يكتمل تنزيل التحديث.');
+   localStorage.setItem(VERSION_KEY,String(info.version));
+   try{await api.set({id:bundle.id});}catch(error){localStorage.removeItem(VERSION_KEY);throw error;}
+   say('تم تجهيز التحديث. سيعاد تشغيل التطبيق لتفعيله...');
+  }catch(error){say('لم نتمكن من إكمال التحديث: '+(error?.message||'تحقق من الإنترنت ثم حاول مجدداً.'));}
+  finally{checking=false;if(button)button.disabled=false;}
+ }
+ if(button)button.addEventListener('click',()=>checkUpdates(true));
+ window.addEventListener('load',()=>setTimeout(()=>checkUpdates(false),5000));
+ const api=updater();if(api&&typeof api.notifyAppReady==='function')api.notifyAppReady().catch(()=>{});
+})();
+</script>
