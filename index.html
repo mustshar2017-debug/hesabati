@@ -447,7 +447,6 @@ body{padding-bottom:86px}
 </style>
 <div class="app-bottom-controls" id="appBottomControls">
  <button type="button" id="appBackButton">↩ رجوع للخلف</button>
- <button type="button" id="appExitButton">⏻ إغلاق التطبيق</button>
 </div>
 <script id="app-navigation-controls-script">
 (function(){
@@ -486,13 +485,6 @@ body{padding-bottom:86px}
   if(summary&&!summary.hidden){summary.hidden=true;return;}
   if(window.history.length>1){window.history.back();return;}
   alert('أنت الآن في الصفحة الرئيسية.');
- });
- $('appExitButton').addEventListener('click',function(){
-  if(!confirm('هل تريد إغلاق تطبيق حساباتي؟'))return;
-  try{window.close();}catch(e){}
-  setTimeout(function(){
-   if(!document.hidden)alert('لا يسمح المتصفح بإغلاق التطبيق تلقائياً. يمكنك إغلاقه من شاشة التطبيقات المفتوحة في هاتفك.');
-  },250);
  });
 })();
 </script>
