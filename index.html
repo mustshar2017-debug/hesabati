@@ -92,6 +92,11 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
  .print-signature-line{display:inline-block;width:95px;border-bottom:1px solid #555;margin-bottom:3px}
  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
+
+/* تصغير نصوص بطاقة الأرباح عند فتح التفاصيل حتى لا تتجاوز حدود البطاقة */
+.profit-toggle[aria-expanded="true"] #profitTotal{font-size:11px;line-height:1.25;margin-top:4px;white-space:normal;overflow-wrap:anywhere}
+.profit-toggle[aria-expanded="true"] small:last-child{display:block;font-size:9px;line-height:1.25;margin-top:3px}
+.profit-toggle[aria-expanded="true"] .kpi-icon{margin-bottom:6px}
 </style>
 <style id="balance-shortcuts-fit">
 #home .balance-shortcuts .quick-link{min-height:104px;padding:8px 5px;gap:5px;overflow:hidden}
@@ -319,7 +324,7 @@ $('serviceNetwork').addEventListener('change',()=>{$('serviceFormTitle').textCon
 bind('expenseForm',x=>db.expenses.push({...x,amount:+x.amount,id:crypto.randomUUID()}));
 $('transferForm').addEventListener('input',()=>{let f=$('transferForm'),s=+f.sale.value||0,r=+f.commissionRate.value||0,commission=Number((s*r/100).toFixed(2)),net=Number((s-commission).toFixed(2));f.cost.value=s?net:'';$('transferHint').textContent='العمولة ('+r+'%): '+fmt(commission)+' SDG · صافي الرصيد المحوّل: '+fmt(net)+' SDG · ربح العملية: '+fmt(commission)+' SDG'});
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>{x.classList.toggle('active',x.id===b.dataset.tab);x.classList.remove('quick-stock','quick-transfer','quick-creditHistory','quick-recharge','quick-rechargeHistory','quick-expenses')});if(b.dataset.tab==='reports')report()});
-$('profitToggle').addEventListener('click',()=>{const details=$('profitDetails'),opened=details.hidden;details.hidden=!opened;$('profitToggle').setAttribute('aria-expanded',String(opened));$('profitTotal').textContent=opened?'تفاصيل الأرباح مفتوحة':'عرض التفاصيل';$('profitToggle').querySelector('small:last-child').textContent=opened?'اضغط لإخفاء التفاصيل':'اضغط لعرض الأرباح';});
+$('profitToggle').addEventListener('click',()=>{const details=$('profitDetails'),opened=details.hidden;details.hidden=!opened;$('profitToggle').setAttribute('aria-expanded',String(opened));$('profitTotal').textContent=opened?'التفاصيل مفتوحة':'عرض التفاصيل';$('profitToggle').querySelector('small:last-child').textContent=opened?'اضغط للإخفاء':'اضغط لعرض الأرباح';});
 $('monthFilter').onchange=report;
 const ICON_NAMES_KEY='hisabati_icon_names_v1';
 function iconNameButtons(){return [...document.querySelectorAll('.quick-section .quick-grid .quick-link')];}
