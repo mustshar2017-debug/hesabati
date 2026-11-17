@@ -38,7 +38,7 @@ jobs:
         run: npm install
       - name: Prepare web assets
         run: npm run build
-            - name: Package live update bundle
+      - name: Package live update bundle
         run: cd www && zip -qr ../hesabati-web.zip .
       - name: Publish live update bundle
         uses: softprops/action-gh-release@v2
