@@ -62,14 +62,13 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 <div class="card kpi"><small>ربح الشحن</small><strong id="rechargeProfit">0</strong><small>SDG</small></div>
 <div class="card kpi"><small>صافي ربح اليوم</small><strong id="todayNet">0</strong><small>SDG</small></div>
 </div>
-<div class="quick-section"><h2 class="section-title">إدارة الرصيد</h2><div class="quick-grid"><button class="quick-link" type="button" data-panel="credit" data-target="stock"><span class="quick-icon">💰</span><span>رصيد داخل<small>إضافة رصيد جديد</small></span></button><button class="quick-link" type="button" data-panel="credit" data-target="transfer"><span class="quick-icon">🔄</span><span>تحويل رصيد<small>تسجيل عملية تحويل</small></span></button><button class="quick-link" type="button" data-panel="expenses" data-target="expenses"><span class="quick-icon">🧾</span><span>مصروفات<small>تسجيل المصروفات</small></span></button><button class="quick-link" type="button" data-panel="credit" data-target="creditHistory"><span class="quick-icon">📒</span><span>سجل عمليات الرصيد<small>عرض وتعديل العمليات</small></span></button></div></div><div class="quick-section"><h2 class="section-title">شحن الهواتف</h2><div class="quick-grid"><button class="quick-link" type="button" data-panel="recharge" data-target="recharge"><span class="quick-icon">📱</span><span>قسم شحن الهواتف<small>تسجيل عملية شحن</small></span></button><button class="quick-link" type="button" data-panel="recharge" data-target="rechargeHistory"><span class="quick-icon">📋</span><span>سجل الشحن<small>عرض وتعديل عمليات الشحن</small></span></button></div></div><h2 class="section-title">ملخص اليوم</h2>
-<div class="card">
+<div class="quick-section"><h2 class="section-title">إدارة الرصيد</h2><div class="quick-grid"><button class="quick-link" type="button" data-panel="credit" data-target="stock"><span class="quick-icon">💰</span><span>رصيد داخل<small>إضافة رصيد جديد</small></span></button><button class="quick-link" type="button" data-panel="credit" data-target="transfer"><span class="quick-icon">🔄</span><span>تحويل رصيد<small>تسجيل عملية تحويل</small></span></button><button class="quick-link" type="button" data-panel="expenses" data-target="expenses"><span class="quick-icon">🧾</span><span>مصروفات<small>تسجيل المصروفات</small></span></button><button class="quick-link" type="button" data-panel="credit" data-target="creditHistory"><span class="quick-icon">📒</span><span>سجل عمليات الرصيد<small>عرض وتعديل العمليات</small></span></button></div></div><div class="quick-section"><h2 class="section-title">شحن الهواتف</h2><div class="quick-grid"><button class="quick-link" type="button" data-panel="recharge" data-target="recharge"><span class="quick-icon">📱</span><span>قسم شحن الهواتف<small>تسجيل عملية شحن</small></span></button><button class="quick-link" type="button" data-panel="recharge" data-target="rechargeHistory"><span class="quick-icon">📋</span><span>سجل الشحن<small>عرض وتعديل عمليات الشحن</small></span></button></div></div><div id="dailySummary" hidden><h2 class="section-title">ملخص اليوم</h2><div class="card"><div class="actions" style="margin-top:0"><button class="secondary" type="button" onclick="document.getElementById('dailySummary').hidden=true">إغلاق الملخص</button></div>
 <div class="reportline"><span>الرصيد الداخل اليوم</span><b id="todayIn">0 SDG</b></div>
 <div class="reportline"><span>تحويلات الرصيد اليوم (قيمة البيع)</span><b id="todayTransfers">0 SDG</b></div>
 <div class="reportline"><span>شحن الهواتف اليوم</span><b id="todayRecharge">0 SDG</b></div>
 <div class="reportline"><span>المصروفات اليومية</span><b id="todayExpenses">0 SDG</b></div>
 <div class="reportline"><span>إجمالي صافي الأرباح اليوم</span><b class="positive" id="todayProfit">0 SDG</b></div>
-</div>
+</div></div>
 <div class="hint">طريقة الحساب: عند إدخال رصيد جديد سجّل تكلفته. وعند التحويل أو الشحن سجّل قيمة البيع والتكلفة المستهلكة؛ يحسب التطبيق الربح تلقائياً = البيع − التكلفة. التحويل بين حساباتك لا يُعد ربحاً إلا إذا أدخلت تكلفة وسعر بيع للعملية.</div>
 </section>
 <section id="credit" class="panel">
@@ -85,7 +84,8 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 <div class="card" id="transferCard" style="margin-top:12px"><h3>تحويل رصيد</h3><p class="muted">أدخل قيمة البيع والتكلفة التي خرجت من مخزونك لحساب الربح تلقائياً.</p>
 <form id="transferForm">
 <div><label>قيمة التحويل / البيع (SDG)</label><input name="sale" type="number" min="0.01" step="0.01" required></div>
-<div><label>تكلفة الرصيد المحوّل (SDG)</label><input name="cost" type="number" min="0" step="0.01" required></div>
+<div><label>نسبة العمولة لهذه العملية (%)</label><input name="commissionRate" type="number" min="0" max="100" step="0.01" value="15" required></div>
+<div><label>صافي الرصيد المحوّل بعد العمولة (SDG)</label><input name="cost" type="number" min="0" step="0.01" readonly required></div>
 <div><label>رقم الهاتف / العميل</label><input name="customer" inputmode="tel" placeholder="اختياري"></div>
 <div><label>الشبكة</label><select name="network"><option>زين</option><option>سوداني</option><option>MTN</option><option>أخرى</option></select></div>
 <div><label>التاريخ</label><input name="date" type="date" required></div>
@@ -204,10 +204,10 @@ function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 function data(form){return Object.fromEntries(new FormData(form).entries())}
 function bind(id,fn){$(id).addEventListener('submit',e=>{e.preventDefault();let x=data(e.target);if(fn(x)===false)return;e.target.reset();e.target.querySelectorAll('input[type=date]').forEach(i=>i.value=today());save()})}
 bind('stockForm',x=>db.stock.push({...x,amount:+x.amount,id:crypto.randomUUID()}));
-bind('transferForm',x=>{if(+x.cost>sum(db.stock,z=>z.amount)-sum(db.transfers,z=>z.cost)-sum(db.recharges,z=>z.cost)){alert('تنبيه: تكلفة العملية أكبر من الرصيد المتاح المسجل. راجع رصيدك قبل الحفظ.');return false}db.transfers.push({...x,sale:+x.sale,cost:+x.cost,network:x.network||'زين',id:crypto.randomUUID()});return true});
+bind('transferForm',x=>{const rate=Number(x.commissionRate);if(!Number.isFinite(rate)||rate<0||rate>100){alert('نسبة العمولة يجب أن تكون بين 0 و100.');return false;}const commission=Number((Number(x.sale)*rate/100).toFixed(2));const net=Number((Number(x.sale)-commission).toFixed(2));if(net>sum(db.stock,z=>z.amount)-sum(db.transfers,z=>z.cost)-sum(db.recharges,z=>z.cost)){alert('تنبيه: صافي الرصيد المطلوب أكبر من الرصيد المتاح المسجل.');return false}db.transfers.push({...x,sale:Number(x.sale),cost:net,commissionRate:rate,commission,network:x.network||'زين',id:crypto.randomUUID()});return true});
 bind('rechargeForm',x=>db.recharges.push({...x,sale:+x.sale,cost:+x.cost,id:crypto.randomUUID()}));
 bind('expenseForm',x=>db.expenses.push({...x,amount:+x.amount,id:crypto.randomUUID()}));
-$('transferForm').addEventListener('input',()=>{let f=$('transferForm'),s=+f.sale.value||0,c=+f.cost.value||0;$('transferHint').textContent='الربح المتوقع: '+fmt(s-c)+' SDG'});
+$('transferForm').addEventListener('input',()=>{let f=$('transferForm'),s=+f.sale.value||0,r=+f.commissionRate.value||0,commission=Number((s*r/100).toFixed(2)),net=Number((s-commission).toFixed(2));f.cost.value=s?net:'';$('transferHint').textContent='العمولة ('+r+'%): '+fmt(commission)+' SDG · صافي الرصيد المحوّل: '+fmt(net)+' SDG · ربح العملية: '+fmt(commission)+' SDG'});
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>{x.classList.toggle('active',x.id===b.dataset.tab);x.classList.remove('quick-stock','quick-transfer','quick-creditHistory','quick-recharge','quick-rechargeHistory','quick-expenses')});if(b.dataset.tab==='reports')report()});
 $('monthFilter').onchange=report;
 $('backupBtn').onclick=()=>download('hisabati-backup.json',JSON.stringify(db,null,2),'application/json');
