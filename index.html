@@ -102,7 +102,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 <main>
 <section id="home" class="panel active">
 <div class="grid financial-grid">
-<div class="card kpi"><span class="kpi-icon">💰</span><small>الرصيد المتاح</small><strong id="balance">0</strong><small>SDG</small></div>
+<div class="card kpi"><span class="kpi-icon">💰</span><small>الرصيد المتاح</small><strong id="balance">0</strong><small>SDG</small></div><div class="card kpi"><span class="kpi-icon">🏦</span><small>إجمالي رأس المال المضاف</small><strong id="totalCapital">0</strong><small>SDG</small></div>
 <button class="card kpi profit-toggle" id="profitToggle" type="button" aria-expanded="false" aria-controls="profitDetails"><span class="kpi-icon">📊</span><small>الأرباح</small><strong id="profitTotal">عرض التفاصيل</strong><small>اضغط لعرض الأرباح</small></button>
 </div>
 <div class="grid financial-grid profit-details" id="profitDetails" hidden>
@@ -250,7 +250,7 @@ function edit(type,id){
 function tableRows(target,items,make){$(target).innerHTML=items.length?items.slice().reverse().map(make).join(''):'<tr><td colspan="8" class="empty">لا توجد عمليات مسجلة</td></tr>'}
 function render(){
  const cp=profit(db.transfers),rp=profit(db.recharges),svp=profit(db.services),expense=sum(db.expenses,x=>x.amount),stock=sum(db.stock,x=>x.amount),used=sum(db.transfers,x=>x.cost)+sum(db.recharges,x=>x.cost)+sum(db.services,x=>x.cost);
- $('balance').textContent=fmt(stock-used);$('creditProfit').textContent=fmt(cp);$('rechargeProfit').textContent=fmt(rp);$('serviceProfit').textContent=fmt(svp);
+ $('balance').textContent=fmt(stock-used);$('totalCapital').textContent=fmt(stock);$('creditProfit').textContent=fmt(cp);$('rechargeProfit').textContent=fmt(rp);$('serviceProfit').textContent=fmt(svp);
  const t=today(),ti=sum(db.stock.filter(x=>x.date===t),x=>x.amount),tt=sum(db.transfers.filter(x=>x.date===t),x=>x.sale),tr=sum(db.recharges.filter(x=>x.date===t),x=>x.sale),te=sum(db.expenses.filter(x=>x.date===t),x=>x.amount),tp=sum(db.transfers.filter(x=>x.date===t),x=>x.sale-x.cost)+sum(db.recharges.filter(x=>x.date===t),x=>x.sale-x.cost)+sum(db.services.filter(x=>x.date===t),x=>x.sale-x.cost);
  $('stockTodayMove').textContent='داخل اليوم: '+fmt(ti)+' SDG';
  $('transferTodayProfit').textContent='ربح اليوم: '+fmt(sum(db.transfers.filter(x=>x.date===t),x=>x.sale-x.cost))+' SDG';
