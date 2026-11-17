@@ -1,0 +1,8 @@
+{
+  "appId": "com.wadkenana.hesabati",
+  "appName": "حساباتي",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}
