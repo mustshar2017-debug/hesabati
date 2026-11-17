@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#123b3b">
+<title>تحديث حساباتي</title>
+<style>
+body{font-family:Tahoma,Arial,sans-serif;background:#f3f6f5;color:#183536;display:grid;place-items:center;min-height:100vh;margin:0;padding:20px;text-align:center}
+main{background:#fff;border:1px solid #e1e9e6;border-radius:18px;padding:26px;max-width:420px;box-shadow:0 8px 28px #163b3510}
+p{line-height:1.8;color:#526b68}
+</style>
+</head>
+<body>
+<main>
+<h2>تحديث حساباتي</h2>
+<p id="status">جارٍ تحديث ملفات التشغيل فقط… لن يتم حذف رصيدك أو سجلاتك أو كلمة السر.</p>
+</main>
+<script>
+(async function(){
+ const status=document.getElementById('status');
+ try{
+   if('serviceWorker' in navigator){
+     const regs=await navigator.serviceWorker.getRegistrations();
+     await Promise.all(regs.map(reg=>reg.unregister()));
+   }
+   if('caches' in window){
+     const keys=await caches.keys();
+     await Promise.all(keys.map(key=>caches.delete(key)));
+   }
+   status.textContent='اكتمل تحديث ملفات التشغيل. جارٍ فتح حساباتي…';
+   setTimeout(()=>location.replace('./?v=20261117fresh1'),700);
+ }catch(error){
+   status.textContent='تعذر إكمال التحديث تلقائياً. اضغط على الرابط التالي لفتح التطبيق:';
+   const link=document.createElement('a');
+   link.href='./?v=20261117fresh1';
+   link.textContent='فتح حساباتي';
+   link.style='display:inline-block;margin-top:12px;color:#087c65;font-weight:bold';
+   document.querySelector('main').appendChild(link);
+ }
+})();
+</script>
+</body>
+</html>
