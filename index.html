@@ -87,6 +87,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 <div><label>قيمة التحويل / البيع (SDG)</label><input name="sale" type="number" min="0.01" step="0.01" required></div>
 <div><label>تكلفة الرصيد المحوّل (SDG)</label><input name="cost" type="number" min="0" step="0.01" required></div>
 <div><label>رقم الهاتف / العميل</label><input name="customer" inputmode="tel" placeholder="اختياري"></div>
+<div><label>الشبكة</label><select name="network"><option>زين</option><option>سوداني</option><option>MTN</option><option>أخرى</option></select></div>
 <div><label>التاريخ</label><input name="date" type="date" required></div>
 <div class="full"><label>ملاحظات</label><input name="note" placeholder="اختياري"></div>
 <button class="primary full">حفظ عملية التحويل</button></form><div class="hint" id="transferHint">الربح المتوقع: أدخل قيمة البيع والتكلفة.</div>
@@ -98,7 +99,6 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 <div><label>قيمة الشحن المحصلة (SDG)</label><input name="sale" type="number" min="0.01" step="0.01" required></div>
 <div><label>تكلفة الشحن عليك (SDG)</label><input name="cost" type="number" min="0" step="0.01" required></div>
 <div><label>رقم الهاتف</label><input name="phone" inputmode="tel" placeholder="اختياري"></div>
-<div><label>الشبكة</label><select name="network"><option>زين</option><option>سوداني</option><option>MTN</option><option>أخرى</option></select></div>
 <div><label>التاريخ</label><input name="date" type="date" required></div>
 <div><label>ملاحظات</label><input name="note" placeholder="اختياري"></div>
 <button class="primary full">حفظ عملية الشحن</button></form></div>
@@ -169,6 +169,7 @@ function edit(type,id){
   v=num('قيمة التحويل / البيع (SDG)',x.sale,0.01);if(v===null)return;x.sale=v;
   v=num('تكلفة الرصيد المحوّل (SDG)',x.cost,0);if(v===null)return;x.cost=v;
   v=ask('رقم الهاتف / العميل',x.customer);if(v===null)return;x.customer=v;
+  v=ask('الشبكة (زين / سوداني / MTN / أخرى)',x.network||'زين');if(v===null)return;x.network=v;
   v=ask('التاريخ بصيغة YYYY-MM-DD',x.date);if(v===null)return;x.date=v;
   v=ask('ملاحظات',x.note);if(v===null)return;x.note=v;
  }else if(type==='recharges'){
@@ -192,7 +193,7 @@ function render(){
  $('balance').textContent=fmt(stock-used);$('creditProfit').textContent=fmt(cp);$('rechargeProfit').textContent=fmt(rp);
  const t=today(),ti=sum(db.stock.filter(x=>x.date===t),x=>x.amount),tt=sum(db.transfers.filter(x=>x.date===t),x=>x.sale),tr=sum(db.recharges.filter(x=>x.date===t),x=>x.sale),te=sum(db.expenses.filter(x=>x.date===t),x=>x.amount),tp=sum(db.transfers.filter(x=>x.date===t),x=>x.sale-x.cost)+sum(db.recharges.filter(x=>x.date===t),x=>x.sale-x.cost);
  $('todayIn').textContent=fmt(ti)+' SDG';$('todayTransfers').textContent=fmt(tt)+' SDG';$('todayRecharge').textContent=fmt(tr)+' SDG';$('todayExpenses').textContent=fmt(te)+' SDG';$('todayProfit').textContent=fmt(tp-te)+' SDG';$('todayNet').textContent=fmt(tp-te);
- tableRows('creditRows',[...db.stock.map(x=>({...x,type:'رصيد داخل',value:x.amount,cost:x.amount,profit:0,detail:x.note})),...db.transfers.map(x=>({...x,type:'تحويل رصيد',value:x.sale,profit:x.sale-x.cost,detail:x.customer+' '+(x.note||'')}))],x=>`<tr><td>${x.date}</td><td>${x.type}</td><td>${fmt(x.value)}</td><td>${fmt(x.cost)}</td><td class="${x.profit>=0?'positive':'negative'}">${fmt(x.profit)}</td><td>${esc(x.detail||'')}</td><td><button class="secondary" onclick="edit('${x.type==='رصيد داخل'?'stock':'transfers'}','${x.id}')">تعديل</button> <button class="danger" onclick="del('${x.type==='رصيد داخل'?'stock':'transfers'}','${x.id}')">حذف</button></td></tr>`);
+ tableRows('creditRows',[...db.stock.map(x=>({...x,type:'رصيد داخل',value:x.amount,cost:x.amount,profit:0,detail:x.note})),...db.transfers.map(x=>({...x,type:'تحويل رصيد',value:x.sale,profit:x.sale-x.cost,detail:(x.network||'')+' '+(x.customer||'')+' '+(x.note||'')}))],x=>`<tr><td>${x.date}</td><td>${x.type}</td><td>${fmt(x.value)}</td><td>${fmt(x.cost)}</td><td class="${x.profit>=0?'positive':'negative'}">${fmt(x.profit)}</td><td>${esc(x.detail||'')}</td><td><button class="secondary" onclick="edit('${x.type==='رصيد داخل'?'stock':'transfers'}','${x.id}')">تعديل</button> <button class="danger" onclick="del('${x.type==='رصيد داخل'?'stock':'transfers'}','${x.id}')">حذف</button></td></tr>`);
  tableRows('rechargeRows',db.recharges,x=>`<tr><td>${x.date}</td><td>${esc(x.network)}</td><td>${esc(x.phone||'')}</td><td>${fmt(x.sale)}</td><td>${fmt(x.cost)}</td><td class="${x.sale-x.cost>=0?'positive':'negative'}">${fmt(x.sale-x.cost)}</td><td><button class="secondary" onclick="edit('recharges','${x.id}')">تعديل</button> <button class="danger" onclick="del('recharges','${x.id}')">حذف</button></td></tr>`);
  tableRows('expenseRows',db.expenses,x=>`<tr><td>${x.date}</td><td>${esc(x.category)}</td><td>${esc(x.note||'')}</td><td>${fmt(x.amount)}</td><td><button class="secondary" onclick="edit('expenses','${x.id}')">تعديل</button> <button class="danger" onclick="del('expenses','${x.id}')">حذف</button></td></tr>`);
  report();
@@ -203,14 +204,14 @@ function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 function data(form){return Object.fromEntries(new FormData(form).entries())}
 function bind(id,fn){$(id).addEventListener('submit',e=>{e.preventDefault();let x=data(e.target);if(fn(x)===false)return;e.target.reset();e.target.querySelectorAll('input[type=date]').forEach(i=>i.value=today());save()})}
 bind('stockForm',x=>db.stock.push({...x,amount:+x.amount,id:crypto.randomUUID()}));
-bind('transferForm',x=>{if(+x.cost>sum(db.stock,z=>z.amount)-sum(db.transfers,z=>z.cost)-sum(db.recharges,z=>z.cost)){alert('تنبيه: تكلفة العملية أكبر من الرصيد المتاح المسجل. راجع رصيدك قبل الحفظ.');return false}db.transfers.push({...x,sale:+x.sale,cost:+x.cost,id:crypto.randomUUID()});return true});
+bind('transferForm',x=>{if(+x.cost>sum(db.stock,z=>z.amount)-sum(db.transfers,z=>z.cost)-sum(db.recharges,z=>z.cost)){alert('تنبيه: تكلفة العملية أكبر من الرصيد المتاح المسجل. راجع رصيدك قبل الحفظ.');return false}db.transfers.push({...x,sale:+x.sale,cost:+x.cost,network:x.network||'زين',id:crypto.randomUUID()});return true});
 bind('rechargeForm',x=>db.recharges.push({...x,sale:+x.sale,cost:+x.cost,id:crypto.randomUUID()}));
 bind('expenseForm',x=>db.expenses.push({...x,amount:+x.amount,id:crypto.randomUUID()}));
 $('transferForm').addEventListener('input',()=>{let f=$('transferForm'),s=+f.sale.value||0,c=+f.cost.value||0;$('transferHint').textContent='الربح المتوقع: '+fmt(s-c)+' SDG'});
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>{x.classList.toggle('active',x.id===b.dataset.tab);x.classList.remove('quick-stock','quick-transfer','quick-creditHistory','quick-recharge','quick-rechargeHistory','quick-expenses')});if(b.dataset.tab==='reports')report()});
 $('monthFilter').onchange=report;
 $('backupBtn').onclick=()=>download('hisabati-backup.json',JSON.stringify(db,null,2),'application/json');
-$('exportBtn').onclick=()=>{let rows=[['القسم','التاريخ','البيان','القيمة','التكلفة','الربح']];db.stock.forEach(x=>rows.push(['رصيد داخل',x.date,x.note,x.amount,x.amount,0]));db.transfers.forEach(x=>rows.push(['تحويل رصيد',x.date,x.customer,x.sale,x.cost,x.sale-x.cost]));db.recharges.forEach(x=>rows.push(['شحن',x.date,x.network+' '+x.phone,x.sale,x.cost,x.sale-x.cost]));db.expenses.forEach(x=>rows.push(['مصروف',x.date,x.category+' '+x.note,x.amount,'','']));download('hisabati.csv','\ufeff'+rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n'),'text/csv;charset=utf-8')};
+$('exportBtn').onclick=()=>{let rows=[['القسم','التاريخ','البيان','القيمة','التكلفة','الربح']];db.stock.forEach(x=>rows.push(['رصيد داخل',x.date,x.note,x.amount,x.amount,0]));db.transfers.forEach(x=>rows.push(['تحويل رصيد',x.date,(x.network||'')+' '+(x.customer||''),x.sale,x.cost,x.sale-x.cost]));db.recharges.forEach(x=>rows.push(['شحن',x.date,x.network+' '+x.phone,x.sale,x.cost,x.sale-x.cost]));db.expenses.forEach(x=>rows.push(['مصروف',x.date,x.category+' '+x.note,x.amount,'','']));download('hisabati.csv','\ufeff'+rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n'),'text/csv;charset=utf-8')};
 function download(name,content,type){let a=document.createElement('a'),u=URL.createObjectURL(new Blob([content],{type}));a.href=u;a.download=name;a.click();URL.revokeObjectURL(u)}
 $('restoreFile').onchange=async e=>{try{let d=JSON.parse(await e.target.files[0].text());if(!d.stock||!d.transfers||!d.recharges||!d.expenses)throw Error();db=d;save();alert('تم استيراد النسخة')}catch(_){alert('ملف النسخة غير صالح')}e.target.value=''};
 
