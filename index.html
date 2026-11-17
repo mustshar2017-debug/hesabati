@@ -467,6 +467,7 @@ if ('serviceWorker' in navigator) {
  const modal=$('bankModal'), form=$('bankAddForm');
  function bank(){return state.banks[selected]}
   window.hisabatiTodayBankProfit=function(date){return state.banks.reduce((total,b)=>total+(Array.isArray(b.records)?b.records.filter(x=>x.date===date).reduce((n,x)=>n+Number(x.gain||0),0):0),0)};
+  window.render?.();
   function render(){
   $('bankTabs').innerHTML=state.banks.map((b,i)=>{const n=String(b.name||'').trim();const color=n==='بنكك'?'bank-tab-bnuk':n==='فوري'?'bank-tab-fawry':n==='ساهل'?'bank-tab-sahel':'';return '<button type="button" data-bank="'+i+'" class="'+color+(i===selected?' active':'')+'">'+escapeHtml(b.name)+'</button>';}).join('');
   $('bankAvailable').textContent=fmt(bank().available)+' SDG';$('bankProfit').textContent=fmt(bank().profit)+' SDG';
