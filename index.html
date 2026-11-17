@@ -167,7 +167,7 @@ function edit(type,id){
   v=ask('ملاحظات / مصدر الرصيد',x.note);if(v===null)return;x.note=v;
  }else if(type==='transfers'){
   v=num('قيمة التحويل / البيع (SDG)',x.sale,0.01);if(v===null)return;x.sale=v;
-  v=num('تكلفة الرصيد المحوّل (SDG)',x.cost,0);if(v===null)return;x.cost=v;
+  if(x.commissionRate!==undefined){v=num('نسبة العمولة (%)',x.commissionRate,0);if(v===null||v>100){alert('نسبة العمولة يجب أن تكون بين 0 و100.');return;}x.commissionRate=v;x.commission=Number((x.sale*v/100).toFixed(2));x.cost=Number((x.sale-x.commission).toFixed(2));}else{v=num('تكلفة الرصيد المحوّل (SDG)',x.cost,0);if(v===null)return;x.cost=v;}
   v=ask('رقم الهاتف / العميل',x.customer);if(v===null)return;x.customer=v;
   v=ask('الشبكة (زين / سوداني / MTN / أخرى)',x.network||'زين');if(v===null)return;x.network=v;
   v=ask('التاريخ بصيغة YYYY-MM-DD',x.date);if(v===null)return;x.date=v;
