@@ -443,15 +443,16 @@ if ('serviceWorker' in navigator) {
 
 
 <style id="app-navigation-controls">
-body{padding-bottom:86px}
+body.back-control-visible{padding-bottom:86px}
 .app-bottom-controls{position:fixed;z-index:10000;left:12px;right:12px;bottom:max(10px,env(safe-area-inset-bottom));display:flex;gap:10px;max-width:520px;margin:auto;padding:8px;background:#ffffffed;border:1px solid #dce9e4;border-radius:16px;box-shadow:0 8px 28px #102f3425;backdrop-filter:blur(10px)}
+.app-bottom-controls[hidden]{display:none!important}
 .app-bottom-controls button{flex:1;min-height:46px;border:0;border-radius:11px;font:inherit;font-weight:800;cursor:pointer}
 #appBackButton{background:#e6f3ed;color:#075f50}
-#appExitButton{background:#fff0ed;color:#a33d2d}
 .app-bottom-controls button:active{transform:scale(.98)}
 @media(min-width:700px){.app-bottom-controls{left:20px;right:20px;bottom:16px}}
+@media print{body{padding-bottom:0!important}.app-bottom-controls{display:none!important}}
 </style>
-<div class="app-bottom-controls" id="appBottomControls">
+<div class="app-bottom-controls" id="appBottomControls" hidden>
  <button type="button" id="appBackButton">↩ رجوع للخلف</button>
 </div>
 <script id="app-navigation-controls-script">
@@ -460,6 +461,12 @@ body{padding-bottom:86px}
  let replaying=false;
  const $=id=>document.getElementById(id);
  function activePanel(){return document.querySelector('.panel.active')?.id||'home';}
+ function updateBackVisibility(){
+  const bank=$('bankModal'),summary=$('dailySummary'),menu=$('appMenu');
+  const visible=activePanel()!=='home'||(bank&&bank.classList.contains('open'))||(summary&&!summary.hidden)||(menu&&!menu.hidden);
+  $('appBottomControls').hidden=!visible;
+  document.body.classList.toggle('back-control-visible',visible);
+ }
  function activate(id){
   const tab=document.querySelector('#nav button[data-tab="'+id+'"]');
   if(tab){replaying=true;tab.click();replaying=false;}
@@ -474,10 +481,12 @@ body{padding-bottom:86px}
   const quick=e.target.closest('.quick-link[data-panel]');
   const menu=e.target.closest('[data-menu-action]');
   if(nav||quick||menu)pushCurrent();
+  setTimeout(updateBackVisibility,0);
  },true);
+ updateBackVisibility();
  $('appBackButton').addEventListener('click',function(){
   const bank=$('bankModal');
-  if(bank&&bank.classList.contains('open')){$('bankClose').click();return;}
+  if(bank&&bank.classList.contains('open')){$('bankClose').click();updateBackVisibility();return;}
   const menu=$('appMenu');
   if(menu&&!menu.hidden){menu.hidden=true;$('menuTrigger').setAttribute('aria-expanded','false');return;}
   const current=activePanel();
@@ -485,10 +494,11 @@ body{padding-bottom:86px}
    let previous=stack.pop();
    while(previous===current&&stack.length)previous=stack.pop();
    activate(previous||'home');
+   updateBackVisibility();
    return;
   }
   const summary=$('dailySummary');
-  if(summary&&!summary.hidden){summary.hidden=true;return;}
+  if(summary&&!summary.hidden){summary.hidden=true;updateBackVisibility();return;}
   if(window.history.length>1){window.history.back();return;}
   alert('أنت الآن في الصفحة الرئيسية.');
  });
