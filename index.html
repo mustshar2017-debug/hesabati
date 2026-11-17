@@ -398,6 +398,7 @@ if ('serviceWorker' in navigator) {
 <script id="bank-transfer-module">
 // BANK_TRANSFER_MODULE_V1 — بيانات مستقلة محفوظة على هذا الجهاز
 (function(){
+ const homeSection=document.querySelector('#home .quick-section');if(homeSection)homeSection.after(document.getElementById('bankLaunch'));
  const KEY='hisabati_bank_transfer_v1', defaults=['بنكك','فوري','ساهل'];
  let state={banks:defaults.map(name=>({name,rate:10,available:0,profit:0,records:[]}))}, selected=0;
  const $=id=>document.getElementById(id), fmt=n=>Number(n||0).toLocaleString('en-US',{maximumFractionDigits:2});
