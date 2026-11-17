@@ -53,7 +53,35 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 .quick-section{margin-top:22px}.quick-section .section-title{margin:0 0 11px}.quick-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.quick-link{display:flex;align-items:center;gap:11px;width:100%;min-height:78px;padding:12px;text-align:right;background:#fff;border:1px solid #e1e9e6;border-radius:15px;color:#183536;font:inherit;font-weight:700;box-shadow:0 2px 9px #163b350a;cursor:pointer}.quick-link:active{transform:scale(.985)}
 /* كل أيقونة تفتح وظيفتها وحدها دون إظهار بقية الأقسام */
 #credit.quick-stock #transferCard,#credit.quick-stock #creditHistoryBlock,#credit.quick-transfer #stockCard,#credit.quick-transfer #creditHistoryBlock,#credit.quick-creditHistory #stockCard,#credit.quick-creditHistory #transferCard,#recharge.quick-recharge #rechargeHistoryBlock,#recharge.quick-rechargeHistory #rechargeCard,#recharge.quick-rechargeHistory>.section-title:first-child{display:none!important}
-#credit.quick-stock>.section-title:first-child,#credit.quick-transfer>.section-title:first-child{display:none!important}.quick-icon{width:46px;height:46px;flex:0 0 46px;display:grid;place-items:center;border-radius:13px;background:#e8f4ef;font-size:24px}.quick-link span:last-child{font-size:14px;line-height:1.5}.quick-link small{display:block;color:#6d8280;font-size:11px;font-weight:500}@media(min-width:700px){.quick-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}</style></head>
+#credit.quick-stock>.section-title:first-child,#credit.quick-transfer>.section-title:first-child{display:none!important}.quick-icon{width:46px;height:46px;flex:0 0 46px;display:grid;place-items:center;border-radius:13px;background:#e8f4ef;font-size:24px}.quick-link span:last-child{font-size:14px;line-height:1.5}.quick-link small{display:block;color:#6d8280;font-size:11px;font-weight:500}@media(min-width:700px){.quick-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media print{
+ @page{size:A4 portrait;margin:12mm}
+ body{background:#fff!important;color:#111!important;font-size:11pt}
+ header,nav,footer,.header-actions,.actions,#iconNamesCard,#changePinForm,#backupBtn,#restoreFile,#exportBtn{display:none!important}
+ .wrap{max-width:none!important;width:100%!important;padding:0!important;margin:0!important}
+ main{padding:0!important}
+ .panel{display:none!important}
+ #reports.panel.active{display:block!important}
+ #reports>.section-title{display:block!important;margin:0 0 10px!important;font-size:18pt}
+ #reports>.card{display:block!important;border:0!important;padding:0!important;box-shadow:none!important}
+ #generalReportCard{display:block!important;border:0!important;padding:0!important;margin:0!important;box-shadow:none!important}
+ #generalReportCard>h3{font-size:16pt;margin:0 0 5px!important}
+ #generalReportCard>p{display:none!important}
+ #generalReportCard .report-filters{display:grid!important;grid-template-columns:1fr 1fr!important;margin:8px 0 12px!important}
+ #generalReportCard .report-filters input{border:0!important;border-bottom:1px solid #777!important;border-radius:0!important;padding:4px!important;background:transparent!important;color:#111!important}
+ #generalReportCard .report-filters label{color:#111!important}
+ #generalReportCard .actions{display:none!important}
+ #generalReportResults{display:block!important}
+ #generalReportResults .reportline{padding:6px 0!important;border-bottom:1px solid #ddd!important}
+ #generalReportResults h3{margin:14px 0 7px!important}
+ .table-wrap{overflow:visible!important;border:1px solid #bbb!important;border-radius:0!important}
+ #generalReportRows table{width:100%!important;min-width:0!important;border-collapse:collapse!important}
+ #generalReportRows th,#generalReportRows td{font-size:9pt!important;padding:6px 4px!important;color:#111!important;white-space:normal!important}
+ #generalReportRows tr{break-inside:avoid}
+ #generalReportRows th{background:#eee!important}
+ *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style></head>
 <body>
 <header><div class="wrap header-row"><div><h1>حساباتي</h1><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><div class="header-actions"><button class="menu-trigger" id="menuTrigger" type="button" aria-label="القائمة" aria-expanded="false">⋮</button><button class="secondary" id="lockNow" type="button">🔒 قفل الآن</button><div class="app-menu" id="appMenu" hidden><button type="button" data-menu-action="backup">💾 حفظ نسخة احتياطية</button><button type="button" data-menu-action="labels">✏️ تعديل أسماء الأيقونات</button><button type="button" data-menu-action="generalReport">📊 تقرير عام مفصل</button><button type="button" data-menu-action="settings">⚙️ إعدادات التطبيق</button></div></div></div></header>
 <div class="wrap">
