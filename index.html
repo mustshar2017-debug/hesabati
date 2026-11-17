@@ -607,7 +607,7 @@ body.dark .profit-toggle{color:var(--ink)}
  }
  function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
  $('partnershipLaunch').addEventListener('click',()=>{document.querySelector('#nav button[data-tab="partnership"]').click();render();window.scrollTo({top:0,behavior:'smooth'});});
- document.querySelectorAll('[data-partner]').forEach(b=>b.addEventListener('click',()=>{selected=b.dataset.partner;$('partnerAccountCard').hidden=false;$('partnerAllocationForm').reset();$('partnerAllocationForm').date.value=new Date().toISOString().slice(0,10);renderAccount();$('partnerAccountCard').scrollIntoView({behavior:'smooth',block:'start'});}));
+ document.querySelectorAll('[data-partner]').forEach(b=>b.addEventListener('click',()=>{selected=b.dataset.partner;$('partnerAccountCard').hidden=false;renderAccount();$('partnerAccountCard').scrollIntoView({behavior:'smooth',block:'start'});}));
  $('partnerAccountClose').addEventListener('click',()=>$('partnerAccountCard').hidden=true);
  // Manual allocations are disabled; shares are calculated and posted automatically.
  const originalRender=window.render;
