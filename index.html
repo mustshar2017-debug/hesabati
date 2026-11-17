@@ -595,13 +595,13 @@ body.dark .profit-toggle{color:var(--ink)}
    state.manualAdjustments=Array.isArray(old.manualAdjustments)?old.manualAdjustments:[];
    state.lastProfit=Number(old.lastProfit||0);
   }else{
-   state.partners=[{id:'mohamed',name:'محمد عمر',percent:50},{id:'bashir',name:'بشير حسين',percent:50}];
+   state.partners=[{id:'mohamed',name:'',percent:50},{id:'bashir',name:'',percent:50}];
    state.allocations={mohamed:Array.isArray(old.mohamed)?old.mohamed:[],bashir:Array.isArray(old.bashir)?old.bashir:[]};
    state.manualAdjustments=Array.isArray(old.manualAdjustments)?old.manualAdjustments:[];
    state.lastProfit=0;
   }
  }
- state.partners=state.partners.filter(p=>p&&p.id).map(p=>({id:String(p.id),name:String(p.name||'شريك'),percent:Number(p.percent||0)}));
+ state.partners=state.partners.filter(p=>p&&p.id).map(p=>({id:String(p.id),name:(['محمد عمر','بشير حسين'].includes(String(p.name||''))?'':String(p.name||'')),percent:Number(p.percent||0)}));
  state.partners.forEach(p=>{if(!Array.isArray(state.allocations[p.id]))state.allocations[p.id]=[]});
  const save=()=>localStorage.setItem(KEY,JSON.stringify(state));
  const total=a=>(Array.isArray(a)?a:[]).reduce((n,x)=>n+Number(x.amount||0),0);
@@ -636,7 +636,7 @@ body.dark .profit-toggle{color:var(--ink)}
   $('partnershipGeneralNet').textContent=fmt(p.net);$('partnershipTotal').textContent=fmt(p.rechargeProfit);
   $('partnershipAvailable').textContent=fmt(Math.max(0,p.rechargeProfit-distributed));
   $('partnershipAutomaticTotal').textContent=fmt(distributed);$('partnershipManualNet').textContent=fmt(manualNet);
-  $('partnerCards').innerHTML=state.partners.length?state.partners.map(p=>'<button class="quick-link" type="button" data-partner="'+escapeHtml(p.id)+'"><span class="quick-icon">👤</span><span>'+escapeHtml(p.name)+'<small>النسبة: '+fmt(p.percent)+'% · الرصيد: '+fmt(balance(p.id))+' SDG</small></span></button>').join(''):'<div class="hint">لم تتم إضافة شركاء بعد. اضغط «إدارة الشركاء» لإضافة أول شريك وتحديد النسب.</div>';
+  $('partnerCards').innerHTML=state.partners.length?state.partners.map(p=>'<button class="quick-link" type="button" data-partner="'+escapeHtml(p.id)+'"><span class="quick-icon">👤</span><span>'+escapeHtml(p.name||'اسم الشريك')+'<small>النسبة: '+fmt(p.percent)+'% · الرصيد: '+fmt(balance(p.id))+' SDG</small></span></button>').join(''):'<div class="hint">لم تتم إضافة شركاء بعد. اضغط «إدارة الشركاء» لإضافة أول شريك وتحديد النسب.</div>';
   $('partnerCards').querySelectorAll('[data-partner]').forEach(b=>b.addEventListener('click',()=>{selected=b.dataset.partner;$('partnerAccountCard').hidden=false;$('partnerAccountCard').style.display='flex';renderAccount();}));
   if(!$('partnerAccountCard').hidden&&selected)renderAccount();
  }
@@ -644,7 +644,7 @@ body.dark .profit-toggle{color:var(--ink)}
  function renderAccount(){
   const partner=state.partners.find(x=>x.id===selected);if(!partner)return;
   const auto=state.allocations[selected]||[],manual=manualFor(selected);
-  $('partnerAccountTitle').textContent='حساب '+partner.name;
+  $('partnerAccountTitle').textContent='حساب '+(partner.name||'الشريك');
   $('partnerAccountHint').textContent='نسبة الشريك الحالية: '+fmt(partner.percent)+'% · النسب الجديدة تسري على الأرباح القادمة فقط.';
   $('partnerAccountBalance').textContent=fmt(balance(selected))+' SDG';
   $('partnerAutomaticBalance').textContent=fmt(total(auto))+' SDG';$('partnerManualBalance').textContent=fmt(total(manual))+' SDG';
@@ -653,7 +653,7 @@ body.dark .profit-toggle{color:var(--ink)}
   $('partnerAllocationRows').querySelectorAll('[data-edit-adjustment]').forEach(b=>b.addEventListener('click',()=>openAdjustment(b.dataset.editAdjustment)));
  }
  function renderSettings(){
-  $('partnerSettingsRows').innerHTML=state.partners.map(p=>'<div class="partner-setting-row" data-row-id="'+escapeHtml(p.id)+'"><input type="text" maxlength="60" value="'+escapeHtml(p.name)+'" aria-label="اسم الشريك"><input type="number" min="0" max="100" step="0.01" value="'+fmt(p.percent)+'" aria-label="نسبة الشريك" placeholder="النسبة %"><button type="button" class="secondary" data-remove-partner="'+escapeHtml(p.id)+'" title="حذف الشريك">✕</button></div>').join('');
+  $('partnerSettingsRows').innerHTML=state.partners.map(p=>'<div class="partner-setting-row" data-row-id="'+escapeHtml(p.id)+'"><input type="text" maxlength="60" value="'+escapeHtml(p.name)+'" placeholder="مثال: أحمد محمد" aria-label="اسم الشريك"><input type="number" min="0" max="100" step="0.01" value="'+fmt(p.percent)+'" aria-label="نسبة الشريك" placeholder="النسبة %"><button type="button" class="secondary" data-remove-partner="'+escapeHtml(p.id)+'" title="حذف الشريك">✕</button></div>').join('');
   updatePercentTotal();
   $('partnerSettingsRows').querySelectorAll('[data-remove-partner]').forEach(btn=>btn.addEventListener('click',()=>{
    const id=btn.dataset.removePartner;
@@ -690,7 +690,7 @@ body.dark .profit-toggle{color:var(--ink)}
  $('addPartnerRow').addEventListener('click',()=>{
   if($('partnerSettingsRows').querySelectorAll('.partner-setting-row').length>=20){alert('الحد الأقصى 20 شريكاً.');return;}
   const id='partner-'+Date.now()+'-'+Math.random().toString(36).slice(2,7);
-  state.partners.push({id,name:'شريك جديد',percent:0});state.allocations[id]=[];renderSettings();
+  state.partners.push({id,name:'',percent:0});state.allocations[id]=[];renderSettings();
  });
  $('savePartnerSettings').addEventListener('click',()=>{
   const rows=[...$('partnerSettingsRows').querySelectorAll('.partner-setting-row')];
