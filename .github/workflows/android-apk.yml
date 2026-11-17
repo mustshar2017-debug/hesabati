@@ -40,7 +40,7 @@ jobs:
       - name: Add Android platform
         run: npx cap add android
       - name: Install approved launcher icon
-        run: node scripts/prepare-mobile.mjs
+        run: node scripts/install-android-icon.mjs
       - name: Sync Capacitor
         run: npx cap sync android
       - name: Configure reliable Maven Central mirror
