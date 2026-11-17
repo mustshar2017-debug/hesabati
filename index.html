@@ -257,7 +257,8 @@ function report(){const m=$('monthFilter').value;const filter=a=>a.filter(x=>x.d
  $('rIn').textContent=fmt(sum(s,x=>x.amount))+' SDG';$('rTransfers').textContent=fmt(sum(t,x=>x.sale))+' SDG';$('rCreditProfit').textContent=fmt(profit(t))+' SDG';$('rRecharge').textContent=fmt(sum(r,x=>x.sale))+' SDG';$('rRechargeProfit').textContent=fmt(profit(r))+' SDG';$('rServiceProfit').textContent=fmt(profit(v))+' SDG';$('rExpenses').textContent=fmt(ep)+' SDG';$('rNet').textContent=fmt(p)+' SDG'}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function data(form){return Object.fromEntries(new FormData(form).entries())}
-function bind(id,fn){$(id).addEventListener('submit',e=>{e.preventDefault();let x=data(e.target);if(fn(x)===false)return;e.target.reset();e.target.querySelectorAll('input[type=date]').forEach(i=>i.value=today());save()})}
+function returnToHome(){const home=document.querySelector('#nav button[data-tab=home]');if(home)home.click();window.scrollTo({top:0,behavior:'smooth'});}
+function bind(id,fn){$(id).addEventListener('submit',e=>{e.preventDefault();let x=data(e.target);if(fn(x)===false)return;e.target.reset();e.target.querySelectorAll('input[type=date]').forEach(i=>i.value=today());save();returnToHome();})}
 bind('stockForm',x=>db.stock.push({...x,amount:+x.amount,id:crypto.randomUUID()}));
 bind('transferForm',x=>{const rate=Number(x.commissionRate);if(!Number.isFinite(rate)||rate<0||rate>100){alert('نسبة العمولة يجب أن تكون بين 0 و100.');return false;}const commission=Number((Number(x.sale)*rate/100).toFixed(2));const net=Number((Number(x.sale)-commission).toFixed(2));if(net>sum(db.stock,z=>z.amount)-sum(db.transfers,z=>z.cost)-sum(db.recharges,z=>z.cost)){alert('تنبيه: صافي الرصيد المطلوب أكبر من الرصيد المتاح المسجل.');return false}db.transfers.push({...x,sale:Number(x.sale),cost:net,commissionRate:rate,commission,network:x.network||'زين',id:crypto.randomUUID()});return true});
 bind('rechargeForm',x=>db.recharges.push({...x,sale:+x.sale,cost:+x.cost,id:crypto.randomUUID()}));
@@ -426,7 +427,7 @@ if ('serviceWorker' in navigator) {
   const gain=Number((amount*rate/100).toFixed(2)),cash=Number((amount-gain).toFixed(2));
   bank().available=Number((bank().available+amount).toFixed(2));bank().profit=Number((bank().profit+gain).toFixed(2));bank().rate=rate;
   bank().records.push({amount,rate,cash,gain,date,customer:form.customer.value.trim(),note:form.note.value.trim(),createdAt:new Date().toISOString()});
-  save();form.reset();render();alert('تم حفظ التحويل. ربحك '+fmt(gain)+' SDG.');
+  save();form.reset();modal.classList.remove('open');modal.setAttribute('aria-hidden','true');const home=document.querySelector('#nav button[data-tab=home]');if(home)home.click();window.scrollTo({top:0,behavior:'smooth'});render();alert('تم حفظ التحويل. ربحك '+fmt(gain)+' SDG.');
  });
  $('bankAddName').addEventListener('click',()=>{const name=prompt('اكتب اسم البنك أو خدمة التحويل:');if(!name||!name.trim())return;if(state.banks.some(b=>b.name.toLowerCase()===name.trim().toLowerCase())){alert('هذا البنك موجود بالفعل.');return;}state.banks.push({name:name.trim(),rate:10,available:0,profit:0,records:[]});selected=state.banks.length-1;save();render();});
  $('bankEditRate').addEventListener('click',()=>{const v=prompt('أدخل نسبة الخصم الجديدة لبنك '+bank().name+' (%):',String(bank().rate));if(v===null)return;const n=Number(v);if(!Number.isFinite(n)||n<0||n>100){alert('النسبة يجب أن تكون بين 0 و100.');return;}bank().rate=n;save();render();});
