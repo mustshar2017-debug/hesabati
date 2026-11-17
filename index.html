@@ -586,7 +586,7 @@ body.dark .profit-toggle{color:var(--ink)}
   return {gross,expenses,net:gross-expenses,rechargeProfit};
  }
  function render(){
-  const p=generalProfit(),target=Number((p.net/2).toFixed(2));
+  const p=generalProfit(),target=Number((p.rechargeProfit/2).toFixed(2));
   ['mohamed','bashir'].forEach(id=>{
    const difference=Number((target-total(state[id])).toFixed(2));
    if(Math.abs(difference)>=0.01)state[id].push({amount:difference,date:new Date().toISOString().slice(0,10),note:'توزيع تلقائي 50% من ربح شحن الهواتف',automatic:true,createdAt:new Date().toISOString()});
