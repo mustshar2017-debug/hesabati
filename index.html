@@ -367,4 +367,71 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
-<script>(function(){const targets={stock:function(){return document.getElementById("stockCard")},transfer:function(){return document.getElementById("transferCard")},expenses:function(){return document.querySelector("#expenses .card")},creditHistory:function(){return document.getElementById("creditHistoryBlock")},recharge:function(){return document.getElementById("rechargeCard")},rechargeHistory:function(){return document.getElementById("rechargeHistoryBlock")},serviceHome:function(){document.getElementById('serviceFormTitle').textContent='تسجيل خدمة زبون';return document.getElementById('serviceCard')},serviceZain:function(){document.getElementById('serviceNetwork').value='زين';document.getElementById('serviceFormTitle').textContent='تسجيل خدمة زين';return document.getElementById('serviceCard')},serviceSudani:function(){document.getElementById('serviceNetwork').value='سوداني';document.getElementById('serviceFormTitle').textContent='تسجيل خدمة سوداني';return document.getElementById('serviceCard')}};document.querySelectorAll(".quick-link").forEach(function(b){b.addEventListener("click",function(){const tab=b.getAttribute("data-panel"),target=b.getAttribute("data-target");document.querySelectorAll("#nav button").forEach(function(x){x.classList.toggle("active",x.getAttribute("data-tab")===tab)});document.querySelectorAll(".panel").forEach(function(x){x.classList.toggle("active",x.id===tab);x.classList.remove("quick-stock","quick-transfer","quick-creditHistory","quick-recharge","quick-rechargeHistory","quick-expenses")});const panel=document.getElementById(tab);if(panel)panel.classList.add("quick-"+target);const el=targets[target]();if(el)setTimeout(function(){el.scrollIntoView({behavior:"smooth",block:"start"})},80)})})})();</script></body></html>
+<script>(function(){const targets={stock:function(){return document.getElementById("stockCard")},transfer:function(){return document.getElementById("transferCard")},expenses:function(){return document.querySelector("#expenses .card")},creditHistory:function(){return document.getElementById("creditHistoryBlock")},recharge:function(){return document.getElementById("rechargeCard")},rechargeHistory:function(){return document.getElementById("rechargeHistoryBlock")},serviceHome:function(){document.getElementById('serviceFormTitle').textContent='تسجيل خدمة زبون';return document.getElementById('serviceCard')},serviceZain:function(){document.getElementById('serviceNetwork').value='زين';document.getElementById('serviceFormTitle').textContent='تسجيل خدمة زين';return document.getElementById('serviceCard')},serviceSudani:function(){document.getElementById('serviceNetwork').value='سوداني';document.getElementById('serviceFormTitle').textContent='تسجيل خدمة سوداني';return document.getElementById('serviceCard')}};document.querySelectorAll(".quick-link").forEach(function(b){b.addEventListener("click",function(){const tab=b.getAttribute("data-panel"),target=b.getAttribute("data-target");document.querySelectorAll("#nav button").forEach(function(x){x.classList.toggle("active",x.getAttribute("data-tab")===tab)});document.querySelectorAll(".panel").forEach(function(x){x.classList.toggle("active",x.id===tab);x.classList.remove("quick-stock","quick-transfer","quick-creditHistory","quick-recharge","quick-rechargeHistory","quick-expenses")});const panel=document.getElementById(tab);if(panel)panel.classList.add("quick-"+target);const el=targets[target]();if(el)setTimeout(function(){el.scrollIntoView({behavior:"smooth",block:"start"})},80)})})})();</script>
+<style id="bank-transfer-style">
+.bank-launch{display:flex;align-items:center;gap:12px;width:100%;margin:14px 0;padding:15px;background:#fff;border:1px solid #dce9e4;border-radius:16px;color:#183536;text-align:right;font:inherit;font-weight:800;cursor:pointer;box-shadow:0 2px 9px #163b350a}.bank-launch .quick-icon{background:#e5f4ed}.bank-modal{position:fixed;inset:0;z-index:10001;background:#102f34a8;display:none;align-items:flex-start;justify-content:center;padding:18px;overflow:auto}.bank-modal.open{display:flex}.bank-box{width:min(100%,760px);margin:auto;background:#f5f8f6;border-radius:20px;padding:16px;box-shadow:0 18px 55px #001b1b55}.bank-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.bank-head h2{margin:0;font-size:20px}.bank-close{border:0;background:#e7efeb;border-radius:10px;padding:9px 13px;font-size:18px}.bank-tabs{display:flex;gap:8px;overflow:auto;margin:14px 0}.bank-tabs button{white-space:nowrap;border:1px solid #d5e1dd;border-radius:10px;background:#fff;padding:10px 14px;font-weight:700;color:#183536}.bank-tabs button.active{background:#087f70;color:#fff}.bank-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.bank-kpi{background:#fff;border:1px solid #e1e9e6;border-radius:13px;padding:12px}.bank-kpi small{color:#6d8280}.bank-kpi strong{display:block;font-size:20px;margin-top:6px;overflow-wrap:anywhere}.bank-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;background:#fff;padding:13px;border-radius:14px;margin-top:12px}.bank-form label{display:block;font-size:13px;color:#6d8280;margin-bottom:5px}.bank-form input,.bank-form select{width:100%;padding:11px;border:1px solid #d5e1dd;border-radius:9px;font:inherit}.bank-form .full{grid-column:1/-1}.bank-note{background:#edf7f2;border-radius:10px;padding:10px;font-size:13px;line-height:1.7;margin-top:10px}.bank-table{overflow:auto;background:#fff;border-radius:12px;margin-top:12px}.bank-table table{min-width:600px}.bank-table button{padding:6px 9px}@media(max-width:480px){.bank-form{grid-template-columns:1fr}.bank-form .full{grid-column:auto}}
+</style>
+<button class="bank-launch" id="bankLaunch" type="button"><span class="quick-icon">🏦</span><span>التحويلات البنكية<small style="display:block;color:#6d8280;font-size:11px;font-weight:500">بنكك · فوري · ساهل · وإضافة بنوك أخرى</small></span></button>
+<div class="bank-modal" id="bankModal" aria-hidden="true">
+ <div class="bank-box">
+  <div class="bank-head"><h2>🏦 التحويلات البنكية</h2><button class="bank-close" id="bankClose" type="button">إغلاق ✕</button></div>
+  <div class="bank-tabs" id="bankTabs"></div>
+  <div class="bank-kpis">
+   <div class="bank-kpi"><small>المبلغ المتاح في الحساب</small><strong id="bankAvailable">0 SDG</strong></div>
+   <div class="bank-kpi"><small>ربح البنك</small><strong id="bankProfit">0 SDG</strong></div>
+  </div>
+  <form class="bank-form" id="bankAddForm">
+   <div><label>المبلغ المحوّل إليك من العميل (SDG)</label><input name="amount" type="number" min="0.01" step="0.01" required></div>
+   <div><label>نسبة الخصم / ربحك (%)</label><input name="rate" id="bankRate" type="number" min="0" max="100" step="0.01" value="10" required></div>
+   <div><label>المبلغ النقدي الذي تسلمه للعميل</label><input id="bankCash" readonly placeholder="يحسب تلقائياً"></div>
+   <div><label>ربحك من العملية</label><input id="bankGain" readonly placeholder="يحسب تلقائياً"></div>
+   <div><label>رقم العميل / مرجع التحويل</label><input name="customer" placeholder="اختياري"></div>
+   <div><label>تاريخ العملية</label><input name="date" id="bankDate" type="date" required></div>
+   <div class="full"><label>ملاحظات</label><input name="note" placeholder="رقم الإشعار أو أي تفاصيل"></div>
+   <button class="primary full" type="submit">حفظ التحويل وإضافة المبلغ للحساب</button>
+  </form>
+  <div class="bank-note" id="bankCalc">عند تحويل 100,000 SDG وخصم 10%، تسلّم العميل 90,000 SDG ويكون ربحك 10,000 SDG.</div>
+  <div class="actions"><button class="secondary" id="bankAddName" type="button">＋ إضافة بنك</button><button class="secondary" id="bankEditRate" type="button">تعديل نسبة البنك</button><button class="secondary" id="bankShowHistory" type="button">الإشعارات / سجل العمليات</button></div>
+  <div class="bank-table" id="bankHistory" hidden><table><thead><tr><th>التاريخ</th><th>العميل / المرجع</th><th>المبلغ المحوّل</th><th>النقد المسلم</th><th>الربح</th><th>النسبة</th></tr></thead><tbody id="bankRows"></tbody></table></div>
+ </div>
+</div>
+<script id="bank-transfer-module">
+// BANK_TRANSFER_MODULE_V1 — بيانات مستقلة محفوظة على هذا الجهاز
+(function(){
+ const KEY='hisabati_bank_transfer_v1', defaults=['بنكك','فوري','ساهل'];
+ let state={banks:defaults.map(name=>({name,rate:10,available:0,profit:0,records:[]}))}, selected=0;
+ const $=id=>document.getElementById(id), fmt=n=>Number(n||0).toLocaleString('en-US',{maximumFractionDigits:2});
+ try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&Array.isArray(saved.banks)&&saved.banks.length)state=saved;}catch(e){}
+ const save=()=>localStorage.setItem(KEY,JSON.stringify(state));
+ const modal=$('bankModal'), form=$('bankAddForm');
+ function bank(){return state.banks[selected]}
+ function render(){
+  $('bankTabs').innerHTML=state.banks.map((b,i)=>'<button type="button" data-bank="'+i+'" class="'+(i===selected?'active':'')+'">'+escapeHtml(b.name)+'</button>').join('');
+  $('bankAvailable').textContent=fmt(bank().available)+' SDG';$('bankProfit').textContent=fmt(bank().profit)+' SDG';
+  $('bankRate').value=bank().rate;$('bankDate').value=new Date().toISOString().slice(0,10);
+  const rate=Number($('bankRate').value)||0,amount=Number(form.amount.value)||0,gain=amount*rate/100;
+  $('bankCash').value=fmt(amount-gain);$('bankGain').value=fmt(gain);
+  $('bankCalc').textContent='نسبة '+bank().name+': '+rate+'% · النقد الذي يستلمه العميل: '+fmt(amount-gain)+' SDG · ربحك: '+fmt(gain)+' SDG';
+  $('bankRows').innerHTML=bank().records.slice().reverse().map(x=>'<tr><td>'+escapeHtml(x.date)+'</td><td>'+escapeHtml(x.customer||x.note||'—')+'</td><td>'+fmt(x.amount)+'</td><td>'+fmt(x.cash)+'</td><td class="positive">'+fmt(x.gain)+'</td><td>'+fmt(x.rate)+'%</td></tr>').join('')||'<tr><td colspan="6" class="empty">لا توجد تحويلات مسجلة لهذا البنك</td></tr>';
+ }
+ function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+ $('bankLaunch').addEventListener('click',()=>{modal.classList.add('open');modal.setAttribute('aria-hidden','false');render();});
+ $('bankClose').addEventListener('click',()=>{modal.classList.remove('open');modal.setAttribute('aria-hidden','true');});
+ modal.addEventListener('click',e=>{if(e.target===modal)$('bankClose').click();});
+ $('bankTabs').addEventListener('click',e=>{const b=e.target.closest('[data-bank]');if(!b)return;selected=Number(b.dataset.bank);render();});
+ form.addEventListener('input',()=>{const amount=Number(form.amount.value)||0,rate=Number($('bankRate').value)||0,gain=amount*rate/100;$('bankCash').value=fmt(amount-gain);$('bankGain').value=fmt(gain);$('bankCalc').textContent='النقد المسلم: '+fmt(amount-gain)+' SDG · ربحك: '+fmt(gain)+' SDG';});
+ form.addEventListener('submit',e=>{
+  e.preventDefault();const amount=Number(form.amount.value),rate=Number($('bankRate').value),date=form.date.value;
+  if(!(amount>0)||!Number.isFinite(rate)||rate<0||rate>100||!date){alert('راجع المبلغ والنسبة والتاريخ.');return;}
+  const gain=Number((amount*rate/100).toFixed(2)),cash=Number((amount-gain).toFixed(2));
+  bank().available=Number((bank().available+amount).toFixed(2));bank().profit=Number((bank().profit+gain).toFixed(2));bank().rate=rate;
+  bank().records.push({amount,rate,cash,gain,date,customer:form.customer.value.trim(),note:form.note.value.trim(),createdAt:new Date().toISOString()});
+  save();form.reset();render();alert('تم حفظ التحويل. ربحك '+fmt(gain)+' SDG.');
+ });
+ $('bankAddName').addEventListener('click',()=>{const name=prompt('اكتب اسم البنك أو خدمة التحويل:');if(!name||!name.trim())return;if(state.banks.some(b=>b.name.toLowerCase()===name.trim().toLowerCase())){alert('هذا البنك موجود بالفعل.');return;}state.banks.push({name:name.trim(),rate:10,available:0,profit:0,records:[]});selected=state.banks.length-1;save();render();});
+ $('bankEditRate').addEventListener('click',()=>{const v=prompt('أدخل نسبة الخصم الجديدة لبنك '+bank().name+' (%):',String(bank().rate));if(v===null)return;const n=Number(v);if(!Number.isFinite(n)||n<0||n>100){alert('النسبة يجب أن تكون بين 0 و100.');return;}bank().rate=n;save();render();});
+ $('bankShowHistory').addEventListener('click',()=>{$('bankHistory').hidden=!$('bankHistory').hidden;render();});
+})();
+</script>
+
+</body></html>
