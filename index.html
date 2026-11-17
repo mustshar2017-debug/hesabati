@@ -43,7 +43,6 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 .menu-trigger{width:42px;height:42px;border:1px solid #ffffff55;border-radius:12px;background:#ffffff18;color:#fff;font-size:29px;line-height:1;cursor:pointer}
 .app-menu{position:absolute;top:50px;right:0;z-index:20;width:min(280px,82vw);padding:8px;background:#fff;border:1px solid var(--line);border-radius:15px;box-shadow:0 12px 35px #102f3430}
 .app-menu[hidden]{display:none}.app-menu button{display:block;width:100%;padding:13px 12px;border:0;border-radius:9px;background:#fff;color:var(--ink);text-align:right;font:inherit;font-size:14px;cursor:pointer}.app-menu button:active{background:#edf5f2}
-.recharge-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:10px 0 8px}.recharge-stat{background:#fff;border:1px solid #dce9e4;border-radius:13px;padding:12px;min-width:0}.recharge-stat small{display:block;color:var(--muted);font-size:12px;line-height:1.5}.recharge-stat strong{display:block;margin-top:6px;color:var(--ink);font-size:17px;overflow-wrap:anywhere}.recharge-stat:last-child strong{color:var(--green)}.recharge-scroll-hint{margin:5px 2px 9px;font-size:11px}@media(min-width:650px){.recharge-summary{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .report-filters{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.report-filters label{display:block}
 @media(max-width:480px){.header-row{align-items:flex-start}.header-actions{gap:5px}.menu-trigger{width:38px;height:38px}.header-actions #lockNow{font-size:12px;padding:8px}.report-filters{grid-template-columns:1fr}}
 .lock-screen{position:fixed;inset:0;z-index:9999;background:linear-gradient(145deg,#102f34,#087f70);display:flex;align-items:center;justify-content:center;padding:20px}
@@ -57,9 +56,10 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 /* كل أيقونة تفتح وظيفتها وحدها دون إظهار بقية الأقسام */
 #credit.quick-stock #transferCard,#credit.quick-stock #creditHistoryBlock,#credit.quick-transfer #stockCard,#credit.quick-transfer #creditHistoryBlock,#credit.quick-creditHistory #stockCard,#credit.quick-creditHistory #transferCard,#recharge.quick-recharge #rechargeHistoryBlock,#recharge.quick-rechargeHistory #rechargeCard,#recharge.quick-rechargeHistory>.section-title:first-child{display:none!important}
 #credit.quick-stock>.section-title:first-child,#credit.quick-transfer>.section-title:first-child{display:none!important}.quick-icon{width:46px;height:46px;flex:0 0 46px;display:grid;place-items:center;border-radius:13px;background:#e8f4ef;font-size:24px}.quick-link span:last-child{font-size:14px;line-height:1.5}.quick-link small{display:block;color:#6d8280;font-size:11px;font-weight:500}@media(min-width:700px){.quick-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
-/* Mobile home shortcuts: compact three-column layout, no horizontal scrolling */
+/* Mobile home shortcuts: compact three-column layout */
 @media(max-width:699px){.quick-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.quick-link{min-width:0;min-height:104px;padding:9px 5px;flex-direction:column;justify-content:center;align-items:center;gap:6px;text-align:center;border-radius:13px}.quick-icon{width:38px;height:38px;flex:0 0 38px;border-radius:11px;font-size:21px}.quick-link span:last-child{min-width:0;font-size:12px;line-height:1.35}.quick-link small{font-size:10px;line-height:1.3}.quick-section{margin-top:16px}.quick-section .section-title{font-size:16px;margin-bottom:8px}}
 @media(max-width:360px){.quick-grid{gap:6px}.quick-link{min-height:98px;padding:7px 3px}.quick-link span:last-child{font-size:11px}.quick-link small{font-size:9px}}
+
 @media print{
  @page{size:A4 portrait;margin:12mm}
  body{background:#fff!important;color:#111!important;font-size:11pt}
@@ -94,7 +94,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 }
 </style></head>
 <body>
-<header><div class="wrap header-row"><div><div class="brand-line"><h1>حساباتي</h1><button id="themeToggle" class="theme-toggle" type="button" aria-label="تفعيل الوضع الليلي" title="تفعيل الوضع الليلي">☀️</button></div><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><div class="header-actions"><button class="menu-trigger" id="menuTrigger" type="button" aria-label="القائمة" aria-expanded="false">⋮</button><button class="secondary" id="lockNow" type="button">🔒 قفل الآن</button><div class="app-menu" id="appMenu" hidden><button type="button" data-menu-action="backup">💾 حفظ نسخة احتياطية</button><button type="button" data-menu-action="labels">✏️ تعديل أسماء الأيقونات</button><button type="button" data-menu-action="generalReport">📊 تقرير عام مفصل</button><button type="button" data-menu-action="monthlyReport">📅 التقرير الشهري</button><button type="button" data-menu-action="settings">⚙️ إعدادات التطبيق</button></div></div></div></header>
+<header><div class="wrap header-row"><div><div class="brand-line"><h1>حساباتي</h1><button id="themeToggle" class="theme-toggle" type="button" aria-label="تفعيل الوضع الليلي" title="تفعيل الوضع الليلي">☀️</button></div><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><div class="header-actions"><button class="menu-trigger" id="menuTrigger" type="button" aria-label="القائمة" aria-expanded="false">⋮</button><button class="secondary" id="lockNow" type="button">🔒 قفل الآن</button><div class="app-menu" id="appMenu" hidden><button type="button" data-menu-action="backup">💾 حفظ نسخة احتياطية</button><button type="button" data-menu-action="labels">✏️ تعديل أسماء الأيقونات</button><button type="button" data-menu-action="generalReport">📊 تقرير عام مفصل</button><button type="button" data-menu-action="monthlyReport">📅 التقرير الشهري</button><button type="button" data-menu-action="settings">⚙️ إعدادات التطبيق</button><button type="button" data-menu-action="about">ℹ️ نبذة عنّا</button><button type="button" data-menu-action="share">📤 مشاركة التطبيق</button><button type="button" data-menu-action="rate">⭐ تقييم التطبيق</button></div></div></div></header>
 <div class="wrap">
 <nav id="nav">
 <button class="active" data-tab="home">الرئيسية</button><button data-tab="credit">حساب الرصيد</button><button data-tab="recharge">شحن الهواتف</button><button data-tab="services">خدمات الزبائن</button><button data-tab="expenses">المصروفات</button><button data-tab="reports">التقارير</button><button data-tab="partnership">الشراكة</button>
@@ -102,7 +102,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 <main>
 <section id="home" class="panel active">
 <div class="grid financial-grid">
-<div class="card kpi"><span class="kpi-icon">💰</span><small>الرصيد المتاح</small><strong id="balance">0</strong><small>SDG</small></div>
+<div class="card kpi"><span class="kpi-icon">💰</span><small>الرصيد المتاح</small><strong id="balance">0</strong><small>SDG</small></div><div class="card kpi"><span class="kpi-icon">🏦</span><small>إجمالي رأس المال المضاف</small><strong id="totalCapital">0</strong><small>SDG</small></div>
 <button class="card kpi profit-toggle" id="profitToggle" type="button" aria-expanded="false" aria-controls="profitDetails"><span class="kpi-icon">📊</span><small>الأرباح</small><strong id="profitTotal">عرض التفاصيل</strong><small>اضغط لعرض الأرباح</small></button>
 </div>
 <div class="grid financial-grid profit-details" id="profitDetails" hidden>
@@ -111,7 +111,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 <div class="card kpi"><span class="kpi-icon">🤝</span><small>ربح خدمات الزبائن</small><strong id="serviceProfit">0</strong><small>SDG</small></div>
 <div class="card kpi"><span class="kpi-icon">🧮</span><small>صافي ربح اليوم</small><strong id="todayNet">0</strong><small>SDG</small></div>
 </div>
-<div class="quick-section"><h2 class="section-title">إدارة الرصيد</h2><button class="bank-launch" id="bankLaunch" type="button"><span class="quick-icon">🏦</span><span>التحويلات البنكية<small style="display:block;color:#6d8280;font-size:11px;font-weight:500">بنكك · فوري · ساهل · وإضافة بنوك أخرى</small></span></button><div class="quick-grid"><button class="quick-link" type="button" data-panel="credit" data-target="stock"><span class="quick-icon">💰</span><span>رصيد داخل<small>إضافة رصيد جديد</small><small id="stockTodayMove">داخل اليوم: 0 SDG</small></span></button><button class="quick-link" type="button" data-panel="credit" data-target="transfer"><span class="quick-icon">🔄</span><span>تحويل رصيد<small>تسجيل عملية تحويل</small><small id="transferTodayProfit">ربح اليوم: 0 SDG</small></span></button><button class="quick-link" type="button" onclick="document.querySelector('#nav button[data-tab=credit]').click();setTimeout(()=>document.getElementById('transferCard').scrollIntoView({behavior:'smooth',block:'start'}),80)"><span class="quick-icon">📈</span><span>ربح الرصيد<small>تسجيل العمولة وحساب الربح</small><small id="creditTodayProfit">ربح اليوم: 0 SDG</small></span></button><button class="quick-link" type="button" data-panel="expenses" data-target="expenses"><span class="quick-icon">🧾</span><span>مصروفات<small>تسجيل المصروفات</small><small id="expensesTodayMove">مصروف اليوم: 0 SDG</small></span></button><button class="quick-link" type="button" data-panel="credit" data-target="creditHistory"><span class="quick-icon">📒</span><span>سجل عمليات الرصيد<small>عرض وتعديل العمليات</small></span></button><button class="quick-link" type="button" onclick="document.getElementById('dailySummary').hidden=false;document.getElementById('dailySummary').scrollIntoView({behavior:'smooth',block:'start'})"><span class="quick-icon">📊</span><span>ملخص اليوم<small>عرض تفاصيل حركة اليوم</small></span></button></div></div><div class="quick-section"><h2 class="section-title">شحن الهواتف</h2><div class="quick-grid"><button class="quick-link" type="button" data-panel="recharge" data-target="recharge"><span class="quick-icon">📱</span><span>قسم شحن الهواتف<small>تسجيل عملية شحن</small><small id="rechargeTodayProfit">ربح اليوم: 0 SDG</small></span></button><button class="quick-link" type="button" data-panel="recharge" data-target="rechargeHistory"><span class="quick-icon">📋</span><span>سجل الشحن<small>عرض وتعديل عمليات الشحن</small></span></button></div></div><div class="quick-section"><h2 class="section-title">خدمات الزبائن</h2><div class="quick-grid"><button class="quick-link" type="button" data-panel="services" data-target="serviceHome"><span class="quick-icon">🤝</span><span>خدمات الزبائن<small>خدمات زين وسوداني وتسجيل عمليات العملاء</small><small id="serviceTodayProfit">ربح اليوم: 0 SDG</small></span></button></div></div><div class="quick-section"><h2 class="section-title">الشراكة</h2><div class="quick-grid"><button class="quick-link" type="button" id="partnershipLaunch"><span class="quick-icon">🤝</span><span>الشراكة<small>الربح العام وتقسيم الأرباح بين الشريكين</small></span></button></div></div><div id="dailySummary" hidden><h2 class="section-title">ملخص اليوم</h2><div class="card"><div class="actions" style="margin-top:0"><button class="secondary" type="button" onclick="document.getElementById('dailySummary').hidden=true">إغلاق الملخص</button></div>
+<div class="quick-section"><h2 class="section-title">إدارة الرصيد</h2><button class="bank-launch" id="bankLaunch" type="button"><span class="quick-icon">🏦</span><span>التحويلات البنكية<small style="display:block;color:#6d8280;font-size:11px;font-weight:500">بنكك · فوري · ساهل · وإضافة بنوك أخرى</small></span></button><div class="quick-grid"><button class="quick-link" type="button" data-panel="services" data-target="serviceHome"><span class="quick-icon">🤝</span><span>خدمات الزبائن<small>خدمات زين وسوداني وتسجيل عمليات العملاء</small><small id="serviceTodayProfit">ربح اليوم: 0 SDG</small></span></button><button class="quick-link" type="button" data-panel="credit" data-target="stock"><span class="quick-icon">💰</span><span>رصيد داخل<small>إضافة رصيد جديد</small><small id="stockTodayMove">داخل اليوم: 0 SDG</small></span></button><button class="quick-link" type="button" data-panel="credit" data-target="transfer"><span class="quick-icon">🔄</span><span>تحويل رصيد<small>تسجيل عملية تحويل</small><small id="transferTodayProfit">ربح اليوم: 0 SDG</small></span></button><button class="quick-link" type="button" onclick="document.querySelector('#nav button[data-tab=credit]').click();setTimeout(()=>document.getElementById('transferCard').scrollIntoView({behavior:'smooth',block:'start'}),80)"><span class="quick-icon">📈</span><span>ربح الرصيد<small>تسجيل العمولة وحساب الربح</small><small id="creditTodayProfit">ربح اليوم: 0 SDG</small></span></button><button class="quick-link" type="button" data-panel="expenses" data-target="expenses"><span class="quick-icon">🧾</span><span>مصروفات<small>تسجيل المصروفات</small><small id="expensesTodayMove">مصروف اليوم: 0 SDG</small></span></button><button class="quick-link" type="button" data-panel="credit" data-target="creditHistory"><span class="quick-icon">📒</span><span>سجل عمليات الرصيد<small>عرض وتعديل العمليات</small></span></button><button class="quick-link" type="button" onclick="document.getElementById('dailySummary').hidden=false;document.getElementById('dailySummary').scrollIntoView({behavior:'smooth',block:'start'})"><span class="quick-icon">📊</span><span>ملخص اليوم<small>عرض تفاصيل حركة اليوم</small></span></button></div></div><div class="quick-section"><h2 class="section-title">شحن الهواتف</h2><div class="quick-grid"><button class="quick-link" type="button" data-panel="recharge" data-target="recharge"><span class="quick-icon">📱</span><span>قسم شحن الهواتف<small>تسجيل عملية شحن</small><small id="rechargeTodayProfit">ربح اليوم: 0 SDG</small></span></button><button class="quick-link" type="button" data-panel="recharge" data-target="rechargeHistory"><span class="quick-icon">📋</span><span>سجل الشحن<small>عرض وتعديل عمليات الشحن</small></span></button></div></div><div class="quick-section"><h2 class="section-title">الشراكة</h2><div class="quick-grid"><button class="quick-link" type="button" id="partnershipLaunch"><span class="quick-icon">🤝</span><span>الشراكة<small>الربح العام وتقسيم الأرباح بين الشريكين</small></span></button></div></div><div id="dailySummary" hidden><h2 class="section-title">ملخص اليوم</h2><div class="card"><div class="actions" style="margin-top:0"><button class="secondary" type="button" onclick="document.getElementById('dailySummary').hidden=true">إغلاق الملخص</button></div>
 <div class="reportline"><span>الرصيد الداخل اليوم</span><b id="todayIn">0 SDG</b></div>
 <div class="reportline"><span>تحويلات الرصيد اليوم (قيمة البيع)</span><b id="todayTransfers">0 SDG</b></div>
 <div class="reportline"><span>شحن الهواتف اليوم</span><b id="todayRecharge">0 SDG</b></div><div class="reportline"><span>أرباح خدمات الزبائن اليوم</span><b id="todayServiceProfit">0 SDG</b></div>
@@ -145,17 +145,16 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 </section>
 <section id="recharge" class="panel">
 <h2 class="section-title">قسم شحن الهواتف</h2><div class="card" id="rechargeCard"><form id="rechargeForm">
-<div><label>شبكة الهاتف</label><select name="network" required><option value="زين">زين</option><option value="سوداني">سوداني</option><option value="MTN">MTN</option></select></div>
 <div><label>قيمة الشحن المحصلة (SDG)</label><input name="sale" type="number" min="0.01" step="0.01" required></div>
 <div><label>تكلفة الشحن عليك (SDG)</label><input name="cost" type="number" min="0" step="0.01" required></div>
 <div><label>رقم الهاتف</label><input name="phone" inputmode="tel" placeholder="اختياري"></div>
 <div><label>التاريخ</label><input name="date" type="date" required></div>
 <div><label>ملاحظات</label><input name="note" placeholder="اختياري"></div>
 <button class="primary full">حفظ عملية الشحن</button></form></div>
-<div id="rechargeHistoryBlock"><h2 class="section-title">سجل الشحن</h2><div class="recharge-summary" aria-live="polite"><div class="recharge-stat"><small>عدد عمليات الشحن</small><strong id="rechargeCount">0</strong></div><div class="recharge-stat"><small>إجمالي المبالغ المحصّلة</small><strong id="rechargeSalesTotal">0 SDG</strong></div><div class="recharge-stat"><small>إجمالي تكلفة الشحن</small><strong id="rechargeCostTotal">0 SDG</strong></div><div class="recharge-stat"><small>إجمالي ربح الشحن</small><strong id="rechargeProfitTotal">0 SDG</strong></div></div><p class="muted recharge-scroll-hint">يمكنك سحب الجدول يميناً ويساراً لعرض كل التفاصيل.</p><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>الشبكة</th><th>الهاتف</th><th>المحصّل</th><th>التكلفة</th><th>الربح</th><th></th></tr></thead><tbody id="rechargeRows"></tbody></table></div></div>
+<div id="rechargeHistoryBlock"><h2 class="section-title">سجل الشحن</h2><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>الشبكة</th><th>الهاتف</th><th>المحصّل</th><th>التكلفة</th><th>الربح</th><th></th></tr></thead><tbody id="rechargeRows"></tbody></table></div></div>
 </section>
 <section id="services" class="panel"><h2 class="section-title">خدمات الزبائن</h2><div class="card" id="serviceCard"><h3 id="serviceFormTitle">تسجيل خدمة زبون</h3><p class="muted">أدخل المبلغ الذي دفعه الزبون وتكلفة الخدمة التي خُصمت من رصيدك. الفرق يُسجل ربحاً تلقائياً.</p><form id="serviceForm"><div><label>نوع الخدمة</label><select name="network" id="serviceNetwork"><option value="زين">خدمة زين</option><option value="سوداني">خدمة سوداني</option></select></div><div><label>المبلغ المدفوع من الزبون (SDG)</label><input name="sale" type="number" min="0.01" step="0.01" value="6000" required></div><div><label>تكلفة الخدمة / الخصم من رصيدك (SDG)</label><input name="cost" type="number" min="0" step="0.01" value="5400" required></div><div><label>رقم الهاتف / العميل</label><input name="customer" inputmode="tel" placeholder="اختياري"></div><div><label>التاريخ</label><input name="date" type="date" required></div><div class="full"><label>ملاحظات</label><input name="note" placeholder="اختياري"></div><div class="hint full" id="serviceHint">الخصم من رصيدك: 5,400 SDG · ربح الخدمة: 600 SDG</div><button class="primary full">حفظ عملية الخدمة</button></form></div><h2 class="section-title">سجل خدمات الزبائن</h2><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>الخدمة</th><th>العميل</th><th>المبلغ المدفوع</th><th>الخصم من الرصيد</th><th>الربح</th><th></th></tr></thead><tbody id="serviceRows"></tbody></table></div></section>
-<section id="partnership" class="panel"><h2 class="section-title">🤝 إدارة الشراكة</h2><div class="grid financial-grid"><div class="card kpi"><span class="kpi-icon">💰</span><small>الربح العام المتاح</small><strong id="partnershipAvailable">0</strong><small>SDG</small></div><div class="card kpi"><span class="kpi-icon">📊</span><small>إجمالي الأرباح بعد المصروفات</small><strong id="partnershipTotal">0</strong><small>SDG</small></div><div class="card kpi"><span class="kpi-icon">👤</span><small>نصيب محمد عمر</small><strong id="mohamedShare">0</strong><small>SDG</small></div><div class="card kpi"><span class="kpi-icon">👤</span><small>نصيب بشير حسين</small><strong id="bashirShare">0</strong><small>SDG</small></div></div><div class="hint">الربح العام يجمع أرباح تحويل الرصيد وشحن الهواتف وخدمات الزبائن والتحويلات البنكية، ثم يخصم المصروفات المسجلة. عند إضافة مبلغ لأحد الشريكين يُخصم فوراً من الربح العام المتاح.</div><h3 class="section-title">تقسيم الأرباح</h3><div class="quick-grid"><button class="quick-link" type="button" data-partner="mohamed"><span class="quick-icon">👤</span><span>محمد عمر<small id="mohamedCardBalance">الرصيد: 0 SDG</small></span></button><button class="quick-link" type="button" data-partner="bashir"><span class="quick-icon">👤</span><span>بشير حسين<small id="bashirCardBalance">الرصيد: 0 SDG</small></span></button></div><div class="card" id="partnerAccountCard" hidden style="margin-top:14px"><div class="header-row"><h3 id="partnerAccountTitle">حساب الشريك</h3><button type="button" class="secondary" id="partnerAccountClose">إغلاق</button></div><form id="partnerAllocationForm"><div class="full"><label>المبلغ المراد إضافته إلى الحساب (SDG)</label><input name="amount" type="number" min="0.01" step="0.01" required></div><div class="full"><label>التاريخ</label><input name="date" type="date" required></div><div class="full"><label>ملاحظات</label><input name="note" placeholder="اختياري"></div><button class="primary full" type="submit">إضافة المبلغ وخصمه من الربح العام</button></form><div class="reportline"><span>الرصيد المخصص للشريك</span><b id="partnerAccountBalance">0 SDG</b></div><h3>سجل التوزيعات</h3><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>المبلغ</th><th>ملاحظات</th></tr></thead><tbody id="partnerAllocationRows"></tbody></table></div></div></section>\n<section id="expenses" class="panel">
+<section id="expenses" class="panel">
 <h2 class="section-title">المصروفات اليومية</h2><div class="card"><form id="expenseForm">
 <div><label>قيمة المصروف (SDG)</label><input name="amount" type="number" min="0.01" step="0.01" required></div>
 <div><label>نوع المصروف</label><select name="category"><option>مواصلات</option><option>إيجار</option><option>اتصالات وإنترنت</option><option>عمالة</option><option>ضيافة</option><option>أخرى</option></select></div>
@@ -166,18 +165,13 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 </section>
 <section id="reports" class="panel">
 <h2 class="section-title">التقارير</h2><div class="card">
-<div class="card" id="generalReportCard" style="margin-bottom:12px"><h3>التقرير العام المفصل</h3><p class="muted">حدد فترة التقرير لعرض جميع الحركات والأرباح والمصروفات خلال المدة.</p><div class="report-filters"><div><label>من تاريخ</label><input type="date" id="reportFrom"></div><div><label>إلى تاريخ</label><input type="date" id="reportTo"></div></div><div class="actions"><button class="primary" type="button" id="runGeneralReport">عرض التقرير</button><button class="secondary" type="button" id="printGeneralReport">طباعة التقرير</button></div><div id="generalReportResults" hidden><div class="reportline"><span>إجمالي الرصيد الداخل</span><b id="gStock">0 SDG</b></div><div class="reportline"><span>إجمالي تحويلات الرصيد</span><b id="gTransfers">0 SDG</b></div><div class="reportline"><span>ربح تحويل الرصيد</span><b id="gCreditProfit">0 SDG</b></div><div class="reportline"><span>إجمالي شحن الهواتف</span><b id="gRecharge">0 SDG</b></div><div class="reportline"><span>ربح الشحن</span><b id="gRechargeProfit">0 SDG</b></div><div class="reportline"><span>ربح خدمات الزبائن</span><b id="gServiceProfit">0 SDG</b></div><div class="reportline"><span>المصروفات</span><b id="gExpenses">0 SDG</b></div><div class="reportline"><span><b>صافي الربح بعد المصروفات</b></span><b class="positive" id="gNet">0 SDG</b></div><h3>تفاصيل الحركات</h3><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>نوع الحركة</th><th>التفاصيل</th><th>القيمة</th><th>التكلفة</th><th>الربح/المصروف</th></tr></thead><tbody id="generalReportRows"></tbody></table></div></div><div class="print-signature" aria-label="توقيع تصميم التقرير"><span class="print-signature-label">تصميم وإعداد</span><strong>محمد عمر محمد اسحق</strong><span class="print-signature-line"></span></div></div>
+<div class="card" id="generalReportCard" style="margin-bottom:12px"><h3>التقرير العام المفصل</h3><p class="muted">حدد فترة التقرير لعرض جميع الحركات والأرباح والمصروفات خلال المدة.</p><div class="report-filters"><div><label>من تاريخ</label><input type="date" id="reportFrom"></div><div><label>إلى تاريخ</label><input type="date" id="reportTo"></div></div><div class="actions"><button class="primary" type="button" id="runGeneralReport">عرض التقرير</button><button class="secondary" type="button" id="printGeneralReport">طباعة التقرير</button></div><div id="generalReportResults" hidden><div class="reportline"><span>إجمالي الرصيد الداخل</span><b id="gStock">0 SDG</b></div><div class="reportline"><span>إجمالي تحويلات الرصيد</span><b id="gTransfers">0 SDG</b></div><div class="reportline"><span>ربح تحويل الرصيد</span><b id="gCreditProfit">0 SDG</b></div><div class="reportline"><span>إجمالي شحن الهواتف</span><b id="gRecharge">0 SDG</b></div><div class="reportline"><span>ربح الشحن</span><b id="gRechargeProfit">0 SDG</b></div><div class="reportline"><span>ربح خدمات الزبائن</span><b id="gServiceProfit">0 SDG</b></div><div class="reportline"><span>المصروفات</span><b id="gExpenses">0 SDG</b></div><div class="reportline"><span><b>صافي الربح بعد المصروفات</b></span><b class="positive" id="gNet">0 SDG</b></div><h3>تفاصيل الحركات</h3><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>نوع الحركة</th><th>التفاصيل</th><th>القيمة</th><th>التكلفة</th><th>الربح/المصروف</th></tr></thead><tbody id="generalReportRows"></tbody></table></div></div></div>
 <div class="card" id="iconNamesCard" hidden style="margin-bottom:12px"><h3>تعديل أسماء الأيقونات الداخلية</h3><p class="muted">غيّر أسماء الاختصارات الظاهرة في الصفحة الرئيسية، ثم احفظ.</p><form id="iconNamesForm" style="grid-template-columns:1fr"></form><div class="actions"><button class="primary" type="button" id="saveIconNames">حفظ الأسماء</button><button class="secondary" type="button" id="resetIconNames">استعادة الأسماء الأصلية</button></div></div><div class="card" id="monthlyReportCard" hidden style="margin-bottom:12px"><h3>التقرير الشهري</h3><p class="muted">اختر الشهر لعرض ملخص الحسابات لذلك الشهر.</p><div style="max-width:300px"><label>اختر الشهر</label><input type="month" id="monthFilter"></div>
 <div class="reportline"><span>الرصيد الداخل</span><b id="rIn">0</b></div><div class="reportline"><span>قيمة تحويلات الرصيد</span><b id="rTransfers">0</b></div><div class="reportline"><span>ربح الرصيد</span><b id="rCreditProfit">0</b></div><div class="reportline"><span>مبيعات الشحن</span><b id="rRecharge">0</b></div><div class="reportline"><span>ربح الشحن</span><b id="rRechargeProfit">0</b></div><div class="reportline"><span>ربح خدمات الزبائن</span><b id="rServiceProfit">0</b></div><div class="reportline"><span>المصروفات</span><b id="rExpenses">0</b></div><div class="reportline"><span><b>صافي الربح بعد المصروفات</b></span><b class="positive" id="rNet">0</b></div></div>
 <div class="card" id="backupToolsCard" hidden style="margin:12px 0"><h3>النسخ الاحتياطي واستعادة البيانات</h3><p class="muted">احفظ نسخة من بياناتك أو استعد نسخة سابقة.</p><div class="actions"><button class="secondary" id="exportBtn">تصدير نسخة بيانات CSV</button><button class="secondary" id="backupBtn">نسخ احتياطي JSON</button><label class="secondary" style="cursor:pointer">استيراد نسخة<input id="restoreFile" type="file" accept=".json,application/json" hidden></label></div></div>
 </div>
 <div class="hint" id="backupHint" hidden>البيانات محفوظة على هذا الجهاز والمتصفح. احفظ نسخة احتياطية بانتظام، خصوصاً قبل تغيير الهاتف أو مسح بيانات المتصفح.</div>
 <div class="card" id="settingsCard" hidden style="margin-top:12px">
-<h3>🔄 تحديث التطبيق</h3>
-<p class="muted">افحص التحديثات الجديدة. عند توفر تحديث للواجهة والوظائف، سيتم تنزيله وتفعيله مع الحفاظ على بياناتك المحلية.</p>
-<div class="actions"><button class="primary" type="button" id="checkAppUpdates">فحص التحديثات</button></div>
-<div class="muted" id="appUpdateStatus" aria-live="polite">سيتم فحص التحديثات تلقائياً عند فتح التطبيق.</div>
-<hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
 <h3>🔐 تغيير كلمة سر التطبيق</h3>
 <p class="muted">أدخل كلمة السر الحالية ثم كلمة سر جديدة من 4 إلى 8 أرقام.</p>
 <form id="changePinForm">
@@ -187,8 +181,9 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 <button class="primary full">حفظ كلمة السر الجديدة</button>
 </form><div class="muted" id="pinChangeMessage" aria-live="polite"></div>
 </div>
-
+<div class="print-signature" aria-label="توقيع تصميم التقرير"><span class="print-signature-label">تصميم وإعداد</span><strong>محمد عمر محمد اسحق</strong><img class="owner-handwritten-signature" src="data:image/png;base64,${data}" alt="التوقيع الشخصي لمحمد عمر محمد اسحق"><span class="print-signature-line"></span></div>
 </section>
+<section id="partnership" class="panel"><h2 class="section-title">🤝 إدارة الشراكة</h2><div class="grid financial-grid"><div class="card kpi"><span class="kpi-icon">💰</span><small>صافي الربح العام بعد المصروفات</small><strong id="partnershipGeneralNet">0</strong><small>SDG</small></div><div class="card kpi"><span class="kpi-icon">📦</span><small>ربح الشحن غير الموزع</small><strong id="partnershipAvailable">0</strong><small>SDG</small></div><div class="card kpi"><span class="kpi-icon">📊</span><small>إجمالي ربح شحن الهواتف</small><strong id="partnershipTotal">0</strong><small>SDG</small></div><div class="card kpi"><span class="kpi-icon">📤</span><small>التوزيعات التلقائية</small><strong id="partnershipAutomaticTotal">0</strong><small>SDG</small></div><div class="card kpi"><span class="kpi-icon">🧾</span><small>صافي التعديلات اليدوية</small><strong id="partnershipManualNet">0</strong><small>SDG</small></div><div class="card kpi"><span class="kpi-icon">👤</span><small>رصيد محمد عمر</small><strong id="mohamedShare">0</strong><small>SDG</small></div><div class="card kpi"><span class="kpi-icon">👤</span><small>رصيد بشير حسين</small><strong id="bashirShare">0</strong><small>SDG</small></div></div><div class="hint">الربح العام يشمل أرباح تحويل الرصيد وشحن الهواتف وخدمات الزبائن والتحويلات البنكية، بعد خصم المصروفات. أما الشراكة فتُقسّم تلقائياً بالتساوي: 50% لمحمد عمر و50% لبشير حسين من ربح شحن الهواتف فقط؛ ولا تدخل بقية الأرباح أو المصروفات العامة في حساب نصيب الشريكين.</div><h3 class="section-title">تقسيم الأرباح</h3><div class="quick-grid"><button class="quick-link" type="button" data-partner="mohamed"><span class="quick-icon">👤</span><span>محمد عمر<small id="mohamedCardBalance">الرصيد: 0 SDG</small></span></button><button class="quick-link" type="button" data-partner="bashir"><span class="quick-icon">👤</span><span>بشير حسين<small id="bashirCardBalance">الرصيد: 0 SDG</small></span></button></div><div id="partnerAccountCard" hidden style="position:fixed;inset:0;z-index:9998;background:#0009;align-items:center;justify-content:center;padding:18px;overflow:auto"><div class="card" style="width:min(100%,760px);max-height:90vh;overflow:auto"><div class="header-row"><h3 id="partnerAccountTitle">حساب الشريك</h3><button type="button" class="secondary" id="partnerAccountClose">إغلاق</button></div><div class="hint">التوزيع تلقائي بالتساوي: 50% لمحمد عمر و50% لبشير حسين. كلما زاد ربح شحن الهواتف يُحدّث نصيب كل شريك ويُضاف مباشرة إلى حسابه.</div><div class="reportline"><span>الرصيد المخصص للشريك</span><b id="partnerAccountBalance">0 SDG</b></div><h3>سجل التوزيعات</h3><div class="reportline"><span>النصيب التلقائي 50%</span><b id="partnerAutomaticBalance">0 SDG</b></div><div class="reportline"><span>الإضافات والتعديلات</span><b id="partnerManualBalance">0 SDG</b></div><div class="quick-grid" style="margin:12px 0"><button type="button" class="primary" id="partnerAddAdjustment">＋ إضافة مبلغ</button></div><h3>سجل التوزيعات والتعديلات</h3><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>المبلغ</th><th>ملاحظات</th><th>إجراء</th></tr></thead><tbody id="partnerAllocationRows"></tbody></table></div></div></div><div id="partnerAdjustmentModal" hidden style="position:fixed;inset:0;z-index:9999;background:#0009;display:none;align-items:center;justify-content:center;padding:18px"><div class="card" style="width:min(100%,430px);max-height:90vh;overflow:auto"><div class="header-row"><h3 id="partnerAdjustmentTitle">إضافة مبلغ للشريك</h3><button type="button" class="secondary" id="partnerAdjustmentClose">إغلاق</button></div><label>نوع التعديل</label><select id="partnerAdjustmentType" style="width:100%;margin:7px 0 12px"><option value="add">إضافة إلى الرصيد</option><option value="subtract">خصم من الرصيد</option></select><label>المبلغ (SDG)</label><input id="partnerAdjustmentAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="أدخل المبلغ" style="width:100%;margin:7px 0 12px"><label>التاريخ</label><input id="partnerAdjustmentDate" type="date" style="width:100%;margin:7px 0 12px"><label>ملاحظات</label><input id="partnerAdjustmentNote" type="text" maxlength="160" placeholder="سبب الإضافة أو التعديل" style="width:100%;margin:7px 0 16px"><button type="button" class="primary" id="partnerAdjustmentSave" style="width:100%">حفظ التعديل</button></div></div></section>
 </main><footer>حساباتي · حقوق النشر محفوظة © 2026 محمد عمر محمد اسحق</footer>
 </div>
 <div class="lock-screen" id="lockScreen">
@@ -255,7 +250,7 @@ function edit(type,id){
 function tableRows(target,items,make){$(target).innerHTML=items.length?items.slice().reverse().map(make).join(''):'<tr><td colspan="8" class="empty">لا توجد عمليات مسجلة</td></tr>'}
 function render(){
  const cp=profit(db.transfers),rp=profit(db.recharges),svp=profit(db.services),expense=sum(db.expenses,x=>x.amount),stock=sum(db.stock,x=>x.amount),used=sum(db.transfers,x=>x.cost)+sum(db.recharges,x=>x.cost)+sum(db.services,x=>x.cost);
- $('balance').textContent=fmt(stock-used);$('creditProfit').textContent=fmt(cp);$('rechargeProfit').textContent=fmt(rp);$('serviceProfit').textContent=fmt(svp);
+ $('balance').textContent=fmt(stock-used);$('totalCapital').textContent=fmt(stock);$('creditProfit').textContent=fmt(cp);$('rechargeProfit').textContent=fmt(rp);$('serviceProfit').textContent=fmt(svp);
  const t=today(),ti=sum(db.stock.filter(x=>x.date===t),x=>x.amount),tt=sum(db.transfers.filter(x=>x.date===t),x=>x.sale),tr=sum(db.recharges.filter(x=>x.date===t),x=>x.sale),te=sum(db.expenses.filter(x=>x.date===t),x=>x.amount),tp=sum(db.transfers.filter(x=>x.date===t),x=>x.sale-x.cost)+sum(db.recharges.filter(x=>x.date===t),x=>x.sale-x.cost)+sum(db.services.filter(x=>x.date===t),x=>x.sale-x.cost);
  $('stockTodayMove').textContent='داخل اليوم: '+fmt(ti)+' SDG';
  $('transferTodayProfit').textContent='ربح اليوم: '+fmt(sum(db.transfers.filter(x=>x.date===t),x=>x.sale-x.cost))+' SDG';
@@ -265,7 +260,6 @@ function render(){
  $('serviceTodayProfit').textContent='ربح اليوم: '+fmt(sum(db.services.filter(x=>x.date===t),x=>x.sale-x.cost))+' SDG';
  $('todayIn').textContent=fmt(ti)+' SDG';$('todayTransfers').textContent=fmt(tt)+' SDG';$('todayRecharge').textContent=fmt(tr)+' SDG';$('todayServiceProfit').textContent=fmt(sum(db.services.filter(x=>x.date===t),x=>x.sale-x.cost))+' SDG';$('todayExpenses').textContent=fmt(te)+' SDG';$('todayProfit').textContent=fmt(tp-te)+' SDG';$('todayNet').textContent=fmt(tp-te);
  tableRows('creditRows',[...db.stock.map(x=>({...x,type:'رصيد داخل',value:x.amount,cost:x.amount,profit:0,detail:x.note})),...db.transfers.map(x=>({...x,type:'تحويل رصيد',value:x.sale,profit:x.sale-x.cost,detail:(x.network||'')+' '+(x.customer||'')+' '+(x.note||'')}))],x=>`<tr><td>${x.date}</td><td>${x.type}</td><td>${fmt(x.value)}</td><td>${fmt(x.cost)}</td><td class="${x.profit>=0?'positive':'negative'}">${fmt(x.profit)}</td><td>${esc(x.detail||'')}</td><td><div class="record-actions"><button type="button" class="secondary" onclick="edit('${x.type==='رصيد داخل'?'stock':'transfers'}','${x.id}')">✏️ تعديل</button><button type="button" class="danger" onclick="del('${x.type==='رصيد داخل'?'stock':'transfers'}','${x.id}')">🗑 حذف</button></div></td></tr>`);
- $('rechargeCount').textContent=fmt(db.recharges.length)+' عملية';$('rechargeSalesTotal').textContent=fmt(sum(db.recharges,x=>x.sale))+' SDG';$('rechargeCostTotal').textContent=fmt(sum(db.recharges,x=>x.cost))+' SDG';$('rechargeProfitTotal').textContent=fmt(rp)+' SDG';
  tableRows('rechargeRows',db.recharges,x=>`<tr><td>${x.date}</td><td>${esc(x.network)}</td><td>${esc(x.phone||'')}</td><td>${fmt(x.sale)}</td><td>${fmt(x.cost)}</td><td class="${x.sale-x.cost>=0?'positive':'negative'}">${fmt(x.sale-x.cost)}</td><td><div class="record-actions"><button type="button" class="secondary" onclick="edit('recharges','${x.id}')">✏️ تعديل</button><button type="button" class="danger" onclick="del('recharges','${x.id}')">🗑 حذف</button></div></td></tr>`);
  tableRows('serviceRows',db.services,x=>`<tr><td>${x.date}</td><td>${esc(x.network==='سوداني'?'خدمة سوداني':'خدمة زين')}</td><td>${esc(x.customer||'')}</td><td>${fmt(x.sale)}</td><td>${fmt(x.cost)}</td><td class="${x.sale-x.cost>=0?'positive':'negative'}">${fmt(x.sale-x.cost)}</td><td><div class="record-actions"><button type="button" class="secondary" onclick="edit('services','${x.id}')">✏️ تعديل</button><button type="button" class="danger" onclick="del('services','${x.id}')">🗑 حذف</button></div></td></tr>`);
  tableRows('expenseRows',db.expenses,x=>`<tr><td>${x.date}</td><td>${esc(x.category)}</td><td>${esc(x.note||'')}</td><td>${fmt(x.amount)}</td><td><div class="record-actions"><button type="button" class="secondary" onclick="edit('expenses','${x.id}')">✏️ تعديل</button><button type="button" class="danger" onclick="del('expenses','${x.id}')">🗑 حذف</button></div></td></tr>`);
@@ -289,10 +283,14 @@ document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.query
 $('profitToggle').addEventListener('click',()=>{const details=$('profitDetails'),opened=details.hidden;details.hidden=!opened;$('profitToggle').setAttribute('aria-expanded',String(opened));$('profitTotal').textContent=opened?'تفاصيل الأرباح مفتوحة':'عرض التفاصيل';$('profitToggle').querySelector('small:last-child').textContent=opened?'اضغط لإخفاء التفاصيل':'اضغط لعرض الأرباح';});
 $('monthFilter').onchange=report;
 const ICON_NAMES_KEY='hisabati_icon_names_v1';
-const defaultIconNames=['رصيد داخل','تحويل رصيد','ربح الرصيد','مصروفات','سجل عمليات الرصيد','ملخص اليوم','قسم شحن الهواتف','سجل الشحن'];
-function loadIconNames(){let names=[];try{names=JSON.parse(localStorage.getItem(ICON_NAMES_KEY)||'[]')}catch(_){names=[]}document.querySelectorAll('.quick-link').forEach((b,i)=>{const span=b.querySelector('span:last-child');if(!span)return;const title=span.firstChild;if(title&&title.nodeType===3)title.nodeValue=(names[i]||defaultIconNames[i]||title.nodeValue.trim())+' ';});}
-function buildIconNameEditor(){const form=$('iconNamesForm');form.innerHTML='';document.querySelectorAll('.quick-link').forEach((b,i)=>{const span=b.querySelector('span:last-child');const label=span&&span.firstChild?span.firstChild.nodeValue.trim():defaultIconNames[i];const wrap=document.createElement('div');const lab=document.createElement('label');lab.textContent='اسم الأيقونة '+(i+1);const input=document.createElement('input');input.name='icon'+i;input.value=label;input.maxLength=35;wrap.append(lab,input);form.append(wrap);});}
+function iconNameButtons(){return [...document.querySelectorAll('.quick-section .quick-grid .quick-link')];}
+function iconNameKey(button){if(!button.dataset.iconNameKey){const span=button.querySelector('span:last-child');const title=span&&span.firstChild&&span.firstChild.nodeType===3?span.firstChild.nodeValue.trim():'';button.dataset.iconNameKey=title||('shortcut-'+iconNameButtons().indexOf(button));button.dataset.originalIconName=button.dataset.iconNameKey;}return button.dataset.iconNameKey;}
+function loadIconNames(){let names={};try{const saved=JSON.parse(localStorage.getItem(ICON_NAMES_KEY)||'{}');if(saved&&!Array.isArray(saved)&&typeof saved==='object')names=saved;}catch(_){}iconNameButtons().forEach(b=>{const span=b.querySelector('span:last-child');if(!span)return;const key=iconNameKey(b),title=span.firstChild;if(title&&title.nodeType===3)title.nodeValue=(names[key]||b.dataset.originalIconName||title.nodeValue.trim())+' ';});}
+function buildIconNameEditor(){const form=$('iconNamesForm');form.innerHTML='';iconNameButtons().forEach((b,i)=>{const span=b.querySelector('span:last-child');const label=span&&span.firstChild?span.firstChild.nodeValue.trim():iconNameKey(b);const wrap=document.createElement('div');const lab=document.createElement('label');lab.textContent='اسم الأيقونة '+(i+1);const input=document.createElement('input');input.name=iconNameKey(b);input.value=label;input.maxLength=35;wrap.append(lab,input);form.append(wrap);});}
 function openAppSection(id){
+ if(id==='about'){$('appMenu').hidden=true;$('menuTrigger').setAttribute('aria-expanded','false');$('aboutModal').hidden=false;return;}
+ if(id==='share'){$('appMenu').hidden=true;$('menuTrigger').setAttribute('aria-expanded','false');shareHesabati();return;}
+ if(id==='rate'){$('appMenu').hidden=true;$('menuTrigger').setAttribute('aria-expanded','false');$('ratingModal').hidden=false;return;}
  $('appMenu').hidden=true;$('menuTrigger').setAttribute('aria-expanded','false');
  ['generalReportCard','monthlyReportCard','backupToolsCard','backupHint','settingsCard','iconNamesCard'].forEach(x=>$(x).hidden=true);
  document.querySelector('#nav button[data-tab=reports]').click();
@@ -306,11 +304,11 @@ function openAppSection(id){
 }
 $('menuTrigger').addEventListener('click',()=>{const m=$('appMenu');m.hidden=!m.hidden;$('menuTrigger').setAttribute('aria-expanded',String(!m.hidden));});
 document.querySelectorAll('[data-menu-action]').forEach(b=>b.addEventListener('click',()=>openAppSection(b.dataset.menuAction)));
-$('saveIconNames').addEventListener('click',()=>{const vals=[...$('iconNamesForm').querySelectorAll('input')].map((x,i)=>x.value.trim()||defaultIconNames[i]);localStorage.setItem(ICON_NAMES_KEY,JSON.stringify(vals));loadIconNames();alert('تم حفظ أسماء الأيقونات.');});
+$('saveIconNames').addEventListener('click',()=>{const vals={};[...$('iconNamesForm').querySelectorAll('input')].forEach(x=>{vals[x.name]=x.value.trim()||x.name;});localStorage.setItem(ICON_NAMES_KEY,JSON.stringify(vals));loadIconNames();alert('تم حفظ أسماء الأيقونات.');});
 $('resetIconNames').addEventListener('click',()=>{localStorage.removeItem(ICON_NAMES_KEY);loadIconNames();buildIconNameEditor();});
 function runGeneralReport(){const from=$('reportFrom').value,to=$('reportTo').value;if(!from||!to||from>to){alert('حدد تاريخ بداية ونهاية صحيحين.');return;}const inside=x=>x.date>=from&&x.date<=to;const s=db.stock.filter(inside),t=db.transfers.filter(inside),r=db.recharges.filter(inside),v=db.services.filter(inside),e=db.expenses.filter(inside);const sp=sum(s,x=>x.amount),ts=sum(t,x=>x.sale),cp=profit(t),rs=sum(r,x=>x.sale),rp=profit(r),svp=profit(v),ex=sum(e,x=>x.amount);$('gStock').textContent=fmt(sp)+' SDG';$('gTransfers').textContent=fmt(ts)+' SDG';$('gCreditProfit').textContent=fmt(cp)+' SDG';$('gRecharge').textContent=fmt(rs)+' SDG';$('gRechargeProfit').textContent=fmt(rp)+' SDG';$('gServiceProfit').textContent=fmt(svp)+' SDG';$('gExpenses').textContent=fmt(ex)+' SDG';$('gNet').textContent=fmt(cp+rp+svp-ex)+' SDG';const rows=[...s.map(x=>({date:x.date,type:'رصيد داخل',detail:x.note||'إضافة رصيد',value:x.amount,cost:x.amount,profit:0})),...t.map(x=>({date:x.date,type:'تحويل رصيد',detail:(x.network||'')+' '+(x.customer||''),value:x.sale,cost:x.cost,profit:x.sale-x.cost})),...r.map(x=>({date:x.date,type:'شحن هاتف',detail:(x.network||'')+' '+(x.phone||''),value:x.sale,cost:x.cost,profit:x.sale-x.cost})),...v.map(x=>({date:x.date,type:'خدمة '+(x.network||''),detail:x.customer||'',value:x.sale,cost:x.cost,profit:x.sale-x.cost})),...e.map(x=>({date:x.date,type:'مصروف',detail:(x.category||'')+' '+(x.note||''),value:x.amount,cost:'—',profit:-x.amount}))].sort((a,b)=>a.date.localeCompare(b.date));$('generalReportRows').innerHTML=rows.length?rows.map(x=>'<tr><td>'+esc(x.date)+'</td><td>'+esc(x.type)+'</td><td>'+esc(x.detail)+'</td><td>'+fmt(x.value)+'</td><td>'+fmt(x.cost)+'</td><td>'+fmt(x.profit)+'</td></tr>').join(''):'<tr><td colspan="6" class="empty">لا توجد حركات في الفترة المحددة</td></tr>';$('generalReportResults').hidden=false;}
 $('runGeneralReport').addEventListener('click',runGeneralReport);
-$('printGeneralReport').addEventListener('click',async()=>{if($('generalReportResults').hidden)runGeneralReport();if($('generalReportResults').hidden)return;const nativePrinter=window.Capacitor?.Plugins?.Printer;if(nativePrinter&&typeof nativePrinter.printWebView==='function'){try{await nativePrinter.printWebView({name:'تقرير حساباتي'});}catch(err){alert('تعذر فتح الطباعة: '+(err?.message||err));}}else if(typeof window.print==='function'){window.print();}else{alert('الطباعة غير مدعومة في هذا المتصفح.');}});
+$('printGeneralReport').addEventListener('click',()=>{if($('generalReportResults').hidden)runGeneralReport();if(!$('generalReportResults').hidden)window.print();});
 $('reportFrom').value=today();$('reportTo').value=today();
 loadIconNames();
 document.addEventListener('click',e=>{if(!$('appMenu').contains(e.target)&&e.target!==$('menuTrigger')){$('appMenu').hidden=true;$('menuTrigger').setAttribute('aria-expanded','false');}});
@@ -386,7 +384,7 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
-<script>(function(){const targets={stock:function(){return document.getElementById("stockCard")},transfer:function(){return document.getElementById("transferCard")},expenses:function(){return document.querySelector("#expenses .card")},creditHistory:function(){return document.getElementById("creditHistoryBlock")},recharge:function(){return document.getElementById("rechargeCard")},rechargeHistory:function(){return document.getElementById("rechargeHistoryBlock")},serviceHome:function(){document.getElementById('serviceFormTitle').textContent='تسجيل خدمة زبون';return document.getElementById('serviceCard')},serviceZain:function(){document.getElementById('serviceNetwork').value='زين';document.getElementById('serviceFormTitle').textContent='تسجيل خدمة زين';return document.getElementById('serviceCard')},serviceSudani:function(){document.getElementById('serviceNetwork').value='سوداني';document.getElementById('serviceFormTitle').textContent='تسجيل خدمة سوداني';return document.getElementById('serviceCard')}};document.querySelectorAll(".quick-link").forEach(function(b){b.addEventListener("click",function(){const tab=b.getAttribute("data-panel"),target=b.getAttribute("data-target");document.querySelectorAll("#nav button").forEach(function(x){x.classList.toggle("active",x.getAttribute("data-tab")===tab)});document.querySelectorAll(".panel").forEach(function(x){x.classList.toggle("active",x.id===tab);x.classList.remove("quick-stock","quick-transfer","quick-creditHistory","quick-recharge","quick-rechargeHistory","quick-expenses")});const panel=document.getElementById(tab);if(panel)panel.classList.add("quick-"+target);const el=targets[target]();if(el)setTimeout(function(){el.scrollIntoView({behavior:"smooth",block:"start"})},80)})})})();</script>
+<script>(function(){const targets={stock:function(){return document.getElementById("stockCard")},transfer:function(){return document.getElementById("transferCard")},expenses:function(){return document.querySelector("#expenses .card")},creditHistory:function(){return document.getElementById("creditHistoryBlock")},recharge:function(){return document.getElementById("rechargeCard")},rechargeHistory:function(){return document.getElementById("rechargeHistoryBlock")},serviceHome:function(){document.getElementById('serviceFormTitle').textContent='تسجيل خدمة زبون';return document.getElementById('serviceCard')},serviceZain:function(){document.getElementById('serviceNetwork').value='زين';document.getElementById('serviceFormTitle').textContent='تسجيل خدمة زين';return document.getElementById('serviceCard')},serviceSudani:function(){document.getElementById('serviceNetwork').value='سوداني';document.getElementById('serviceFormTitle').textContent='تسجيل خدمة سوداني';return document.getElementById('serviceCard')}};document.querySelectorAll(".quick-link").forEach(function(b){b.addEventListener("click",function(){const tab=b.getAttribute("data-panel"),target=b.getAttribute("data-target");if(!tab||!target||!targets[target])return;document.querySelectorAll("#nav button").forEach(function(x){x.classList.toggle("active",x.getAttribute("data-tab")===tab)});document.querySelectorAll(".panel").forEach(function(x){x.classList.toggle("active",x.id===tab);x.classList.remove("quick-stock","quick-transfer","quick-creditHistory","quick-recharge","quick-rechargeHistory","quick-expenses")});const panel=document.getElementById(tab);if(panel)panel.classList.add("quick-"+target);const el=targets[target]();if(el)setTimeout(function(){el.scrollIntoView({behavior:"smooth",block:"start"})},80)})})})();</script>
 <style id="bank-transfer-style">
 .bank-launch{display:flex;align-items:center;gap:12px;width:100%;margin:14px 0;padding:15px;background:#fff;border:1px solid #dce9e4;border-radius:16px;color:#183536;text-align:right;font:inherit;font-weight:800;cursor:pointer;box-shadow:0 2px 9px #163b350a}.bank-launch .quick-icon{background:#e5f4ed}.bank-modal{position:fixed;inset:0;z-index:10001;background:#102f34a8;display:none;align-items:flex-start;justify-content:center;padding:18px;overflow:auto}.bank-modal.open{display:flex}.bank-box{width:min(100%,760px);margin:auto;background:#f5f8f6;border-radius:20px;padding:16px;box-shadow:0 18px 55px #001b1b55}.bank-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.bank-head h2{margin:0;font-size:20px}.bank-close{border:0;background:#e7efeb;border-radius:10px;padding:9px 13px;font-size:18px}.bank-tabs{display:flex;gap:8px;overflow:auto;margin:14px 0}.bank-tabs button{white-space:nowrap;border:1px solid #d5e1dd;border-radius:10px;background:#fff;padding:10px 14px;font-weight:700;color:#183536}.bank-tabs button.active{background:#087f70;color:#fff}.bank-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.bank-kpi{background:#fff;border:1px solid #e1e9e6;border-radius:13px;padding:12px}.bank-kpi small{color:#6d8280}.bank-kpi strong{display:block;font-size:20px;margin-top:6px;overflow-wrap:anywhere}.bank-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;background:#fff;padding:13px;border-radius:14px;margin-top:12px}.bank-form label{display:block;font-size:13px;color:#6d8280;margin-bottom:5px}.bank-form input,.bank-form select{width:100%;padding:11px;border:1px solid #d5e1dd;border-radius:9px;font:inherit}.bank-form .full{grid-column:1/-1}.bank-note{background:#edf7f2;border-radius:10px;padding:10px;font-size:13px;line-height:1.7;margin-top:10px}.bank-table{overflow:auto;background:#fff;border-radius:12px;margin-top:12px}.bank-table table{min-width:600px}.bank-table button{padding:6px 9px}@media(max-width:480px){.bank-form{grid-template-columns:1fr}.bank-form .full{grid-column:auto}}
 </style>
@@ -425,7 +423,7 @@ if ('serviceWorker' in navigator) {
  const modal=$('bankModal'), form=$('bankAddForm');
  function bank(){return state.banks[selected]}
  function render(){
-  $('bankTabs').innerHTML=state.banks.map((b,i)=>'<button type="button" data-bank="'+i+'" class="'+(i===selected?'active':'')+'">'+escapeHtml(b.name)+'</button>').join('');
+  $('bankTabs').innerHTML=state.banks.map((b,i)=>{const n=String(b.name||'').trim();const color=n==='بنكك'?'bank-tab-bnuk':n==='فوري'?'bank-tab-fawry':n==='ساهل'?'bank-tab-sahel':'';return '<button type="button" data-bank="'+i+'" class="'+color+(i===selected?' active':'')+'">'+escapeHtml(b.name)+'</button>';}).join('');
   $('bankAvailable').textContent=fmt(bank().available)+' SDG';$('bankProfit').textContent=fmt(bank().profit)+' SDG';
   $('bankRate').value=bank().rate;$('bankDate').value=new Date().toISOString().slice(0,10);
   const rate=Number($('bankRate').value)||0,amount=Number(form.amount.value)||0,gain=amount*rate/100;
@@ -518,90 +516,6 @@ body.back-control-visible{padding-bottom:86px}
 </script>
 
 
-<style id="partnership-style">
-#partnership .quick-link{min-height:82px}#partnerAccountCard{margin-bottom:18px}#partnerAccountCard form{margin:12px 0}.partnership-breakdown{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}.partnership-breakdown .card{padding:12px}@media(max-width:480px){#partnership .financial-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-</style>
-<script id="partnership-module">
-(function(){
- const KEY='hisabati_partnership_v1', $=id=>document.getElementById(id), fmt=n=>Number(n||0).toLocaleString('en-US',{maximumFractionDigits:2});
- let state={mohamed:[],bashir:[]},selected='mohamed';
- try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved){state.mohamed=Array.isArray(saved.mohamed)?saved.mohamed:[];state.bashir=Array.isArray(saved.bashir)?saved.bashir:[];}}catch(e){}
- const save=()=>localStorage.setItem(KEY,JSON.stringify(state));
- const total=a=>a.reduce((n,x)=>n+Number(x.amount||0),0);
- function generalProfit(){
-  let d={};try{d=JSON.parse(localStorage.getItem('hisabati_v1')||'{}')}catch(e){}
-  const sum=(a,fn)=>Array.isArray(a)?a.reduce((n,x)=>n+fn(x),0):0;
-  const activity=sum(d.transfers,x=>Number(x.sale||0)-Number(x.cost||0))+sum(d.recharges,x=>Number(x.sale||0)-Number(x.cost||0))+sum(d.services,x=>Number(x.sale||0)-Number(x.cost||0));
-  const expenses=sum(d.expenses,x=>Number(x.amount||0));
-  let bankProfit=0;try{const b=JSON.parse(localStorage.getItem('hisabati_bank_transfer_v1')||'{}');bankProfit=sum(b.banks,x=>Number(x.profit||0));}catch(e){}
-  return {gross:activity+bankProfit,expenses,net:activity+bankProfit-expenses};
- }
- function render(){
-  const p=generalProfit(),distributed=total(state.mohamed)+total(state.bashir),available=p.net-distributed;
-  $('partnershipTotal').textContent=fmt(p.net);
-  $('partnershipAvailable').textContent=fmt(available);
-  $('mohamedShare').textContent=fmt(total(state.mohamed));$('bashirShare').textContent=fmt(total(state.bashir));
-  $('mohamedCardBalance').textContent='الرصيد: '+fmt(total(state.mohamed))+' SDG';
-  $('bashirCardBalance').textContent='الرصيد: '+fmt(total(state.bashir))+' SDG';
-  if(!$('partnerAccountCard').hidden)renderAccount();
- }
- function renderAccount(){
-  const list=state[selected]||[];
-  $('partnerAccountTitle').textContent=selected==='mohamed'?'حساب محمد عمر':'حساب بشير حسين';
-  $('partnerAccountBalance').textContent=fmt(total(list))+' SDG';
-  $('partnerAllocationRows').innerHTML=list.length?list.slice().reverse().map(x=>'<tr><td>'+escapeHtml(x.date)+'</td><td>'+fmt(x.amount)+' SDG</td><td>'+escapeHtml(x.note||'—')+'</td></tr>').join(''):'<tr><td colspan="3" class="empty">لا توجد مبالغ مضافة لهذا الحساب</td></tr>';
- }
- function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
- $('partnershipLaunch').addEventListener('click',()=>{document.querySelector('#nav button[data-tab="partnership"]').click();render();window.scrollTo({top:0,behavior:'smooth'});});
- document.querySelectorAll('[data-partner]').forEach(b=>b.addEventListener('click',()=>{selected=b.dataset.partner;$('partnerAccountCard').hidden=false;$('partnerAllocationForm').reset();$('partnerAllocationForm').date.value=new Date().toISOString().slice(0,10);renderAccount();$('partnerAccountCard').scrollIntoView({behavior:'smooth',block:'start'});}));
- $('partnerAccountClose').addEventListener('click',()=>$('partnerAccountCard').hidden=true);
- $('partnerAllocationForm').addEventListener('submit',e=>{
-  e.preventDefault();const f=e.currentTarget,amount=Number(f.amount.value),date=f.date.value;
-  if(!Number.isFinite(amount)||amount<=0||!date){alert('أدخل مبلغاً وتاريخاً صحيحين.');return;}
-  const p=generalProfit(),available=p.net-total(state.mohamed)-total(state.bashir);
-  if(amount>available+0.000001){alert('المبلغ أكبر من الربح العام المتاح. المتاح حالياً: '+fmt(Math.max(0,available))+' SDG');return;}
-  state[selected].push({amount:Number(amount.toFixed(2)),date,note:f.note.value.trim(),createdAt:new Date().toISOString()});save();f.reset();f.date.value=new Date().toISOString().slice(0,10);render();alert('تمت إضافة '+fmt(amount)+' SDG إلى حساب '+(selected==='mohamed'?'محمد عمر':'بشير حسين')+' وخصمها من الربح العام.');
- });
- const originalRender=window.render;
- document.querySelector('#nav button[data-tab="partnership"]').addEventListener('click',()=>render());
- window.addEventListener('storage',render);
- render();
-})();
-</script>
-<script id="hesabati-ota-updater">
-(function(){
- const MANIFEST='https://raw.githubusercontent.com/mustshar2017-debug/hesabati/mobile-app/ota-manifest.json';
- const VERSION_KEY='hisabati_ota_version_v1';
- const status=document.getElementById('appUpdateStatus'),button=document.getElementById('checkAppUpdates');
- const updater=()=>window.Capacitor?.Plugins?.CapacitorUpdater;
- let checking=false;
- function say(message){if(status)status.textContent=message;}
- async function checkUpdates(show){
-  if(checking)return;
-  const api=updater();
-  if(!api||typeof api.download!=='function'||typeof api.set!=='function'){if(show)say('التحديث المباشر يتوفر داخل نسخة Android المحدّثة فقط.');return;}
-  checking=true;if(button)button.disabled=true;if(show)say('جارٍ البحث عن تحديث...');
-  try{
-   const response=await fetch(MANIFEST+'?t='+Date.now(),{cache:'no-store'});
-   if(!response.ok)throw new Error('تعذر الوصول إلى خادم التحديثات.');
-   const info=await response.json(),latest=Number(info.version),installed=Number(localStorage.getItem(VERSION_KEY)||'0');
-   if(!Number.isFinite(latest)||!info.url)throw new Error('بيانات التحديث غير صالحة.');
-   if(latest<=installed){if(show)say('تطبيقك محدّث بالفعل.');return;}
-   say('يوجد تحديث جديد. جارٍ تنزيله...');
-   const bundle=await api.download({url:info.url,version:String(info.version)});
-   if(!bundle||!bundle.id)throw new Error('لم يكتمل تنزيل التحديث.');
-   localStorage.setItem(VERSION_KEY,String(info.version));
-   try{await api.set({id:bundle.id});}catch(error){localStorage.removeItem(VERSION_KEY);throw error;}
-   say('تم تجهيز التحديث. سيعاد تشغيل التطبيق لتفعيله...');
-  }catch(error){say('لم نتمكن من إكمال التحديث: '+(error?.message||'تحقق من الإنترنت ثم حاول مجدداً.'));}
-  finally{checking=false;if(button)button.disabled=false;}
- }
- if(button)button.addEventListener('click',()=>checkUpdates(true));
- window.addEventListener('load',()=>setTimeout(()=>checkUpdates(false),5000));
- const api=updater();if(api&&typeof api.notifyAppReady==='function')api.notifyAppReady().catch(()=>{});
-})();
-</script>
-
 <style id="theme-toggle-styles">
 .brand-line{display:flex;align-items:center;gap:10px}
 .theme-toggle{width:38px;height:38px;display:grid;place-items:center;border:1px solid #ffffff66;border-radius:12px;background:#ffffff18;color:#fff;font-size:21px;line-height:1;cursor:pointer}
@@ -651,4 +565,168 @@ body.dark .profit-toggle{color:var(--ink)}
 })();
 </script>
 
+<style id="partnership-style">
+#partnership .quick-link{min-height:82px}#partnerAccountCard{margin-bottom:18px}#partnerAccountCard form{margin:12px 0}.partnership-breakdown{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}.partnership-breakdown .card{padding:12px}@media(max-width:480px){#partnership .financial-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<script id="partnership-module">
+(function(){
+ const KEY='hisabati_partnership_v1', $=id=>document.getElementById(id), fmt=n=>Number(n||0).toLocaleString('en-US',{maximumFractionDigits:2});
+ let state={mohamed:[],bashir:[],manualAdjustments:[]},selected='mohamed',editingId=null;
+ try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved){state.mohamed=Array.isArray(saved.mohamed)?saved.mohamed:[];state.bashir=Array.isArray(saved.bashir)?saved.bashir:[];state.manualAdjustments=Array.isArray(saved.manualAdjustments)?saved.manualAdjustments:[];}}catch(e){}
+ const save=()=>localStorage.setItem(KEY,JSON.stringify(state));
+ const total=a=>a.reduce((n,x)=>n+Number(x.amount||0),0);
+ const manualFor=id=>state.manualAdjustments.filter(x=>x.partner===id);
+ const balance=id=>total(state[id])+total(manualFor(id));
+ function generalProfit(){
+  let d={},banks={};try{d=JSON.parse(localStorage.getItem('hisabati_v1')||'{}')}catch(e){}
+  try{banks=JSON.parse(localStorage.getItem('hisabati_bank_transfer_v1')||'{}')}catch(e){}
+  const sum=(a,fn)=>Array.isArray(a)?a.reduce((n,x)=>n+fn(x),0):0;
+  const creditProfit=sum(d.transfers,x=>Number(x.sale||0)-Number(x.cost||0));
+  const rechargeProfit=sum(d.recharges,x=>Number(x.sale||0)-Number(x.cost||0));
+  const serviceProfit=sum(d.services,x=>Number(x.sale||0)-Number(x.cost||0));
+  const bankProfit=sum(banks.banks,b=>Array.isArray(b.records)&&b.records.length?sum(b.records,x=>Number(x.gain||0)):Number(b.profit||0));
+  const expenses=sum(d.expenses,x=>Number(x.amount||0));
+  const gross=creditProfit+rechargeProfit+serviceProfit+bankProfit;
+  return {gross,expenses,net:gross-expenses,rechargeProfit};
+ }
+ function render(){
+  const p=generalProfit(),target=Number((p.rechargeProfit/2).toFixed(2));
+  ['mohamed','bashir'].forEach(id=>{
+   const difference=Number((target-total(state[id])).toFixed(2));
+   if(Math.abs(difference)>=0.01)state[id].push({amount:difference,date:new Date().toISOString().slice(0,10),note:'توزيع تلقائي 50% من ربح شحن الهواتف',automatic:true,createdAt:new Date().toISOString()});
+  });
+  save();
+  const distributed=total(state.mohamed)+total(state.bashir),manualNet=total(state.manualAdjustments),available=Number((p.net-distributed-manualNet).toFixed(2));
+  $('partnershipGeneralNet').textContent=fmt(p.net);$('partnershipTotal').textContent=fmt(p.rechargeProfit);$('partnershipAvailable').textContent=fmt(available);$('partnershipAutomaticTotal').textContent=fmt(distributed);$('partnershipManualNet').textContent=fmt(manualNet);
+  $('mohamedShare').textContent=fmt(balance('mohamed'));$('bashirShare').textContent=fmt(balance('bashir'));
+  $('mohamedCardBalance').textContent='الرصيد: '+fmt(balance('mohamed'))+' SDG';
+  $('bashirCardBalance').textContent='الرصيد: '+fmt(balance('bashir'))+' SDG';
+  if(!$('partnerAccountCard').hidden)renderAccount();
+ }
+ function renderAccount(){
+  const auto=state[selected]||[],manual=manualFor(selected);
+  $('partnerAccountTitle').textContent=selected==='mohamed'?'حساب محمد عمر':'حساب بشير حسين';
+  $('partnerAccountBalance').textContent=fmt(balance(selected))+' SDG';
+  $('partnerAutomaticBalance').textContent=fmt(total(auto))+' SDG';
+  $('partnerManualBalance').textContent=fmt(total(manual))+' SDG';
+  const rows=[...auto.map((x,i)=>({...x,_kind:'auto',_key:x.createdAt||('auto-'+i)})),...manual.map(x=>({...x,_kind:'manual',_key:x.id}))].sort((a,b)=>String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));
+  $('partnerAllocationRows').innerHTML=rows.length?rows.map(x=>'<tr><td>'+escapeHtml(x.date||'—')+'</td><td>'+fmt(x.amount)+' SDG</td><td>'+escapeHtml(x.note|| (x._kind==='auto'?'توزيع تلقائي':'تعديل يدوي'))+'</td><td>'+(x._kind==='manual'?'<button type="button" class="secondary" data-edit-adjustment="'+escapeHtml(x.id)+'">تعديل</button>':'—')+'</td></tr>').join(''):'<tr><td colspan="4" class="empty">لا توجد توزيعات حتى الآن</td></tr>';
+  $('partnerAllocationRows').querySelectorAll('[data-edit-adjustment]').forEach(b=>b.addEventListener('click',()=>openAdjustment(b.dataset.editAdjustment)));
+ }
+ function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+ function openAdjustment(id=null){
+  editingId=id;const item=id?state.manualAdjustments.find(x=>x.id===id):null;
+  $('partnerAdjustmentTitle').textContent=item?'تعديل مبلغ الشريك':'إضافة مبلغ للشريك';
+  $('partnerAdjustmentType').value=item&&Number(item.amount)<0?'subtract':'add';
+  $('partnerAdjustmentAmount').value=item?Math.abs(Number(item.amount)):'';
+  $('partnerAdjustmentDate').value=item?.date||new Date().toISOString().slice(0,10);
+  $('partnerAdjustmentNote').value=item?.note||'';
+  $('partnerAdjustmentModal').hidden=false;$('partnerAdjustmentModal').style.display='flex';
+ }
+ function closeAdjustment(){$('partnerAdjustmentModal').hidden=true;$('partnerAdjustmentModal').style.display='none';editingId=null;}
+ $('partnershipLaunch').addEventListener('click',()=>{document.querySelector('#nav button[data-tab="partnership"]').click();render();window.scrollTo({top:0,behavior:'smooth'});});
+ document.querySelectorAll('[data-partner]').forEach(b=>b.addEventListener('click',()=>{selected=b.dataset.partner;$('partnerAccountCard').hidden=false;$('partnerAccountCard').style.display='flex';renderAccount();}));
+ $('partnerAccountClose').addEventListener('click',()=>{$('partnerAccountCard').hidden=true;$('partnerAccountCard').style.display='none';});
+ $('partnerAddAdjustment').addEventListener('click',()=>openAdjustment());
+ $('partnerAdjustmentClose').addEventListener('click',closeAdjustment);
+ $('partnerAdjustmentSave').addEventListener('click',()=>{
+  const amount=Number($('partnerAdjustmentAmount').value),date=$('partnerAdjustmentDate').value,note=$('partnerAdjustmentNote').value.trim();
+  if(!Number.isFinite(amount)||amount<=0){alert('أدخل مبلغاً صحيحاً أكبر من صفر.');return;}
+  if(!date){alert('حدد تاريخ العملية.');return;}
+  const signed=$('partnerAdjustmentType').value==='subtract'?-amount:amount;
+  if(editingId){const item=state.manualAdjustments.find(x=>x.id===editingId);if(!item)return;item.amount=signed;item.date=date;item.note=note||(signed<0?'خصم يدوي':'إضافة يدوية');item.updatedAt=new Date().toISOString();}
+  else state.manualAdjustments.push({id:'adj-'+Date.now()+'-'+Math.random().toString(36).slice(2,8),partner:selected,amount:signed,date,note:note||(signed<0?'خصم يدوي':'إضافة يدوية'),createdAt:new Date().toISOString()});
+  save();closeAdjustment();render();renderAccount();
+ });
+ $('partnerAdjustmentModal').addEventListener('click',e=>{if(e.target===$('partnerAdjustmentModal'))closeAdjustment();});
+ $('partnerAccountCard').addEventListener('click',e=>{if(e.target===$('partnerAccountCard')){$('partnerAccountCard').hidden=true;$('partnerAccountCard').style.display='none';}});
+ document.querySelector('#nav button[data-tab="partnership"]').addEventListener('click',()=>render());
+ window.addEventListener('storage',render);render();
+})();
+</script>
+
+<div class="info-modal" id="aboutModal" hidden><div class="info-dialog"><button class="info-close" type="button" data-close-info="aboutModal">✕</button><div class="info-icon">💚</div><h2>نبذة عنّا</h2><p><strong>حساباتي</strong> تطبيق عملي صُمّم لمساعدة أصحاب الأعمال ومقدمي الخدمات على تنظيم أعمالهم المالية اليومية بسهولة ووضوح.</p><p>من خلال حساباتي يمكنك متابعة الرصيد ورأس المال، وتسجيل تحويلات الرصيد وشحن الهواتف، وإدارة خدمات الزبائن والتحويلات البنكية والمصروفات، مع تقارير تفصيلية وأدوات لحفظ النسخ الاحتياطية.</p><p>نسعى إلى تقديم تجربة بسيطة وموثوقة تساعدك على متابعة أرقامك واتخاذ قراراتك بثقة.</p><div class="about-sign">تصميم وتطوير محمد عمر محمد اسحق<br><small>المستشار ود كنانة</small></div></div></div>
+<div class="info-modal" id="ratingModal" hidden><div class="info-dialog"><button class="info-close" type="button" data-close-info="ratingModal">✕</button><div class="info-icon">⭐</div><h2>قيّم تطبيق حساباتي</h2><p>يسعدنا معرفة رأيك. اختر تقييمك من نجمة إلى خمس نجوم:</p><div class="rating-stars" id="ratingStars" role="group" aria-label="اختر عدد النجوم"><button type="button" data-rating="1" aria-label="نجمة واحدة">★</button><button type="button" data-rating="2" aria-label="نجمتان">★</button><button type="button" data-rating="3" aria-label="ثلاث نجوم">★</button><button type="button" data-rating="4" aria-label="أربع نجوم">★</button><button type="button" data-rating="5" aria-label="خمس نجوم">★</button></div><p id="ratingMessage" class="rating-message">لم تختر تقييماً بعد.</p><button type="button" class="primary rating-submit" id="submitRating" disabled>إرسال التقييم</button><small class="rating-note">يمكنك اختيار التقييم الذي يعبر عن تجربتك الحقيقية. سيُربط هذا الزر بصفحة تقييم Google Play بعد نشر التطبيق وإضافة رابط المتجر الرسمي.</small></div></div>
+<style id="about-share-rating-styles">
+.info-modal{position:fixed;inset:0;z-index:20000;background:#071b19a8;display:flex;align-items:center;justify-content:center;padding:16px}.info-modal[hidden]{display:none!important}.info-dialog{position:relative;width:min(100%,460px);max-height:88vh;overflow:auto;background:#fff;color:#173b35;border-radius:20px;padding:24px 20px;box-shadow:0 18px 60px #0004;text-align:center}.info-dialog h2{margin:6px 0 14px;color:#087f63}.info-dialog p{line-height:1.9;text-align:right;margin:10px 0}.info-icon{font-size:36px}.info-close{position:absolute;left:12px;top:12px;border:0;border-radius:10px;background:#edf5f1;color:#28594c;padding:8px 11px;font-size:18px}.about-sign{margin-top:18px;padding-top:13px;border-top:1px solid #dce9e3;font-weight:800;color:#087f63;line-height:1.8}.about-sign small{color:#668078}.rating-stars{display:flex;justify-content:center;gap:8px;direction:ltr;margin:18px 0}.rating-stars button{border:0;background:#edf2ef;color:#b9c5bf;border-radius:12px;width:48px;height:48px;font-size:34px;cursor:pointer}.rating-stars button.selected{color:#f2b900;background:#fff5cf}.rating-message{text-align:center!important;font-weight:700;color:#087f63}.rating-submit{width:100%;padding:12px;border:0;border-radius:12px;background:#087f63;color:#fff;font:inherit;font-weight:800}.rating-submit:disabled{opacity:.45;cursor:not-allowed}.rating-note{display:block;color:#71847d;line-height:1.7;margin-top:13px;text-align:right}body.dark .info-dialog{background:#1b2a29;color:#e6f0ed}body.dark .info-dialog h2,body.dark .about-sign{color:#70d8b7}body.dark .rating-stars button{background:#263c37}
+</style>
+<script id="about-share-rating-script">
+(function(){
+ const $=id=>document.getElementById(id);let selectedRating=0;
+ document.querySelectorAll('[data-close-info]').forEach(b=>b.addEventListener('click',()=>$(b.dataset.closeInfo).hidden=true));
+ ['aboutModal','ratingModal'].forEach(id=>$(id).addEventListener('click',e=>{if(e.target===$(id))$(id).hidden=true;}));
+ window.shareHesabati=async function(){const url='https://mustshar2017-debug.github.io/hesabati/';const data={title:'حساباتي',text:'جرّب تطبيق حساباتي لإدارة الرصيد وشحن الهواتف ومتابعة الأرباح والمصروفات.',url};try{if(navigator.share){await navigator.share(data);}else if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(url);alert('تم نسخ رابط التطبيق. يمكنك مشاركته مع أصدقائك.');}else{window.prompt('انسخ رابط تطبيق حساباتي:',url);}}catch(e){if(e&&e.name!=='AbortError')window.prompt('يمكنك نسخ رابط التطبيق ومشاركته:',url);}};
+ document.querySelectorAll('#ratingStars button').forEach(b=>b.addEventListener('click',()=>{selectedRating=Number(b.dataset.rating);document.querySelectorAll('#ratingStars button').forEach(x=>x.classList.toggle('selected',Number(x.dataset.rating)<=selectedRating));$('ratingMessage').textContent='تقييمك: '+selectedRating+' من 5 نجوم';$('submitRating').disabled=false;}));
+ $('submitRating').addEventListener('click',()=>{if(!selectedRating)return;try{localStorage.setItem('hisabati_user_rating_v1',JSON.stringify({rating:selectedRating,date:new Date().toISOString()}));}catch(e){}$('ratingMessage').textContent='شكراً لك! تم حفظ تقييمك داخل التطبيق.';$('submitRating').disabled=true;});
+})();
+</script>
+
+<script id="hesabati-ota-updater">
+(function(){
+ const MANIFEST='https://raw.githubusercontent.com/mustshar2017-debug/hesabati/mobile-app/ota-manifest.json';
+ const VERSION_KEY='hisabati_ota_version_v1';
+ const updater=()=>window.Capacitor?.Plugins?.CapacitorUpdater;
+ let checking=false;
+ async function checkUpdates(){
+  if(checking)return;const api=updater();
+  if(!api||typeof api.download!=='function'||typeof api.set!=='function')return;
+  checking=true;
+  try{
+   const response=await fetch(MANIFEST+'?t='+Date.now(),{cache:'no-store'});
+   if(!response.ok)throw new Error('Update manifest unavailable');
+   const info=await response.json(),latest=Number(info.version),installed=Number(localStorage.getItem(VERSION_KEY)||'0');
+   if(!Number.isFinite(latest)||!info.url||latest<=installed)return;
+   const bundle=await api.download({url:info.url,version:String(info.version)});
+   if(!bundle||!bundle.id)throw new Error('Update download failed');
+   localStorage.setItem(VERSION_KEY,String(info.version));
+   try{await api.set({id:bundle.id});}catch(error){localStorage.removeItem(VERSION_KEY);throw error;}
+  }catch(error){console.warn('Hesabati live update:',error);}
+  finally{checking=false;}
+ }
+ window.addEventListener('load',()=>setTimeout(checkUpdates,5000));
+ const api=updater();if(api&&typeof api.notifyAppReady==='function')api.notifyAppReady().catch(()=>{});
+})();
+</script>
 </body></html>
+
+<style id="home-icons-layout-update">
+/* ترتيب مختصر وواضح لأيقونات الصفحة الرئيسية */
+#home .quick-section:first-of-type{margin-top:12px}
+#home .quick-section:first-of-type>.section-title{margin-bottom:7px}
+#home .bank-launch{
+  min-height:76px;margin:7px 0 10px;padding:12px 15px;
+  background:linear-gradient(135deg,#087f55,#10a875);
+  border:1px solid #087f55;color:#fff;border-radius:16px;
+  box-shadow:0 4px 12px #087f5530;font-size:16px
+}
+#home .bank-launch .quick-icon{width:50px;height:50px;flex-basis:50px;background:#ffffff25;color:#fff;font-size:28px}
+#home .bank-launch small{color:#e5fff2!important}
+#home .quick-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+#home .quick-link{min-width:0;min-height:84px;padding:7px 4px;flex-direction:column;justify-content:center;align-items:center;gap:5px;text-align:center;border-radius:12px}
+#home .quick-icon{width:34px;height:34px;flex:0 0 34px;border-radius:10px;font-size:19px}
+#home .quick-link span:last-child{min-width:0;font-size:11px;line-height:1.25;overflow-wrap:anywhere}
+#home .quick-link small{font-size:9px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+#home .quick-section:not(:first-of-type){margin-top:12px}
+#home .quick-section:not(:first-of-type) .quick-link{min-height:76px}
+@media(max-width:360px){
+ #home .quick-grid{gap:5px}
+ #home .quick-link{min-height:78px;padding:6px 2px}
+ #home .quick-link span:last-child{font-size:10px}
+ #home .quick-link small{font-size:8px}
+ #home .bank-launch{min-height:70px;padding:10px}
+}
+@media(min-width:700px){
+ #home .quick-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+ #home .bank-launch{max-width:100%}
+}
+body.dark #home .bank-launch{background:linear-gradient(135deg,#087f55,#10a875);border-color:#10a875;color:#fff}
+</style>
+
+<style id="bank-provider-colors">
+#bankTabs button.bank-tab-bnuk{background:#fde8e8!important;border-color:#dc2626!important;color:#a71919!important}
+#bankTabs button.bank-tab-bnuk.active{background:#c62828!important;border-color:#a71919!important;color:#fff!important;box-shadow:0 3px 10px #c6282840}
+#bankTabs button.bank-tab-fawry{background:#e5f0ff!important;border-color:#2878d0!important;color:#1557a0!important}
+#bankTabs button.bank-tab-fawry.active{background:#1769c2!important;border-color:#1255a0!important;color:#fff!important;box-shadow:0 3px 10px #1769c240}
+#bankTabs button.bank-tab-sahel{background:#fff5c7!important;border-color:#e0b51b!important;color:#765900!important}
+#bankTabs button.bank-tab-sahel.active{background:#f2c21a!important;border-color:#d5a600!important;color:#493600!important;box-shadow:0 3px 10px #d5a60040}
+</style>
