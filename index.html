@@ -69,7 +69,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 <div class="reportline"><span>المصروفات اليومية</span><b id="todayExpenses">0 SDG</b></div>
 <div class="reportline"><span>إجمالي صافي الأرباح اليوم</span><b class="positive" id="todayProfit">0 SDG</b></div>
 </div></div>
-<div class="hint">طريقة الحساب: عند إدخال رصيد جديد سجّل تكلفته. وعند التحويل أو الشحن سجّل قيمة البيع والتكلفة المستهلكة؛ يحسب التطبيق الربح تلقائياً = البيع − التكلفة. التحويل بين حساباتك لا يُعد ربحاً إلا إذا أدخلت تكلفة وسعر بيع للعملية.</div>
+<div class="hint">طريقة الحساب: في تحويل الرصيد أدخل المبلغ الذي دفعه العميل ونسبة العمولة؛ تُخصم العمولة من المبلغ ليظهر صافي الرصيد المحوّل، وتُسجّل العمولة ربحاً للعملية. في شحن الهواتف يُحسب الربح من قيمة البيع ناقص التكلفة.</div>
 </section>
 <section id="credit" class="panel">
 <h2 class="section-title">قسم الرصيد</h2>
@@ -81,7 +81,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 <div class="full"><label>ملاحظات / مصدر الرصيد</label><input name="note" placeholder="مثال: شراء رصيد من المورد"></div>
 <button class="primary full">حفظ الرصيد الداخل</button></form>
 </div>
-<div class="card" id="transferCard" style="margin-top:12px"><h3>تحويل رصيد</h3><p class="muted">أدخل قيمة البيع والتكلفة التي خرجت من مخزونك لحساب الربح تلقائياً.</p>
+<div class="card" id="transferCard" style="margin-top:12px"><h3>تحويل رصيد</h3><p class="muted">أدخل المبلغ الذي دفعه العميل وحدد نسبة العمولة لهذه العملية؛ يحسب التطبيق العمولة وصافي الرصيد المحوّل والربح تلقائياً.</p>
 <form id="transferForm">
 <div><label>قيمة التحويل / البيع (SDG)</label><input name="sale" type="number" min="0.01" step="0.01" required></div>
 <div><label>نسبة العمولة لهذه العملية (%)</label><input name="commissionRate" type="number" min="0" max="100" step="0.01" value="15" required></div>
