@@ -184,7 +184,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 </div>
 <script>
 const KEY='hisabati_v1';let db=JSON.parse(localStorage.getItem(KEY)||'{"stock":[],"transfers":[],"recharges":[],"expenses":[]}');
-const $=id=>document.getElementById(id), today=()=>new Date().toISOString().slice(0,10), fmt=n=>(Number(n)||0).toLocaleString('en-US',{maximumFractionDigits:2});
+const $=id=>document.getElementById(id), today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}, fmt=n=>(Number(n)||0).toLocaleString('en-US',{maximumFractionDigits:2});
 document.querySelectorAll('input[type=date]').forEach(x=>x.value=today());$('monthFilter').value=today().slice(0,7);
 function save(){localStorage.setItem(KEY,JSON.stringify(db));render()}
 function sum(a,f){return a.reduce((s,x)=>s+f(x),0)}
