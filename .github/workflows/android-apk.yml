@@ -41,6 +41,13 @@ jobs:
         run: npx cap add android
       - name: Sync Capacitor
         run: npx cap sync android
+      - name: Configure reliable Maven Central mirror
+        run: |
+          for file in android/settings.gradle android/build.gradle android/app/build.gradle; do
+            if [ -f "$file" ]; then
+              sed -i 's#mavenCentral()#maven { url "https://maven-central.storage-download.googleapis.com/maven2/" }; mavenCentral()#g' "$file"
+            fi
+          done
       - name: Build debug APK
         run: cd android && ./gradlew assembleDebug
       - name: Upload APK
