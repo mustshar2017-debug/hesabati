@@ -37,6 +37,7 @@ td:last-child,th:last-child{position:sticky;left:0;z-index:2;background:#fff;whi
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.hint{background:#eef7f4;border:1px solid #d7ebe3;border-radius:12px;padding:12px;font-size:13px;line-height:1.7;margin:12px 0}
 .empty{text-align:center;color:var(--muted);padding:24px}.reportline{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)}
 footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
+.print-signature{display:none}
 .header-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .header-actions{display:flex;align-items:center;gap:8px;position:relative}
 .menu-trigger{width:42px;height:42px;border:1px solid #ffffff55;border-radius:12px;background:#ffffff18;color:#fff;font-size:29px;line-height:1;cursor:pointer}
@@ -80,6 +81,10 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
  #generalReportRows th,#generalReportRows td{font-size:9pt!important;padding:6px 4px!important;color:#111!important;white-space:normal!important}
  #generalReportRows tr{break-inside:avoid}
  #generalReportRows th{background:#eee!important}
+ .print-signature{display:flex!important;align-items:flex-end;justify-content:flex-end;gap:10px;margin:30px 0 4px;padding-top:12px;border-top:1px solid #888;color:#222!important;break-inside:avoid;font-size:11pt}
+ .print-signature-label{color:#555!important;font-size:10pt}
+ .print-signature strong{font-size:13pt;letter-spacing:.2px}
+ .print-signature-line{display:inline-block;width:95px;border-bottom:1px solid #555;margin-bottom:3px}
  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 </style></head>
@@ -171,6 +176,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 <button class="primary full">حفظ كلمة السر الجديدة</button>
 </form><div class="muted" id="pinChangeMessage" aria-live="polite"></div>
 </div>
+<div class="print-signature" aria-label="توقيع تصميم التقرير"><span class="print-signature-label">تصميم وإعداد</span><strong>محمد عمر محمد اسحق</strong><span class="print-signature-line"></span></div>
 </section>
 </main><footer>حساباتي · حقوق النشر محفوظة © 2026 محمد عمر محمد اسحق</footer>
 </div>
