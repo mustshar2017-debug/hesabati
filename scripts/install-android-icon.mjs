@@ -26,7 +26,4 @@ const adaptiveXml = `<?xml version="1.0" encoding="utf-8"?>
 </adaptive-icon>`;
 await writeFile(join(anydpi, 'ic_launcher.xml'), adaptiveXml);
 await writeFile(join(anydpi, 'ic_launcher_round.xml'), adaptiveXml);
-const values = 'android/app/src/main/res/values';
-await mkdir(values, { recursive: true });
-await writeFile(join(values, 'ic_launcher_colors.xml'), '<resources><color name="ic_launcher_background">#006b32</color></resources>');
 console.log('Approved Hesabati launcher icons installed.');
