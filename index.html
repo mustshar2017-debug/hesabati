@@ -420,7 +420,7 @@ if ('serviceWorker' in navigator) {
  const modal=$('bankModal'), form=$('bankAddForm');
  function bank(){return state.banks[selected]}
  function render(){
-  $('bankTabs').innerHTML=state.banks.map((b,i)=>'<button type="button" data-bank="'+i+'" class="'+(i===selected?'active':'')+'">'+escapeHtml(b.name)+'</button>').join('');
+  $('bankTabs').innerHTML=state.banks.map((b,i)=>{const n=String(b.name||'').trim();const color=n==='بنكك'?'bank-tab-bnuk':n==='فوري'?'bank-tab-fawry':n==='ساهل'?'bank-tab-sahel':'';return '<button type="button" data-bank="'+i+'" class="'+color+(i===selected?' active':'')+'">'+escapeHtml(b.name)+'</button>';}).join('');
   $('bankAvailable').textContent=fmt(bank().available)+' SDG';$('bankProfit').textContent=fmt(bank().profit)+' SDG';
   $('bankRate').value=bank().rate;$('bankDate').value=new Date().toISOString().slice(0,10);
   const rate=Number($('bankRate').value)||0,amount=Number(form.amount.value)||0,gain=amount*rate/100;
@@ -674,4 +674,13 @@ body.dark .profit-toggle{color:var(--ink)}
  #home .bank-launch{max-width:100%}
 }
 body.dark #home .bank-launch{background:linear-gradient(135deg,#087f55,#10a875);border-color:#10a875;color:#fff}
+</style>
+
+<style id="bank-provider-colors">
+#bankTabs button.bank-tab-bnuk{background:#fde8e8!important;border-color:#dc2626!important;color:#a71919!important}
+#bankTabs button.bank-tab-bnuk.active{background:#c62828!important;border-color:#a71919!important;color:#fff!important;box-shadow:0 3px 10px #c6282840}
+#bankTabs button.bank-tab-fawry{background:#e5f0ff!important;border-color:#2878d0!important;color:#1557a0!important}
+#bankTabs button.bank-tab-fawry.active{background:#1769c2!important;border-color:#1255a0!important;color:#fff!important;box-shadow:0 3px 10px #1769c240}
+#bankTabs button.bank-tab-sahel{background:#fff5c7!important;border-color:#e0b51b!important;color:#765900!important}
+#bankTabs button.bank-tab-sahel.active{background:#f2c21a!important;border-color:#d5a600!important;color:#493600!important;box-shadow:0 3px 10px #d5a60040}
 </style>
