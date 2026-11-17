@@ -5,3 +5,5 @@ await copyFile('manifest.webmanifest', 'www/manifest.webmanifest');
 await copyFile('service-worker.js', 'www/service-worker.js');
 await copyFile('icons/icon.svg', 'www/icons/icon.svg');
 console.log('Hesabati mobile web assets prepared.');
+
+// Rebuild trigger: Android dependency mirror configured in workflow.
