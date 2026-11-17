@@ -183,7 +183,22 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 </div>
 <div class="print-signature" aria-label="توقيع تصميم التقرير"><span class="print-signature-label">تصميم وإعداد</span><strong>محمد عمر محمد اسحق</strong><img class="owner-handwritten-signature" src="data:image/png;base64,${data}" alt="التوقيع الشخصي لمحمد عمر محمد اسحق"><span class="print-signature-line"></span></div>
 </section>
-<section id="partnership" class="panel"><h2 class="section-title">🤝 إدارة الشراكة</h2><div class="grid financial-grid"><div class="card kpi"><span class="kpi-icon">💰</span><small>صافي الربح العام بعد المصروفات</small><strong id="partnershipGeneralNet">0</strong><small>SDG</small></div><div class="card kpi"><span class="kpi-icon">📦</span><small>ربح الشحن غير الموزع</small><strong id="partnershipAvailable">0</strong><small>SDG</small></div><div class="card kpi"><span class="kpi-icon">📊</span><small>إجمالي ربح شحن الهواتف</small><strong id="partnershipTotal">0</strong><small>SDG</small></div><div class="card kpi"><span class="kpi-icon">📤</span><small>التوزيعات التلقائية</small><strong id="partnershipAutomaticTotal">0</strong><small>SDG</small></div><div class="card kpi"><span class="kpi-icon">🧾</span><small>صافي التعديلات اليدوية</small><strong id="partnershipManualNet">0</strong><small>SDG</small></div><div class="card kpi"><span class="kpi-icon">👤</span><small>رصيد محمد عمر</small><strong id="mohamedShare">0</strong><small>SDG</small></div><div class="card kpi"><span class="kpi-icon">👤</span><small>رصيد بشير حسين</small><strong id="bashirShare">0</strong><small>SDG</small></div></div><div class="hint">الربح العام يشمل أرباح تحويل الرصيد وشحن الهواتف وخدمات الزبائن والتحويلات البنكية، بعد خصم المصروفات. أما الشراكة فتُقسّم تلقائياً بالتساوي: 50% لمحمد عمر و50% لبشير حسين من ربح شحن الهواتف فقط؛ ولا تدخل بقية الأرباح أو المصروفات العامة في حساب نصيب الشريكين.</div><h3 class="section-title">تقسيم الأرباح</h3><div class="quick-grid"><button class="quick-link" type="button" data-partner="mohamed"><span class="quick-icon">👤</span><span>محمد عمر<small id="mohamedCardBalance">الرصيد: 0 SDG</small></span></button><button class="quick-link" type="button" data-partner="bashir"><span class="quick-icon">👤</span><span>بشير حسين<small id="bashirCardBalance">الرصيد: 0 SDG</small></span></button></div><div id="partnerAccountCard" hidden style="position:fixed;inset:0;z-index:9998;background:#0009;align-items:center;justify-content:center;padding:18px;overflow:auto"><div class="card" style="width:min(100%,760px);max-height:90vh;overflow:auto"><div class="header-row"><h3 id="partnerAccountTitle">حساب الشريك</h3><button type="button" class="secondary" id="partnerAccountClose">إغلاق</button></div><div class="hint">التوزيع تلقائي بالتساوي: 50% لمحمد عمر و50% لبشير حسين. كلما زاد ربح شحن الهواتف يُحدّث نصيب كل شريك ويُضاف مباشرة إلى حسابه.</div><div class="reportline"><span>الرصيد المخصص للشريك</span><b id="partnerAccountBalance">0 SDG</b></div><h3>سجل التوزيعات</h3><div class="reportline"><span>النصيب التلقائي 50%</span><b id="partnerAutomaticBalance">0 SDG</b></div><div class="reportline"><span>الإضافات والتعديلات</span><b id="partnerManualBalance">0 SDG</b></div><div class="quick-grid" style="margin:12px 0"><button type="button" class="primary" id="partnerAddAdjustment">＋ إضافة مبلغ</button></div><h3>سجل التوزيعات والتعديلات</h3><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>المبلغ</th><th>ملاحظات</th><th>إجراء</th></tr></thead><tbody id="partnerAllocationRows"></tbody></table></div></div></div><div id="partnerAdjustmentModal" hidden style="position:fixed;inset:0;z-index:9999;background:#0009;display:none;align-items:center;justify-content:center;padding:18px"><div class="card" style="width:min(100%,430px);max-height:90vh;overflow:auto"><div class="header-row"><h3 id="partnerAdjustmentTitle">إضافة مبلغ للشريك</h3><button type="button" class="secondary" id="partnerAdjustmentClose">إغلاق</button></div><label>نوع التعديل</label><select id="partnerAdjustmentType" style="width:100%;margin:7px 0 12px"><option value="add">إضافة إلى الرصيد</option><option value="subtract">خصم من الرصيد</option></select><label>المبلغ (SDG)</label><input id="partnerAdjustmentAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="أدخل المبلغ" style="width:100%;margin:7px 0 12px"><label>التاريخ</label><input id="partnerAdjustmentDate" type="date" style="width:100%;margin:7px 0 12px"><label>ملاحظات</label><input id="partnerAdjustmentNote" type="text" maxlength="160" placeholder="سبب الإضافة أو التعديل" style="width:100%;margin:7px 0 16px"><button type="button" class="primary" id="partnerAdjustmentSave" style="width:100%">حفظ التعديل</button></div></div></section>
+<section id="partnership" class="panel">
+<h2 class="section-title">🤝 إدارة الشراكة</h2>
+<div class="grid financial-grid">
+<div class="card kpi"><span class="kpi-icon">💰</span><small>صافي الربح العام بعد المصروفات</small><strong id="partnershipGeneralNet">0</strong><small>SDG</small></div>
+<div class="card kpi"><span class="kpi-icon">📦</span><small>ربح الشحن غير الموزع</small><strong id="partnershipAvailable">0</strong><small>SDG</small></div>
+<div class="card kpi"><span class="kpi-icon">📊</span><small>إجمالي ربح شحن الهواتف</small><strong id="partnershipTotal">0</strong><small>SDG</small></div>
+<div class="card kpi"><span class="kpi-icon">📤</span><small>إجمالي التوزيعات</small><strong id="partnershipAutomaticTotal">0</strong><small>SDG</small></div>
+<div class="card kpi"><span class="kpi-icon">🧾</span><small>صافي التعديلات اليدوية</small><strong id="partnershipManualNet">0</strong><small>SDG</small></div>
+</div>
+<div class="hint">تُوزّع أرباح الشراكة من ربح شحن الهواتف فقط، وفق النسب التي تحددها للشركاء. بقية الأرباح والمصروفات العامة لا تدخل في حساب التوزيع. تسري النسب الجديدة على الأرباح القادمة دون تغيير التوزيعات السابقة.</div>
+<div class="header-row" style="margin:14px 0"><h3 class="section-title">الشركاء وحساباتهم</h3><button type="button" class="primary" id="managePartnersBtn">⚙️ إدارة الشركاء</button></div>
+<div class="quick-grid" id="partnerCards"><div class="hint">لم تتم إضافة شركاء بعد. اضغط «إدارة الشركاء» لإضافة أول شريك وتحديد النسب.</div></div>
+<div id="partnerAccountCard" hidden style="position:fixed;inset:0;z-index:9998;background:#0009;align-items:center;justify-content:center;padding:18px;overflow:auto"><div class="card" style="width:min(100%,760px);max-height:90vh;overflow:auto"><div class="header-row"><h3 id="partnerAccountTitle">حساب الشريك</h3><button type="button" class="secondary" id="partnerAccountClose">إغلاق</button></div><div class="hint" id="partnerAccountHint">حساب الشريك وتوزيعاته.</div><div class="reportline"><span>الرصيد المخصص للشريك</span><b id="partnerAccountBalance">0 SDG</b></div><h3>سجل التوزيعات</h3><div class="reportline"><span>التوزيعات التلقائية</span><b id="partnerAutomaticBalance">0 SDG</b></div><div class="reportline"><span>الإضافات والتعديلات</span><b id="partnerManualBalance">0 SDG</b></div><div class="quick-grid" style="margin:12px 0"><button type="button" class="primary" id="partnerAddAdjustment">＋ إضافة مبلغ</button></div><h3>سجل التوزيعات والتعديلات</h3><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>المبلغ</th><th>ملاحظات</th><th>إجراء</th></tr></thead><tbody id="partnerAllocationRows"></tbody></table></div></div></div>
+<div id="partnerManagementModal" hidden style="position:fixed;inset:0;z-index:9997;background:#0009;display:none;align-items:center;justify-content:center;padding:18px"><div class="card" style="width:min(100%,560px);max-height:90vh;overflow:auto"><div class="header-row"><h3>إدارة الشركاء والنسب</h3><button type="button" class="secondary" id="managePartnersClose">إغلاق</button></div><p class="hint">أدخل أسماء الشركاء وحدد نسبة كل شريك. يجب أن يكون مجموع النسب 100%. تغيير النسب يطبق على الأرباح الجديدة فقط.</p><div id="partnerSettingsRows"></div><div class="reportline"><span>مجموع النسب</span><b id="partnerPercentTotal">0%</b></div><div class="quick-grid" style="margin:12px 0"><button type="button" class="secondary" id="addPartnerRow">＋ إضافة شريك</button><button type="button" class="primary" id="savePartnerSettings">حفظ الشركاء والنسب</button></div><div class="muted" id="partnerSettingsMessage" aria-live="polite"></div></div></div>
+<div id="partnerAdjustmentModal" hidden style="position:fixed;inset:0;z-index:9999;background:#0009;display:none;align-items:center;justify-content:center;padding:18px"><div class="card" style="width:min(100%,430px);max-height:90vh;overflow:auto"><div class="header-row"><h3 id="partnerAdjustmentTitle">إضافة مبلغ للشريك</h3><button type="button" class="secondary" id="partnerAdjustmentClose">إغلاق</button></div><label>نوع التعديل</label><select id="partnerAdjustmentType" style="width:100%;margin:7px 0 12px"><option value="add">إضافة إلى الرصيد</option><option value="subtract">خصم من الرصيد</option></select><label>المبلغ (SDG)</label><input id="partnerAdjustmentAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="أدخل المبلغ" style="width:100%;margin:7px 0 12px"><label>التاريخ</label><input id="partnerAdjustmentDate" type="date" style="width:100%;margin:7px 0 12px"><label>ملاحظات</label><input id="partnerAdjustmentNote" type="text" maxlength="160" placeholder="سبب الإضافة أو التعديل" style="width:100%;margin:7px 0 16px"><button type="button" class="primary" id="partnerAdjustmentSave" style="width:100%">حفظ التعديل</button></div></div>
+</section>
 </main><footer>حساباتي · حقوق النشر محفوظة © 2026 محمد عمر محمد اسحق</footer>
 </div>
 <div class="lock-screen" id="lockScreen">
@@ -567,17 +582,31 @@ body.dark .profit-toggle{color:var(--ink)}
 </script>
 
 <style id="partnership-style">
-#partnership .quick-link{min-height:82px}#partnerAccountCard{margin-bottom:18px}#partnerAccountCard form{margin:12px 0}.partnership-breakdown{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}.partnership-breakdown .card{padding:12px}@media(max-width:480px){#partnership .financial-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+#partnership .quick-link{min-height:82px}#partnerAccountCard{margin-bottom:18px}#partnerAccountCard form{margin:12px 0}.partnership-breakdown{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}.partnership-breakdown .card{padding:12px}#partnerSettingsRows{display:grid;gap:9px;margin:12px 0}.partner-setting-row{display:grid;grid-template-columns:minmax(0,1fr) 105px 42px;gap:8px;align-items:center}.partner-setting-row input{min-width:0;width:100%}.partner-setting-row button{padding:8px}@media(max-width:480px){#partnership .financial-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.partner-setting-row{grid-template-columns:minmax(0,1fr) 82px 38px}}
 </style>
 <script id="partnership-module">
 (function(){
  const KEY='hisabati_partnership_v1', $=id=>document.getElementById(id), fmt=n=>Number(n||0).toLocaleString('en-US',{maximumFractionDigits:2});
- let state={mohamed:[],bashir:[],manualAdjustments:[]},selected='mohamed',editingId=null;
- try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved){state.mohamed=Array.isArray(saved.mohamed)?saved.mohamed:[];state.bashir=Array.isArray(saved.bashir)?saved.bashir:[];state.manualAdjustments=Array.isArray(saved.manualAdjustments)?saved.manualAdjustments:[];}}catch(e){}
+ let state={partners:[],allocations:{},manualAdjustments:[],lastProfit:0},selected=null,editingId=null;
+ const old=(()=>{try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){return null}})();
+ if(old){
+  if(Array.isArray(old.partners)){
+   state.partners=old.partners;state.allocations=old.allocations&&typeof old.allocations==='object'?old.allocations:{};
+   state.manualAdjustments=Array.isArray(old.manualAdjustments)?old.manualAdjustments:[];
+   state.lastProfit=Number(old.lastProfit||0);
+  }else{
+   state.partners=[{id:'mohamed',name:'محمد عمر',percent:50},{id:'bashir',name:'بشير حسين',percent:50}];
+   state.allocations={mohamed:Array.isArray(old.mohamed)?old.mohamed:[],bashir:Array.isArray(old.bashir)?old.bashir:[]};
+   state.manualAdjustments=Array.isArray(old.manualAdjustments)?old.manualAdjustments:[];
+   state.lastProfit=0;
+  }
+ }
+ state.partners=state.partners.filter(p=>p&&p.id).map(p=>({id:String(p.id),name:String(p.name||'شريك'),percent:Number(p.percent||0)}));
+ state.partners.forEach(p=>{if(!Array.isArray(state.allocations[p.id]))state.allocations[p.id]=[]});
  const save=()=>localStorage.setItem(KEY,JSON.stringify(state));
- const total=a=>a.reduce((n,x)=>n+Number(x.amount||0),0);
+ const total=a=>(Array.isArray(a)?a:[]).reduce((n,x)=>n+Number(x.amount||0),0);
  const manualFor=id=>state.manualAdjustments.filter(x=>x.partner===id);
- const balance=id=>total(state[id])+total(manualFor(id));
+ const balance=id=>total(state.allocations[id])+total(manualFor(id));
  function generalProfit(){
   let d={},banks={};try{d=JSON.parse(localStorage.getItem('hisabati_v1')||'{}')}catch(e){}
   try{banks=JSON.parse(localStorage.getItem('hisabati_bank_transfer_v1')||'{}')}catch(e){}
@@ -588,33 +617,61 @@ body.dark .profit-toggle{color:var(--ink)}
   const bankProfit=sum(banks.banks,b=>Array.isArray(b.records)&&b.records.length?sum(b.records,x=>Number(x.gain||0)):Number(b.profit||0));
   const expenses=sum(d.expenses,x=>Number(x.amount||0));
   const gross=creditProfit+rechargeProfit+serviceProfit+bankProfit;
-  return {gross,expenses,net:gross-expenses,rechargeProfit};
+  return {net:gross-expenses,rechargeProfit};
+ }
+ function distribute(){
+  const profit=generalProfit().rechargeProfit,delta=Number((profit-state.lastProfit).toFixed(2));
+  if(delta>0.009&&state.partners.length){
+   state.partners.forEach(p=>{
+    const amount=Number((delta*p.percent/100).toFixed(2));
+    if(amount>0)state.allocations[p.id].push({amount,date:new Date().toISOString().slice(0,10),note:'توزيع تلقائي بنسبة '+p.percent+'% من ربح شحن الهواتف',automatic:true,createdAt:new Date().toISOString()});
+   });
+  }
+  state.lastProfit=profit;
  }
  function render(){
-  const p=generalProfit(),target=Number((p.rechargeProfit/2).toFixed(2));
-  ['mohamed','bashir'].forEach(id=>{
-   const difference=Number((target-total(state[id])).toFixed(2));
-   if(Math.abs(difference)>=0.01)state[id].push({amount:difference,date:new Date().toISOString().slice(0,10),note:'توزيع تلقائي 50% من ربح شحن الهواتف',automatic:true,createdAt:new Date().toISOString()});
-  });
-  save();
-  const distributed=total(state.mohamed)+total(state.bashir),manualNet=total(state.manualAdjustments),available=Number((p.net-distributed-manualNet).toFixed(2));
-  $('partnershipGeneralNet').textContent=fmt(p.net);$('partnershipTotal').textContent=fmt(p.rechargeProfit);$('partnershipAvailable').textContent=fmt(available);$('partnershipAutomaticTotal').textContent=fmt(distributed);$('partnershipManualNet').textContent=fmt(manualNet);
-  $('mohamedShare').textContent=fmt(balance('mohamed'));$('bashirShare').textContent=fmt(balance('bashir'));
-  $('mohamedCardBalance').textContent='الرصيد: '+fmt(balance('mohamed'))+' SDG';
-  $('bashirCardBalance').textContent='الرصيد: '+fmt(balance('bashir'))+' SDG';
-  if(!$('partnerAccountCard').hidden)renderAccount();
- }
- function renderAccount(){
-  const auto=state[selected]||[],manual=manualFor(selected);
-  $('partnerAccountTitle').textContent=selected==='mohamed'?'حساب محمد عمر':'حساب بشير حسين';
-  $('partnerAccountBalance').textContent=fmt(balance(selected))+' SDG';
-  $('partnerAutomaticBalance').textContent=fmt(total(auto))+' SDG';
-  $('partnerManualBalance').textContent=fmt(total(manual))+' SDG';
-  const rows=[...auto.map((x,i)=>({...x,_kind:'auto',_key:x.createdAt||('auto-'+i)})),...manual.map(x=>({...x,_kind:'manual',_key:x.id}))].sort((a,b)=>String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));
-  $('partnerAllocationRows').innerHTML=rows.length?rows.map(x=>'<tr><td>'+escapeHtml(x.date||'—')+'</td><td>'+fmt(x.amount)+' SDG</td><td>'+escapeHtml(x.note|| (x._kind==='auto'?'توزيع تلقائي':'تعديل يدوي'))+'</td><td>'+(x._kind==='manual'?'<button type="button" class="secondary" data-edit-adjustment="'+escapeHtml(x.id)+'">تعديل</button>':'—')+'</td></tr>').join(''):'<tr><td colspan="4" class="empty">لا توجد توزيعات حتى الآن</td></tr>';
-  $('partnerAllocationRows').querySelectorAll('[data-edit-adjustment]').forEach(b=>b.addEventListener('click',()=>openAdjustment(b.dataset.editAdjustment)));
+  distribute();save();
+  const p=generalProfit(),distributed=state.partners.reduce((n,x)=>n+total(state.allocations[x.id]),0),manualNet=total(state.manualAdjustments);
+  $('partnershipGeneralNet').textContent=fmt(p.net);$('partnershipTotal').textContent=fmt(p.rechargeProfit);
+  $('partnershipAvailable').textContent=fmt(Math.max(0,p.rechargeProfit-distributed));
+  $('partnershipAutomaticTotal').textContent=fmt(distributed);$('partnershipManualNet').textContent=fmt(manualNet);
+  $('partnerCards').innerHTML=state.partners.length?state.partners.map(p=>'<button class="quick-link" type="button" data-partner="'+escapeHtml(p.id)+'"><span class="quick-icon">👤</span><span>'+escapeHtml(p.name)+'<small>النسبة: '+fmt(p.percent)+'% · الرصيد: '+fmt(balance(p.id))+' SDG</small></span></button>').join(''):'<div class="hint">لم تتم إضافة شركاء بعد. اضغط «إدارة الشركاء» لإضافة أول شريك وتحديد النسب.</div>';
+  $('partnerCards').querySelectorAll('[data-partner]').forEach(b=>b.addEventListener('click',()=>{selected=b.dataset.partner;$('partnerAccountCard').hidden=false;$('partnerAccountCard').style.display='flex';renderAccount();}));
+  if(!$('partnerAccountCard').hidden&&selected)renderAccount();
  }
  function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+ function renderAccount(){
+  const partner=state.partners.find(x=>x.id===selected);if(!partner)return;
+  const auto=state.allocations[selected]||[],manual=manualFor(selected);
+  $('partnerAccountTitle').textContent='حساب '+partner.name;
+  $('partnerAccountHint').textContent='نسبة الشريك الحالية: '+fmt(partner.percent)+'% · النسب الجديدة تسري على الأرباح القادمة فقط.';
+  $('partnerAccountBalance').textContent=fmt(balance(selected))+' SDG';
+  $('partnerAutomaticBalance').textContent=fmt(total(auto))+' SDG';$('partnerManualBalance').textContent=fmt(total(manual))+' SDG';
+  const rows=[...auto.map((x,i)=>({...x,_kind:'auto',_key:x.createdAt||('auto-'+i)})),...manual.map(x=>({...x,_kind:'manual',_key:x.id}))].sort((a,b)=>String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));
+  $('partnerAllocationRows').innerHTML=rows.length?rows.map(x=>'<tr><td>'+escapeHtml(x.date||'—')+'</td><td>'+fmt(x.amount)+' SDG</td><td>'+escapeHtml(x.note||(x._kind==='auto'?'توزيع تلقائي':'تعديل يدوي'))+'</td><td>'+(x._kind==='manual'?'<button type="button" class="secondary" data-edit-adjustment="'+escapeHtml(x.id)+'">تعديل</button>':'—')+'</td></tr>').join(''):'<tr><td colspan="4" class="empty">لا توجد توزيعات حتى الآن</td></tr>';
+  $('partnerAllocationRows').querySelectorAll('[data-edit-adjustment]').forEach(b=>b.addEventListener('click',()=>openAdjustment(b.dataset.editAdjustment)));
+ }
+ function renderSettings(){
+  $('partnerSettingsRows').innerHTML=state.partners.map(p=>'<div class="partner-setting-row" data-row-id="'+escapeHtml(p.id)+'"><input type="text" maxlength="60" value="'+escapeHtml(p.name)+'" aria-label="اسم الشريك"><input type="number" min="0" max="100" step="0.01" value="'+fmt(p.percent)+'" aria-label="نسبة الشريك" placeholder="النسبة %"><button type="button" class="secondary" data-remove-partner="'+escapeHtml(p.id)+'" title="حذف الشريك">✕</button></div>').join('');
+  updatePercentTotal();
+  $('partnerSettingsRows').querySelectorAll('[data-remove-partner]').forEach(btn=>btn.addEventListener('click',()=>{
+   const id=btn.dataset.removePartner;
+   if(total(state.allocations[id])||manualFor(id).length){alert('لا يمكن حذف شريك لديه سجل مالي. يمكنك تغيير اسمه أو إبقاء حسابه.');return;}
+   state.partners=state.partners.filter(p=>p.id!==id);delete state.allocations[id];renderSettings();
+  }));
+  $('partnerSettingsRows').querySelectorAll('input').forEach(input=>input.addEventListener('input',updatePercentTotal));
+ }
+ function updatePercentTotal(){
+  const rows=[...$('partnerSettingsRows').querySelectorAll('.partner-setting-row')];
+  const sum=rows.reduce((n,row)=>n+Number(row.querySelectorAll('input')[1].value||0),0);
+  $('partnerPercentTotal').textContent=fmt(sum)+'%';
+  $('partnerPercentTotal').style.color=Math.abs(sum-100)<0.001?'#15945f':'#c27a18';
+ }
+ function openManagement(){
+  renderSettings();$('partnerSettingsMessage').textContent='';
+  $('partnerManagementModal').hidden=false;$('partnerManagementModal').style.display='flex';
+ }
+ function closeManagement(){$('partnerManagementModal').hidden=true;$('partnerManagementModal').style.display='none';}
  function openAdjustment(id=null){
   editingId=id;const item=id?state.manualAdjustments.find(x=>x.id===id):null;
   $('partnerAdjustmentTitle').textContent=item?'تعديل مبلغ الشريك':'إضافة مبلغ للشريك';
@@ -626,11 +683,30 @@ body.dark .profit-toggle{color:var(--ink)}
  }
  function closeAdjustment(){$('partnerAdjustmentModal').hidden=true;$('partnerAdjustmentModal').style.display='none';editingId=null;}
  $('partnershipLaunch').addEventListener('click',()=>{document.querySelector('#nav button[data-tab="partnership"]').click();render();window.scrollTo({top:0,behavior:'smooth'});});
- document.querySelectorAll('[data-partner]').forEach(b=>b.addEventListener('click',()=>{selected=b.dataset.partner;$('partnerAccountCard').hidden=false;$('partnerAccountCard').style.display='flex';renderAccount();}));
- $('partnerAccountClose').addEventListener('click',()=>{$('partnerAccountCard').hidden=true;$('partnerAccountCard').style.display='none';});
+ $('managePartnersBtn').addEventListener('click',openManagement);
+ $('managePartnersClose').addEventListener('click',closeManagement);
+ $('partnerManagementModal').addEventListener('click',e=>{if(e.target===$('partnerManagementModal'))closeManagement();});
+ $('addPartnerRow').addEventListener('click',()=>{
+  if($('partnerSettingsRows').querySelectorAll('.partner-setting-row').length>=20){alert('الحد الأقصى 20 شريكاً.');return;}
+  const id='partner-'+Date.now()+'-'+Math.random().toString(36).slice(2,7);
+  state.partners.push({id,name:'شريك جديد',percent:0});state.allocations[id]=[];renderSettings();
+ });
+ $('savePartnerSettings').addEventListener('click',()=>{
+  const rows=[...$('partnerSettingsRows').querySelectorAll('.partner-setting-row')];
+  const next=rows.map(row=>({id:row.dataset.rowId,name:row.querySelectorAll('input')[0].value.trim(),percent:Number(row.querySelectorAll('input')[1].value)}));
+  if(!next.length){alert('أضف شريكاً واحداً على الأقل.');return;}
+  if(next.some(p=>!p.name||!Number.isFinite(p.percent)||p.percent<0||p.percent>100)){alert('راجع أسماء الشركاء والنسب المدخلة.');return;}
+  if(new Set(next.map(p=>p.name.toLocaleLowerCase())).size!==next.length){alert('لا يمكن تكرار اسم الشريك.');return;}
+  const sum=next.reduce((n,p)=>n+p.percent,0);
+  if(Math.abs(sum-100)>0.001){$('partnerSettingsMessage').textContent='مجموع النسب يجب أن يساوي 100%. المجموع الحالي: '+fmt(sum)+'%';return;}
+  state.partners=next;next.forEach(p=>{if(!Array.isArray(state.allocations[p.id]))state.allocations[p.id]=[];});
+  save();closeManagement();render();
+ });
+ $('partnerAccountClose').addEventListener('click',()=>{$('partnerAccountCard').hidden=true;$('partnerAccountCard').style.display='none';selected=null;});
  $('partnerAddAdjustment').addEventListener('click',()=>openAdjustment());
  $('partnerAdjustmentClose').addEventListener('click',closeAdjustment);
  $('partnerAdjustmentSave').addEventListener('click',()=>{
+  if(!selected||!state.partners.some(p=>p.id===selected)){alert('اختر حساب شريك أولاً.');return;}
   const amount=Number($('partnerAdjustmentAmount').value),date=$('partnerAdjustmentDate').value,note=$('partnerAdjustmentNote').value.trim();
   if(!Number.isFinite(amount)||amount<=0){alert('أدخل مبلغاً صحيحاً أكبر من صفر.');return;}
   if(!date){alert('حدد تاريخ العملية.');return;}
@@ -640,7 +716,7 @@ body.dark .profit-toggle{color:var(--ink)}
   save();closeAdjustment();render();renderAccount();
  });
  $('partnerAdjustmentModal').addEventListener('click',e=>{if(e.target===$('partnerAdjustmentModal'))closeAdjustment();});
- $('partnerAccountCard').addEventListener('click',e=>{if(e.target===$('partnerAccountCard')){$('partnerAccountCard').hidden=true;$('partnerAccountCard').style.display='none';}});
+ $('partnerAccountCard').addEventListener('click',e=>{if(e.target===$('partnerAccountCard')){$('partnerAccountCard').hidden=true;$('partnerAccountCard').style.display='none';selected=null;}});
  document.querySelector('#nav button[data-tab="partnership"]').addEventListener('click',()=>render());
  window.addEventListener('storage',render);render();
 })();
