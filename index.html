@@ -619,6 +619,7 @@ body.dark .profit-toggle{color:var(--ink)}
   const gross=creditProfit+rechargeProfit+serviceProfit+bankProfit;
   return {net:gross-expenses,rechargeProfit};
  }
+ if(old&&!Array.isArray(old.partners))state.lastProfit=generalProfit().rechargeProfit;
  function distribute(){
   const profit=generalProfit().rechargeProfit,delta=Number((profit-state.lastProfit).toFixed(2));
   if(delta>0.009&&state.partners.length){
