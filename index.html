@@ -218,7 +218,7 @@ function edit(type,id){
   v=ask('ملاحظات',x.note);if(v===null)return;x.note=v;
  }else if(type==='services'){
   v=num('المبلغ المدفوع من الزبون (SDG)',x.sale,0.01);if(v===null)return;x.sale=v;
-  v=num('تكلفة الخدمة / الخصم من الرصيد (SDG)',x.cost,0);if(v===null)return;x.cost=v;
+  v=num('تكلفة الخدمة / الخصم من الرصيد (SDG)',x.cost,0);if(v===null)return;const availableBeforeEdit=sum(db.stock,z=>z.amount)-sum(db.transfers,z=>z.cost)-sum(db.recharges,z=>z.cost)-sum(db.services,z=>z.cost)+Number(x.cost);if(v>availableBeforeEdit){alert('الرصيد المتاح لا يكفي لهذه التكلفة.');return;}x.cost=v;
   v=ask('نوع الخدمة (زين / سوداني)',x.network||'زين');if(v===null)return;x.network=v;
   v=ask('رقم الهاتف / العميل',x.customer);if(v===null)return;x.customer=v;
   v=ask('التاريخ بصيغة YYYY-MM-DD',x.date);if(v===null)return;x.date=v;
