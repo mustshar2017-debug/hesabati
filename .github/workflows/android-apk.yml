@@ -17,7 +17,7 @@ on:
       - '.github/workflows/android-apk.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build-android:
@@ -38,6 +38,32 @@ jobs:
         run: npm install
       - name: Prepare web assets
         run: npm run build
+            - name: Package live update bundle
+        run: cd www && zip -qr ../hesabati-web.zip .
+      - name: Publish live update bundle
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ota-${{ github.run_number }}
+          name: Hesabati live update ${{ github.run_number }}
+          files: hesabati-web.zip
+          make_latest: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish live update manifest
+        run: |
+          cat > ota-manifest.json <<'EOF'
+          {
+            "version": "${{ github.run_number }}",
+            "url": "https://github.com/mustshar2017-debug/hesabati/releases/download/ota-${{ github.run_number }}/hesabati-web.zip"
+          }
+          EOF
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ota-manifest.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish app live update manifest"
+            git push origin HEAD:mobile-app
+          fi
       - name: Add Android platform
         run: npx cap add android
       - name: Sync Capacitor
