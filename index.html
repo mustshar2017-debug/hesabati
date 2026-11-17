@@ -44,7 +44,10 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 .lock-card input{text-align:center;font-size:24px;letter-spacing:7px;margin:8px 0 12px}
 .lock-card .primary{width:100%}.lock-error{color:var(--red);min-height:24px;font-size:13px}
 @media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}form{grid-template-columns:1fr}.full{grid-column:auto}.kpi strong{font-size:19px}}
-.quick-section{margin-top:22px}.quick-section .section-title{margin:0 0 11px}.quick-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.quick-link{display:flex;align-items:center;gap:11px;width:100%;min-height:78px;padding:12px;text-align:right;background:#fff;border:1px solid #e1e9e6;border-radius:15px;color:#183536;font:inherit;font-weight:700;box-shadow:0 2px 9px #163b350a;cursor:pointer}.quick-link:active{transform:scale(.985)}.quick-icon{width:46px;height:46px;flex:0 0 46px;display:grid;place-items:center;border-radius:13px;background:#e8f4ef;font-size:24px}.quick-link span:last-child{font-size:14px;line-height:1.5}.quick-link small{display:block;color:#6d8280;font-size:11px;font-weight:500}@media(min-width:700px){.quick-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}</style></head>
+.quick-section{margin-top:22px}.quick-section .section-title{margin:0 0 11px}.quick-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.quick-link{display:flex;align-items:center;gap:11px;width:100%;min-height:78px;padding:12px;text-align:right;background:#fff;border:1px solid #e1e9e6;border-radius:15px;color:#183536;font:inherit;font-weight:700;box-shadow:0 2px 9px #163b350a;cursor:pointer}.quick-link:active{transform:scale(.985)}
+/* كل أيقونة تفتح وظيفتها وحدها دون إظهار بقية الأقسام */
+#credit.quick-stock #transferCard,#credit.quick-stock #creditHistoryBlock,#credit.quick-transfer #stockCard,#credit.quick-transfer #creditHistoryBlock,#credit.quick-creditHistory #stockCard,#credit.quick-creditHistory #transferCard,#recharge.quick-recharge #rechargeHistoryBlock,#recharge.quick-rechargeHistory #rechargeCard,#recharge.quick-rechargeHistory>.section-title:first-child{display:none!important}
+#credit.quick-stock>.section-title:first-child,#credit.quick-transfer>.section-title:first-child{display:none!important}.quick-icon{width:46px;height:46px;flex:0 0 46px;display:grid;place-items:center;border-radius:13px;background:#e8f4ef;font-size:24px}.quick-link span:last-child{font-size:14px;line-height:1.5}.quick-link small{display:block;color:#6d8280;font-size:11px;font-weight:500}@media(min-width:700px){.quick-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}</style></head>
 <body>
 <header><div class="wrap header-row"><div><h1>حساباتي</h1><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><button class="secondary" id="lockNow" type="button">🔒 قفل الآن</button></div></header>
 <div class="wrap">
@@ -71,7 +74,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 </section>
 <section id="credit" class="panel">
 <h2 class="section-title">قسم الرصيد</h2>
-<div class="card">
+<div class="card" id="stockCard">
 <h3>رصيد داخل</h3><p class="muted">إضافة كمية رصيد إلى مخزونك مع تسجيل تكلفتها.</p>
 <form id="stockForm">
 <div><label>قيمة الرصيد الداخل (SDG)</label><input name="amount" type="number" min="0.01" step="0.01" required></div>
@@ -79,7 +82,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 <div class="full"><label>ملاحظات / مصدر الرصيد</label><input name="note" placeholder="مثال: شراء رصيد من المورد"></div>
 <button class="primary full">حفظ الرصيد الداخل</button></form>
 </div>
-<div class="card" style="margin-top:12px"><h3>تحويل رصيد</h3><p class="muted">أدخل قيمة البيع والتكلفة التي خرجت من مخزونك لحساب الربح تلقائياً.</p>
+<div class="card" id="transferCard" style="margin-top:12px"><h3>تحويل رصيد</h3><p class="muted">أدخل قيمة البيع والتكلفة التي خرجت من مخزونك لحساب الربح تلقائياً.</p>
 <form id="transferForm">
 <div><label>قيمة التحويل / البيع (SDG)</label><input name="sale" type="number" min="0.01" step="0.01" required></div>
 <div><label>تكلفة الرصيد المحوّل (SDG)</label><input name="cost" type="number" min="0" step="0.01" required></div>
@@ -88,10 +91,10 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 <div class="full"><label>ملاحظات</label><input name="note" placeholder="اختياري"></div>
 <button class="primary full">حفظ عملية التحويل</button></form><div class="hint" id="transferHint">الربح المتوقع: أدخل قيمة البيع والتكلفة.</div>
 </div>
-<h2 class="section-title">سجل عمليات الرصيد</h2><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>العملية</th><th>القيمة</th><th>التكلفة</th><th>الربح</th><th>تفاصيل</th><th></th></tr></thead><tbody id="creditRows"></tbody></table></div>
+<div id="creditHistoryBlock"><h2 class="section-title">سجل عمليات الرصيد</h2><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>العملية</th><th>القيمة</th><th>التكلفة</th><th>الربح</th><th>تفاصيل</th><th></th></tr></thead><tbody id="creditRows"></tbody></table></div></div>
 </section>
 <section id="recharge" class="panel">
-<h2 class="section-title">قسم شحن الهواتف</h2><div class="card"><form id="rechargeForm">
+<h2 class="section-title">قسم شحن الهواتف</h2><div class="card" id="rechargeCard"><form id="rechargeForm">
 <div><label>قيمة الشحن المحصلة (SDG)</label><input name="sale" type="number" min="0.01" step="0.01" required></div>
 <div><label>تكلفة الشحن عليك (SDG)</label><input name="cost" type="number" min="0" step="0.01" required></div>
 <div><label>رقم الهاتف</label><input name="phone" inputmode="tel" placeholder="اختياري"></div>
@@ -99,7 +102,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 <div><label>التاريخ</label><input name="date" type="date" required></div>
 <div><label>ملاحظات</label><input name="note" placeholder="اختياري"></div>
 <button class="primary full">حفظ عملية الشحن</button></form></div>
-<h2 class="section-title">سجل الشحن</h2><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>الشبكة</th><th>الهاتف</th><th>المحصّل</th><th>التكلفة</th><th>الربح</th><th></th></tr></thead><tbody id="rechargeRows"></tbody></table></div>
+<div id="rechargeHistoryBlock"><h2 class="section-title">سجل الشحن</h2><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>الشبكة</th><th>الهاتف</th><th>المحصّل</th><th>التكلفة</th><th>الربح</th><th></th></tr></thead><tbody id="rechargeRows"></tbody></table></div></div>
 </section>
 <section id="expenses" class="panel">
 <h2 class="section-title">المصروفات اليومية</h2><div class="card"><form id="expenseForm">
@@ -204,7 +207,7 @@ bind('transferForm',x=>{if(+x.cost>sum(db.stock,z=>z.amount)-sum(db.transfers,z=
 bind('rechargeForm',x=>db.recharges.push({...x,sale:+x.sale,cost:+x.cost,id:crypto.randomUUID()}));
 bind('expenseForm',x=>db.expenses.push({...x,amount:+x.amount,id:crypto.randomUUID()}));
 $('transferForm').addEventListener('input',()=>{let f=$('transferForm'),s=+f.sale.value||0,c=+f.cost.value||0;$('transferHint').textContent='الربح المتوقع: '+fmt(s-c)+' SDG'});
-document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===b.dataset.tab));if(b.dataset.tab==='reports')report()});
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>{x.classList.toggle('active',x.id===b.dataset.tab);x.classList.remove('quick-stock','quick-transfer','quick-creditHistory','quick-recharge','quick-rechargeHistory','quick-expenses')});if(b.dataset.tab==='reports')report()});
 $('monthFilter').onchange=report;
 $('backupBtn').onclick=()=>download('hisabati-backup.json',JSON.stringify(db,null,2),'application/json');
 $('exportBtn').onclick=()=>{let rows=[['القسم','التاريخ','البيان','القيمة','التكلفة','الربح']];db.stock.forEach(x=>rows.push(['رصيد داخل',x.date,x.note,x.amount,x.amount,0]));db.transfers.forEach(x=>rows.push(['تحويل رصيد',x.date,x.customer,x.sale,x.cost,x.sale-x.cost]));db.recharges.forEach(x=>rows.push(['شحن',x.date,x.network+' '+x.phone,x.sale,x.cost,x.sale-x.cost]));db.expenses.forEach(x=>rows.push(['مصروف',x.date,x.category+' '+x.note,x.amount,'','']));download('hisabati.csv','\ufeff'+rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n'),'text/csv;charset=utf-8')};
@@ -278,4 +281,4 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
-<script>(function(){const targets={stock:function(){return document.querySelector("#credit .card")},transfer:function(){return document.querySelectorAll("#credit .card")[1]},expenses:function(){return document.querySelector("#expenses .card")},creditHistory:function(){return document.querySelector("#credit .table-wrap")},recharge:function(){return document.querySelector("#recharge .card")},rechargeHistory:function(){return document.querySelector("#recharge .table-wrap")}};document.querySelectorAll(".quick-link").forEach(function(b){b.addEventListener("click",function(){const tab=b.getAttribute("data-panel");document.querySelectorAll("#nav button").forEach(function(x){x.classList.toggle("active",x.getAttribute("data-tab")===tab)});document.querySelectorAll(".panel").forEach(function(x){x.classList.toggle("active",x.id===tab)});const el=targets[b.getAttribute("data-target")]();if(el)setTimeout(function(){el.scrollIntoView({behavior:"smooth",block:"start"})},80)})})})();</script></body></html>
+<script>(function(){const targets={stock:function(){return document.getElementById("stockCard")},transfer:function(){return document.getElementById("transferCard")},expenses:function(){return document.querySelector("#expenses .card")},creditHistory:function(){return document.getElementById("creditHistoryBlock")},recharge:function(){return document.getElementById("rechargeCard")},rechargeHistory:function(){return document.getElementById("rechargeHistoryBlock")}};document.querySelectorAll(".quick-link").forEach(function(b){b.addEventListener("click",function(){const tab=b.getAttribute("data-panel"),target=b.getAttribute("data-target");document.querySelectorAll("#nav button").forEach(function(x){x.classList.toggle("active",x.getAttribute("data-tab")===tab)});document.querySelectorAll(".panel").forEach(function(x){x.classList.toggle("active",x.id===tab);x.classList.remove("quick-stock","quick-transfer","quick-creditHistory","quick-recharge","quick-rechargeHistory","quick-expenses")});const panel=document.getElementById(tab);if(panel)panel.classList.add("quick-"+target);const el=targets[target]();if(el)setTimeout(function(){el.scrollIntoView({behavior:"smooth",block:"start"})},80)})})})();</script></body></html>
