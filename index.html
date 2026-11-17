@@ -90,7 +90,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 }
 </style></head>
 <body>
-<header><div class="wrap header-row"><div><h1>حساباتي</h1><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><div class="header-actions"><button class="menu-trigger" id="menuTrigger" type="button" aria-label="القائمة" aria-expanded="false">⋮</button><button class="secondary" id="lockNow" type="button">🔒 قفل الآن</button><div class="app-menu" id="appMenu" hidden><button type="button" data-menu-action="backup">💾 حفظ نسخة احتياطية</button><button type="button" data-menu-action="labels">✏️ تعديل أسماء الأيقونات</button><button type="button" data-menu-action="generalReport">📊 تقرير عام مفصل</button><button type="button" data-menu-action="monthlyReport">📅 التقرير الشهري</button><button type="button" data-menu-action="settings">⚙️ إعدادات التطبيق</button></div></div></div></header>
+<header><div class="wrap header-row"><div><div class="brand-line"><h1>حساباتي</h1><button id="themeToggle" class="theme-toggle" type="button" aria-label="تفعيل الوضع الليلي" title="تفعيل الوضع الليلي">☀️</button></div><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><div class="header-actions"><button class="menu-trigger" id="menuTrigger" type="button" aria-label="القائمة" aria-expanded="false">⋮</button><button class="secondary" id="lockNow" type="button">🔒 قفل الآن</button><div class="app-menu" id="appMenu" hidden><button type="button" data-menu-action="backup">💾 حفظ نسخة احتياطية</button><button type="button" data-menu-action="labels">✏️ تعديل أسماء الأيقونات</button><button type="button" data-menu-action="generalReport">📊 تقرير عام مفصل</button><button type="button" data-menu-action="monthlyReport">📅 التقرير الشهري</button><button type="button" data-menu-action="settings">⚙️ إعدادات التطبيق</button></div></div></div></header>
 <div class="wrap">
 <nav id="nav">
 <button class="active" data-tab="home">الرئيسية</button><button data-tab="credit">حساب الرصيد</button><button data-tab="recharge">شحن الهواتف</button><button data-tab="services">خدمات الزبائن</button><button data-tab="expenses">المصروفات</button><button data-tab="reports">التقارير</button>
@@ -502,6 +502,56 @@ body.back-control-visible{padding-bottom:86px}
   if(summary&&!summary.hidden){summary.hidden=true;updateBackVisibility();return;}
   if(window.history.length>1){window.history.back();return;}
   alert('أنت الآن في الصفحة الرئيسية.');
+ });
+})();
+</script>
+
+
+<style id="theme-toggle-styles">
+.brand-line{display:flex;align-items:center;gap:10px}
+.theme-toggle{width:38px;height:38px;display:grid;place-items:center;border:1px solid #ffffff66;border-radius:12px;background:#ffffff18;color:#fff;font-size:21px;line-height:1;cursor:pointer}
+.theme-toggle:active{transform:scale(.94)}
+body.dark{--bg:#101b1b;--card:#1b2a29;--ink:#e6f0ed;--muted:#a6bbb5;--line:#344744;--teal:#31b49b;--red:#ff8585;--green:#5bd3a0;background:var(--bg);color:var(--ink)}
+body.dark nav{background:var(--bg)}
+body.dark nav button,body.dark .card,body.dark .quick-link,body.dark .recharge-stat,body.dark .table-wrap,body.dark .bank-box,body.dark .bank-kpi,body.dark .bank-form,body.dark .bank-table{background:var(--card);color:var(--ink);border-color:var(--line)}
+body.dark input,body.dark select,body.dark textarea{background:#142120;color:var(--ink);border-color:#405550}
+body.dark .secondary{background:#263c37;color:#9be4ce;border-color:#42665b}
+body.dark .app-menu,body.dark .app-menu button{background:#1b2a29;color:var(--ink);border-color:var(--line)}
+body.dark .app-menu button:active{background:#263c37}
+body.dark .financial-grid .kpi{background:linear-gradient(145deg,#1b2a29,#203632);border-color:#344f47}
+body.dark .financial-grid .kpi strong{color:#b9f1df}
+body.dark .kpi-icon,body.dark .quick-icon{background:#29443d}
+body.dark .hint,body.dark .bank-note{background:#203a33;border-color:#355b4e;color:#d4eee4}
+body.dark .bank-tabs button{background:#1b2a29;color:var(--ink);border-color:var(--line)}
+body.dark .bank-tabs button.active{background:#087f70;color:#fff}
+body.dark .bank-close{background:#29413a;color:var(--ink)}
+body.dark .bank-table th,body.dark .bank-table td,body.dark th,body.dark td{border-color:var(--line);color:var(--ink)}
+body.dark td:last-child,body.dark th:last-child{background:var(--card)}
+body.dark .lock-card{background:#1b2a29;color:var(--ink)}
+body.dark .lock-card h2,body.dark .lock-card p{color:var(--ink)}
+body.dark .reportline{border-color:var(--line)}
+body.dark .profit-toggle{color:var(--ink)}
+@media(max-width:480px){.brand-line{gap:8px}.theme-toggle{width:36px;height:36px}}
+@media print{body.dark{background:#fff!important;color:#111!important}}
+</style>
+<script id="theme-toggle-script">
+(function(){
+ const KEY='hisabati_theme_v1',button=document.getElementById('themeToggle');
+ if(!button)return;
+ function apply(dark){
+  document.body.classList.toggle('dark',dark);
+  button.textContent=dark?'🌙':'☀️';
+  button.setAttribute('aria-label',dark?'تفعيل الوضع النهاري':'تفعيل الوضع الليلي');
+  button.title=dark?'تفعيل الوضع النهاري':'تفعيل الوضع الليلي';
+  const meta=document.querySelector('meta[name="theme-color"]');
+  if(meta)meta.setAttribute('content',dark?'#101b1b':'#123b3b');
+ }
+ let dark=false;try{dark=localStorage.getItem(KEY)==='dark';}catch(e){}
+ apply(dark);
+ button.addEventListener('click',function(){
+  dark=!document.body.classList.contains('dark');
+  apply(dark);
+  try{localStorage.setItem(KEY,dark?'dark':'light');}catch(e){}
  });
 })();
 </script>
