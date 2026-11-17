@@ -1,39 +1,281 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#123b3b"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><title>حساباتي</title></head><body style="font-family:Tahoma,Arial,sans-serif;background:#f3f6f5;color:#183536;padding:24px"><p>جاري تشغيل حساباتي...</p><script>(async function(){
-  function loadPako(){
-    if(window.pako)return Promise.resolve();
-    const sources=['https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js','https://unpkg.com/pako@2.1.0/dist/pako.min.js'];
-    return new Promise((resolve,reject)=>{
-      let i=0;
-      function next(){
-        if(i>=sources.length){reject(new Error('تعذر تحميل أداة فك الضغط. تحقق من اتصال الإنترنت.'));return;}
-        const tag=document.createElement('script');
-        tag.src=sources[i++];
-        tag.onload=()=>window.pako?resolve():next();
-        tag.onerror=next;
-        document.head.appendChild(tag);
-      }
-      next();
-    });
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#123b3b"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
+<meta name="description" content="حساباتي لإدارة الرصيد والشحن والمصروفات والتقارير">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
+<link rel="apple-touch-icon" href="./icons/icon.svg">
+<title>حساباتي | إدارة الرصيد والشحن</title>
+<style>
+:root{--bg:#f3f6f5;--card:#fff;--ink:#183536;--muted:#6d8280;--teal:#087f70;--line:#e1e9e6;--red:#b54747;--green:#16845d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif}
+header{background:linear-gradient(120deg,#102f34,#087f70);color:#fff;padding:22px 16px 18px}
+.wrap{max-width:980px;margin:auto;padding:0 14px}h1{font-size:24px;margin:0 0 4px}.sub{color:#c6e4dd;font-size:13px}
+nav{display:flex;gap:8px;overflow:auto;padding:13px 0;position:sticky;top:0;background:var(--bg);z-index:3}
+nav button{white-space:nowrap;border:1px solid var(--line);background:#fff;color:var(--ink);padding:10px 14px;border-radius:12px;font-weight:700}
+nav button.active{background:var(--teal);color:#fff;border-color:var(--teal)}
+main{padding-bottom:40px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px;box-shadow:0 2px 9px #163b3510}
+.kpi small{color:var(--muted)}.kpi strong{display:block;font-size:22px;margin-top:7px;overflow-wrap:anywhere}
+.panel{display:none}.panel.active{display:block}.section-title{font-size:18px;margin:20px 0 12px}
+form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+label{font-size:13px;color:var(--muted);display:block;margin-bottom:5px}
+input,select,textarea{width:100%;padding:12px;border:1px solid #d5e1dd;border-radius:10px;background:#fff;color:var(--ink);font:inherit;min-width:0}
+textarea{min-height:72px;resize:vertical}.full{grid-column:1/-1}
+.primary{background:var(--teal);color:#fff;border:0;border-radius:11px;padding:12px 16px;font-weight:700;cursor:pointer}
+.secondary{background:#edf5f2;color:var(--teal);border:1px solid #d5e7e1;border-radius:10px;padding:9px 12px;cursor:pointer;font-weight:700}
+.danger{color:var(--red);background:#fff1f1;border:1px solid #f1d5d5;border-radius:9px;padding:7px 10px;cursor:pointer}
+table{width:100%;border-collapse:collapse;min-width:620px}th,td{text-align:right;padding:11px 9px;border-bottom:1px solid var(--line);font-size:13px}th{color:var(--muted);font-weight:700}
+.table-wrap{overflow:auto;background:#fff;border:1px solid var(--line);border-radius:14px}
+.muted{color:var(--muted);font-size:13px}.positive{color:var(--green);font-weight:700}.negative{color:var(--red);font-weight:700}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.hint{background:#eef7f4;border:1px solid #d7ebe3;border-radius:12px;padding:12px;font-size:13px;line-height:1.7;margin:12px 0}
+.empty{text-align:center;color:var(--muted);padding:24px}.reportline{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
+.header-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.lock-screen{position:fixed;inset:0;z-index:9999;background:linear-gradient(145deg,#102f34,#087f70);display:flex;align-items:center;justify-content:center;padding:20px}
+.lock-screen[hidden]{display:none}
+.lock-card{width:min(100%,390px);background:#fff;border-radius:22px;padding:24px;box-shadow:0 18px 60px #001b1b55;text-align:center}
+.lock-card h2{margin:0 0 8px;color:var(--ink)}.lock-card p{color:var(--muted);font-size:14px;line-height:1.7}
+.lock-card input{text-align:center;font-size:24px;letter-spacing:7px;margin:8px 0 12px}
+.lock-card .primary{width:100%}.lock-error{color:var(--red);min-height:24px;font-size:13px}
+@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}form{grid-template-columns:1fr}.full{grid-column:auto}.kpi strong{font-size:19px}}
+.quick-section{margin-top:22px}.quick-section .section-title{margin:0 0 11px}.quick-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.quick-link{display:flex;align-items:center;gap:11px;width:100%;min-height:78px;padding:12px;text-align:right;background:#fff;border:1px solid #e1e9e6;border-radius:15px;color:#183536;font:inherit;font-weight:700;box-shadow:0 2px 9px #163b350a;cursor:pointer}.quick-link:active{transform:scale(.985)}.quick-icon{width:46px;height:46px;flex:0 0 46px;display:grid;place-items:center;border-radius:13px;background:#e8f4ef;font-size:24px}.quick-link span:last-child{font-size:14px;line-height:1.5}.quick-link small{display:block;color:#6d8280;font-size:11px;font-weight:500}@media(min-width:700px){.quick-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}</style></head>
+<body>
+<header><div class="wrap header-row"><div><h1>حساباتي</h1><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><button class="secondary" id="lockNow" type="button">🔒 قفل الآن</button></div></header>
+<div class="wrap">
+<nav id="nav">
+<button class="active" data-tab="home">الرئيسية</button><button data-tab="credit">حساب الرصيد</button><button data-tab="recharge">شحن الهواتف</button><button data-tab="expenses">المصروفات</button><button data-tab="reports">التقارير</button>
+</nav>
+<main>
+<section id="home" class="panel active">
+<div class="grid">
+<div class="card kpi"><small>الرصيد المتاح</small><strong id="balance">0</strong><small>SDG</small></div>
+<div class="card kpi"><small>ربح الرصيد</small><strong id="creditProfit">0</strong><small>SDG</small></div>
+<div class="card kpi"><small>ربح الشحن</small><strong id="rechargeProfit">0</strong><small>SDG</small></div>
+<div class="card kpi"><small>صافي ربح اليوم</small><strong id="todayNet">0</strong><small>SDG</small></div>
+</div>
+<div class="quick-section"><h2 class="section-title">إدارة الرصيد</h2><div class="quick-grid"><button class="quick-link" type="button" data-panel="credit" data-target="stock"><span class="quick-icon">💰</span><span>رصيد داخل<small>إضافة رصيد جديد</small></span></button><button class="quick-link" type="button" data-panel="credit" data-target="transfer"><span class="quick-icon">🔄</span><span>تحويل رصيد<small>تسجيل عملية تحويل</small></span></button><button class="quick-link" type="button" data-panel="expenses" data-target="expenses"><span class="quick-icon">🧾</span><span>مصروفات<small>تسجيل المصروفات</small></span></button><button class="quick-link" type="button" data-panel="credit" data-target="creditHistory"><span class="quick-icon">📒</span><span>سجل عمليات الرصيد<small>عرض وتعديل العمليات</small></span></button></div></div><div class="quick-section"><h2 class="section-title">شحن الهواتف</h2><div class="quick-grid"><button class="quick-link" type="button" data-panel="recharge" data-target="recharge"><span class="quick-icon">📱</span><span>قسم شحن الهواتف<small>تسجيل عملية شحن</small></span></button><button class="quick-link" type="button" data-panel="recharge" data-target="rechargeHistory"><span class="quick-icon">📋</span><span>سجل الشحن<small>عرض وتعديل عمليات الشحن</small></span></button></div></div><h2 class="section-title">ملخص اليوم</h2>
+<div class="card">
+<div class="reportline"><span>الرصيد الداخل اليوم</span><b id="todayIn">0 SDG</b></div>
+<div class="reportline"><span>تحويلات الرصيد اليوم (قيمة البيع)</span><b id="todayTransfers">0 SDG</b></div>
+<div class="reportline"><span>شحن الهواتف اليوم</span><b id="todayRecharge">0 SDG</b></div>
+<div class="reportline"><span>المصروفات اليومية</span><b id="todayExpenses">0 SDG</b></div>
+<div class="reportline"><span>إجمالي صافي الأرباح اليوم</span><b class="positive" id="todayProfit">0 SDG</b></div>
+</div>
+<div class="hint">طريقة الحساب: عند إدخال رصيد جديد سجّل تكلفته. وعند التحويل أو الشحن سجّل قيمة البيع والتكلفة المستهلكة؛ يحسب التطبيق الربح تلقائياً = البيع − التكلفة. التحويل بين حساباتك لا يُعد ربحاً إلا إذا أدخلت تكلفة وسعر بيع للعملية.</div>
+</section>
+<section id="credit" class="panel">
+<h2 class="section-title">قسم الرصيد</h2>
+<div class="card">
+<h3>رصيد داخل</h3><p class="muted">إضافة كمية رصيد إلى مخزونك مع تسجيل تكلفتها.</p>
+<form id="stockForm">
+<div><label>قيمة الرصيد الداخل (SDG)</label><input name="amount" type="number" min="0.01" step="0.01" required></div>
+<div><label>التاريخ</label><input name="date" type="date" required></div>
+<div class="full"><label>ملاحظات / مصدر الرصيد</label><input name="note" placeholder="مثال: شراء رصيد من المورد"></div>
+<button class="primary full">حفظ الرصيد الداخل</button></form>
+</div>
+<div class="card" style="margin-top:12px"><h3>تحويل رصيد</h3><p class="muted">أدخل قيمة البيع والتكلفة التي خرجت من مخزونك لحساب الربح تلقائياً.</p>
+<form id="transferForm">
+<div><label>قيمة التحويل / البيع (SDG)</label><input name="sale" type="number" min="0.01" step="0.01" required></div>
+<div><label>تكلفة الرصيد المحوّل (SDG)</label><input name="cost" type="number" min="0" step="0.01" required></div>
+<div><label>رقم الهاتف / العميل</label><input name="customer" inputmode="tel" placeholder="اختياري"></div>
+<div><label>التاريخ</label><input name="date" type="date" required></div>
+<div class="full"><label>ملاحظات</label><input name="note" placeholder="اختياري"></div>
+<button class="primary full">حفظ عملية التحويل</button></form><div class="hint" id="transferHint">الربح المتوقع: أدخل قيمة البيع والتكلفة.</div>
+</div>
+<h2 class="section-title">سجل عمليات الرصيد</h2><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>العملية</th><th>القيمة</th><th>التكلفة</th><th>الربح</th><th>تفاصيل</th><th></th></tr></thead><tbody id="creditRows"></tbody></table></div>
+</section>
+<section id="recharge" class="panel">
+<h2 class="section-title">قسم شحن الهواتف</h2><div class="card"><form id="rechargeForm">
+<div><label>قيمة الشحن المحصلة (SDG)</label><input name="sale" type="number" min="0.01" step="0.01" required></div>
+<div><label>تكلفة الشحن عليك (SDG)</label><input name="cost" type="number" min="0" step="0.01" required></div>
+<div><label>رقم الهاتف</label><input name="phone" inputmode="tel" placeholder="اختياري"></div>
+<div><label>الشبكة</label><select name="network"><option>زين</option><option>سوداني</option><option>MTN</option><option>أخرى</option></select></div>
+<div><label>التاريخ</label><input name="date" type="date" required></div>
+<div><label>ملاحظات</label><input name="note" placeholder="اختياري"></div>
+<button class="primary full">حفظ عملية الشحن</button></form></div>
+<h2 class="section-title">سجل الشحن</h2><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>الشبكة</th><th>الهاتف</th><th>المحصّل</th><th>التكلفة</th><th>الربح</th><th></th></tr></thead><tbody id="rechargeRows"></tbody></table></div>
+</section>
+<section id="expenses" class="panel">
+<h2 class="section-title">المصروفات اليومية</h2><div class="card"><form id="expenseForm">
+<div><label>قيمة المصروف (SDG)</label><input name="amount" type="number" min="0.01" step="0.01" required></div>
+<div><label>نوع المصروف</label><select name="category"><option>مواصلات</option><option>إيجار</option><option>اتصالات وإنترنت</option><option>عمالة</option><option>ضيافة</option><option>أخرى</option></select></div>
+<div><label>التاريخ</label><input name="date" type="date" required></div>
+<div><label>البيان</label><input name="note" placeholder="وصف المصروف"></div>
+<button class="primary full">حفظ المصروف</button></form></div>
+<h2 class="section-title">سجل المصروفات</h2><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>النوع</th><th>البيان</th><th>القيمة</th><th></th></tr></thead><tbody id="expenseRows"></tbody></table></div>
+</section>
+<section id="reports" class="panel">
+<h2 class="section-title">التقارير</h2><div class="card">
+<div style="max-width:300px"><label>اختر الشهر</label><input type="month" id="monthFilter"></div>
+<div class="reportline"><span>الرصيد الداخل</span><b id="rIn">0</b></div><div class="reportline"><span>قيمة تحويلات الرصيد</span><b id="rTransfers">0</b></div><div class="reportline"><span>ربح الرصيد</span><b id="rCreditProfit">0</b></div><div class="reportline"><span>مبيعات الشحن</span><b id="rRecharge">0</b></div><div class="reportline"><span>ربح الشحن</span><b id="rRechargeProfit">0</b></div><div class="reportline"><span>المصروفات</span><b id="rExpenses">0</b></div><div class="reportline"><span><b>صافي الربح بعد المصروفات</b></span><b class="positive" id="rNet">0</b></div>
+<div class="actions"><button class="secondary" id="exportBtn">تصدير نسخة بيانات CSV</button><button class="secondary" id="backupBtn">نسخ احتياطي JSON</button><label class="secondary" style="cursor:pointer">استيراد نسخة<input id="restoreFile" type="file" accept=".json,application/json" hidden></label></div>
+</div>
+<div class="hint">البيانات محفوظة على هذا الجهاز والمتصفح. احفظ نسخة احتياطية بانتظام، خصوصاً قبل تغيير الهاتف أو مسح بيانات المتصفح.</div>
+<div class="card" style="margin-top:12px">
+<h3>🔐 تغيير كلمة سر التطبيق</h3>
+<p class="muted">أدخل كلمة السر الحالية ثم كلمة سر جديدة من 4 إلى 8 أرقام.</p>
+<form id="changePinForm">
+<div class="full"><label>كلمة السر الحالية</label><input name="oldPin" type="password" inputmode="numeric" maxlength="8" pattern="[0-9]{4,8}" required></div>
+<div><label>كلمة السر الجديدة</label><input name="newPin" type="password" inputmode="numeric" maxlength="8" pattern="[0-9]{4,8}" required></div>
+<div><label>تأكيد كلمة السر الجديدة</label><input name="confirmPin" type="password" inputmode="numeric" maxlength="8" pattern="[0-9]{4,8}" required></div>
+<button class="primary full">حفظ كلمة السر الجديدة</button>
+</form><div class="muted" id="pinChangeMessage" aria-live="polite"></div>
+</div>
+</section>
+</main><footer>حساباتي · نسخة أولية محلية · جميع المبالغ بالجنيه السوداني</footer>
+</div>
+<div class="lock-screen" id="lockScreen">
+  <div class="lock-card">
+    <div style="font-size:42px">🔐</div>
+    <h2 id="lockTitle">حساباتي محمي</h2>
+    <p id="lockDescription">أدخل كلمة السر لفتح التطبيق.</p>
+    <form id="unlockForm">
+      <input id="pinInput" type="password" inputmode="numeric" pattern="[0-9]{4,8}" minlength="4" maxlength="8" autocomplete="off" placeholder="••••" aria-label="كلمة السر" required>
+      <input id="pinConfirmInput" type="password" inputmode="numeric" pattern="[0-9]{4,8}" minlength="4" maxlength="8" autocomplete="off" placeholder="تأكيد كلمة السر" aria-label="تأكيد كلمة السر" hidden>
+      <button class="primary" id="unlockButton" type="submit">فتح التطبيق</button>
+    </form>
+    <div class="lock-error" id="lockMessage" aria-live="polite"></div>
+    <p style="font-size:12px;margin-bottom:0">كلمة السر من 4 إلى 8 أرقام</p>
+  </div>
+</div>
+<script>
+const KEY='hisabati_v1';let db=JSON.parse(localStorage.getItem(KEY)||'{"stock":[],"transfers":[],"recharges":[],"expenses":[]}');
+const $=id=>document.getElementById(id), today=()=>new Date().toISOString().slice(0,10), fmt=n=>(Number(n)||0).toLocaleString('en-US',{maximumFractionDigits:2});
+document.querySelectorAll('input[type=date]').forEach(x=>x.value=today());$('monthFilter').value=today().slice(0,7);
+function save(){localStorage.setItem(KEY,JSON.stringify(db));render()}
+function sum(a,f){return a.reduce((s,x)=>s+f(x),0)}
+function profit(a){return sum(a,x=>x.sale-x.cost)}
+function row(html){return html}
+function del(type,id){if(confirm('هل تريد حذف هذه العملية؟')){db[type]=db[type].filter(x=>x.id!==id);save()}}
+function edit(type,id){
+ const x=db[type].find(v=>v.id===id);if(!x)return;
+ const ask=(label,value)=>prompt(label,value??'');
+ const num=(label,value,min=0)=>{const v=ask(label,value);if(v===null)return null;const n=Number(v);if(!Number.isFinite(n)||n<min){alert('أدخل قيمة رقمية صحيحة.');return null;}return n;};
+ let v;
+ if(type==='stock'){
+  v=num('قيمة الرصيد الداخل (SDG)',x.amount,0.01);if(v===null)return;x.amount=v;
+  v=ask('التاريخ بصيغة YYYY-MM-DD',x.date);if(v===null)return;x.date=v;
+  v=ask('ملاحظات / مصدر الرصيد',x.note);if(v===null)return;x.note=v;
+ }else if(type==='transfers'){
+  v=num('قيمة التحويل / البيع (SDG)',x.sale,0.01);if(v===null)return;x.sale=v;
+  v=num('تكلفة الرصيد المحوّل (SDG)',x.cost,0);if(v===null)return;x.cost=v;
+  v=ask('رقم الهاتف / العميل',x.customer);if(v===null)return;x.customer=v;
+  v=ask('التاريخ بصيغة YYYY-MM-DD',x.date);if(v===null)return;x.date=v;
+  v=ask('ملاحظات',x.note);if(v===null)return;x.note=v;
+ }else if(type==='recharges'){
+  v=num('قيمة الشحن المحصلة (SDG)',x.sale,0.01);if(v===null)return;x.sale=v;
+  v=num('تكلفة الشحن (SDG)',x.cost,0);if(v===null)return;x.cost=v;
+  v=ask('رقم الهاتف',x.phone);if(v===null)return;x.phone=v;
+  v=ask('الشبكة (زين / سوداني / MTN / أخرى)',x.network);if(v===null)return;x.network=v;
+  v=ask('التاريخ بصيغة YYYY-MM-DD',x.date);if(v===null)return;x.date=v;
+  v=ask('ملاحظات',x.note);if(v===null)return;x.note=v;
+ }else if(type==='expenses'){
+  v=num('قيمة المصروف (SDG)',x.amount,0.01);if(v===null)return;x.amount=v;
+  v=ask('نوع المصروف',x.category);if(v===null)return;x.category=v;
+  v=ask('التاريخ بصيغة YYYY-MM-DD',x.date);if(v===null)return;x.date=v;
+  v=ask('البيان',x.note);if(v===null)return;x.note=v;
+ }
+ save();
+}
+function tableRows(target,items,make){$(target).innerHTML=items.length?items.slice().reverse().map(make).join(''):'<tr><td colspan="8" class="empty">لا توجد عمليات مسجلة</td></tr>'}
+function render(){
+ const cp=profit(db.transfers),rp=profit(db.recharges),expense=sum(db.expenses,x=>x.amount),stock=sum(db.stock,x=>x.amount),used=sum(db.transfers,x=>x.cost)+sum(db.recharges,x=>x.cost);
+ $('balance').textContent=fmt(stock-used);$('creditProfit').textContent=fmt(cp);$('rechargeProfit').textContent=fmt(rp);
+ const t=today(),ti=sum(db.stock.filter(x=>x.date===t),x=>x.amount),tt=sum(db.transfers.filter(x=>x.date===t),x=>x.sale),tr=sum(db.recharges.filter(x=>x.date===t),x=>x.sale),te=sum(db.expenses.filter(x=>x.date===t),x=>x.amount),tp=sum(db.transfers.filter(x=>x.date===t),x=>x.sale-x.cost)+sum(db.recharges.filter(x=>x.date===t),x=>x.sale-x.cost);
+ $('todayIn').textContent=fmt(ti)+' SDG';$('todayTransfers').textContent=fmt(tt)+' SDG';$('todayRecharge').textContent=fmt(tr)+' SDG';$('todayExpenses').textContent=fmt(te)+' SDG';$('todayProfit').textContent=fmt(tp-te)+' SDG';$('todayNet').textContent=fmt(tp-te);
+ tableRows('creditRows',[...db.stock.map(x=>({...x,type:'رصيد داخل',value:x.amount,cost:x.amount,profit:0,detail:x.note})),...db.transfers.map(x=>({...x,type:'تحويل رصيد',value:x.sale,profit:x.sale-x.cost,detail:x.customer+' '+(x.note||'')}))],x=>`<tr><td>${x.date}</td><td>${x.type}</td><td>${fmt(x.value)}</td><td>${fmt(x.cost)}</td><td class="${x.profit>=0?'positive':'negative'}">${fmt(x.profit)}</td><td>${esc(x.detail||'')}</td><td><button class="secondary" onclick="edit('${x.type==='رصيد داخل'?'stock':'transfers'}','${x.id}')">تعديل</button> <button class="danger" onclick="del('${x.type==='رصيد داخل'?'stock':'transfers'}','${x.id}')">حذف</button></td></tr>`);
+ tableRows('rechargeRows',db.recharges,x=>`<tr><td>${x.date}</td><td>${esc(x.network)}</td><td>${esc(x.phone||'')}</td><td>${fmt(x.sale)}</td><td>${fmt(x.cost)}</td><td class="${x.sale-x.cost>=0?'positive':'negative'}">${fmt(x.sale-x.cost)}</td><td><button class="secondary" onclick="edit('recharges','${x.id}')">تعديل</button> <button class="danger" onclick="del('recharges','${x.id}')">حذف</button></td></tr>`);
+ tableRows('expenseRows',db.expenses,x=>`<tr><td>${x.date}</td><td>${esc(x.category)}</td><td>${esc(x.note||'')}</td><td>${fmt(x.amount)}</td><td><button class="secondary" onclick="edit('expenses','${x.id}')">تعديل</button> <button class="danger" onclick="del('expenses','${x.id}')">حذف</button></td></tr>`);
+ report();
+}
+function report(){const m=$('monthFilter').value;const filter=a=>a.filter(x=>x.date.startsWith(m));let s=filter(db.stock),t=filter(db.transfers),r=filter(db.recharges),e=filter(db.expenses);let ep=sum(e,x=>x.amount),p=profit(t)+profit(r)-ep;
+ $('rIn').textContent=fmt(sum(s,x=>x.amount))+' SDG';$('rTransfers').textContent=fmt(sum(t,x=>x.sale))+' SDG';$('rCreditProfit').textContent=fmt(profit(t))+' SDG';$('rRecharge').textContent=fmt(sum(r,x=>x.sale))+' SDG';$('rRechargeProfit').textContent=fmt(profit(r))+' SDG';$('rExpenses').textContent=fmt(ep)+' SDG';$('rNet').textContent=fmt(p)+' SDG'}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function data(form){return Object.fromEntries(new FormData(form).entries())}
+function bind(id,fn){$(id).addEventListener('submit',e=>{e.preventDefault();let x=data(e.target);if(fn(x)===false)return;e.target.reset();e.target.querySelectorAll('input[type=date]').forEach(i=>i.value=today());save()})}
+bind('stockForm',x=>db.stock.push({...x,amount:+x.amount,id:crypto.randomUUID()}));
+bind('transferForm',x=>{if(+x.cost>sum(db.stock,z=>z.amount)-sum(db.transfers,z=>z.cost)-sum(db.recharges,z=>z.cost)){alert('تنبيه: تكلفة العملية أكبر من الرصيد المتاح المسجل. راجع رصيدك قبل الحفظ.');return false}db.transfers.push({...x,sale:+x.sale,cost:+x.cost,id:crypto.randomUUID()});return true});
+bind('rechargeForm',x=>db.recharges.push({...x,sale:+x.sale,cost:+x.cost,id:crypto.randomUUID()}));
+bind('expenseForm',x=>db.expenses.push({...x,amount:+x.amount,id:crypto.randomUUID()}));
+$('transferForm').addEventListener('input',()=>{let f=$('transferForm'),s=+f.sale.value||0,c=+f.cost.value||0;$('transferHint').textContent='الربح المتوقع: '+fmt(s-c)+' SDG'});
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===b.dataset.tab));if(b.dataset.tab==='reports')report()});
+$('monthFilter').onchange=report;
+$('backupBtn').onclick=()=>download('hisabati-backup.json',JSON.stringify(db,null,2),'application/json');
+$('exportBtn').onclick=()=>{let rows=[['القسم','التاريخ','البيان','القيمة','التكلفة','الربح']];db.stock.forEach(x=>rows.push(['رصيد داخل',x.date,x.note,x.amount,x.amount,0]));db.transfers.forEach(x=>rows.push(['تحويل رصيد',x.date,x.customer,x.sale,x.cost,x.sale-x.cost]));db.recharges.forEach(x=>rows.push(['شحن',x.date,x.network+' '+x.phone,x.sale,x.cost,x.sale-x.cost]));db.expenses.forEach(x=>rows.push(['مصروف',x.date,x.category+' '+x.note,x.amount,'','']));download('hisabati.csv','\ufeff'+rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n'),'text/csv;charset=utf-8')};
+function download(name,content,type){let a=document.createElement('a'),u=URL.createObjectURL(new Blob([content],{type}));a.href=u;a.download=name;a.click();URL.revokeObjectURL(u)}
+$('restoreFile').onchange=async e=>{try{let d=JSON.parse(await e.target.files[0].text());if(!d.stock||!d.transfers||!d.recharges||!d.expenses)throw Error();db=d;save();alert('تم استيراد النسخة')}catch(_){alert('ملف النسخة غير صالح')}e.target.value=''};
+
+// قفل التطبيق بكلمة سر رقمية (4 إلى 8 أرقام)
+const PIN_KEY='hisabati_pin_v1';
+let appUnlocked=false;
+async function hashPin(pin){
+ if(!window.crypto?.subtle)throw new Error('ميزة التشفير غير متاحة في هذا المتصفح. افتح التطبيق عبر اتصال HTTPS.');
+ const bytes=new TextEncoder().encode(pin);
+ const digest=await crypto.subtle.digest('SHA-256',bytes);
+ return Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+function pinValid(pin){return /^[0-9]{4,8}$/.test(pin)}
+function lockApp(){
+ appUnlocked=false;
+ $('lockScreen').hidden=false;
+ $('pinInput').value='';$('pinConfirmInput').value='';$('lockMessage').textContent='';
+ $('pinInput').focus();
+}
+function unlockApp(){appUnlocked=true;$('lockScreen').hidden=true;$('pinInput').value='';$('pinConfirmInput').value='';}
+function prepareLockScreen(){
+ const hasPin=!!localStorage.getItem(PIN_KEY);
+ $('lockTitle').textContent=hasPin?'حساباتي محمي':'إنشاء كلمة سر للتطبيق';
+ $('lockDescription').textContent=hasPin?'أدخل كلمة السر لفتح التطبيق.':'أنشئ كلمة سر من 4 إلى 8 أرقام، ثم أكدها لحماية التطبيق.';
+ $('pinConfirmInput').hidden=hasPin;
+ $('unlockButton').textContent=hasPin?'فتح التطبيق':'حفظ كلمة السر وفتح التطبيق';
+ lockApp();
+}
+$('unlockForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ const pin=$('pinInput').value;
+ if(!pinValid(pin)){$('lockMessage').textContent='كلمة السر يجب أن تكون من 4 إلى 8 أرقام.';return;}
+ try{
+  const saved=localStorage.getItem(PIN_KEY);
+  if(!saved){
+   const confirmPin=$('pinConfirmInput').value;
+   if(!pinValid(confirmPin)){$('lockMessage').textContent='أدخل تأكيد كلمة السر من 4 إلى 8 أرقام.';return;}
+   if(pin!==confirmPin){$('lockMessage').textContent='كلمتا السر غير متطابقتين.';return;}
+   localStorage.setItem(PIN_KEY,await hashPin(pin));
+   unlockApp();
+  }else{
+   if(await hashPin(pin)!==saved){$('lockMessage').textContent='كلمة السر غير صحيحة. حاول مرة أخرى.';$('pinInput').value='';$('pinInput').focus();return;}
+   unlockApp();
   }
-  async function unpack(bytes){
-    if(typeof DecompressionStream==='function' && typeof Blob==='function' && typeof Response==='function'){
-      try{
-        const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
-        return await new Response(stream).text();
-      }catch(nativeError){}
-    }
-    await loadPako();
-    return window.pako.ungzip(bytes,{to:'string'});
-  }
-  try{
-    const binary=atob("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");
-    const bytes=Uint8Array.from(binary,c=>c.charCodeAt(0));
-    const html=await unpack(bytes);
-    let page=html;if(!page.includes('</style>')||!page.includes('<h2 class="section-title">ملخص اليوم</h2>'))throw new Error('dashboard markers missing');page=page.replace('</style>',".quick-section{margin-top:22px}.quick-section .section-title{margin:0 0 11px}.quick-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.quick-link{display:flex;align-items:center;gap:11px;width:100%;min-height:78px;padding:12px;text-align:right;background:#fff;border:1px solid #e1e9e6;border-radius:15px;color:#183536;font:inherit;font-weight:700;box-shadow:0 2px 9px #163b350a;cursor:pointer}.quick-link:active{transform:scale(.985)}.quick-icon{width:46px;height:46px;flex:0 0 46px;display:grid;place-items:center;border-radius:13px;background:#e8f4ef;font-size:24px}.quick-link span:last-child{font-size:14px;line-height:1.5}.quick-link small{display:block;color:#6d8280;font-size:11px;font-weight:500}@media(min-width:700px){.quick-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}</style>");page=page.replace('<h2 class="section-title">ملخص اليوم</h2>',"<div class=\"quick-section\"><h2 class=\"section-title\">إدارة الرصيد</h2><div class=\"quick-grid\"><button class=\"quick-link\" type=\"button\" data-panel=\"credit\" data-target=\"stock\"><span class=\"quick-icon\">💰</span><span>رصيد داخل<small>إضافة رصيد جديد</small></span></button><button class=\"quick-link\" type=\"button\" data-panel=\"credit\" data-target=\"transfer\"><span class=\"quick-icon\">🔄</span><span>تحويل رصيد<small>تسجيل عملية تحويل</small></span></button><button class=\"quick-link\" type=\"button\" data-panel=\"expenses\" data-target=\"expenses\"><span class=\"quick-icon\">🧾</span><span>مصروفات<small>تسجيل المصروفات</small></span></button><button class=\"quick-link\" type=\"button\" data-panel=\"credit\" data-target=\"creditHistory\"><span class=\"quick-icon\">📒</span><span>سجل عمليات الرصيد<small>عرض وتعديل العمليات</small></span></button></div></div><div class=\"quick-section\"><h2 class=\"section-title\">شحن الهواتف</h2><div class=\"quick-grid\"><button class=\"quick-link\" type=\"button\" data-panel=\"recharge\" data-target=\"recharge\"><span class=\"quick-icon\">📱</span><span>قسم شحن الهواتف<small>تسجيل عملية شحن</small></span></button><button class=\"quick-link\" type=\"button\" data-panel=\"recharge\" data-target=\"rechargeHistory\"><span class=\"quick-icon\">📋</span><span>سجل الشحن<small>عرض وتعديل عمليات الشحن</small></span></button></div></div><h2 class=\"section-title\">ملخص اليوم</h2>");page=page.replace('</body>',"<script>(function(){const targets={stock:function(){return document.querySelector(\"#credit .card\")},transfer:function(){return document.querySelectorAll(\"#credit .card\")[1]},expenses:function(){return document.querySelector(\"#expenses .card\")},creditHistory:function(){return document.querySelector(\"#credit .table-wrap\")},recharge:function(){return document.querySelector(\"#recharge .card\")},rechargeHistory:function(){return document.querySelector(\"#recharge .table-wrap\")}};document.querySelectorAll(\".quick-link\").forEach(function(b){b.addEventListener(\"click\",function(){const tab=b.getAttribute(\"data-panel\");document.querySelectorAll(\"#nav button\").forEach(function(x){x.classList.toggle(\"active\",x.getAttribute(\"data-tab\")===tab)});document.querySelectorAll(\".panel\").forEach(function(x){x.classList.toggle(\"active\",x.id===tab)});const el=targets[b.getAttribute(\"data-target\")]();if(el)setTimeout(function(){el.scrollIntoView({behavior:\"smooth\",block:\"start\"})},80)})})})();</script></body>");
-    document.open();document.write(page);document.close();
-  }catch(e){
-    document.body.innerHTML='<div style="font-family:Tahoma,Arial,sans-serif;direction:rtl;padding:24px;color:#183536"><h2>تعذر تشغيل حساباتي</h2><p>تعذر فك ضغط ملفات التطبيق. تأكد من اتصال الإنترنت ثم أعد فتح الصفحة.</p><small style="color:#8b5555"></small></div>';
-    const detail=document.querySelector('small');
-    if(detail)detail.textContent=String(e&&e.message||e);
-  }
-})();</script></body></html>
+ }catch(err){$('lockMessage').textContent=err.message||'حدث خطأ. حاول مرة أخرى.';}
+});
+$('lockNow').addEventListener('click',()=>{prepareLockScreen();});
+$('changePinForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ const f=e.currentTarget,oldPin=f.oldPin.value,newPin=f.newPin.value,confirmPin=f.confirmPin.value,msg=$('pinChangeMessage');
+ msg.textContent='';
+ if(!pinValid(oldPin)||!pinValid(newPin)){msg.textContent='كلمة السر يجب أن تكون من 4 إلى 8 أرقام.';return;}
+ if(newPin!==confirmPin){msg.textContent='كلمة السر الجديدة وتأكيدها غير متطابقين.';return;}
+ try{
+  const saved=localStorage.getItem(PIN_KEY);
+  if(!saved||await hashPin(oldPin)!==saved){msg.textContent='كلمة السر الحالية غير صحيحة.';return;}
+  localStorage.setItem(PIN_KEY,await hashPin(newPin));
+  f.reset();msg.textContent='تم تغيير كلمة سر التطبيق بنجاح.';
+ }catch(err){msg.textContent=err.message||'تعذر تغيير كلمة السر.';}
+});
+render();
+prepareLockScreen();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js').catch(() => {});
+  });
+}
+</script>
+<script>(function(){const targets={stock:function(){return document.querySelector("#credit .card")},transfer:function(){return document.querySelectorAll("#credit .card")[1]},expenses:function(){return document.querySelector("#expenses .card")},creditHistory:function(){return document.querySelector("#credit .table-wrap")},recharge:function(){return document.querySelector("#recharge .card")},rechargeHistory:function(){return document.querySelector("#recharge .table-wrap")}};document.querySelectorAll(".quick-link").forEach(function(b){b.addEventListener("click",function(){const tab=b.getAttribute("data-panel");document.querySelectorAll("#nav button").forEach(function(x){x.classList.toggle("active",x.getAttribute("data-tab")===tab)});document.querySelectorAll(".panel").forEach(function(x){x.classList.toggle("active",x.id===tab)});const el=targets[b.getAttribute("data-target")]();if(el)setTimeout(function(){el.scrollIntoView({behavior:"smooth",block:"start"})},80)})})})();</script></body></html>
