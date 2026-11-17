@@ -290,7 +290,7 @@ function tableRows(target,items,make){$(target).innerHTML=items.length?items.sli
 function render(){
  const cp=profit(db.transfers),rp=profit(db.recharges),svp=profit(db.services),expense=sum(db.expenses,x=>x.amount),stock=sum(db.stock,x=>x.amount),used=sum(db.transfers,x=>x.cost)+sum(db.recharges,x=>x.cost)+sum(db.services,x=>x.cost);
  $('balance').textContent=fmt(stock-used);$('totalCapital').textContent=fmt(stock);$('creditProfit').textContent=fmt(cp);$('rechargeProfit').textContent=fmt(rp);$('serviceProfit').textContent=fmt(svp);
- const t=today(),ti=sum(db.stock.filter(x=>x.date===t),x=>x.amount),tt=sum(db.transfers.filter(x=>x.date===t),x=>x.sale),tr=sum(db.recharges.filter(x=>x.date===t),x=>x.sale),te=sum(db.expenses.filter(x=>x.date===t),x=>x.amount),tp=sum(db.transfers.filter(x=>x.date===t),x=>x.sale-x.cost)+sum(db.recharges.filter(x=>x.date===t),x=>x.sale-x.cost)+sum(db.services.filter(x=>x.date===t),x=>x.sale-x.cost);
+ const t=today(),ti=sum(db.stock.filter(x=>x.date===t),x=>x.amount),tt=sum(db.transfers.filter(x=>x.date===t),x=>x.sale),tr=sum(db.recharges.filter(x=>x.date===t),x=>x.sale),te=sum(db.expenses.filter(x=>x.date===t),x=>x.amount),bankToday=Number(window.hisabatiTodayBankProfit?.(t)||0),tp=sum(db.transfers.filter(x=>x.date===t),x=>x.sale-x.cost)+sum(db.recharges.filter(x=>x.date===t),x=>x.sale-x.cost)+sum(db.services.filter(x=>x.date===t),x=>x.sale-x.cost)+bankToday;
  $('stockTodayMove').textContent='داخل اليوم: '+fmt(ti)+' SDG';
  $('transferTodayProfit').textContent='ربح اليوم: '+fmt(sum(db.transfers.filter(x=>x.date===t),x=>x.sale-x.cost))+' SDG';
  $('creditTodayProfit').textContent='ربح اليوم: '+fmt(sum(db.transfers.filter(x=>x.date===t),x=>x.sale-x.cost))+' SDG';
@@ -414,8 +414,12 @@ $('changePinForm').addEventListener('submit',async e=>{
   f.reset();msg.textContent='تم تغيير كلمة سر التطبيق بنجاح.';
  }catch(err){msg.textContent=err.message||'تعذر تغيير كلمة السر.';}
 });
-render();
-prepareLockScreen();
+ render();
+ window.render=render;
+ // تحديث مؤشرات اليوم تلقائياً بعد منتصف الليل دون حذف السجلات المحفوظة.
+ let lastDailyDate=today();
+ setInterval(()=>{const current=today();if(current!==lastDailyDate){const previous=lastDailyDate;lastDailyDate=current;document.querySelectorAll('input[type=date]').forEach(input=>{if(input.value===previous)input.value=current;});render();}},30000);
+ prepareLockScreen();
 </script>
 <script>
 if ('serviceWorker' in navigator) {
@@ -462,10 +466,11 @@ if ('serviceWorker' in navigator) {
  const save=()=>localStorage.setItem(KEY,JSON.stringify(state));
  const modal=$('bankModal'), form=$('bankAddForm');
  function bank(){return state.banks[selected]}
- function render(){
+  window.hisabatiTodayBankProfit=function(date){return state.banks.reduce((total,b)=>total+(Array.isArray(b.records)?b.records.filter(x=>x.date===date).reduce((n,x)=>n+Number(x.gain||0),0):0),0)};
+  function render(){
   $('bankTabs').innerHTML=state.banks.map((b,i)=>{const n=String(b.name||'').trim();const color=n==='بنكك'?'bank-tab-bnuk':n==='فوري'?'bank-tab-fawry':n==='ساهل'?'bank-tab-sahel':'';return '<button type="button" data-bank="'+i+'" class="'+color+(i===selected?' active':'')+'">'+escapeHtml(b.name)+'</button>';}).join('');
   $('bankAvailable').textContent=fmt(bank().available)+' SDG';$('bankProfit').textContent=fmt(bank().profit)+' SDG';
-  $('bankRate').value=bank().rate;$('bankDate').value=new Date().toISOString().slice(0,10);
+  $('bankRate').value=bank().rate;$('bankDate').value=(()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')})();
   const rate=Number($('bankRate').value)||0,amount=Number(form.amount.value)||0,gain=amount*rate/100;
   $('bankCash').value=fmt(amount-gain);$('bankGain').value=fmt(gain);
   $('bankCalc').textContent='نسبة '+bank().name+': '+rate+'% · النقد الذي يستلمه العميل: '+fmt(amount-gain)+' SDG · ربحك: '+fmt(gain)+' SDG';
@@ -483,7 +488,7 @@ if ('serviceWorker' in navigator) {
   const gain=Number((amount*rate/100).toFixed(2)),cash=Number((amount-gain).toFixed(2));
   bank().available=Number((bank().available+amount).toFixed(2));bank().profit=Number((bank().profit+gain).toFixed(2));bank().rate=rate;
   bank().records.push({amount,rate,cash,gain,date,customer:form.customer.value.trim(),note:form.note.value.trim(),createdAt:new Date().toISOString()});
-  save();form.reset();modal.classList.remove('open');modal.setAttribute('aria-hidden','true');const home=document.querySelector('#nav button[data-tab=home]');if(home)home.click();window.scrollTo({top:0,behavior:'smooth'});render();alert('تم حفظ التحويل. ربحك '+fmt(gain)+' SDG.');
+  save();window.render?.();form.reset();modal.classList.remove('open');modal.setAttribute('aria-hidden','true');const home=document.querySelector('#nav button[data-tab=home]');if(home)home.click();window.scrollTo({top:0,behavior:'smooth'});render();alert('تم حفظ التحويل. ربحك '+fmt(gain)+' SDG.');
  });
  $('bankAddName').addEventListener('click',()=>{const name=prompt('اكتب اسم البنك أو خدمة التحويل:');if(!name||!name.trim())return;if(state.banks.some(b=>b.name.toLowerCase()===name.trim().toLowerCase())){alert('هذا البنك موجود بالفعل.');return;}state.banks.push({name:name.trim(),rate:10,available:0,profit:0,records:[]});selected=state.banks.length-1;save();render();});
  $('bankEditRate').addEventListener('click',()=>{const v=prompt('أدخل نسبة الخصم الجديدة لبنك '+bank().name+' (%):',String(bank().rate));if(v===null)return;const n=Number(v);if(!Number.isFinite(n)||n<0||n>100){alert('النسبة يجب أن تكون بين 0 و100.');return;}bank().rate=n;save();render();});
@@ -762,6 +767,22 @@ body.dark .profit-toggle{color:var(--ink)}
  $('submitRating').addEventListener('click',()=>{if(!selectedRating)return;try{localStorage.setItem('hisabati_user_rating_v1',JSON.stringify({rating:selectedRating,date:new Date().toISOString()}));}catch(e){}$('ratingMessage').textContent='شكراً لك! تم حفظ تقييمك داخل التطبيق.';$('submitRating').disabled=true;});
 })();
 </script>
+<style id="multicolor-shortcut-icons">
+/* ألوان مميزة للأيقونات مع الإبقاء على الهوية الخضراء لأيقونة التحويلات البنكية */
+#home .quick-section .quick-link:nth-child(6n+1) .quick-icon{background:#e8efff;color:#315fbd}
+#home .quick-section .quick-link:nth-child(6n+2) .quick-icon{background:#fff0e4;color:#b96824}
+#home .quick-section .quick-link:nth-child(6n+3) .quick-icon{background:#f4eaff;color:#8751b5}
+#home .quick-section .quick-link:nth-child(6n+4) .quick-icon{background:#ffe9ed;color:#c34d68}
+#home .quick-section .quick-link:nth-child(6n+5) .quick-icon{background:#e5f5fa;color:#287b91}
+#home .quick-section .quick-link:nth-child(6n) .quick-icon{background:#fff6d9;color:#9a741d}
+#home .bank-launch .quick-icon{background:#ffffff25!important;color:#fff!important}
+body.dark #home .quick-section .quick-link:nth-child(6n+1) .quick-icon{background:#263b60;color:#b9d0ff}
+body.dark #home .quick-section .quick-link:nth-child(6n+2) .quick-icon{background:#513722;color:#ffd0a4}
+body.dark #home .quick-section .quick-link:nth-child(6n+3) .quick-icon{background:#432d59;color:#dfc0ff}
+body.dark #home .quick-section .quick-link:nth-child(6n+4) .quick-icon{background:#542d39;color:#ffc0ce}
+body.dark #home .quick-section .quick-link:nth-child(6n+5) .quick-icon{background:#214653;color:#b3e9f6}
+body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:#51451f;color:#ffe7a0}
+</style>
 </body></html>
 
 <style id="home-icons-layout-update">
