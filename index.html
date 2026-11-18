@@ -315,8 +315,13 @@ footer{color:#aeb4c0}
 <div><label>سعر البيع للوحدة</label><input name="price" type="number" min="0" step="0.01" required></div><div><label>العميل</label><input name="customer" placeholder="اختياري"></div>
 <div><label>طريقة الدفع</label><select name="payment"><option>نقدي</option><option>آجل</option></select></div><div><label>التاريخ</label><input name="date" type="date" required></div>
 <button class="primary full">حفظ الفاتورة وخصم الكمية</button></form></div>
-<div class="card" style="margin-top:12px"><h3>📋 قائمة المخزون</h3><div class="table-wrap"><table><thead><tr><th>الصنف</th><th>التصنيف</th><th>المتوفر</th><th>شراء</th><th>بيع</th><th>القيمة</th></tr></thead><tbody id="inventoryRows"></tbody></table></div></div>
+<div class="card" style="margin-top:12px"><h3>📋 قائمة المخزون</h3><div class="table-wrap"><table><thead><tr><th>الصنف</th><th>التصنيف</th><th>المتوفر</th><th>شراء</th><th>بيع</th><th>القيمة</th><th>إجراء</th></tr></thead><tbody id="inventoryRows"></tbody></table></div></div>
 <div class="card" id="slowStock" style="margin-top:12px"><h3>🐌 البضاعة الراكدة</h3><p class="muted">الأصناف التي لم تسجل عليها حركة بيع خلال 30 يوماً أو أكثر.</p><div class="table-wrap"><table><thead><tr><th>الصنف</th><th>الكمية</th><th>آخر بيع</th></tr></thead><tbody id="slowStockRows"></tbody></table></div></div>
+<div class="card" style="margin-top:12px"><h3>👥 حسابات العملاء والموردين</h3>
+<div class="inventory-grid"><div><h4>ديون العملاء</h4><strong id="customerDebtTotal">0 SDG</strong><div class="table-wrap"><table><thead><tr><th>العميل</th><th>المتبقي</th></tr></thead><tbody id="customerDebtRows"></tbody></table></div></div>
+<div><h4>مستحقات الموردين</h4><strong id="supplierDebtTotal">0 SDG</strong><div class="table-wrap"><table><thead><tr><th>المورد</th><th>المتبقي</th></tr></thead><tbody id="supplierDebtRows"></tbody></table></div></div></div>
+<form id="customerPaymentForm" class="stock-form" style="margin-top:12px"><div><label>تحصيل من عميل</label><input name="customer" required placeholder="اسم العميل"></div><div><label>المبلغ المحصل</label><input name="amount" type="number" min="0.01" step="0.01" required></div><div><label>التاريخ</label><input name="date" type="date" required></div><button class="primary">تسجيل التحصيل</button></form>
+<form id="supplierPaymentForm" class="stock-form" style="margin-top:12px"><div><label>سداد لمورد</label><input name="supplier" required placeholder="اسم المورد"></div><div><label>المبلغ المدفوع</label><input name="amount" type="number" min="0.01" step="0.01" required></div><div><label>التاريخ</label><input name="date" type="date" required></div><button class="primary">تسجيل السداد</button></form></div>
 <div class="card" style="margin-top:12px"><h3>📚 سجل الحركات والفواتير</h3><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>الحركة</th><th>الصنف</th><th>الكمية</th><th>القيمة</th><th>التفاصيل</th></tr></thead><tbody id="inventoryHistoryRows"></tbody></table></div></div>
 </section>
 </main><footer>حساباتي · حقوق النشر محفوظة © 2026 محمد عمر محمد اسحق</footer>
@@ -887,8 +892,8 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
  const $=id=>document.getElementById(id);
  const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
  const fmt=n=>Number(n||0).toLocaleString('en-US',{maximumFractionDigits:2});
- let db={products:[],moves:[],invoices:[]};
- try{const x=JSON.parse(localStorage.getItem(KEY)||'null');if(x&&Array.isArray(x.products))db=x}catch(e){}
+ let db={products:[],moves:[],invoices:[],customerPayments:[],supplierPayments:[]};
+ try{const x=JSON.parse(localStorage.getItem(KEY)||'null');if(x&&Array.isArray(x.products))db={...db,...x,customerPayments:x.customerPayments||[],supplierPayments:x.supplierPayments||[]} }catch(e){}
  const save=()=>localStorage.setItem(KEY,JSON.stringify(db));
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  function refresh(){
@@ -898,13 +903,20 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
   $('invUnitCount').textContent=fmt(db.products.reduce((a,p)=>a+p.qty,0));
   $('invCostValue').textContent=fmt(db.products.reduce((a,p)=>a+p.qty*p.buy,0))+' SDG';
   $('invLowCount').textContent=db.products.filter(p=>p.qty<=p.min).length;
-  $('inventoryRows').innerHTML=db.products.map(p=>'<tr><td>'+esc(p.name)+'</td><td>'+esc(p.category)+'</td><td class="'+(p.qty<=p.min?'negative':'')+'">'+p.qty+'</td><td>'+fmt(p.buy)+'</td><td>'+fmt(p.sell)+'</td><td>'+fmt(p.qty*p.buy)+'</td></tr>').join('')||'<tr><td colspan="6" class="empty">لا توجد أصناف مسجلة بعد</td></tr>';
+  $('inventoryRows').innerHTML=db.products.map(p=>'<tr><td>'+esc(p.name)+'</td><td>'+esc(p.category)+'</td><td class="'+(p.qty<=p.min?'negative':'')+'">'+p.qty+'</td><td>'+fmt(p.buy)+'</td><td>'+fmt(p.sell)+'</td><td>'+fmt(p.qty*p.buy)+'</td><td><button type="button" data-edit-product="'+p.id+'">تعديل</button></td></tr>').join('')||'<tr><td colspan="7" class="empty">لا توجد أصناف مسجلة بعد</td></tr>';
   const sold=db.moves.filter(m=>m.type==='بيع');
   $('slowStockRows').innerHTML=db.products.filter(p=>p.qty>0&&!sold.some(m=>m.product===p.id&&Date.now()-new Date(m.date).getTime()<30*86400000)).map(p=>'<tr><td>'+esc(p.name)+'</td><td>'+p.qty+'</td><td>لا توجد مبيعات حديثة</td></tr>').join('')||'<tr><td colspan="3" class="empty">لا توجد بضائع راكدة حالياً</td></tr>';
+  const debts={};db.invoices.filter(i=>i.payment==='آجل').forEach(i=>{const n=(i.customer||'عميل غير محدد').trim();debts[n]=(debts[n]||0)+Number(i.value||0)});db.customerPayments.forEach(p=>{debts[p.customer]=(debts[p.customer]||0)-p.amount});
+  const customerEntries=Object.entries(debts).filter(x=>x[1]>0.001);$('customerDebtTotal').textContent=fmt(customerEntries.reduce((a,x)=>a+x[1],0))+' SDG';$('customerDebtRows').innerHTML=customerEntries.map(x=>'<tr><td>'+esc(x[0])+'</td><td>'+fmt(x[1])+'</td></tr>').join('')||'<tr><td colspan="2">لا توجد ديون</td></tr>';
+  const suppliers={};db.moves.filter(m=>m.type==='وارد'&&m.supplier).forEach(m=>{suppliers[m.supplier]=(suppliers[m.supplier]||0)+Number(m.value||0)});db.supplierPayments.forEach(p=>{suppliers[p.supplier]=(suppliers[p.supplier]||0)-p.amount});
+  const supplierEntries=Object.entries(suppliers).filter(x=>x[1]>0.001);$('supplierDebtTotal').textContent=fmt(supplierEntries.reduce((a,x)=>a+x[1],0))+' SDG';$('supplierDebtRows').innerHTML=supplierEntries.map(x=>'<tr><td>'+esc(x[0])+'</td><td>'+fmt(x[1])+'</td></tr>').join('')||'<tr><td colspan="2">لا توجد مستحقات</td></tr>';
   const rows=[...db.moves.map(m=>({...m,kind:m.type,detail:m.note||m.supplier||''})),...db.invoices.map(i=>({...i,kind:'فاتورة بيع',detail:i.customer||i.payment||''}))].sort((a,b)=>b.date.localeCompare(a.date));
   $('inventoryHistoryRows').innerHTML=rows.map(m=>'<tr><td>'+esc(m.date)+'</td><td>'+esc(m.kind)+'</td><td>'+esc(db.products.find(p=>p.id===m.product)?.name||'—')+'</td><td>'+m.qty+'</td><td>'+fmt(m.value||0)+'</td><td>'+esc(m.detail)+'</td></tr>').join('')||'<tr><td colspan="6" class="empty">لا توجد حركات مسجلة</td></tr>';
  }
  function formData(form){return Object.fromEntries(new FormData(form).entries())}
+ $('inventoryRows').addEventListener('click',e=>{const b=e.target.closest('[data-edit-product]');if(!b)return;const p=db.products.find(x=>x.id===b.dataset.editProduct);if(!p)return;const name=prompt('اسم الصنف',p.name);if(name===null)return;const buy=prompt('سعر الشراء',p.buy);if(buy===null)return;const sell=prompt('سعر البيع',p.sell);if(sell===null)return;const min=prompt('حد التنبيه',p.min);if(min===null)return;if(!name.trim()||![buy,sell,min].every(v=>Number.isFinite(Number(v))&&Number(v)>=0)){alert('بيانات غير صحيحة');return}p.name=name.trim();p.buy=Number(buy);p.sell=Number(sell);p.min=Number(min);save();refresh()});
+ $('customerPaymentForm').addEventListener('submit',e=>{e.preventDefault();const d=formData(e.currentTarget);db.customerPayments.push({customer:d.customer.trim(),amount:Number(d.amount),date:d.date});save();e.currentTarget.reset();e.currentTarget.date.value=today();refresh();alert('تم تسجيل تحصيل العميل.')});
+ $('supplierPaymentForm').addEventListener('submit',e=>{e.preventDefault();const d=formData(e.currentTarget);db.supplierPayments.push({supplier:d.supplier.trim(),amount:Number(d.amount),date:d.date});save();e.currentTarget.reset();e.currentTarget.date.value=today();refresh();alert('تم تسجيل سداد المورد.')});
  $('productForm').addEventListener('submit',e=>{e.preventDefault();const d=formData(e.currentTarget);db.products.push({id:'p'+Date.now(),name:d.name.trim(),category:d.category,qty:Number(d.qty),buy:Number(d.buy),sell:Number(d.sell),min:Number(d.min||0),note:d.note});save();e.currentTarget.reset();refresh();alert('تم حفظ الصنف في المخزون.')});
  $('stockInForm').addEventListener('submit',e=>{e.preventDefault();const d=formData(e.currentTarget),p=db.products.find(x=>x.id===d.product),q=Number(d.qty);if(!p||q<1)return;p.buy=Number(((p.qty*p.buy+q*Number(d.cost))/(p.qty+q)).toFixed(2));p.qty+=q;db.moves.push({type:'وارد',product:p.id,qty:q,value:q*p.buy,date:d.date,supplier:d.supplier,note:d.note});save();e.currentTarget.reset();e.currentTarget.date.value=today();refresh();alert('تم تسجيل الوارد وتحديث المخزون.')});
  $('stockOutForm').addEventListener('submit',e=>{e.preventDefault();const d=formData(e.currentTarget),p=db.products.find(x=>x.id===d.product),q=Number(d.qty);if(!p||q<1||q>p.qty){alert('الكمية المطلوبة أكبر من المخزون المتاح.');return}p.qty-=q;db.moves.push({type:d.reason==='بيع'?'صرف':'صرف',product:p.id,qty:q,value:q*p.buy,date:d.date,note:d.reason+' '+d.note});save();e.currentTarget.reset();e.currentTarget.date.value=today();refresh();alert('تم تسجيل الصرف وتحديث المخزون.')});
@@ -912,7 +924,7 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
  document.querySelectorAll('#home [data-tab-go]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.tabGo,tab=document.querySelector('#nav [data-tab="'+id+'"]');if(tab)tab.click();const target=b.dataset.focus;if(target)setTimeout(()=>$ (target)?.scrollIntoView({behavior:'smooth',block:'start'}),100)}));
  $('bankLaunchShortcut')?.addEventListener('click',()=>$('bankLaunch').click());
  $('bankLaunchCategory')?.addEventListener('click',()=>$('bankLaunch').click());
- ['stockInForm','stockOutForm','invoiceForm'].forEach(id=>{const f=$(id);if(f)f.date.value=today()});
+ ['stockInForm','stockOutForm','invoiceForm','customerPaymentForm','supplierPaymentForm'].forEach(id=>{const f=$(id);if(f)f.date.value=today()});
  refresh();
  // ربط ربح مبيعات الطبلية ببطاقة الأرباح في الصفحة الرئيسية
  function inventoryProfit(){return db.invoices.reduce((a,x)=>a+(Number(x.price||0)-Number(x.cost??db.products.find(p=>p.id===x.product)?.buy??0))*Number(x.qty||0),0)}
