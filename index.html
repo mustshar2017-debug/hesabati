@@ -190,7 +190,7 @@ footer{color:#aeb4c0}
 <div class="card kpi"><span class="kpi-icon">💰</span><small>الرصيد المتاح</small><strong id="balance">0</strong><small>SDG</small></div><div class="card kpi"><span class="kpi-icon">🏦</span><small>إجمالي رأس المال المضاف</small><strong id="totalCapital">0</strong><small>SDG</small></div>
 <button class="card kpi profit-toggle" id="profitToggle" type="button" aria-expanded="false" aria-controls="profitDetails"><span class="kpi-icon">📊</span><small>الأرباح</small><strong id="profitTotal">عرض التفاصيل</strong><small>اضغط لعرض الأرباح</small></button>
 </div>
-<div class="grid financial-grid profit-details" id="profitDetails" hidden>
+<div class="grid financial-grid profit-details" id="profitDetails" hidden><div class="card kpi"><span class="kpi-icon">📦</span><small>ربح مبيعات الطبلية</small><strong id="inventoryProfit">0</strong><small>SDG</small></div>
 <div class="card kpi"><span class="kpi-icon">📈</span><small>ربح الرصيد</small><strong id="creditProfit">0</strong><small>SDG</small></div>
 <div class="card kpi"><span class="kpi-icon">📱</span><small>ربح الشحن</small><strong id="rechargeProfit">0</strong><small>SDG</small></div>
 <div class="card kpi"><span class="kpi-icon">🤝</span><small>ربح خدمات الزبائن</small><strong id="serviceProfit">0</strong><small>SDG</small></div>
@@ -914,7 +914,15 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
  $('bankLaunchCategory')?.addEventListener('click',()=>$('bankLaunch').click());
  ['stockInForm','stockOutForm','invoiceForm'].forEach(id=>{const f=$(id);if(f)f.date.value=today()});
  refresh();
-})();
+ // ربط ربح مبيعات الطبلية ببطاقة الأرباح في الصفحة الرئيسية
+ function inventoryProfit(){return db.invoices.reduce((a,x)=>a+(Number(x.price||0)-Number(db.products.find(p=>p.id===x.product)?.buy||0))*Number(x.qty||0),0)}
+ function updateInventoryKpi(){const el=$('inventoryProfit');if(el)el.textContent=fmt(inventoryProfit())}
+ const oldRender=window.render;
+ if(typeof oldRender==='function'){window.render=function(){oldRender();updateInventoryKpi()};}
+ const originalRefresh=refresh;
+ refresh=function(){originalRefresh();updateInventoryKpi()};
+ updateInventoryKpi();
+})(); 
 </script>
 </body></html>
 
