@@ -213,6 +213,15 @@ footer{color:#aeb4c0}
 #bankProfitHub .hint{margin-top:14px}
 #home .category-launcher button{font-size:11px}
 </style>
+
+<style id="expanded-home-icons-layout">
+/* توسيع أيقونات الواجهة الرئيسية وتوزيعها بالتساوي */
+#home .category-launcher{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0 18px}
+#home .category-launcher button{min-width:0;min-height:88px;padding:10px 6px;border-radius:13px;font-size:13px;line-height:1.35;gap:7px}
+#home .category-launcher button br{display:block}
+#home .category-launcher button{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+@media(max-width:380px){#home .category-launcher{gap:7px}#home .category-launcher button{min-height:78px;padding:8px 3px;font-size:11px}}
+</style>
 </head>
 <body>
 <header><div class="wrap header-row"><div><div class="brand-line"><h1>حساباتي</h1><button id="themeToggle" class="theme-toggle" type="button" aria-label="تفعيل الوضع الليلي" title="تفعيل الوضع الليلي">☀️</button></div><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><div class="header-actions"><button class="menu-trigger" id="menuTrigger" type="button" aria-label="القائمة" aria-expanded="false">⋮</button><button class="secondary" id="lockNow" type="button">🔒 قفل الآن</button><div class="app-menu" id="appMenu" hidden><button type="button" data-menu-action="backup">💾 حفظ نسخة احتياطية</button><button type="button" data-menu-action="labels">✏️ تعديل أسماء الأيقونات</button><button type="button" data-menu-action="generalReport">📊 تقرير عام مفصل</button><button type="button" data-menu-action="monthlyReport">📅 التقرير الشهري</button><button type="button" data-menu-action="settings">⚙️ إعدادات التطبيق</button><button type="button" data-menu-action="about">ℹ️ نبذة عنّا</button><button type="button" data-menu-action="share">📤 مشاركة التطبيق</button><button type="button" data-menu-action="rate">⭐ تقييم التطبيق</button><button type="button" data-menu-action="feedback">✉️ إرسال ملاحظات أو الإبلاغ عن مشكلة</button></div></div></div></header>
@@ -1292,15 +1301,6 @@ body.dark .supplier-balance-line{background:#203a33;color:#b9f1df}body.dark .sup
 })();
 </script>
 
-
-<style id="expanded-home-icons-layout">
-/* توسيع أيقونات الواجهة الرئيسية وتوزيعها بالتساوي */
-#home .category-launcher{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0 18px}
-#home .category-launcher button{min-width:0;min-height:88px;padding:10px 6px;border-radius:13px;font-size:13px;line-height:1.35;gap:7px}
-#home .category-launcher button br{display:block}
-#home .category-launcher button{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-@media(max-width:380px){#home .category-launcher{gap:7px}#home .category-launcher button{min-height:78px;padding:8px 3px;font-size:11px}}
-</style>
 </body></html>
 
 <style id="home-icons-layout-update">
