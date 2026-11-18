@@ -992,7 +992,79 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
  function updateSaleInvoiceTotal(){const f=$('invoiceForm');if(!f)return;const qty=Number(f.elements.qty.value)||0,price=Number(f.elements.price.value)||0;$('saleInvoiceTotal').textContent=fmt(qty*price)+' SDG'}
  $('invoiceForm').addEventListener('input',updateSaleInvoiceTotal);$('invoiceForm').addEventListener('change',updateSaleInvoiceTotal);
  $('closeSaleInvoice').addEventListener('click',showInventoryMenu);$('closeOutboundVoucher').addEventListener('click',showInventoryMenu);
- $('printSaleInvoice').addEventListener('click',()=>{const f=$('invoiceForm');if(!f.reportValidity())return;const d=formData(f),p=db.products.find(x=>x.id===d.product),qty=Number(d.qty),price=Number(d.price),total=qty*price;if(!p||qty<1||qty>p.qty){alert('يرجى التأكد من الصنف والكمية المتاحة قبل الطباعة.');return}const w=window.open('','_blank');if(!w){alert('اسمح بفتح النوافذ المنبثقة حتى تتمكن من طباعة الفاتورة.');return}const safe=esc;w.document.open();w.document.write('<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>فاتورة بيع</title><style>@page{size:A4 portrait;margin:16mm}*{box-sizing:border-box}body{font-family:Tahoma,Arial,sans-serif;color:#111;margin:0;font-size:14px}.paper{width:100%;min-height:250mm}.head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #176fe0;padding-bottom:16px;margin-bottom:22px}.brand{font-size:25px;font-weight:800;color:#176fe0}.meta{text-align:left;line-height:1.9}.title{text-align:center;font-size:23px;font-weight:800;margin:20px 0}.details{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0 24px}.details div{border:1px solid #ddd;padding:11px;border-radius:6px}.details b{display:inline-block;min-width:95px}.items{width:100%;border-collapse:collapse;margin-top:14px}.items th,.items td{border:1px solid #999;padding:13px 10px;text-align:right}.items th{background:#eef2f7}.total{margin:22px 0 0 auto;width:48%;border:2px solid #176fe0;padding:14px;font-size:18px;font-weight:bold;display:flex;justify-content:space-between}.foot{display:flex;justify-content:space-between;margin-top:85px}.sign{width:42%;border-top:1px solid #777;padding-top:10px;text-align:center}.note{margin-top:25px;color:#555;font-size:12px}@media print{body{print-color-adjust:exact;-webkit-print-color-adjust:exact}}</style></head><body><main class="paper"><header class="head"><div><div class="brand">حساباتي</div><div>إدارة الطبلية والمبيعات</div></div><div class="meta"><div>التاريخ: '+safe(d.date)+'</div><div>رقم الفاتورة: '+safe(String(Date.now()))+'</div></div></header><div class="title">فاتورة بيع</div><section class="details"><div><b>اسم العميل:</b> '+safe(d.customer||'عميل نقدي')+'</div><div><b>طريقة الدفع:</b> '+safe(d.payment)+'</div></section><table class="items"><thead><tr><th>م</th><th>الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody><tr><td>1</td><td>'+safe(p.name)+'</td><td>'+fmt(qty)+'</td><td>'+fmt(price)+' SDG</td><td>'+fmt(total)+' SDG</td></tr></tbody></table><div class="total"><span>الإجمالي الكلي</span><span>'+fmt(total)+' SDG</span></div><div class="foot"><div class="sign">توقيع المستلم</div><div class="sign">توقيع المسؤول</div></div><div class="note">شكراً لتعاملكم معنا.</div></main><script>window.onload=function(){setTimeout(function(){window.print()},350)};<\/script></body></html>');w.document.close()});
+ $('printSaleInvoice').addEventListener('click',()=>{const f=$('invoiceForm');if(!f.reportValidity())return;const d=formData(f),p=db.products.find(x=>x.id===d.product),qty=Number(d.qty),price=Number(d.price),total=qty*price;if(!p||qty<1||qty>p.qty){alert('يرجى التأكد من الصنف والكمية المتاحة قبل الطباعة.');return}const w=window.open('','_blank');if(!w){alert('اسمح بفتح النوافذ المنبثقة حتى تتمكن من طباعة الفاتورة.');return}const safe=esc;w.document.open();w.document.write('<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>فاتورة بيع</title><style>@page{size:A4 portrait;margin:16mm}*{box-sizing:border-box}body{font-family:Tahoma,Arial,sans-serif;color:#111;margin:0;font-size:14px}.paper{width:100%;min-height:250mm}.head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #176fe0;padding-bottom:16px;margin-bottom:22px}.brand{font-size:25px;font-weight:800;color:#176fe0}.meta{text-align:left;line-height:1.9}.title{text-align:center;font-size:23px;font-weight:800;margin:20px 0}.details{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0 24px}.details div{border:1px solid #ddd;padding:11px;border-radius:6px}.details b{display:inline-block;min-width:95px}.items{width:100%;border-collapse:collapse;margin-top:14px}.items th,.items td{border:1px solid #999;padding:13px 10px;text-align:right}.items th{background:#eef2f7}.total{margin:22px 0 0 auto;width:48%;border:2px solid #176fe0;padding:14px;font-size:18px;font-weight:bold;display:flex;justify-content:space-between}.foot{display:flex;justify-content:space-between;margin-top:85px}.sign{width:42%;border-top:1px solid #777;padding-top:10px;text-align:center}.note{margin-top:25px;color:#555;font-size:12px}@media print{body{print-color-adjust:exact;-webkit-print-color-adjust:exact}}</style></head><body><main class="paper"><header class="head"><div><div class="brand">حساباتي</div><div>إدارة الطبلية والمبيعات</div></div><div class="meta"><div>التاريخ: '+safe(d.date)+'</div><div>رقم الفاتورة: '+safe(String(Date.now()))+'</div></div></header><div class="title">فاتورة بيع</div><section class="details"><div><b>اسم العميل:</b> '+safe(d.customer||'عميل نقدي')+'</div><div><b>طريقة الدفع:</b> '+safe(d.payment)+'</div></section><table class="items"><thead><tr><th>م</th><th>الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody><tr><td>1</td><td>'+safe(p.name)+'</td><td>'+fmt(qty)+'</td><td>'+fmt(price)+' SDG</td><td>'+fmt(total)+' SDG</td></tr></tbody></table><div class="total"><span>الإجمالي الكلي</span><span>'+fmt(total)+' SDG</span></div><div class="foot"><div class="sign">توقيع المستلم</div><div class="sign">توقيع المسؤول</div></div><div class="note">شكراً لتعاملكم معنا.</div></main><script>window.onload=function(){setTimeout(function(){window.print()},350)};<\/script>
+<style>
+#accountStatementModal{position:fixed;inset:0;z-index:10050;background:#071d1dcc;display:none;align-items:center;justify-content:center;padding:12px}
+#accountStatementModal .as-card{background:var(--card,#fff);color:var(--ink,#183536);width:min(760px,100%);max-height:92vh;overflow:auto;border-radius:18px;padding:16px;box-shadow:0 20px 70px #0005}
+#accountStatementModal .as-search{display:flex;gap:8px;align-items:center;margin:12px 0;position:relative}
+#accountStatementModal input{min-width:0;flex:1;padding:12px;border:1px solid var(--line,#ddd);border-radius:10px;background:var(--bg,#fff);color:inherit}
+#accountStatementModal .as-results{border:1px solid var(--line,#ddd);border-radius:10px;max-height:180px;overflow:auto}
+#accountStatementModal .as-results button{display:block;width:100%;text-align:right;padding:11px;border:0;border-bottom:1px solid var(--line,#ddd);background:transparent;color:inherit}
+#accountStatementModal .as-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+#accountStatementModal .as-box{background:var(--bg,#f4f6f5);padding:12px;border-radius:12px}
+#accountStatementModal .as-box strong{display:block;margin-top:5px}
+#accountStatementModal .as-table{overflow:auto}
+#accountStatementModal table{width:100%;border-collapse:collapse;min-width:520px}
+#accountStatementModal th,#accountStatementModal td{padding:9px;border-bottom:1px solid var(--line,#ddd);text-align:right;font-size:13px}
+#accountStatementModal .as-close{float:left}
+@media(max-width:520px){#accountStatementModal .as-summary{grid-template-columns:1fr 1fr}#accountStatementModal .as-summary .as-box:last-child{grid-column:1/-1}}
+</style>
+<div id="accountStatementModal" dir="rtl">
+ <div class="as-card">
+  <button type="button" class="secondary as-close" id="asClose">إغلاق ✕</button>
+  <h2 style="margin:4px 0">📒 كشف حساب</h2>
+  <p class="hint">ابحث باسم العميل أو المورد لعرض جميع الحركات والرصيد النهائي.</p>
+  <div class="as-search"><input id="asSearch" type="search" placeholder="اكتب اسم الحساب..." autocomplete="off"></div>
+  <div id="asResults" class="as-results" hidden></div>
+  <div id="asLedger" hidden></div>
+ </div>
+</div>
+<script id="account-statement-modal-v1">
+(function(){
+ const $=id=>document.getElementById(id), modal=$('accountStatementModal');
+ if(!modal)return;
+ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const money=n=>(Number(n)||0).toLocaleString('en-US',{maximumFractionDigits:2})+' SDG';
+ const read=k=>{try{return JSON.parse(localStorage.getItem(k)||'{}')}catch(e){return {}}};
+ function ledgers(){
+  const inv=read('hisabati_inventory_v1'), main=read('hisabati_v1');
+  const customers=new Map(), suppliers=new Map();
+  const add=(map,name,row)=>{name=String(name||'').trim();if(!name)return;if(!map.has(name))map.set(name,[]);map.get(name).push(row)};
+  (inv.invoices||[]).forEach(x=>add(customers,x.customer,{date:x.date,kind:'فاتورة بيع',detail:(x.payment||'')+' · '+(x.qty||0)+' وحدة',debit:x.payment==='آجل'?Number(x.value||0):0,credit:0,amount:Number(x.value||0)}));
+  (inv.customerPayments||[]).forEach(x=>add(customers,x.customer,{date:x.date,kind:'تحصيل من عميل',detail:'مبلغ مستلم',debit:0,credit:Number(x.amount||0),amount:Number(x.amount||0)}));
+  (inv.moves||[]).filter(x=>x.type==='وارد'&&x.supplier).forEach(x=>add(suppliers,x.supplier,{date:x.date,kind:'شراء بضاعة',detail:(x.payment||'')+' · '+(x.qty||0)+' وحدة',debit:0,credit:x.payment==='آجل'?Number(x.value||0):0,amount:Number(x.value||0)}));
+  (inv.supplierPayments||[]).forEach(x=>add(suppliers,x.supplier,{date:x.date,kind:'سداد لمورد',detail:'مبلغ مدفوع',debit:Number(x.amount||0),credit:0,amount:Number(x.amount||0)}));
+  (main.supplierTransfers||[]).forEach(x=>add(suppliers,x.supplier,{date:x.date,kind:'حوالة للمورد',detail:x.note||x.phone||'حوالة',debit:Number(x.amount||0),credit:0,amount:Number(x.amount||0)}));
+  return {customers,suppliers};
+ }
+ function open(){modal.style.display='flex';$('asSearch').value='';$('asLedger').hidden=true;$('asResults').hidden=true;$('asSearch').focus()}
+ function close(){modal.style.display='none'}
+ function renderSearch(){
+  const q=$('asSearch').value.trim().toLocaleLowerCase(),{customers,suppliers}=ledgers(),items=[];
+  for(const [name,rows] of customers)if(!q||name.toLocaleLowerCase().includes(q))items.push({name,type:'عميل',rows});
+  for(const [name,rows] of suppliers)if(!q||name.toLocaleLowerCase().includes(q))items.push({name,type:'مورد',rows});
+  const results=$('asResults');
+  results.innerHTML=items.slice(0,30).map((x,i)=>'<button type="button" data-as-index="'+i+'"><strong>'+esc(x.name)+'</strong> <small>· '+x.type+' · '+x.rows.length+' حركة</small></button>').join('')||'<div style="padding:12px">لا توجد حسابات مطابقة في السجلات.</div>';
+  results.hidden=false;
+  results.querySelectorAll('[data-as-index]').forEach((b,i)=>b.addEventListener('click',()=>show(items[i])));
+ }
+ function show(account){
+  const rows=account.rows.slice().sort((a,b)=>String(a.date||'').localeCompare(String(b.date||'')));
+  let debit=0,credit=0;
+  rows.forEach(x=>{debit+=Number(x.debit||0);credit+=Number(x.credit||0)});
+  const balance=debit-credit;
+  const status=account.type==='عميل'?(balance>0.001?'مدين – عليه لك':balance< -0.001?'دائن – له عندك':'خالص – لا يوجد رصيد'):(balance>0.001?'دائن – له عندك':balance< -0.001?'مدين – عليه لك':'خالص – لا يوجد رصيد');
+  $('asLedger').innerHTML='<h3 style="margin:14px 0 4px">'+esc(account.name)+' <small>('+account.type+')</small></h3><div class="as-summary"><div class="as-box">إجمالي المدين<strong>'+money(debit)+'</strong></div><div class="as-box">إجمالي الدائن<strong>'+money(credit)+'</strong></div><div class="as-box">الرصيد النهائي<strong>'+money(Math.abs(balance))+'<small style="display:block">'+status+'</small></strong></div></div><div class="as-table"><table><thead><tr><th>التاريخ</th><th>الحركة</th><th>التفاصيل</th><th>مدين</th><th>دائن</th><th>الرصيد</th></tr></thead><tbody>'+rows.map((x,i)=>{const running=rows.slice(0,i+1).reduce((n,y)=>n+Number(y.debit||0)-Number(y.credit||0),0);return '<tr><td>'+esc(x.date||'—')+'</td><td>'+esc(x.kind)+'</td><td>'+esc(x.detail)+'</td><td>'+money(x.debit)+'</td><td>'+money(x.credit)+'</td><td>'+money(Math.abs(running))+' '+(account.type==='عميل'?(running>=0?'مدين':'دائن'):(running>=0?'دائن':'مدين'))+'</td></tr>'}).join('')||'<tr><td colspan="6">لا توجد حركات مسجلة</td></tr>'+'</tbody></table></div>';
+  $('asLedger').hidden=false;$('asResults').hidden=true;
+ }
+ document.addEventListener('click',e=>{const b=e.target.closest('#nav button[data-nav-view="accounts"]');if(b){e.preventDefault();e.stopImmediatePropagation();open()}},true);
+ $('asSearch').addEventListener('input',renderSearch);$('asClose').addEventListener('click',close);
+ modal.addEventListener('click',e=>{if(e.target===modal)close()});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.style.display==='flex')close()});
+})();
+</script>
+
+</body></html>');w.document.close()});
  
 
  function openInventoryView(view){$('inventorySectionMenu').style.display='none';document.querySelectorAll('#inventory .inventory-view').forEach(x=>{x.classList.toggle('active',x.dataset.inventoryView===view);x.classList.toggle('voucher-modal-open', ['inbound','outbound','invoice'].includes(view)&&x.dataset.inventoryView===view);});window.scrollTo({top:0,behavior:'smooth'});}
