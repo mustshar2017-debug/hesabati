@@ -120,21 +120,77 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 #home>.bank-launch small{display:block;margin-top:3px;font-size:11px;line-height:1.3;font-weight:600}
 @media(max-width:360px){.quick-section .quick-grid{gap:6px}.quick-section .quick-link{min-height:100px;padding:7px 3px}.quick-section .quick-link span:last-child{font-size:10px}.quick-section .quick-link small{font-size:8px}#home>.bank-launch{padding:10px}#home>.bank-launch>span:last-child{font-size:14px}}
 </style>
+
+<style id="hesabati-redesign-v1">
+:root{--bg:#101114;--card:#1b1c20;--ink:#f4f5f7;--muted:#aeb4c0;--teal:#087cf0;--line:#315f9d;--red:#ef6464;--green:#65c879}
+body{background:#101114;color:#f4f5f7}
+header{background:#176fe0;padding:16px 12px}
+.sub{color:#e0edff}
+nav{background:#101114}
+nav button{background:#176fe0;color:#fff;border-color:#3989fa;border-radius:10px}
+nav button.active{background:#6042c9;border-color:#8a70ee}
+.card,.table-wrap{background:#1b1c20;border-color:#315f9d;color:#f4f5f7}
+.financial-grid .kpi{background:#1b1c20;border:1px solid #3979c8}
+.financial-grid .kpi strong{color:#fff}
+.kpi small,label,.muted,th{color:#c0c6d0}
+.kpi-icon,.quick-icon{background:#202b3c}
+input,select,textarea{background:#24262c;color:#fff;border-color:#42658f}
+.primary,.bank-launch{background:#087cf0!important;color:#fff!important;border-color:#3989fa!important}
+.secondary{background:#6042c9;color:#fff;border-color:#8269e6}
+.quick-link{background:#1b1c20;color:#fff;border:1px solid #3979c8}
+.quick-link small{color:#b8c4d6}
+.quick-section .section-title{color:#fff}
+.hint{background:#202a39;color:#e5edfa;border-color:#315f9d}
+.reportline,th,td{border-color:#343b47}
+td:last-child,th:last-child{background:#1b1c20}
+footer{color:#aeb4c0}
+#home .category-launcher{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:12px 0 18px}
+#home .category-launcher button{min-height:84px;border:1px solid #3989fa;border-radius:13px;background:#087cf0;color:#fff;font:inherit;font-weight:900;font-size:15px;padding:10px}
+#home .category-launcher button:nth-child(even){background:#6042c9;border-color:#8269e6}
+#home .top-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:12px 0}
+#home .top-actions button{min-height:54px;border:1px solid #3989fa;border-radius:10px;background:#087cf0;color:#fff;font:inherit;font-weight:800;font-size:12px;padding:6px}
+#home .top-actions button:nth-child(3n+2){background:#6042c9;border-color:#8269e6}
+#inventory .inventory-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#inventory .inventory-grid .card{min-width:0}
+#inventory .inventory-actions{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+#inventory .inventory-actions button{flex:1;min-width:110px}
+#inventory .stock-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+#inventory .stock-form .full{grid-column:1/-1}
+#inventory .inventory-kpi strong{display:block;font-size:20px;margin-top:7px}
+@media(max-width:480px){#inventory .stock-form{grid-template-columns:1fr}#inventory .stock-form .full{grid-column:auto}}
+</style>
 </head>
 <body>
 <header><div class="wrap header-row"><div><div class="brand-line"><h1>حساباتي</h1><button id="themeToggle" class="theme-toggle" type="button" aria-label="تفعيل الوضع الليلي" title="تفعيل الوضع الليلي">☀️</button></div><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><div class="header-actions"><button class="menu-trigger" id="menuTrigger" type="button" aria-label="القائمة" aria-expanded="false">⋮</button><button class="secondary" id="lockNow" type="button">🔒 قفل الآن</button><div class="app-menu" id="appMenu" hidden><button type="button" data-menu-action="backup">💾 حفظ نسخة احتياطية</button><button type="button" data-menu-action="labels">✏️ تعديل أسماء الأيقونات</button><button type="button" data-menu-action="generalReport">📊 تقرير عام مفصل</button><button type="button" data-menu-action="monthlyReport">📅 التقرير الشهري</button><button type="button" data-menu-action="settings">⚙️ إعدادات التطبيق</button><button type="button" data-menu-action="about">ℹ️ نبذة عنّا</button><button type="button" data-menu-action="share">📤 مشاركة التطبيق</button><button type="button" data-menu-action="rate">⭐ تقييم التطبيق</button><button type="button" data-menu-action="feedback">✉️ إرسال ملاحظات أو الإبلاغ عن مشكلة</button></div></div></div></header>
 <div class="wrap">
 <nav id="nav">
-<button class="active" data-tab="home">الرئيسية</button><button data-tab="credit">حساب الرصيد</button><button data-tab="recharge">شحن الهواتف</button><button data-tab="services">خدمات الزبائن</button><button data-tab="expenses">المصروفات</button><button data-tab="reports">التقارير</button><button data-tab="partnership">الشراكة</button>
+<button class="active" data-tab="home">الرئيسية</button><button data-tab="inventory">إدارة الطبلية</button><button data-tab="credit">حساب الرصيد</button><button data-tab="recharge">شحن الهواتف</button><button data-tab="services">خدمات الزبائن</button><button data-tab="expenses">المصروفات</button><button data-tab="reports">التقارير</button><button data-tab="partnership">الشراكة</button>
 </nav>
 <main>
 <section id="home" class="panel active">
+<div class="top-actions">
+<button type="button" data-tab-go="inventory">📦 المخزون</button>
+<button type="button" data-tab-go="inventory" data-focus="stockInForm">📥 وارد جديد</button>
+<button type="button" data-tab-go="inventory" data-focus="stockOutForm">📤 صرف بضاعة</button>
+<button type="button" data-tab-go="inventory" data-focus="invoiceForm">🧾 فاتورة بيع</button>
+<button type="button" data-tab-go="expenses">💸 سند صرف</button>
+<button type="button" data-tab-go="inventory" data-focus="slowStock">🐌 الراكد</button>
+<button type="button" data-tab-go="credit">💰 قسم الرصيد</button>
+<button type="button" data-tab-go="recharge">📱 شحن الهواتف</button>
+<button type="button" id="bankLaunchShortcut">🏦 التحويلات البنكية</button>
+</div>
+<div class="category-launcher">
+<button type="button" data-tab-go="inventory">📦<br>إدارة الطبلية</button>
+<button type="button" data-tab-go="credit">💰<br>الرصيد</button>
+<button type="button" data-tab-go="recharge">📱<br>شحن الهواتف</button>
+<button type="button" id="bankLaunchCategory">🏦<br>التحويلات البنكية</button>
+</div>
 <button class="bank-launch" id="bankLaunch" type="button"><span class="quick-icon">🏦</span><span>التحويلات البنكية<small style="display:block;color:#6d8280;font-size:11px;font-weight:500">بنكك · فوري · ساهل · وإضافة بنوك أخرى</small></span></button>
 <div class="grid financial-grid">
 <div class="card kpi"><span class="kpi-icon">💰</span><small>الرصيد المتاح</small><strong id="balance">0</strong><small>SDG</small></div><div class="card kpi"><span class="kpi-icon">🏦</span><small>إجمالي رأس المال المضاف</small><strong id="totalCapital">0</strong><small>SDG</small></div>
 <button class="card kpi profit-toggle" id="profitToggle" type="button" aria-expanded="false" aria-controls="profitDetails"><span class="kpi-icon">📊</span><small>الأرباح</small><strong id="profitTotal">عرض التفاصيل</strong><small>اضغط لعرض الأرباح</small></button>
 </div>
-<div class="grid financial-grid profit-details" id="profitDetails" hidden>
+<div class="grid financial-grid profit-details" id="profitDetails" hidden><div class="card kpi"><span class="kpi-icon">📦</span><small>ربح مبيعات الطبلية</small><strong id="inventoryProfit">0</strong><small>SDG</small></div>
 <div class="card kpi"><span class="kpi-icon">📈</span><small>ربح الرصيد</small><strong id="creditProfit">0</strong><small>SDG</small></div>
 <div class="card kpi"><span class="kpi-icon">📱</span><small>ربح الشحن</small><strong id="rechargeProfit">0</strong><small>SDG</small></div>
 <div class="card kpi"><span class="kpi-icon">🤝</span><small>ربح خدمات الزبائن</small><strong id="serviceProfit">0</strong><small>SDG</small></div>
@@ -196,7 +252,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 <h2 class="section-title">التقارير</h2><div class="card">
 <div class="card" id="generalReportCard" style="margin-bottom:12px"><h3>التقرير العام المفصل</h3><p class="muted">حدد فترة التقرير لعرض جميع الحركات والأرباح والمصروفات خلال المدة.</p><div class="report-filters"><div><label>من تاريخ</label><input type="date" id="reportFrom"></div><div><label>إلى تاريخ</label><input type="date" id="reportTo"></div></div><div class="actions"><button class="primary" type="button" id="runGeneralReport">عرض التقرير</button><button class="secondary" type="button" id="printGeneralReport">طباعة التقرير</button></div><div id="generalReportResults" hidden><div class="reportline"><span>إجمالي الرصيد الداخل</span><b id="gStock">0 SDG</b></div><div class="reportline"><span>إجمالي تحويلات الرصيد</span><b id="gTransfers">0 SDG</b></div><div class="reportline"><span>ربح تحويل الرصيد</span><b id="gCreditProfit">0 SDG</b></div><div class="reportline"><span>إجمالي شحن الهواتف</span><b id="gRecharge">0 SDG</b></div><div class="reportline"><span>ربح الشحن</span><b id="gRechargeProfit">0 SDG</b></div><div class="reportline"><span>ربح خدمات الزبائن</span><b id="gServiceProfit">0 SDG</b></div><div class="reportline"><span>المصروفات</span><b id="gExpenses">0 SDG</b></div><div class="reportline"><span><b>صافي الربح بعد المصروفات</b></span><b class="positive" id="gNet">0 SDG</b></div><h3>تفاصيل الحركات</h3><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>نوع الحركة</th><th>التفاصيل</th><th>القيمة</th><th>التكلفة</th><th>الربح/المصروف</th></tr></thead><tbody id="generalReportRows"></tbody></table></div></div></div>
 <div class="card" id="iconNamesCard" hidden style="margin-bottom:12px"><h3>تعديل أسماء الأيقونات الداخلية</h3><p class="muted">غيّر أسماء الاختصارات الظاهرة في الصفحة الرئيسية، ثم احفظ.</p><form id="iconNamesForm" style="grid-template-columns:1fr"></form><div class="actions"><button class="primary" type="button" id="saveIconNames">حفظ الأسماء</button><button class="secondary" type="button" id="resetIconNames">استعادة الأسماء الأصلية</button></div></div><div class="card" id="monthlyReportCard" hidden style="margin-bottom:12px"><h3>التقرير الشهري</h3><p class="muted">اختر الشهر لعرض ملخص الحسابات لذلك الشهر.</p><div style="max-width:300px"><label>اختر الشهر</label><input type="month" id="monthFilter"></div>
-<div class="reportline"><span>الرصيد الداخل</span><b id="rIn">0</b></div><div class="reportline"><span>قيمة تحويلات الرصيد</span><b id="rTransfers">0</b></div><div class="reportline"><span>ربح الرصيد</span><b id="rCreditProfit">0</b></div><div class="reportline"><span>مبيعات الشحن</span><b id="rRecharge">0</b></div><div class="reportline"><span>ربح الشحن</span><b id="rRechargeProfit">0</b></div><div class="reportline"><span>ربح خدمات الزبائن</span><b id="rServiceProfit">0</b></div><div class="reportline"><span>المصروفات</span><b id="rExpenses">0</b></div><div class="reportline"><span><b>صافي الربح بعد المصروفات</b></span><b class="positive" id="rNet">0</b></div></div>
+<div class="reportline"><span>الرصيد الداخل</span><b id="rIn">0</b></div><div class="reportline"><span>قيمة تحويلات الرصيد</span><b id="rTransfers">0</b></div><div class="reportline"><span>ربح الرصيد</span><b id="rCreditProfit">0</b></div><div class="reportline"><span>مبيعات الشحن</span><b id="rRecharge">0</b></div><div class="reportline"><span>ربح الشحن</span><b id="rRechargeProfit">0</b></div><div class="reportline"><span>ربح خدمات الزبائن</span><b id="rServiceProfit">0</b></div><div class="reportline"><span>ربح مبيعات الطبلية</span><b id="rInventoryProfit">0</b></div><div class="reportline"><span>المصروفات</span><b id="rExpenses">0</b></div><div class="reportline"><span><b>صافي الربح بعد المصروفات</b></span><b class="positive" id="rNet">0</b></div></div>
 <div class="card" id="backupToolsCard" hidden style="margin:12px 0"><h3>النسخ الاحتياطي واستعادة البيانات</h3><p class="muted">احفظ نسخة من بياناتك أو استعد نسخة سابقة.</p><div class="actions"><button class="secondary" id="exportBtn">تصدير نسخة بيانات CSV</button><button class="secondary" id="backupBtn">نسخ احتياطي JSON</button><label class="secondary" style="cursor:pointer">استيراد نسخة<input id="restoreFile" type="file" accept=".json,application/json" hidden></label></div></div>
 </div>
 <div class="hint" id="backupHint" hidden>البيانات محفوظة على هذا الجهاز والمتصفح. احفظ نسخة احتياطية بانتظام، خصوصاً قبل تغيير الهاتف أو مسح بيانات المتصفح.</div>
@@ -227,6 +283,46 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 <div id="partnerAccountCard" hidden style="position:fixed;inset:0;z-index:9998;background:#0009;align-items:center;justify-content:center;padding:18px;overflow:auto"><div class="card" style="width:min(100%,760px);max-height:90vh;overflow:auto"><div class="header-row"><h3 id="partnerAccountTitle">حساب الشريك</h3><button type="button" class="secondary" id="partnerAccountClose">إغلاق</button></div><div class="hint" id="partnerAccountHint">حساب الشريك وتوزيعاته.</div><div class="reportline"><span>الرصيد المخصص للشريك</span><b id="partnerAccountBalance">0 SDG</b></div><h3>سجل التوزيعات</h3><div class="reportline"><span>التوزيعات التلقائية</span><b id="partnerAutomaticBalance">0 SDG</b></div><div class="reportline"><span>الإضافات والتعديلات</span><b id="partnerManualBalance">0 SDG</b></div><div class="quick-grid" style="margin:12px 0"><button type="button" class="primary" id="partnerAddAdjustment">＋ إضافة مبلغ</button></div><h3>سجل التوزيعات والتعديلات</h3><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>المبلغ</th><th>ملاحظات</th><th>إجراء</th></tr></thead><tbody id="partnerAllocationRows"></tbody></table></div></div></div>
 <div id="partnerManagementModal" hidden style="position:fixed;inset:0;z-index:9997;background:#0009;display:none;align-items:center;justify-content:center;padding:18px"><div class="card" style="width:min(100%,560px);max-height:90vh;overflow:auto"><div class="header-row"><h3>إدارة الشركاء والنسب</h3><button type="button" class="secondary" id="managePartnersClose">إغلاق</button></div><p class="hint">أدخل أسماء الشركاء وحدد نسبة كل شريك. يجب أن يكون مجموع النسب 100%. تغيير النسب يطبق على الأرباح الجديدة فقط.</p><div id="partnerSettingsRows"></div><div class="reportline"><span>مجموع النسب</span><b id="partnerPercentTotal">0%</b></div><div class="quick-grid" style="margin:12px 0"><button type="button" class="secondary" id="addPartnerRow">＋ إضافة شريك</button><button type="button" class="primary" id="savePartnerSettings">حفظ الشركاء والنسب</button></div><div class="muted" id="partnerSettingsMessage" aria-live="polite"></div></div></div>
 <div id="partnerAdjustmentModal" hidden style="position:fixed;inset:0;z-index:9999;background:#0009;display:none;align-items:center;justify-content:center;padding:18px"><div class="card" style="width:min(100%,430px);max-height:90vh;overflow:auto"><div class="header-row"><h3 id="partnerAdjustmentTitle">إضافة مبلغ للشريك</h3><button type="button" class="secondary" id="partnerAdjustmentClose">إغلاق</button></div><label>نوع التعديل</label><select id="partnerAdjustmentType" style="width:100%;margin:7px 0 12px"><option value="add">إضافة إلى الرصيد</option><option value="subtract">خصم من الرصيد</option></select><label>المبلغ (SDG)</label><input id="partnerAdjustmentAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="أدخل المبلغ" style="width:100%;margin:7px 0 12px"><label>التاريخ</label><input id="partnerAdjustmentDate" type="date" style="width:100%;margin:7px 0 12px"><label>ملاحظات</label><input id="partnerAdjustmentNote" type="text" maxlength="160" placeholder="سبب الإضافة أو التعديل" style="width:100%;margin:7px 0 16px"><button type="button" class="primary" id="partnerAdjustmentSave" style="width:100%">حفظ التعديل</button></div></div>
+</section>
+
+<section id="inventory" class="panel">
+<h2 class="section-title">📦 إدارة الطبلية والمخزون</h2>
+<div class="inventory-grid">
+<div class="card inventory-kpi"><small>عدد الأصناف</small><strong id="invProductCount">0</strong></div>
+<div class="card inventory-kpi"><small>إجمالي الوحدات</small><strong id="invUnitCount">0</strong></div>
+<div class="card inventory-kpi"><small>قيمة المخزون بالتكلفة</small><strong id="invCostValue">0 SDG</strong></div>
+<div class="card inventory-kpi"><small>الأصناف منخفضة الكمية</small><strong id="invLowCount">0</strong></div>
+</div>
+<div class="card" style="margin-top:12px"><h3>➕ إضافة صنف للمخزون</h3>
+<form id="productForm" class="stock-form">
+<div><label>اسم الصنف</label><input name="name" required placeholder="مثال: بطارية سامسونج"></div>
+<div><label>التصنيف</label><select name="category"><option>هواتف</option><option>إكسسوارات</option><option>بطاريات</option><option>شواحن وكوابل</option><option>سماعات</option><option>أخرى</option></select></div>
+<div><label>الكمية الافتتاحية</label><input name="qty" type="number" min="0" step="1" value="0" required></div>
+<div><label>سعر الشراء للوحدة</label><input name="buy" type="number" min="0" step="0.01" required></div>
+<div><label>سعر البيع للوحدة</label><input name="sell" type="number" min="0" step="0.01" required></div>
+<div><label>حد التنبيه عند الكمية</label><input name="min" type="number" min="0" step="1" value="2"></div>
+<div class="full"><label>رقم تسلسلي / ملاحظات (اختياري)</label><input name="note"></div>
+<button class="primary full">حفظ الصنف</button></form></div>
+<div class="card" style="margin-top:12px"><h3>📥 الوارد – إضافة بضاعة</h3><form id="stockInForm" class="stock-form">
+<div><label>الصنف</label><select name="product" class="product-options" required></select></div><div><label>الكمية الواردة</label><input name="qty" type="number" min="1" step="1" required></div>
+<div><label>تكلفة الوحدة</label><input name="cost" type="number" min="0" step="0.01" required></div><div><label>المورد</label><input name="supplier" placeholder="اختياري"></div><div><label>حالة الشراء</label><select name="purchasePayment"><option>نقدي</option><option>آجل</option></select></div>
+<div><label>التاريخ</label><input name="date" type="date" required></div><div><label>ملاحظات</label><input name="note"></div><button class="primary full">تسجيل الوارد</button></form></div>
+<div class="card" style="margin-top:12px"><h3>📤 الصرف – إخراج بضاعة</h3><form id="stockOutForm" class="stock-form">
+<div><label>الصنف</label><select name="product" class="product-options" required></select></div><div><label>الكمية المصروفة</label><input name="qty" type="number" min="1" step="1" required></div>
+<div><label>سبب الصرف</label><select name="reason"><option>بيع</option><option>استخدام شخصي</option><option>تالف</option><option>مرتجع للمورد</option><option>أخرى</option></select></div><div><label>التاريخ</label><input name="date" type="date" required></div><div class="full"><label>ملاحظات</label><input name="note"></div><button class="primary full">تسجيل الصرف</button></form></div>
+<div class="card" style="margin-top:12px"><h3>🧾 فاتورة بيع</h3><form id="invoiceForm" class="stock-form">
+<div><label>الصنف</label><select name="product" class="product-options" required></select></div><div><label>الكمية</label><input name="qty" type="number" min="1" step="1" required></div>
+<div><label>سعر البيع للوحدة</label><input name="price" type="number" min="0" step="0.01" required></div><div><label>العميل</label><input name="customer" placeholder="اختياري"></div>
+<div><label>طريقة الدفع</label><select name="payment"><option>نقدي</option><option>آجل</option></select></div><div><label>التاريخ</label><input name="date" type="date" required></div>
+<button class="primary full">حفظ الفاتورة وخصم الكمية</button></form></div>
+<div class="card" style="margin-top:12px"><h3>📋 قائمة المخزون</h3><div class="table-wrap"><table><thead><tr><th>الصنف</th><th>التصنيف</th><th>المتوفر</th><th>شراء</th><th>بيع</th><th>القيمة</th><th>إجراء</th></tr></thead><tbody id="inventoryRows"></tbody></table></div></div>
+<div class="card" id="slowStock" style="margin-top:12px"><h3>🐌 البضاعة الراكدة</h3><p class="muted">الأصناف التي لم تسجل عليها حركة بيع خلال 30 يوماً أو أكثر.</p><div class="table-wrap"><table><thead><tr><th>الصنف</th><th>الكمية</th><th>آخر بيع</th></tr></thead><tbody id="slowStockRows"></tbody></table></div></div>
+<div class="card" style="margin-top:12px"><h3>👥 حسابات العملاء والموردين</h3>
+<div class="inventory-grid"><div><h4>ديون العملاء</h4><strong id="customerDebtTotal">0 SDG</strong><div class="table-wrap"><table><thead><tr><th>العميل</th><th>المتبقي</th></tr></thead><tbody id="customerDebtRows"></tbody></table></div></div>
+<div><h4>مستحقات الموردين</h4><strong id="supplierDebtTotal">0 SDG</strong><div class="table-wrap"><table><thead><tr><th>المورد</th><th>المتبقي</th></tr></thead><tbody id="supplierDebtRows"></tbody></table></div></div></div>
+<form id="customerPaymentForm" class="stock-form" style="margin-top:12px"><div><label>تحصيل من عميل</label><input name="customer" required placeholder="اسم العميل"></div><div><label>المبلغ المحصل</label><input name="amount" type="number" min="0.01" step="0.01" required></div><div><label>التاريخ</label><input name="date" type="date" required></div><button class="primary">تسجيل التحصيل</button></form>
+<form id="supplierPaymentForm" class="stock-form" style="margin-top:12px"><div><label>سداد لمورد</label><input name="supplier" required placeholder="اسم المورد"></div><div><label>المبلغ المدفوع</label><input name="amount" type="number" min="0.01" step="0.01" required></div><div><label>التاريخ</label><input name="date" type="date" required></div><button class="primary">تسجيل السداد</button></form></div>
+<div class="card" style="margin-top:12px"><h3>📚 سجل الحركات والفواتير</h3><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>الحركة</th><th>الصنف</th><th>الكمية</th><th>القيمة</th><th>التفاصيل</th></tr></thead><tbody id="inventoryHistoryRows"></tbody></table></div></div>
 </section>
 </main><footer>حساباتي · حقوق النشر محفوظة © 2026 محمد عمر محمد اسحق</footer>
 </div>
@@ -789,6 +885,59 @@ body.dark #home .quick-section .quick-link:nth-child(6n+4) .quick-icon{backgroun
 body.dark #home .quick-section .quick-link:nth-child(6n+5) .quick-icon{background:#214653;color:#b3e9f6}
 body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:#51451f;color:#ffe7a0}
 </style>
+
+<script id="inventory-module-v1">
+(function(){
+ const KEY='hisabati_inventory_v1';
+ const $=id=>document.getElementById(id);
+ const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+ const fmt=n=>Number(n||0).toLocaleString('en-US',{maximumFractionDigits:2});
+ let db={products:[],moves:[],invoices:[],customerPayments:[],supplierPayments:[]};
+ try{const x=JSON.parse(localStorage.getItem(KEY)||'null');if(x&&Array.isArray(x.products))db={...db,...x,customerPayments:x.customerPayments||[],supplierPayments:x.supplierPayments||[]} }catch(e){}
+ const save=()=>localStorage.setItem(KEY,JSON.stringify(db));
+ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ function refresh(){
+  const opts=db.products.map(p=>'<option value="'+p.id+'">'+esc(p.name)+' (متاح '+p.qty+')</option>').join('');
+  document.querySelectorAll('.product-options').forEach(s=>{const old=s.value;s.innerHTML=opts;s.value=old&&db.products.some(p=>p.id===old)?old:(db.products[0]?.id||'')});
+  $('invProductCount').textContent=db.products.length;
+  $('invUnitCount').textContent=fmt(db.products.reduce((a,p)=>a+p.qty,0));
+  $('invCostValue').textContent=fmt(db.products.reduce((a,p)=>a+p.qty*p.buy,0))+' SDG';
+  $('invLowCount').textContent=db.products.filter(p=>p.qty<=p.min).length;
+  $('inventoryRows').innerHTML=db.products.map(p=>'<tr><td>'+esc(p.name)+'</td><td>'+esc(p.category)+'</td><td class="'+(p.qty<=p.min?'negative':'')+'">'+p.qty+'</td><td>'+fmt(p.buy)+'</td><td>'+fmt(p.sell)+'</td><td>'+fmt(p.qty*p.buy)+'</td><td><button type="button" data-edit-product="'+p.id+'">تعديل</button></td></tr>').join('')||'<tr><td colspan="7" class="empty">لا توجد أصناف مسجلة بعد</td></tr>';
+  const sold=db.moves.filter(m=>m.type==='بيع');
+  $('slowStockRows').innerHTML=db.products.filter(p=>p.qty>0&&!sold.some(m=>m.product===p.id&&Date.now()-new Date(m.date).getTime()<30*86400000)).map(p=>{const last=sold.filter(m=>m.product===p.id).sort((a,b)=>b.date.localeCompare(a.date))[0];return '<tr><td>'+esc(p.name)+'</td><td>'+p.qty+'</td><td>'+(last?esc(last.date):'لم تبع من قبل')+'</td></tr>'}).join('')||'<tr><td colspan="3" class="empty">لا توجد بضائع راكدة حالياً</td></tr>';
+  const debts={};db.invoices.filter(i=>i.payment==='آجل').forEach(i=>{const n=(i.customer||'عميل غير محدد').trim();debts[n]=(debts[n]||0)+Number(i.value||0)});db.customerPayments.forEach(p=>{debts[p.customer]=(debts[p.customer]||0)-p.amount});
+  const customerEntries=Object.entries(debts).filter(x=>x[1]>0.001);$('customerDebtTotal').textContent=fmt(customerEntries.reduce((a,x)=>a+x[1],0))+' SDG';$('customerDebtRows').innerHTML=customerEntries.map(x=>'<tr><td>'+esc(x[0])+'</td><td>'+fmt(x[1])+'</td></tr>').join('')||'<tr><td colspan="2">لا توجد ديون</td></tr>';
+  const suppliers={};db.moves.filter(m=>m.type==='وارد'&&m.supplier&&m.payment==='آجل').forEach(m=>{suppliers[m.supplier]=(suppliers[m.supplier]||0)+Number(m.value||0)});db.supplierPayments.forEach(p=>{suppliers[p.supplier]=(suppliers[p.supplier]||0)-p.amount});
+  const supplierEntries=Object.entries(suppliers).filter(x=>x[1]>0.001);$('supplierDebtTotal').textContent=fmt(supplierEntries.reduce((a,x)=>a+x[1],0))+' SDG';$('supplierDebtRows').innerHTML=supplierEntries.map(x=>'<tr><td>'+esc(x[0])+'</td><td>'+fmt(x[1])+'</td></tr>').join('')||'<tr><td colspan="2">لا توجد مستحقات</td></tr>';
+  const rows=[...db.moves.map(m=>({...m,kind:m.type,detail:m.note||m.supplier||''})),...db.invoices.map(i=>({...i,kind:'فاتورة بيع',detail:i.customer||i.payment||''}))].sort((a,b)=>b.date.localeCompare(a.date));
+  $('inventoryHistoryRows').innerHTML=rows.map(m=>'<tr><td>'+esc(m.date)+'</td><td>'+esc(m.kind)+'</td><td>'+esc(db.products.find(p=>p.id===m.product)?.name||'—')+'</td><td>'+m.qty+'</td><td>'+fmt(m.value||0)+'</td><td>'+esc(m.detail)+'</td></tr>').join('')||'<tr><td colspan="6" class="empty">لا توجد حركات مسجلة</td></tr>';
+ }
+ function formData(form){return Object.fromEntries(new FormData(form).entries())}
+ $('inventoryRows').addEventListener('click',e=>{const b=e.target.closest('[data-edit-product]');if(!b)return;const p=db.products.find(x=>x.id===b.dataset.editProduct);if(!p)return;const name=prompt('اسم الصنف',p.name);if(name===null)return;const buy=prompt('سعر الشراء',p.buy);if(buy===null)return;const sell=prompt('سعر البيع',p.sell);if(sell===null)return;const min=prompt('حد التنبيه',p.min);if(min===null)return;if(!name.trim()||![buy,sell,min].every(v=>Number.isFinite(Number(v))&&Number(v)>=0)){alert('بيانات غير صحيحة');return}p.name=name.trim();p.buy=Number(buy);p.sell=Number(sell);p.min=Number(min);save();refresh()});
+ $('customerPaymentForm').addEventListener('submit',e=>{e.preventDefault();const d=formData(e.currentTarget);db.customerPayments.push({customer:d.customer.trim(),amount:Number(d.amount),date:d.date});save();e.currentTarget.reset();e.currentTarget.date.value=today();refresh();alert('تم تسجيل تحصيل العميل.')});
+ $('supplierPaymentForm').addEventListener('submit',e=>{e.preventDefault();const d=formData(e.currentTarget);db.supplierPayments.push({supplier:d.supplier.trim(),amount:Number(d.amount),date:d.date});save();e.currentTarget.reset();e.currentTarget.date.value=today();refresh();alert('تم تسجيل سداد المورد.')});
+ $('productForm').addEventListener('submit',e=>{e.preventDefault();const d=formData(e.currentTarget);db.products.push({id:'p'+Date.now(),name:d.name.trim(),category:d.category,qty:Number(d.qty),buy:Number(d.buy),sell:Number(d.sell),min:Number(d.min||0),note:d.note});save();e.currentTarget.reset();refresh();alert('تم حفظ الصنف في المخزون.')});
+ $('stockInForm').addEventListener('submit',e=>{e.preventDefault();const d=formData(e.currentTarget),p=db.products.find(x=>x.id===d.product),q=Number(d.qty);if(!p||q<1)return;const unitCost=Number(d.cost),batchValue=q*unitCost;p.buy=Number(((p.qty*p.buy+batchValue)/(p.qty+q)).toFixed(2));p.qty+=q;db.moves.push({type:'وارد',product:p.id,qty:q,value:batchValue,unitCost,date:d.date,supplier:d.supplier,payment:d.purchasePayment,note:d.note});save();e.currentTarget.reset();e.currentTarget.date.value=today();refresh();alert('تم تسجيل الوارد وتحديث المخزون.')});
+ $('stockOutForm').addEventListener('submit',e=>{e.preventDefault();const d=formData(e.currentTarget),p=db.products.find(x=>x.id===d.product),q=Number(d.qty);if(!p||q<1||q>p.qty){alert('الكمية المطلوبة أكبر من المخزون المتاح.');return}p.qty-=q;db.moves.push({type:'صرف - '+d.reason,product:p.id,qty:q,value:q*p.buy,date:d.date,note:d.reason+(d.note?' · '+d.note:'')});save();e.currentTarget.reset();e.currentTarget.date.value=today();refresh();alert('تم تسجيل الصرف وتحديث المخزون.')});
+ $('invoiceForm').addEventListener('submit',e=>{e.preventDefault();const d=formData(e.currentTarget),p=db.products.find(x=>x.id===d.product),q=Number(d.qty),price=Number(d.price);if(!p||q<1||q>p.qty){alert('الكمية المطلوبة أكبر من المخزون المتاح.');return}p.qty-=q;const value=q*price;db.invoices.push({product:p.id,qty:q,price,cost:Number(p.buy),value,customer:d.customer,payment:d.payment,date:d.date});db.moves.push({type:'بيع',product:p.id,qty:q,value,date:d.date,note:'فاتورة '+d.payment+' '+d.customer});save();e.currentTarget.reset();e.currentTarget.date.value=today();refresh();alert('تم حفظ الفاتورة وخصم الكمية من المخزون.')});
+ document.querySelectorAll('#home [data-tab-go]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.tabGo,tab=document.querySelector('#nav [data-tab="'+id+'"]');if(tab)tab.click();const target=b.dataset.focus;if(target)setTimeout(()=>$ (target)?.scrollIntoView({behavior:'smooth',block:'start'}),100)}));
+ $('bankLaunchShortcut')?.addEventListener('click',()=>$('bankLaunch').click());
+ $('bankLaunchCategory')?.addEventListener('click',()=>$('bankLaunch').click());
+ ['stockInForm','stockOutForm','invoiceForm','customerPaymentForm','supplierPaymentForm'].forEach(id=>{const f=$(id);if(f)f.date.value=today()});
+ refresh();
+ // ربط ربح مبيعات الطبلية ببطاقة الأرباح في الصفحة الرئيسية
+ function inventoryProfit(){return db.invoices.reduce((a,x)=>a+(Number(x.price||0)-Number(x.cost??db.products.find(p=>p.id===x.product)?.buy??0))*Number(x.qty||0),0)}
+ function updateInventoryKpi(){const el=$('inventoryProfit');if(el)el.textContent=fmt(inventoryProfit())}
+ const oldRender=window.render;
+ if(typeof oldRender==='function'){window.render=function(){oldRender();updateInventoryKpi()};}
+ const originalRefresh=refresh;
+ refresh=function(){originalRefresh();updateInventoryKpi()};
+ const oldReport=window.report;
+ if(typeof oldReport==='function'){window.report=function(){oldReport();const month=$('monthFilter')?.value||today().slice(0,7);const total=db.invoices.filter(x=>(x.date||'').startsWith(month)).reduce((a,x)=>a+(Number(x.price||0)-Number(x.cost??db.products.find(p=>p.id===x.product)?.buy??0))*Number(x.qty||0),0);const el=$('rInventoryProfit');if(el)el.textContent=fmt(total)+' SDG';};}
+ updateInventoryKpi();
+})(); 
+</script>
 </body></html>
 
 <style id="home-icons-layout-update">
