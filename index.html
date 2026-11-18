@@ -1166,6 +1166,86 @@ body.dark .supplier-balance-line{background:#203a33;color:#b9f1df}body.dark .sup
  });
 })();
 </script>
+
+<style id="all-movements-modal-style">
+#allMovementsModal{display:none;position:fixed;inset:0;z-index:20000;background:#102f34b8;padding:12px;overflow:auto;direction:rtl}
+#allMovementsModal.open{display:flex;align-items:flex-start;justify-content:center}
+#allMovementsModal .am-card{background:#fff;color:#172c2a;width:min(100%,1050px);margin:auto;border-radius:16px;padding:16px;box-shadow:0 12px 45px #0003}
+#allMovementsModal .am-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+#allMovementsModal .am-actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+#allMovementsModal .am-table-wrap{overflow:auto;border:1px solid #dce5e1;border-radius:10px}
+#allMovementsModal table{width:100%;border-collapse:collapse;min-width:650px}
+#allMovementsModal th,#allMovementsModal td{padding:8px 7px;border-bottom:1px solid #e5ebe8;text-align:right;font-size:12px;white-space:normal}
+#allMovementsModal th{background:#eaf4ef}
+#allMovementsModal .am-summary{display:flex;gap:12px;flex-wrap:wrap;margin:10px 0;font-weight:700}
+@media print{
+ @page{size:A4 landscape;margin:10mm}
+ body.am-printing>*:not(#allMovementsModal){display:none!important}
+ body.am-printing #allMovementsModal{display:block!important;position:static!important;padding:0!important;background:#fff!important;overflow:visible!important}
+ body.am-printing #allMovementsModal .am-card{width:100%!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+ body.am-printing #allMovementsModal .am-actions{display:none!important}
+ body.am-printing #allMovementsModal .am-table-wrap{overflow:visible!important;border:0!important}
+ body.am-printing #allMovementsModal table{min-width:0!important;width:100%!important;table-layout:fixed!important}
+ body.am-printing #allMovementsModal th,body.am-printing #allMovementsModal td{font-size:8pt!important;padding:4px!important;color:#111!important;overflow-wrap:anywhere}
+ body.am-printing #allMovementsModal tr{break-inside:avoid}
+ body.am-printing #allMovementsModal th{background:#eaeaea!important}
+}
+</style>
+<div id="allMovementsModal" dir="rtl" aria-modal="true" role="dialog" aria-label="كشف جميع الحركات">
+ <div class="am-card">
+  <div class="am-head"><div><h2 style="margin:0">📚 كشف جميع الحركات</h2><small>جميع العمليات المسجلة في حساباتي مرتبة من الأحدث إلى الأقدم</small></div><button type="button" class="secondary" id="amClose">إغلاق ✕</button></div>
+  <div class="am-actions"><button type="button" class="primary" id="amPrint">🖨️ طباعة كشف A4</button><button type="button" class="secondary" id="amRefresh">↻ تحديث الكشف</button></div>
+  <div class="am-summary" id="amSummary"></div>
+  <div class="am-table-wrap"><table><thead><tr><th>م</th><th>التاريخ</th><th>نوع الحركة</th><th>البيان / الحساب</th><th>القيمة (SDG)</th><th>التكلفة (SDG)</th><th>الربح / المصروف</th></tr></thead><tbody id="amRows"></tbody></table></div>
+  <p style="text-align:left;font-size:10px;margin:12px 0 0">حساباتي · تصميم محمد عمر محمد اسحق</p>
+ </div>
+</div>
+<script id="all-movements-modal-v1">
+(function(){
+ const $=id=>document.getElementById(id),modal=$('allMovementsModal');
+ if(!modal)return;
+ const esc=v=>String(v??'—').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const num=v=>Number(v)||0,fmt=v=>num(v).toLocaleString('en-US',{maximumFractionDigits:2});
+ const read=k=>{try{const v=JSON.parse(localStorage.getItem(k)||'{}');return v&&typeof v==='object'?v:{}}catch(e){return {}}};
+ function collect(){
+  const main=read('hisabati_v1'),inv=read('hisabati_inventory_v1'),bank=read('hisabati_bank_transfer_v1'),rows=[];
+  const add=(date,type,detail,value,cost,profit)=>rows.push({date:String(date||''),type,detail,value:num(value),cost:cost===null?'—':num(cost),profit:profit===null?'—':num(profit)});
+  (main.stock||[]).forEach(x=>add(x.date,'رصيد داخل',x.note||'إضافة رصيد',x.amount,x.amount,0));
+  (main.transfers||[]).forEach(x=>add(x.date,'تحويل رصيد',(x.network||'')+' '+(x.customer||''),x.sale,x.cost,num(x.sale)-num(x.cost)));
+  (main.recharges||[]).forEach(x=>add(x.date,'شحن هاتف',(x.network||'')+' '+(x.phone||''),x.sale,x.cost,num(x.sale)-num(x.cost)));
+  (main.services||[]).forEach(x=>add(x.date,'خدمات زبائن',(x.network||'')+' '+(x.customer||''),x.sale,x.cost,num(x.sale)-num(x.cost)));
+  (main.expenses||[]).forEach(x=>add(x.date,'مصروف',(x.category||'')+' '+(x.note||''),x.amount,null,-num(x.amount)));
+  (main.supplierTransfers||[]).forEach(x=>add(x.date,'حوالة لمورد',(x.supplier||'')+' '+(x.phone||x.note||''),x.amount,x.amount,0));
+  (inv.moves||[]).forEach(x=>{const product=(inv.products||[]).find(p=>p.id===x.product);add(x.date,x.type||'حركة مخزون',(product?.name||'')+' '+(x.supplier||'')+' '+(x.note||''),x.value,x.type==='بيع'?null:x.value,null);});
+  (inv.invoices||[]).forEach(x=>add(x.date,'فاتورة بيع',(x.customer||'')+' · '+(x.payment||'')+' · '+(x.qty||0)+' وحدة',x.value,null,null));
+  (inv.customerPayments||[]).forEach(x=>add(x.date,'تحصيل من عميل',x.customer||'',x.amount,null,null));
+  (inv.supplierPayments||[]).forEach(x=>add(x.date,'سداد لمورد',x.supplier||'',x.amount,null,null));
+  (bank.banks||[]).forEach(b=>(b.records||[]).forEach(x=>add(x.date,'تحويل '+(b.name||'بنكي'),x.customer||x.note||'',x.amount,x.cash,x.gain)));
+  return rows.sort((a,b)=>b.date.localeCompare(a.date));
+ }
+ function render(){
+  const rows=collect(),total=rows.reduce((n,x)=>n+x.value,0);
+  $('amSummary').innerHTML='<span>عدد الحركات: '+rows.length+'</span><span>مجموع القيم المسجلة: '+fmt(total)+' SDG</span>';
+  $('amRows').innerHTML=rows.length?rows.map((x,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(x.date)+'</td><td>'+esc(x.type)+'</td><td>'+esc(x.detail)+'</td><td>'+fmt(x.value)+'</td><td>'+(x.cost==='—'?'—':fmt(x.cost))+'</td><td>'+(x.profit==='—'?'—':fmt(x.profit))+'</td></tr>').join(''):'<tr><td colspan="7" style="text-align:center;padding:22px">لا توجد حركات مسجلة حتى الآن.</td></tr>';
+ }
+ function open(){render();modal.classList.add('open');document.body.style.overflow='hidden'}
+ function close(){modal.classList.remove('open');document.body.style.overflow=''}
+ $('amClose').addEventListener('click',close);
+ $('amRefresh').addEventListener('click',render);
+ $('amPrint').addEventListener('click',()=>{render();document.body.classList.add('am-printing');window.print();});
+ window.addEventListener('afterprint',()=>document.body.classList.remove('am-printing'));
+ modal.addEventListener('click',e=>{if(e.target===modal)close()});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))close()});
+ document.addEventListener('click',e=>{
+  const b=e.target.closest('#nav button[data-nav-view="history"]');
+  if(!b)return;
+  e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+  document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('active',x===b));
+  open();
+ },true);
+})();
+</script>
+
 </body></html>
 
 <style id="home-icons-layout-update">
