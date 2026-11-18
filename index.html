@@ -209,8 +209,8 @@ footer{color:#aeb4c0}
 <body>
 <header><div class="wrap header-row"><div><div class="brand-line"><h1>حساباتي</h1><button id="themeToggle" class="theme-toggle" type="button" aria-label="تفعيل الوضع الليلي" title="تفعيل الوضع الليلي">☀️</button></div><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><div class="header-actions"><button class="menu-trigger" id="menuTrigger" type="button" aria-label="القائمة" aria-expanded="false">⋮</button><button class="secondary" id="lockNow" type="button">🔒 قفل الآن</button><div class="app-menu" id="appMenu" hidden><button type="button" data-menu-action="backup">💾 حفظ نسخة احتياطية</button><button type="button" data-menu-action="labels">✏️ تعديل أسماء الأيقونات</button><button type="button" data-menu-action="generalReport">📊 تقرير عام مفصل</button><button type="button" data-menu-action="monthlyReport">📅 التقرير الشهري</button><button type="button" data-menu-action="settings">⚙️ إعدادات التطبيق</button><button type="button" data-menu-action="about">ℹ️ نبذة عنّا</button><button type="button" data-menu-action="share">📤 مشاركة التطبيق</button><button type="button" data-menu-action="rate">⭐ تقييم التطبيق</button><button type="button" data-menu-action="feedback">✉️ إرسال ملاحظات أو الإبلاغ عن مشكلة</button></div></div></div></header>
 <div class="wrap">
-<nav id="nav">
-<button class="active" data-tab="home">الرئيسية</button><button data-tab="phonesHub">قسم الهواتف</button><button data-tab="services">خدمات الزبائن</button><button data-tab="expenses">المصروفات</button><button data-tab="reports">التقارير</button><button data-tab="partnership">الشراكة</button>
+<nav id="nav" aria-label="القائمة الرئيسية">
+<button class="active" data-tab="home">🏠 الرئيسية</button><button data-tab="credit" data-nav-view="transfer">➕ حوالة جديد</button><button data-tab="inventory" data-nav-view="accounts">📒 كشف حساب</button><button data-tab="reports">📊 التقارير</button><button data-tab="inventory" data-nav-view="history">🔎 مراجعة الحركات</button><button data-tab="partnership">🤝 الشراكة</button>
 </nav>
 <main>
 <section id="home" class="panel active">
@@ -477,7 +477,7 @@ $('serviceForm').addEventListener('input',()=>{const f=$('serviceForm'),sale=Num
 $('serviceNetwork').addEventListener('change',()=>{$('serviceFormTitle').textContent='تسجيل '+($('serviceNetwork').value==='سوداني'?'خدمة سوداني':'خدمة زين');});
 bind('expenseForm',x=>db.expenses.push({...x,amount:+x.amount,id:crypto.randomUUID()}));
 $('transferForm').addEventListener('input',()=>{let f=$('transferForm'),s=+f.sale.value||0,r=+f.commissionRate.value||0,commission=Number((s*r/100).toFixed(2)),net=Number((s-commission).toFixed(2));f.cost.value=s?net:'';$('transferHint').textContent='العمولة ('+r+'%): '+fmt(commission)+' SDG · صافي الرصيد المحوّل: '+fmt(net)+' SDG · ربح العملية: '+fmt(commission)+' SDG'});
-document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>{x.classList.toggle('active',x.id===b.dataset.tab);x.classList.remove('quick-stock','quick-transfer','quick-creditHistory','quick-recharge','quick-rechargeHistory','quick-expenses')});if(b.dataset.tab==='reports')report()});
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>{x.classList.toggle('active',x.id===b.dataset.tab);x.classList.remove('quick-stock','quick-transfer','quick-creditHistory','quick-recharge','quick-rechargeHistory','quick-expenses')});if(b.dataset.navView==='transfer')$('credit').classList.add('quick-transfer');if(b.dataset.navView==='accounts'||b.dataset.navView==='history')openInventoryView(b.dataset.navView);if(b.dataset.tab==='reports')report()});
 $('profitToggle').addEventListener('click',()=>{const details=$('profitDetails'),opened=details.hidden;details.hidden=!opened;$('profitToggle').setAttribute('aria-expanded',String(opened));$('profitTotal').textContent=opened?'التفاصيل مفتوحة':'عرض التفاصيل';$('profitToggle').querySelector('small:last-child').textContent=opened?'اضغط للإخفاء':'اضغط لعرض الأرباح';});
 $('monthFilter').onchange=report;
 const ICON_NAMES_KEY='hisabati_icon_names_v1';
@@ -1141,3 +1141,11 @@ body.dark #home .bank-launch{background:linear-gradient(135deg,#087f55,#10a875);
 </style>
 
 <!-- Pages refresh trigger: 2026-11-18 -->
+
+<style id="top-navigation-six-actions">
+#nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;overflow:visible;padding:10px 0;}
+#nav button{min-width:0;min-height:46px;padding:8px 4px;white-space:normal;text-align:center;line-height:1.25;font-size:12px;font-weight:850;border-radius:11px;}
+#nav button.active{background:#6042c9;border-color:#8a70ee;color:#fff;}
+@media(min-width:700px){#nav button{min-height:48px;font-size:14px}}
+</style>
+<!-- Top navigation updated: six requested destinations -->
