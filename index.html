@@ -205,7 +205,15 @@ footer{color:#aeb4c0}
  #home .quick-section .quick-link{min-height:44px}
 }
 </style>
-<style id="inventory-separated-views">#inventory .inventory-section-menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:12px 0}#inventory .inventory-section-menu button{min-height:68px;padding:9px 6px;border:1px solid #3989fa;border-radius:12px;background:#087cf0;color:#fff;font:inherit;font-size:13px;font-weight:800;line-height:1.35}#inventory .inventory-section-menu button:nth-child(3n+2){background:#6042c9;border-color:#8269e6}#inventory .inventory-view{display:none}#inventory .inventory-view.active{display:block}#inventory .inventory-view-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:12px 0;padding:10px 12px;background:#202a39;border:1px solid #315f9d;border-radius:12px;color:#f4f5f7;font-size:14px}#inventory .inventory-view-head .secondary{font-size:11px;padding:7px 9px;white-space:nowrap}@media(min-width:700px){#inventory .inventory-section-menu{grid-template-columns:repeat(4,minmax(0,1fr))}}</style></head>
+<style id="inventory-separated-views">#inventory .inventory-section-menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:12px 0}#inventory .inventory-section-menu button{min-height:68px;padding:9px 6px;border:1px solid #3989fa;border-radius:12px;background:#087cf0;color:#fff;font:inherit;font-size:13px;font-weight:800;line-height:1.35}#inventory .inventory-section-menu button:nth-child(3n+2){background:#6042c9;border-color:#8269e6}#inventory .inventory-view{display:none}#inventory .inventory-view.active{display:block}#inventory .inventory-view-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:12px 0;padding:10px 12px;background:#202a39;border:1px solid #315f9d;border-radius:12px;color:#f4f5f7;font-size:14px}#inventory .inventory-view-head .secondary{font-size:11px;padding:7px 9px;white-space:nowrap}@media(min-width:700px){#inventory .inventory-section-menu{grid-template-columns:repeat(4,minmax(0,1fr))}}</style><style id="assets-bank-profit-hubs">
+#assetsHub,#bankProfitHub{min-height:65vh;padding:12px 0 30px}
+#assetsHub .asset-choice{cursor:pointer;text-align:right;color:inherit;font:inherit}
+#assetsHub .asset-choice strong{font-size:clamp(17px,5vw,23px);overflow-wrap:anywhere}
+#assetsHub .asset-choice:active{transform:scale(.99)}
+#bankProfitHub .hint{margin-top:14px}
+#home .category-launcher button{font-size:11px}
+</style>
+</head>
 <body>
 <header><div class="wrap header-row"><div><div class="brand-line"><h1>حساباتي</h1><button id="themeToggle" class="theme-toggle" type="button" aria-label="تفعيل الوضع الليلي" title="تفعيل الوضع الليلي">☀️</button></div><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><div class="header-actions"><button class="menu-trigger" id="menuTrigger" type="button" aria-label="القائمة" aria-expanded="false">⋮</button><button class="secondary" id="lockNow" type="button">🔒 قفل الآن</button><div class="app-menu" id="appMenu" hidden><button type="button" data-menu-action="backup">💾 حفظ نسخة احتياطية</button><button type="button" data-menu-action="labels">✏️ تعديل أسماء الأيقونات</button><button type="button" data-menu-action="generalReport">📊 تقرير عام مفصل</button><button type="button" data-menu-action="monthlyReport">📅 التقرير الشهري</button><button type="button" data-menu-action="settings">⚙️ إعدادات التطبيق</button><button type="button" data-menu-action="about">ℹ️ نبذة عنّا</button><button type="button" data-menu-action="share">📤 مشاركة التطبيق</button><button type="button" data-menu-action="rate">⭐ تقييم التطبيق</button><button type="button" data-menu-action="feedback">✉️ إرسال ملاحظات أو الإبلاغ عن مشكلة</button></div></div></div></header>
 <div class="wrap">
@@ -224,12 +232,39 @@ footer{color:#aeb4c0}
 <button type="button" data-tab-go="inventory">📦<br>إدارة الطبلية</button>
 <button type="button" data-tab-go="balanceHub">💰<br>إدارة الرصيد</button>
 <button type="button" data-tab-go="phonesHub">📱<br>قسم الهواتف</button>
-<button type="button" id="bankLaunchCategory">🏦<br>التحويلات البنكية</button>
+<button type="button" id="assetsLaunch">🏢<br>الأصول</button>
+<button type="button" id="bankProfitLaunch">🏦<br>بنكك</button>
+<button type="button" id="bankLaunchCategory">🔄<br>التحويلات البنكية</button>
 </div>
 <button class="bank-launch" id="bankLaunch" type="button"><span class="quick-icon">🏦</span><span>التحويلات البنكية<small style="display:block;color:#6d8280;font-size:11px;font-weight:500">بنكك · فوري · ساهل · وإضافة بنوك أخرى</small></span></button>
 
 <div class="quick-section"><h2 class="section-title">الشراكة</h2><div class="quick-grid"><button class="quick-link" type="button" id="partnershipLaunch"><span class="quick-icon">🤝</span><span>الشراكة<small>الربح العام وتقسيم الأرباح بين الشريكين</small></span></button></div></div>
 </section>
+
+<section id="assetsHub" class="panel">
+ <div class="inventory-page-head"><button class="secondary" type="button" data-hub-back>↩ رجوع للرئيسية</button><span>الأصول</span></div>
+ <h2 class="section-title">🏢 الأصول</h2>
+ <div class="grid financial-grid">
+  <button type="button" class="card kpi asset-choice" id="balanceCapitalOpen"><span class="kpi-icon">💰</span><small>رأس مال الرصيد</small><strong id="assetsBalanceCapital">0</strong><small>SDG · اضغط للعرض</small></button>
+  <button type="button" class="card kpi asset-choice" id="inventoryCapitalOpen"><span class="kpi-icon">📦</span><small>رأس مال الطبلية</small><strong id="assetsInventoryCapital">0</strong><small>SDG · اضغط للعرض</small></button>
+ </div>
+ <div class="card" id="assetCapitalDetails" style="margin-top:12px" hidden><h3 id="assetCapitalTitle">تفاصيل رأس المال</h3><div class="reportline"><span>القيمة الحالية</span><strong id="assetCapitalValue">0 SDG</strong></div><p class="muted" id="assetCapitalNote"></p></div>
+</section>
+<section id="bankProfitHub" class="panel">
+ <div class="inventory-page-head"><button class="secondary" type="button" data-hub-back>↩ رجوع للرئيسية</button><span>بنكك · الأرباح الكلية</span></div>
+ <h2 class="section-title">🏦 بنكك – مجمع الأرباح</h2>
+ <div class="grid financial-grid">
+  <div class="card kpi"><span class="kpi-icon">💰</span><small>إجمالي الأرباح من كل الأقسام</small><strong id="bankTotalProfit">0</strong><small>SDG</small></div>
+  <div class="card kpi"><span class="kpi-icon">📦</span><small>أرباح الطبلية</small><strong id="bankInventoryProfit">0</strong><small>SDG</small></div>
+  <div class="card kpi"><span class="kpi-icon">📈</span><small>أرباح الرصيد</small><strong id="bankCreditProfit">0</strong><small>SDG</small></div>
+  <div class="card kpi"><span class="kpi-icon">📱</span><small>أرباح شحن الهواتف</small><strong id="bankRechargeProfit">0</strong><small>SDG</small></div>
+  <div class="card kpi"><span class="kpi-icon">🤝</span><small>أرباح خدمات الزبائن</small><strong id="bankServiceProfit">0</strong><small>SDG</small></div>
+  <div class="card kpi"><span class="kpi-icon">🏦</span><small>أرباح التحويلات البنكية</small><strong id="bankTransferProfit">0</strong><small>SDG</small></div>
+ </div>
+ <p class="hint">هذا كشف تجميعي للأرباح المسجلة في الأقسام المختلفة. المصروفات العامة ستُخصم من هذا الإجمالي عند تفعيل قسم المصروفات العام لاحقاً.</p>
+ <button type="button" class="secondary" id="refreshBankProfit">↻ تحديث الأرباح</button>
+</section>
+
 <section id="balanceHub" class="panel balance-hub">
 <div class="inventory-page-head"><button class="secondary" id="balanceHubBack" type="button">↩ رجوع للرئيسية</button><span>إدارة الرصيد · الخدمات والعمليات اليومية</span></div>
 <div class="balance-overview">
@@ -1001,6 +1036,19 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
  document.querySelectorAll('#inventory [data-inv-view]').forEach(b=>b.addEventListener('click',()=>openInventoryView(b.dataset.invView)));
  document.querySelectorAll('#inventory [data-inv-menu]').forEach(b=>b.addEventListener('click',showInventoryMenu));
  document.querySelectorAll('#home [data-doc-panel]').forEach(b=>b.addEventListener('click',()=>{const panel=b.dataset.docPanel,target=b.dataset.docTarget;document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$(panel)?.classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab===panel));if(panel==='inventory'){const map={stockInForm:'inbound',stockOutForm:'outbound',invoiceForm:'invoice'};openInventoryView(map[target]||'products')}else{window.scrollTo({top:0,behavior:'smooth'});setTimeout(()=>$(target)?.scrollIntoView({behavior:'smooth',block:'start'}),120)}}));
+ 
+ function showHomeHub(id){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab==='home'));window.scrollTo({top:0,behavior:'smooth'});}
+ function readStore(key,fallback){try{return JSON.parse(localStorage.getItem(key)||'null')||fallback}catch(e){return fallback}}
+ function refreshAssets(){const core=readStore('hisabati_v1',{}),inv=readStore('hisabati_inventory_v1',{});const balanceCapital=(core.stock||[]).reduce((a,x)=>a+Number(x.amount||0),0);const inventoryCapital=(inv.products||[]).reduce((a,x)=>a+Number(x.qty||0)*Number(x.buy||0),0);$('assetsBalanceCapital').textContent=fmt(balanceCapital);$('assetsInventoryCapital').textContent=fmt(inventoryCapital);return {balanceCapital,inventoryCapital};}
+ function showAssetDetail(kind){const a=refreshAssets(),inv=readStore('hisabati_inventory_v1',{});$('assetCapitalDetails').hidden=false;if(kind==='balance'){$('assetCapitalTitle').textContent='رأس مال الرصيد';$('assetCapitalValue').textContent=fmt(a.balanceCapital)+' SDG';$('assetCapitalNote').textContent='إجمالي مبالغ الرصيد التي أُضيفت كرأس مال.';}else{$('assetCapitalTitle').textContent='رأس مال الطبلية';$('assetCapitalValue').textContent=fmt(a.inventoryCapital)+' SDG';$('assetCapitalNote').textContent='القيمة الحالية للمخزون المتبقي محسوبة بسعر الشراء.';}}
+ function refreshBankProfit(){const core=readStore('hisabati_v1',{}),inv=readStore('hisabati_inventory_v1',{}),bank=readStore('hisabati_bank_transfer_v1',{banks:[]});const arr=k=>Array.isArray(core[k])?core[k]:[];const p=a=>a.reduce((n,x)=>n+Number(x.sale||0)-Number(x.cost||0),0);const inventory=(inv.invoices||[]).reduce((n,x)=>n+(Number(x.price||0)-Number(x.cost??0))*Number(x.qty||0),0);const credit=p(arr('transfers')),recharge=p(arr('recharges')),service=p(arr('services'));const bankProfit=(bank.banks||[]).reduce((n,b)=>n+(Array.isArray(b.records)?b.records.reduce((z,x)=>z+Number(x.gain||0),0):Number(b.profit||0)),0);const total=inventory+credit+recharge+service+bankProfit;const values={bankTotalProfit:total,bankInventoryProfit:inventory,bankCreditProfit:credit,bankRechargeProfit:recharge,bankServiceProfit:service,bankTransferProfit:bankProfit};Object.entries(values).forEach(([id,value])=>{const el=$(id);if(el)el.textContent=fmt(value);});return total;}
+ $('assetsLaunch')?.addEventListener('click',()=>{showHomeHub('assetsHub');refreshAssets();$('assetCapitalDetails').hidden=true;});
+ $('bankProfitLaunch')?.addEventListener('click',()=>{showHomeHub('bankProfitHub');refreshBankProfit();});
+ $('balanceCapitalOpen')?.addEventListener('click',()=>showAssetDetail('balance'));
+ $('inventoryCapitalOpen')?.addEventListener('click',()=>showAssetDetail('inventory'));
+ $('refreshBankProfit')?.addEventListener('click',refreshBankProfit);
+ document.querySelectorAll('[data-hub-back]').forEach(b=>b.addEventListener('click',()=>showHomeHub('home')));
+
  document.querySelectorAll('#home [data-tab-go]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.tabGo;if(id==='inventory'||id==='balanceHub'){document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});return}const tab=document.querySelector('#nav [data-tab="'+id+'"]');if(tab)tab.click();const target=b.dataset.focus;if(target)setTimeout(()=>$(target)?.scrollIntoView({behavior:'smooth',block:'start'}),100)}));
  window.addEventListener('supplier-transfers-updated',refresh);
  $('inventoryBack')?.addEventListener('click',()=>{document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$('home').classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab==='home'));window.scrollTo({top:0,behavior:'smooth'});});
