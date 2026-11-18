@@ -238,7 +238,6 @@ footer{color:#aeb4c0}
 </div>
 <button class="bank-launch" id="bankLaunch" type="button"><span class="quick-icon">🏦</span><span>التحويلات البنكية<small style="display:block;color:#6d8280;font-size:11px;font-weight:500">بنكك · فوري · ساهل · وإضافة بنوك أخرى</small></span></button>
 
-<div class="quick-section"><h2 class="section-title">الشراكة</h2><div class="quick-grid"><button class="quick-link" type="button" id="partnershipLaunch"><span class="quick-icon">🤝</span><span>الشراكة<small>الربح العام وتقسيم الأرباح بين الشريكين</small></span></button></div></div>
 </section>
 
 <section id="assetsHub" class="panel">
@@ -908,8 +907,7 @@ body.dark .profit-toggle{color:var(--ink)}
   $('partnerAdjustmentModal').hidden=false;$('partnerAdjustmentModal').style.display='flex';
  }
  function closeAdjustment(){$('partnerAdjustmentModal').hidden=true;$('partnerAdjustmentModal').style.display='none';editingId=null;}
- $('partnershipLaunch').addEventListener('click',()=>{document.querySelector('#nav button[data-tab="partnership"]').click();render();window.scrollTo({top:0,behavior:'smooth'});});
- $('managePartnersBtn').addEventListener('click',openManagement);
+  $('managePartnersBtn').addEventListener('click',openManagement);
  $('managePartnersClose').addEventListener('click',closeManagement);
  $('partnerManagementModal').addEventListener('click',e=>{if(e.target===$('partnerManagementModal'))closeManagement();});
  $('addPartnerRow').addEventListener('click',()=>{
