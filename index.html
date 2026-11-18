@@ -399,7 +399,7 @@ footer{color:#aeb4c0}
   </div>
 </div>
 <script>
-const KEY='hisabati_v1';let db=JSON.parse(localStorage.getItem(KEY)||'{"stock":[],"transfers":[],"recharges":[],"expenses":[],"services":[]}');db.services=db.services||[];
+const KEY='hisabati_v1';let db=JSON.parse(localStorage.getItem(KEY)||'{"stock":[],"transfers":[],"recharges":[],"expenses":[],"services":[]}');db.services=db.services||[];db.supplierTransfers=Array.isArray(db.supplierTransfers)?db.supplierTransfers:[];
 const $=id=>document.getElementById(id), today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}, fmt=n=>(Number(n)||0).toLocaleString('en-US',{maximumFractionDigits:2});
 document.querySelectorAll('input[type=date]').forEach(x=>x.value=today());$('monthFilter').value=today().slice(0,7);
 function save(){localStorage.setItem(KEY,JSON.stringify(db));render()}
@@ -432,7 +432,7 @@ function edit(type,id){
   v=ask('ملاحظات',x.note);if(v===null)return;x.note=v;
  }else if(type==='services'){
   v=num('المبلغ المدفوع من الزبون (SDG)',x.sale,0.01);if(v===null)return;x.sale=v;
-  v=num('تكلفة الخدمة / الخصم من الرصيد (SDG)',x.cost,0);if(v===null)return;const availableBeforeEdit=sum(db.stock,z=>z.amount)-sum(db.transfers,z=>z.cost)-sum(db.recharges,z=>z.cost)-sum(db.services,z=>z.cost)+Number(x.cost);if(v>availableBeforeEdit){alert('الرصيد المتاح لا يكفي لهذه التكلفة.');return;}x.cost=v;
+  v=num('تكلفة الخدمة / الخصم من الرصيد (SDG)',x.cost,0);if(v===null)return;const availableBeforeEdit=sum(db.stock,z=>z.amount)-sum(db.transfers,z=>z.cost)-sum(db.recharges,z=>z.cost)-sum(db.services,z=>z.cost)-sum(db.supplierTransfers,z=>z.amount)+Number(x.cost);if(v>availableBeforeEdit){alert('الرصيد المتاح لا يكفي لهذه التكلفة.');return;}x.cost=v;
   v=ask('نوع الخدمة (زين / سوداني)',x.network||'زين');if(v===null)return;x.network=v;
   v=ask('رقم الهاتف / العميل',x.customer);if(v===null)return;x.customer=v;
   v=ask('التاريخ بصيغة YYYY-MM-DD',x.date);if(v===null)return;x.date=v;
@@ -447,7 +447,7 @@ function edit(type,id){
 }
 function tableRows(target,items,make){$(target).innerHTML=items.length?items.slice().reverse().map(make).join(''):'<tr><td colspan="8" class="empty">لا توجد عمليات مسجلة</td></tr>'}
 function render(){
- const cp=profit(db.transfers),rp=profit(db.recharges),svp=profit(db.services),expense=sum(db.expenses,x=>x.amount),stock=sum(db.stock,x=>x.amount),used=sum(db.transfers,x=>x.cost)+sum(db.recharges,x=>x.cost)+sum(db.services,x=>x.cost);
+ const cp=profit(db.transfers),rp=profit(db.recharges),svp=profit(db.services),expense=sum(db.expenses,x=>x.amount),stock=sum(db.stock,x=>x.amount),used=sum(db.transfers,x=>x.cost)+sum(db.recharges,x=>x.cost)+sum(db.services,x=>x.cost)+sum(db.supplierTransfers,x=>x.amount);
  $('balance').textContent=fmt(stock-used);$('totalCapital').textContent=fmt(stock);$('creditProfit').textContent=fmt(cp);$('rechargeProfit').textContent=fmt(rp);$('serviceProfit').textContent=fmt(svp);
  const t=today(),ti=sum(db.stock.filter(x=>x.date===t),x=>x.amount),tt=sum(db.transfers.filter(x=>x.date===t),x=>x.sale),tr=sum(db.recharges.filter(x=>x.date===t),x=>x.sale),te=sum(db.expenses.filter(x=>x.date===t),x=>x.amount),bankToday=Number(window.hisabatiTodayBankProfit?.(t)||0),tp=sum(db.transfers.filter(x=>x.date===t),x=>x.sale-x.cost)+sum(db.recharges.filter(x=>x.date===t),x=>x.sale-x.cost)+sum(db.services.filter(x=>x.date===t),x=>x.sale-x.cost)+bankToday;
  $('stockTodayMove').textContent='داخل اليوم: '+fmt(ti)+' SDG';
@@ -470,14 +470,14 @@ function data(form){return Object.fromEntries(new FormData(form).entries())}
 function returnToHome(){const home=document.querySelector('#nav button[data-tab=home]');if(home)home.click();window.scrollTo({top:0,behavior:'smooth'});}
 function bind(id,fn){$(id).addEventListener('submit',e=>{e.preventDefault();let x=data(e.target);if(fn(x)===false)return;e.target.reset();e.target.querySelectorAll('input[type=date]').forEach(i=>i.value=today());save();returnToHome();})}
 bind('stockForm',x=>db.stock.push({...x,amount:+x.amount,id:crypto.randomUUID()}));
-bind('transferForm',x=>{const rate=Number(x.commissionRate);if(!Number.isFinite(rate)||rate<0||rate>100){alert('نسبة العمولة يجب أن تكون بين 0 و100.');return false;}const commission=Number((Number(x.sale)*rate/100).toFixed(2));const net=Number((Number(x.sale)-commission).toFixed(2));if(net>sum(db.stock,z=>z.amount)-sum(db.transfers,z=>z.cost)-sum(db.recharges,z=>z.cost)){alert('تنبيه: صافي الرصيد المطلوب أكبر من الرصيد المتاح المسجل.');return false}db.transfers.push({...x,sale:Number(x.sale),cost:net,commissionRate:rate,commission,network:x.network||'زين',id:crypto.randomUUID()});return true});
+bind('transferForm',x=>{const rate=Number(x.commissionRate);if(!Number.isFinite(rate)||rate<0||rate>100){alert('نسبة العمولة يجب أن تكون بين 0 و100.');return false;}const commission=Number((Number(x.sale)*rate/100).toFixed(2));const net=Number((Number(x.sale)-commission).toFixed(2));if(net>sum(db.stock,z=>z.amount)-sum(db.transfers,z=>z.cost)-sum(db.recharges,z=>z.cost)-sum(db.supplierTransfers,z=>z.amount)){alert('تنبيه: صافي الرصيد المطلوب أكبر من الرصيد المتاح المسجل.');return false}db.transfers.push({...x,sale:Number(x.sale),cost:net,commissionRate:rate,commission,network:x.network||'زين',id:crypto.randomUUID()});return true});
 bind('rechargeForm',x=>db.recharges.push({...x,sale:+x.sale,cost:+x.cost,id:crypto.randomUUID()}));
-bind('serviceForm',x=>{const sale=Number(x.sale),cost=Number(x.cost),available=sum(db.stock,z=>z.amount)-sum(db.transfers,z=>z.cost)-sum(db.recharges,z=>z.cost)-sum(db.services,z=>z.cost);if(!Number.isFinite(sale)||sale<=0||!Number.isFinite(cost)||cost<0){alert('أدخل المبلغ المدفوع والتكلفة بصورة صحيحة.');return false;}if(cost>available){alert('الرصيد المتاح لا يكفي لتنفيذ هذه الخدمة.');return false;}db.services.push({...x,sale,cost,network:x.network||'زين',id:crypto.randomUUID()});return true;});
+bind('serviceForm',x=>{const sale=Number(x.sale),cost=Number(x.cost),available=sum(db.stock,z=>z.amount)-sum(db.transfers,z=>z.cost)-sum(db.recharges,z=>z.cost)-sum(db.services,z=>z.cost)-sum(db.supplierTransfers,z=>z.amount);if(!Number.isFinite(sale)||sale<=0||!Number.isFinite(cost)||cost<0){alert('أدخل المبلغ المدفوع والتكلفة بصورة صحيحة.');return false;}if(cost>available){alert('الرصيد المتاح لا يكفي لتنفيذ هذه الخدمة.');return false;}db.services.push({...x,sale,cost,network:x.network||'زين',id:crypto.randomUUID()});return true;});
 $('serviceForm').addEventListener('input',()=>{const f=$('serviceForm'),sale=Number(f.sale.value)||0,cost=Number(f.cost.value)||0;$('serviceHint').textContent='الخصم من رصيدك: '+fmt(cost)+' SDG · ربح الخدمة: '+fmt(sale-cost)+' SDG';});
 $('serviceNetwork').addEventListener('change',()=>{$('serviceFormTitle').textContent='تسجيل '+($('serviceNetwork').value==='سوداني'?'خدمة سوداني':'خدمة زين');});
 bind('expenseForm',x=>db.expenses.push({...x,amount:+x.amount,id:crypto.randomUUID()}));
 $('transferForm').addEventListener('input',()=>{let f=$('transferForm'),s=+f.sale.value||0,r=+f.commissionRate.value||0,commission=Number((s*r/100).toFixed(2)),net=Number((s-commission).toFixed(2));f.cost.value=s?net:'';$('transferHint').textContent='العمولة ('+r+'%): '+fmt(commission)+' SDG · صافي الرصيد المحوّل: '+fmt(net)+' SDG · ربح العملية: '+fmt(commission)+' SDG'});
-document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>{x.classList.toggle('active',x.id===b.dataset.tab);x.classList.remove('quick-stock','quick-transfer','quick-creditHistory','quick-recharge','quick-rechargeHistory','quick-expenses')});if(b.dataset.navView==='transfer')$('credit').classList.add('quick-transfer');if(b.dataset.navView==='accounts'||b.dataset.navView==='history')openInventoryView(b.dataset.navView);if(b.dataset.tab==='reports')report()});
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>{x.classList.toggle('active',x.id===b.dataset.tab);x.classList.remove('quick-stock','quick-transfer','quick-creditHistory','quick-recharge','quick-rechargeHistory','quick-expenses')});if(b.dataset.navView==='transfer'){$('credit').classList.add('quick-transfer');window.openSupplierTransferModal?.();}if(b.dataset.navView==='accounts'||b.dataset.navView==='history')openInventoryView(b.dataset.navView);if(b.dataset.tab==='reports')report()});
 $('profitToggle').addEventListener('click',()=>{const details=$('profitDetails'),opened=details.hidden;details.hidden=!opened;$('profitToggle').setAttribute('aria-expanded',String(opened));$('profitTotal').textContent=opened?'التفاصيل مفتوحة':'عرض التفاصيل';$('profitToggle').querySelector('small:last-child').textContent=opened?'اضغط للإخفاء':'اضغط لعرض الأرباح';});
 $('monthFilter').onchange=report;
 const ICON_NAMES_KEY='hisabati_icon_names_v1';
@@ -514,7 +514,7 @@ document.addEventListener('click',e=>{if(!$('appMenu').contains(e.target)&&e.tar
 $('backupBtn').onclick=()=>download('hisabati-backup.json',JSON.stringify(db,null,2),'application/json');
 $('exportBtn').onclick=()=>{let rows=[['القسم','التاريخ','البيان','القيمة','التكلفة','الربح']];db.stock.forEach(x=>rows.push(['رصيد داخل',x.date,x.note,x.amount,x.amount,0]));db.transfers.forEach(x=>rows.push(['تحويل رصيد',x.date,(x.network||'')+' '+(x.customer||''),x.sale,x.cost,x.sale-x.cost]));db.recharges.forEach(x=>rows.push(['شحن',x.date,x.network+' '+x.phone,x.sale,x.cost,x.sale-x.cost]));db.services.forEach(x=>rows.push(['خدمة '+x.network,x.date,x.customer||'',x.sale,x.cost,x.sale-x.cost]));db.expenses.forEach(x=>rows.push(['مصروف',x.date,x.category+' '+x.note,x.amount,'','']));download('hisabati.csv','\ufeff'+rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n'),'text/csv;charset=utf-8')};
 function download(name,content,type){let a=document.createElement('a'),u=URL.createObjectURL(new Blob([content],{type}));a.href=u;a.download=name;a.click();URL.revokeObjectURL(u)}
-$('restoreFile').onchange=async e=>{try{let d=JSON.parse(await e.target.files[0].text());if(!d.stock||!d.transfers||!d.recharges||!d.expenses)throw Error();d.services=d.services||[];db=d;save();alert('تم استيراد النسخة')}catch(_){alert('ملف النسخة غير صالح')}e.target.value=''};
+$('restoreFile').onchange=async e=>{try{let d=JSON.parse(await e.target.files[0].text());if(!d.stock||!d.transfers||!d.recharges||!d.expenses)throw Error();d.services=d.services||[];db=d;db.supplierTransfers=Array.isArray(db.supplierTransfers)?db.supplierTransfers:[];save();alert('تم استيراد النسخة')}catch(_){alert('ملف النسخة غير صالح')}e.target.value=''};
 
 // قفل التطبيق بكلمة سر رقمية (4 إلى 8 أرقام)
 const PIN_KEY='hisabati_pin_v1';
@@ -967,7 +967,7 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
   $('slowStockRows').innerHTML=db.products.filter(p=>p.qty>0&&!sold.some(m=>m.product===p.id&&Date.now()-new Date(m.date).getTime()<30*86400000)).map(p=>{const last=sold.filter(m=>m.product===p.id).sort((a,b)=>b.date.localeCompare(a.date))[0];return '<tr><td>'+esc(p.name)+'</td><td>'+p.qty+'</td><td>'+(last?esc(last.date):'لم تبع من قبل')+'</td></tr>'}).join('')||'<tr><td colspan="3" class="empty">لا توجد بضائع راكدة حالياً</td></tr>';
   const debts={};db.invoices.filter(i=>i.payment==='آجل').forEach(i=>{const n=(i.customer||'عميل غير محدد').trim();debts[n]=(debts[n]||0)+Number(i.value||0)});db.customerPayments.forEach(p=>{debts[p.customer]=(debts[p.customer]||0)-p.amount});
   const customerEntries=Object.entries(debts).filter(x=>x[1]>0.001);$('customerDebtTotal').textContent=fmt(customerEntries.reduce((a,x)=>a+x[1],0))+' SDG';$('customerDebtRows').innerHTML=customerEntries.map(x=>'<tr><td>'+esc(x[0])+'</td><td>'+fmt(x[1])+'</td></tr>').join('')||'<tr><td colspan="2">لا توجد ديون</td></tr>';
-  const suppliers={};db.moves.filter(m=>m.type==='وارد'&&m.supplier&&m.payment==='آجل').forEach(m=>{suppliers[m.supplier]=(suppliers[m.supplier]||0)+Number(m.value||0)});db.supplierPayments.forEach(p=>{suppliers[p.supplier]=(suppliers[p.supplier]||0)-p.amount});
+  const suppliers={};db.moves.filter(m=>m.type==='وارد'&&m.supplier&&m.payment==='آجل').forEach(m=>{suppliers[m.supplier]=(suppliers[m.supplier]||0)+Number(m.value||0)});db.supplierPayments.forEach(p=>{suppliers[p.supplier]=(suppliers[p.supplier]||0)-p.amount});let mainLedger={};try{mainLedger=JSON.parse(localStorage.getItem('hisabati_v1')||'{}')}catch(e){};(mainLedger.supplierTransfers||[]).forEach(p=>{suppliers[p.supplier]=(suppliers[p.supplier]||0)-Number(p.amount||0)});
   const supplierEntries=Object.entries(suppliers).filter(x=>x[1]>0.001);$('supplierDebtTotal').textContent=fmt(supplierEntries.reduce((a,x)=>a+x[1],0))+' SDG';$('supplierDebtRows').innerHTML=supplierEntries.map(x=>'<tr><td>'+esc(x[0])+'</td><td>'+fmt(x[1])+'</td></tr>').join('')||'<tr><td colspan="2">لا توجد مستحقات</td></tr>';
   const rows=[...db.moves.map(m=>({...m,kind:m.type,detail:m.note||m.supplier||''})),...db.invoices.map(i=>({...i,kind:'فاتورة بيع',detail:i.customer||i.payment||''}))].sort((a,b)=>b.date.localeCompare(a.date));
   $('inventoryHistoryRows').innerHTML=rows.map(m=>'<tr><td>'+esc(m.date)+'</td><td>'+esc(m.kind)+'</td><td>'+esc(db.products.find(p=>p.id===m.product)?.name||'—')+'</td><td>'+m.qty+'</td><td>'+fmt(m.value||0)+'</td><td>'+esc(m.detail)+'</td></tr>').join('')||'<tr><td colspan="6" class="empty">لا توجد حركات مسجلة</td></tr>';
@@ -1001,6 +1001,7 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
  document.querySelectorAll('#inventory [data-inv-menu]').forEach(b=>b.addEventListener('click',showInventoryMenu));
  document.querySelectorAll('#home [data-doc-panel]').forEach(b=>b.addEventListener('click',()=>{const panel=b.dataset.docPanel,target=b.dataset.docTarget;document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$(panel)?.classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab===panel));if(panel==='inventory'){const map={stockInForm:'inbound',stockOutForm:'outbound',invoiceForm:'invoice'};openInventoryView(map[target]||'products')}else{window.scrollTo({top:0,behavior:'smooth'});setTimeout(()=>$(target)?.scrollIntoView({behavior:'smooth',block:'start'}),120)}}));
  document.querySelectorAll('#home [data-tab-go]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.tabGo;if(id==='inventory'||id==='balanceHub'){document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});return}const tab=document.querySelector('#nav [data-tab="'+id+'"]');if(tab)tab.click();const target=b.dataset.focus;if(target)setTimeout(()=>$(target)?.scrollIntoView({behavior:'smooth',block:'start'}),100)}));
+ window.addEventListener('supplier-transfers-updated',refresh);
  $('inventoryBack')?.addEventListener('click',()=>{document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$('home').classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab==='home'));window.scrollTo({top:0,behavior:'smooth'});});
  $('balanceHubBack')?.addEventListener('click',()=>{document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$('home').classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab==='home'));window.scrollTo({top:0,behavior:'smooth'});});
  $('phonesHubBack')?.addEventListener('click',()=>{document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$('home').classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab==='home'));window.scrollTo({top:0,behavior:'smooth'});});
@@ -1019,6 +1020,78 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
  if(typeof oldReport==='function'){window.report=function(){oldReport();const month=$('monthFilter')?.value||today().slice(0,7);const total=db.invoices.filter(x=>(x.date||'').startsWith(month)).reduce((a,x)=>a+(Number(x.price||0)-Number(x.cost??db.products.find(p=>p.id===x.product)?.buy??0))*Number(x.qty||0),0);const el=$('rInventoryProfit');if(el)el.textContent=fmt(total)+' SDG';};}
  updateInventoryKpi();
 })(); 
+</script>
+
+<div id="supplierTransferModal" hidden style="position:fixed;inset:0;z-index:22000;background:#071b19c9;align-items:center;justify-content:center;padding:12px;overflow:auto">
+ <section class="supplier-transfer-dialog" role="dialog" aria-modal="true" aria-labelledby="supplierTransferTitle">
+  <header class="supplier-transfer-head"><div><h2 id="supplierTransferTitle">💸 حوالة جديدة للمورد</h2><small>اختر حساب المورد أو أضف حساباً جديداً</small></div><button type="button" class="secondary" id="supplierTransferClose">إغلاق ✕</button></header>
+  <div class="supplier-search-row"><div class="supplier-search-field"><label for="supplierSearchInput">بحث عن الحساب</label><input id="supplierSearchInput" type="search" placeholder="اكتب اسم المورد أو رقم الهاتف" autocomplete="off"></div><button type="button" class="primary supplier-add-trigger" id="supplierAddToggle">＋ إضافة حساب</button></div>
+  <div id="supplierSearchResults" class="supplier-search-results" hidden></div>
+  <div id="supplierAddForm" class="supplier-add-form" hidden><h3>إضافة حساب مورد جديد</h3><div class="supplier-fields"><div><label>اسم المورد / الحساب</label><input id="newSupplierName" maxlength="80" placeholder="اسم المورد"></div><div><label>رقم الهاتف</label><input id="newSupplierPhone" inputmode="tel" maxlength="25" placeholder="09xxxxxxxx"></div></div><label>ملاحظات (اختياري)</label><input id="newSupplierNote" maxlength="160" placeholder="بيانات إضافية"><div class="supplier-form-actions"><button type="button" class="secondary" id="supplierAddCancel">إلغاء</button><button type="button" class="primary" id="supplierAddSave">حفظ الحساب</button></div></div>
+  <div id="selectedSupplierCard" class="selected-supplier-card" hidden><span>الحساب المختار</span><strong id="selectedSupplierName"></strong><small id="selectedSupplierPhone"></small><button type="button" class="secondary" id="supplierChangeAccount">تغيير الحساب</button></div>
+  <div class="supplier-fields supplier-transfer-fields"><div><label for="supplierTransferAmount">مبلغ الحوالة (SDG)</label><input id="supplierTransferAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="أدخل المبلغ"></div><div><label for="supplierTransferDate">تاريخ الحوالة</label><input id="supplierTransferDate" type="date"></div><div class="supplier-wide"><label for="supplierTransferNote">البيان / ملاحظات</label><input id="supplierTransferNote" maxlength="160" placeholder="سبب الحوالة أو رقم المرجع (اختياري)"></div></div>
+  <div class="supplier-balance-line"><span>الرصيد المتاح حالياً</span><strong id="supplierTransferAvailable">0 SDG</strong></div>
+  <p id="supplierTransferMessage" class="supplier-transfer-message" aria-live="polite">اختر حساب المورد لإكمال الحوالة.</p>
+  <button type="button" class="primary supplier-transfer-save" id="supplierTransferSave">تأكيد الحوالة وخصم المبلغ من الرصيد</button>
+ </section>
+</div>
+<style id="supplier-transfer-modal-style">
+#supplierTransferModal[hidden]{display:none!important}#supplierTransferModal{display:flex}
+.supplier-transfer-dialog{width:min(100%,760px);max-height:94vh;overflow:auto;background:var(--card,#fff);color:var(--ink,#173b35);border:1px solid #258c70;border-radius:18px;padding:clamp(14px,3vw,24px);box-shadow:0 20px 70px #0008}
+.supplier-transfer-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}.supplier-transfer-head h2{font-size:20px;margin:0 0 5px}.supplier-transfer-head small{color:var(--muted,#71827c)}
+.supplier-search-row{display:flex;align-items:end;gap:9px}.supplier-search-field{flex:1;min-width:0}.supplier-search-field input{width:100%}.supplier-add-trigger{min-height:43px;white-space:nowrap}
+.supplier-search-results{display:grid;gap:6px;margin-top:8px;max-height:180px;overflow:auto}.supplier-search-results button{display:flex;justify-content:space-between;gap:10px;text-align:right;background:var(--bg,#f2f7f4);color:var(--ink,#173b35);border:1px solid var(--line,#dce8e1);border-radius:10px;padding:10px}
+.supplier-add-form,.selected-supplier-card{margin-top:13px;padding:13px;border:1px solid var(--line,#dce8e1);border-radius:12px;background:var(--bg,#f5faf7)}.supplier-add-form h3{margin:0 0 10px;font-size:16px}.supplier-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.supplier-fields>div{min-width:0}.supplier-fields input,.supplier-add-form>input{width:100%}.supplier-form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+.selected-supplier-card{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center}.selected-supplier-card span,.selected-supplier-card small{color:var(--muted,#71827c)}.selected-supplier-card strong{font-size:16px}.selected-supplier-card button{grid-column:2;grid-row:1/4}
+.supplier-transfer-fields{margin-top:16px}.supplier-wide{grid-column:1/-1}.supplier-balance-line{display:flex;justify-content:space-between;gap:10px;margin-top:14px;padding:12px;border-radius:11px;background:#e7f5ed;color:#155a45}.supplier-balance-line strong{font-size:18px}.supplier-transfer-message{font-size:13px;color:var(--muted,#71827c);min-height:22px}.supplier-transfer-save{width:100%;min-height:48px}
+body.dark .supplier-balance-line{background:#203a33;color:#b9f1df}body.dark .supplier-search-results button{background:#142120;color:var(--ink);border-color:var(--line)}
+@media(max-width:520px){.supplier-search-row{align-items:stretch}.supplier-search-field label{font-size:12px}.supplier-add-trigger{font-size:12px;padding:8px}.supplier-transfer-head h2{font-size:17px}.supplier-fields{gap:8px}.supplier-fields input{font-size:14px}.selected-supplier-card{grid-template-columns:1fr}.selected-supplier-card button{grid-column:auto;grid-row:auto;width:100%}}
+</style>
+<script id="supplier-transfer-modal-script">
+(function(){
+ const $=id=>document.getElementById(id),CONTACTS_KEY='hisabati_supplier_accounts_v1';
+ let contacts=[],selectedId=null;
+ try{const saved=JSON.parse(localStorage.getItem(CONTACTS_KEY)||'[]');if(Array.isArray(saved))contacts=saved;}catch(e){}
+ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const saveContacts=()=>localStorage.setItem(CONTACTS_KEY,JSON.stringify(contacts));
+ const available=()=>{const stock=(db.stock||[]).reduce((n,x)=>n+Number(x.amount||0),0),used=(db.transfers||[]).reduce((n,x)=>n+Number(x.cost||0),0)+(db.recharges||[]).reduce((n,x)=>n+Number(x.cost||0),0)+(db.services||[]).reduce((n,x)=>n+Number(x.cost||0),0)+(db.supplierTransfers||[]).reduce((n,x)=>n+Number(x.amount||0),0);return Number((stock-used).toFixed(2));};
+ function renderAvailable(){$('supplierTransferAvailable').textContent=available().toLocaleString('en-US',{maximumFractionDigits:2})+' SDG';}
+ function selectContact(id){const x=contacts.find(c=>c.id===id);if(!x)return;selectedId=id;$('selectedSupplierName').textContent=x.name;$('selectedSupplierPhone').textContent=x.phone||'لا يوجد رقم هاتف مسجل';$('selectedSupplierCard').hidden=false;$('supplierSearchResults').hidden=true;$('supplierSearchInput').value=x.name;$('supplierTransferMessage').textContent='تم اختيار الحساب. أدخل مبلغ الحوالة.';}
+ function renderResults(){
+  const q=$('supplierSearchInput').value.trim().toLocaleLowerCase(),box=$('supplierSearchResults');
+  const found=contacts.filter(x=>!q||(x.name+' '+(x.phone||'')).toLocaleLowerCase().includes(q)).slice(0,12);
+  box.innerHTML=found.map(x=>'<button type="button" data-supplier-id="'+esc(x.id)+'"><span><strong>'+esc(x.name)+'</strong><br><small>'+esc(x.phone||'بدون رقم هاتف')+'</small></span><span>اختيار ←</span></button>').join('')||'<div class="hint">لا يوجد حساب مطابق. يمكنك إضافته من زر (+).</div>';
+  box.hidden=false;box.querySelectorAll('[data-supplier-id]').forEach(b=>b.addEventListener('click',()=>selectContact(b.dataset.supplierId)));
+ }
+ function open(){contacts=(()=>{try{const a=JSON.parse(localStorage.getItem(CONTACTS_KEY)||'[]');return Array.isArray(a)?a:[]}catch(e){return []}})();let inv={};try{inv=JSON.parse(localStorage.getItem('hisabati_inventory_v1')||'{}')}catch(e){};const legacyNames=[...(inv.moves||[]).map(x=>x.supplier),...(inv.supplierPayments||[]).map(x=>x.supplier),...(db.supplierTransfers||[]).map(x=>x.supplier)].filter(Boolean);legacyNames.forEach(name=>{if(!contacts.some(x=>x.name.toLocaleLowerCase()===String(name).toLocaleLowerCase()))contacts.push({id:'legacy-'+String(name).trim().replace(/\s+/g,'-'),name:String(name).trim(),phone:'',note:'حساب سابق'});});saveContacts();selectedId=null;$('supplierSearchInput').value='';$('supplierTransferAmount').value='';$('supplierTransferDate').value=today();$('supplierTransferNote').value='';$('supplierAddForm').hidden=true;$('selectedSupplierCard').hidden=true;$('supplierSearchResults').hidden=true;$('supplierTransferMessage').textContent='ابحث عن حساب المورد أو أضف حساباً جديداً.';renderAvailable();$('supplierTransferModal').hidden=false;$('supplierTransferModal').style.display='flex';setTimeout(()=>$('supplierSearchInput').focus(),80);}
+ function close(){$('supplierTransferModal').hidden=true;$('supplierTransferModal').style.display='none';}
+ window.openSupplierTransferModal=open;
+ $('supplierTransferClose').addEventListener('click',close);
+ $('supplierTransferModal').addEventListener('click',e=>{if(e.target===$('supplierTransferModal'))close();});
+ $('supplierSearchInput').addEventListener('focus',renderResults);
+ $('supplierSearchInput').addEventListener('input',()=>{selectedId=null;$('selectedSupplierCard').hidden=true;renderResults();});
+ $('supplierAddToggle').addEventListener('click',()=>{$('supplierAddForm').hidden=!$('supplierAddForm').hidden;if(!$('supplierAddForm').hidden)$('newSupplierName').focus();});
+ $('supplierAddCancel').addEventListener('click',()=>{$('supplierAddForm').hidden=true;});
+ $('supplierAddSave').addEventListener('click',()=>{
+  const name=$('newSupplierName').value.trim(),phone=$('newSupplierPhone').value.trim(),note=$('newSupplierNote').value.trim();
+  if(!name){alert('أدخل اسم المورد أو الحساب.');return;}
+  const duplicate=contacts.find(x=>x.name.toLocaleLowerCase()===name.toLocaleLowerCase()&&(!phone||x.phone===phone));
+  if(duplicate){selectContact(duplicate.id);$('supplierAddForm').hidden=true;return;}
+  const x={id:'supplier-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name,phone,note,createdAt:new Date().toISOString()};
+  contacts.push(x);saveContacts();$('newSupplierName').value='';$('newSupplierPhone').value='';$('newSupplierNote').value='';$('supplierAddForm').hidden=true;selectContact(x.id);
+ });
+ $('supplierChangeAccount').addEventListener('click',()=>{selectedId=null;$('selectedSupplierCard').hidden=true;$('supplierSearchInput').value='';renderResults();});
+ $('supplierTransferSave').addEventListener('click',()=>{
+  const supplier=contacts.find(x=>x.id===selectedId),amount=Number($('supplierTransferAmount').value),date=$('supplierTransferDate').value,note=$('supplierTransferNote').value.trim();
+  if(!supplier){$('supplierTransferMessage').textContent='اختر حساب المورد أولاً.';return;}
+  if(!Number.isFinite(amount)||amount<=0){$('supplierTransferMessage').textContent='أدخل مبلغاً صحيحاً أكبر من صفر.';return;}
+  if(!date){$('supplierTransferMessage').textContent='حدد تاريخ الحوالة.';return;}
+  const balance=available();if(amount>balance){$('supplierTransferMessage').textContent='الرصيد المتاح لا يكفي. المتاح '+balance.toLocaleString('en-US')+' SDG.';return;}
+  db.supplierTransfers=db.supplierTransfers||[];
+  db.supplierTransfers.push({id:'supplier-transfer-'+Date.now(),supplier:supplier.name,supplierId:supplier.id,phone:supplier.phone||'',amount:Number(amount.toFixed(2)),date,note,createdAt:new Date().toISOString()});
+  save();window.dispatchEvent(new Event('supplier-transfers-updated'));renderAvailable();$('supplierTransferMessage').textContent='تم حفظ الحوالة وخصم '+amount.toLocaleString('en-US')+' SDG من الرصيد المتاح.';alert('تم تسجيل حوالة المورد وخصم المبلغ من الرصيد المتاح.');close();
+ });
+})();
 </script>
 </body></html>
 
