@@ -327,7 +327,7 @@ footer{color:#aeb4c0}
 <div id="recharge" class="phone-subview">
 <div class="inventory-page-head"><button class="secondary" type="button" data-phone-menu>↩ رجوع لقسم الهواتف</button><span>تسجيل عملية شحن جديدة</span></div><h2 class="section-title">شحن الهواتف</h2><div class="card" id="rechargeCard"><form id="rechargeForm">
 <div><label>قيمة الشحن المحصلة (SDG)</label><input name="sale" type="number" min="0.01" step="0.01" required></div>
-<div><label>رقم الهاتف لصاحب الهاتف</label><input name="phone" type="tel" inputmode="tel" placeholder="أدخل رقم الهاتف" required></div>
+<div><label>رقم الهاتف لصاحب الهاتف (اختياري)</label><div style="display:flex;gap:8px;align-items:stretch"><input name="phone" id="rechargePhone" type="tel" inputmode="tel" placeholder="أدخل رقم الهاتف" style="flex:1;min-width:0"><button class="secondary" type="button" id="rechargeCall" style="white-space:nowrap">📞 اتصال</button></div></div>
 <div><label>ربح الهواتف (إدخال يدوي) SDG</label><input name="manualProfit" type="number" min="0" step="0.01" placeholder="أدخل الربح" required></div>
 <div><label>التاريخ</label><input name="date" type="date" required></div>
 <div><label>ملاحظات</label><input name="note" placeholder="اختياري"></div>
@@ -1323,6 +1323,19 @@ body.dark .supplier-balance-line{background:#203a33;color:#b9f1df}body.dark .sup
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&panel?.classList.contains('quick-recharge'))closeModal();});
  form?.addEventListener('submit',()=>{setTimeout(()=>{if(!form.querySelector(':invalid'))closeModal();},0);});
 })();</script>
+<script id="recharge-phone-call">
+(function(){
+ const callButton=document.getElementById('rechargeCall');
+ callButton?.addEventListener('click',function(){
+  const field=document.getElementById('rechargePhone');
+  const phone=(field?.value||'').trim();
+  if(!phone){alert('أدخل رقم الهاتف أولاً لإجراء الاتصال.');field?.focus();return;}
+  const normalized=phone.replace(/[\\s()-]/g,'');
+  if(!/^\\+?[0-9]+$/.test(normalized)){alert('يرجى إدخال رقم هاتف صحيح.');field?.focus();return;}
+  window.location.href='tel:'+normalized;
+ });
+})();
+</script>
 </body></html>
 
 <style id="home-icons-layout-update">
