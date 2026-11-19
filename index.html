@@ -403,11 +403,25 @@ footer{color:#aeb4c0}
 <div><label>حد التنبيه عند الكمية</label><input name="min" type="number" min="0" step="1" value="2"></div>
 <div class="full"><label>رقم تسلسلي / ملاحظات (اختياري)</label><input name="note"></div>
 <button class="primary full">حفظ الصنف</button></form></div>
-</div><div class="inventory-view" data-inventory-view="inbound"><div class="inbound-modal-card"><div class="inbound-modal-head"><div><strong>📥 سند الوارد</strong><small>فاتورة إدخال بضاعة للمخزون</small></div><button type="button" class="secondary" id="closeInboundInvoice">إغلاق ✕</button></div><form id="stockInForm">
+</div><div class="inventory-view" data-inventory-view="inboundEntry"><div class="inbound-modal-card"><div class="inbound-modal-head"><div><strong>📥 سند الوارد</strong><small>فاتورة إدخال بضاعة للمخزون</small></div><button type="button" class="secondary" id="closeInboundInvoice">إغلاق ✕</button></div><form id="stockInForm">
 <div class="inbound-table-wrap"><table class="inbound-lines"><thead><tr><th>اسم الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>السعر</th><th></th></tr></thead><tbody id="inboundInvoiceRows"><tr class="inbound-line"><td><select name="product[]" class="product-options" required></select></td><td><input name="qty[]" type="number" min="1" step="1" value="1" required></td><td><input name="cost[]" type="number" min="0" step="0.01" required></td><td class="inbound-line-total">0</td><td><button type="button" class="danger remove-inbound-line" aria-label="حذف الصف">×</button></td></tr></tbody></table></div>
 <div class="inbound-summary"><button type="button" class="secondary" id="addInboundLine">＋ إضافة صنف</button><strong>إجمالي الفاتورة: <span id="inboundGrandTotal">0</span> SDG</strong></div>
 <div class="inbound-meta"><div><label>رقم الفاتورة</label><input name="invoiceNo" required placeholder="رقم فاتورة المورد"></div><div><label>اسم المورد</label><input name="supplier" placeholder="اسم المورد"></div><div><label>حالة الشراء</label><select name="purchasePayment"><option>نقدي</option><option>آجل</option></select></div><div><label>التاريخ</label><input name="date" type="date" required></div><div><label>ملاحظات</label><input name="note"></div></div>
-<button class="primary inbound-save">حفظ سند الوارد</button></form></div></div><div class="inventory-view" data-inventory-view="outbound"><div class="inbound-modal-card"><div class="inbound-modal-head"><div><strong>📤 سند الصرف</strong><small>تسجيل إخراج بضاعة من المخزون</small></div><button type="button" class="secondary" id="closeOutboundVoucher">إغلاق ✕</button></div><form id="stockOutForm" class="voucher-form">
+<button class="primary inbound-save">حفظ سند الوارد</button></form></div></div><div class="inventory-view" data-inventory-view="inbound">
+ <div class="inbound-report-modal">
+  <div class="inbound-modal-head"><div><strong>📥 كشف الأصناف الواردة</strong><small>كشف جميع فواتير الشراء حسب الفترة المحددة</small></div><button type="button" class="secondary" id="closeInboundReport">إغلاق ✕</button></div>
+  <div class="inbound-report-filters">
+   <div><label for="inboundReportFrom">من تاريخ</label><input id="inboundReportFrom" type="date"></div>
+   <div><label for="inboundReportTo">إلى تاريخ</label><input id="inboundReportTo" type="date"></div>
+   <button type="button" class="primary" id="inboundReportApply">عرض الكشف</button>
+   <button type="button" class="secondary" id="inboundReportPrint">🖨️ طباعة الكشف</button>
+  </div>
+  <div class="inbound-report-summary"><span>عدد الأصناف الواردة: <strong id="inboundReportCount">0</strong></span><span>إجمالي قيمة المشتريات: <strong id="inboundReportTotal">0 SDG</strong></span></div>
+  <div class="inbound-table-wrap"><table class="inbound-report-table"><thead><tr><th>م</th><th>التاريخ</th><th>اسم الصنف</th><th>الكمية</th><th>رقم الفاتورة</th><th>سعر الوحدة</th><th>السعر الإجمالي</th><th>اسم المورد</th></tr></thead><tbody id="inboundReportRows"><tr><td colspan="8" class="empty">حدد الفترة ثم اضغط عرض الكشف.</td></tr></tbody></table></div>
+  <div class="inbound-report-grand">إجمالي قيمة المشتريات: <strong id="inboundReportGrand">0 SDG</strong></div>
+ </div>
+</div>
+<div class="inventory-view" data-inventory-view="outbound"><div class="inbound-modal-card"><div class="inbound-modal-head"><div><strong>📤 سند الصرف</strong><small>تسجيل إخراج بضاعة من المخزون</small></div><button type="button" class="secondary" id="closeOutboundVoucher">إغلاق ✕</button></div><form id="stockOutForm" class="voucher-form">
 <div><label>الصنف</label><select name="product" class="product-options" required></select></div><div><label>الكمية المصروفة</label><input name="qty" type="number" min="1" step="1" required></div>
 <div><label>سبب الصرف</label><select name="reason"><option>بيع</option><option>استخدام شخصي</option><option>تالف</option><option>مرتجع للمورد</option><option>أخرى</option></select></div><div><label>التاريخ</label><input name="date" type="date" required></div><div class="full"><label>ملاحظات</label><input name="note"></div><button class="primary full voucher-save">تسجيل الصرف</button></form></div>
 </div><div class="inventory-view" data-inventory-view="invoice"><div class="inbound-modal-card sale-invoice-modal"><div class="inbound-modal-head sale-invoice-head"><div><strong>🧾 فاتورة بيع</strong><small>إدخال بيانات الفاتورة ثم حفظها أو طباعتها على ورقة A4</small></div><button type="button" class="secondary" id="closeSaleInvoice">إغلاق ✕</button></div><form id="invoiceForm" class="sale-invoice-form">
@@ -1038,11 +1052,11 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
 
  
 
- function openInventoryView(view){$('inventorySectionMenu').style.display='none';document.querySelectorAll('#inventory .inventory-view').forEach(x=>{x.classList.toggle('active',x.dataset.inventoryView===view);x.classList.toggle('voucher-modal-open', ['inbound','outbound','invoice'].includes(view)&&x.dataset.inventoryView===view);});window.scrollTo({top:0,behavior:'smooth'});}
+ function openInventoryView(view){$('inventorySectionMenu').style.display='none';document.querySelectorAll('#inventory .inventory-view').forEach(x=>{x.classList.toggle('active',x.dataset.inventoryView===view);x.classList.toggle('voucher-modal-open', ['inboundEntry','outbound','invoice','inbound'].includes(view)&&x.dataset.inventoryView===view);});window.scrollTo({top:0,behavior:'smooth'});}
  function showInventoryMenu(){$('inventorySectionMenu').style.display='grid';document.querySelectorAll('#inventory .inventory-view').forEach(x=>x.classList.remove('active','voucher-modal-open','inbound-modal-open','sale-invoice-modal-open'));window.scrollTo({top:0,behavior:'smooth'});}
  document.querySelectorAll('#inventory [data-inv-view]').forEach(b=>b.addEventListener('click',()=>openInventoryView(b.dataset.invView)));
  document.querySelectorAll('#inventory [data-inv-menu]').forEach(b=>b.addEventListener('click',showInventoryMenu));
- document.querySelectorAll('#home [data-doc-panel]').forEach(b=>b.addEventListener('click',()=>{const panel=b.dataset.docPanel,target=b.dataset.docTarget;document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$(panel)?.classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab===panel));if(panel==='inventory'){const map={stockInForm:'inbound',stockOutForm:'outbound',invoiceForm:'invoice'};openInventoryView(map[target]||'products')}else{window.scrollTo({top:0,behavior:'smooth'});setTimeout(()=>$(target)?.scrollIntoView({behavior:'smooth',block:'start'}),120)}}));
+ document.querySelectorAll('#home [data-doc-panel]').forEach(b=>b.addEventListener('click',()=>{const panel=b.dataset.docPanel,target=b.dataset.docTarget;document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$(panel)?.classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab===panel));if(panel==='inventory'){const map={stockInForm:'inboundEntry',stockOutForm:'outbound',invoiceForm:'invoice'};openInventoryView(map[target]||'products')}else{window.scrollTo({top:0,behavior:'smooth'});setTimeout(()=>$(target)?.scrollIntoView({behavior:'smooth',block:'start'}),120)}}));
  
  function showHomeHub(id){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab==='home'));window.scrollTo({top:0,behavior:'smooth'});}
  function readStore(key,fallback){try{return JSON.parse(localStorage.getItem(key)||'null')||fallback}catch(e){return fallback}}
@@ -1336,7 +1350,69 @@ body.dark .supplier-balance-line{background:#203a33;color:#b9f1df}body.dark .sup
  });
 })();
 </script>
-</body></html>
+</body>
+<style id="inbound-purchases-report">
+#inventory .inventory-view.inbound-report-modal-open{position:fixed;inset:0;z-index:15002;display:flex!important;align-items:center;justify-content:center;padding:12px;background:#050b16df;overflow:auto}
+.inbound-report-modal{width:min(100%,1120px);max-height:95vh;overflow:auto;background:#1b1c20;border:1px solid #3979c8;border-radius:17px;padding:clamp(12px,2.5vw,24px);box-shadow:0 20px 70px #0009}
+.inbound-report-modal .inbound-modal-head{margin-bottom:14px}
+.inbound-report-filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;align-items:end;margin:12px 0}
+.inbound-report-filters>div{min-width:0}.inbound-report-filters button{min-height:44px}
+.inbound-report-summary{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:#eaf1fc;margin:12px 0;font-weight:700}
+.inbound-report-summary strong,.inbound-report-grand strong{color:#65c879}
+.inbound-report-table{min-width:850px}
+.inbound-report-grand{text-align:left;margin-top:14px;padding:13px;border:1px solid #42658f;border-radius:10px;color:#fff;font-size:17px;font-weight:900}
+@media(max-width:650px){.inbound-report-modal{padding:10px}.inbound-report-filters{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.inbound-report-filters button{width:100%}}
+@media print{
+ @page{size:A4 landscape;margin:10mm}
+ body.inbound-report-printing>*:not(#inventory){display:none!important}
+ body.inbound-report-printing #inventory{display:block!important;position:static!important;padding:0!important;margin:0!important;background:#fff!important}
+ body.inbound-report-printing #inventory>.inventory-page-head,body.inbound-report-printing #inventory>.section-title,body.inbound-report-printing #inventory>#inventorySectionMenu,body.inbound-report-printing #inventory .inventory-view:not([data-inventory-view="inbound"]){display:none!important}
+ body.inbound-report-printing #inventory .inventory-view[data-inventory-view="inbound"]{display:block!important;position:static!important;padding:0!important;background:#fff!important}
+ body.inbound-report-printing .inbound-report-modal{width:100%!important;max-width:none!important;max-height:none!important;overflow:visible!important;padding:0!important;margin:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:#fff!important;color:#111!important}
+ body.inbound-report-printing .inbound-report-modal .inbound-modal-head{color:#111!important}
+ body.inbound-report-printing .inbound-report-modal .inbound-modal-head strong,body.inbound-report-printing .inbound-report-modal .inbound-modal-head small{color:#111!important}
+ body.inbound-report-printing .inbound-report-filters{display:none!important}
+ body.inbound-report-printing .inbound-report-summary,body.inbound-report-printing .inbound-report-grand{color:#111!important;background:#fff!important;border-color:#aaa!important}
+ body.inbound-report-printing .inbound-report-summary strong,body.inbound-report-printing .inbound-report-grand strong{color:#111!important}
+ body.inbound-report-printing .inbound-table-wrap{overflow:visible!important;border:1px solid #aaa!important}
+ body.inbound-report-printing .inbound-report-table{width:100%!important;min-width:0!important;table-layout:auto!important}
+ body.inbound-report-printing .inbound-report-table th,body.inbound-report-printing .inbound-report-table td{font-size:8pt!important;padding:5px 4px!important;color:#111!important;background:#fff!important;border-color:#ccc!important;white-space:normal!important}
+ body.inbound-report-printing .inbound-report-table th{background:#eee!important}
+}
+</style>
+<script id="inbound-purchases-report-logic">
+(function(){
+ const $=id=>document.getElementById(id);
+ const modal=document.querySelector('#inventory [data-inventory-view="inbound"]');
+ if(!modal)return;
+ const esc=v=>String(v??'—').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const num=v=>Number(v)||0,fmt=v=>num(v).toLocaleString('en-US',{maximumFractionDigits:2});
+ function render(){
+  const from=$('inboundReportFrom').value,to=$('inboundReportTo').value;
+  const store=(()=>{try{return JSON.parse(localStorage.getItem('hisabati_inventory_v1')||'{}')}catch(e){return {}}})();
+  const products=Array.isArray(store.products)?store.products:[];
+  const all=Array.isArray(store.moves)?store.moves:[];
+  const rows=all.filter(x=>x.type==='وارد'&&(!from||String(x.date||'')>=from)&&(!to||String(x.date||'')<=to)).sort((a,b)=>String(a.date||'').localeCompare(String(b.date||'')));
+  const total=rows.reduce((sum,x)=>sum+num(x.value),0);
+  $('inboundReportCount').textContent=fmt(rows.length);
+  $('inboundReportTotal').textContent=fmt(total)+' SDG';
+  $('inboundReportGrand').textContent=fmt(total)+' SDG';
+  $('inboundReportRows').innerHTML=rows.length?rows.map((x,i)=>{
+   const p=products.find(p=>p.id===x.product);
+   const unit=x.unitCost!==undefined?num(x.unitCost):(num(x.qty)?num(x.value)/num(x.qty):0);
+   return '<tr><td>'+(i+1)+'</td><td>'+esc(x.date)+'</td><td>'+esc(p?.name||'صنف غير موجود')+'</td><td>'+fmt(x.qty)+'</td><td>'+esc(x.invoiceNo||'—')+'</td><td>'+fmt(unit)+'</td><td>'+fmt(x.value)+'</td><td>'+esc(x.supplier||'—')+'</td></tr>';
+  }).join(''):'<tr><td colspan="8" class="empty">لا توجد أصناف واردة في الفترة المحددة.</td></tr>';
+ }
+ $('inboundReportApply').addEventListener('click',render);
+ $('inboundReportFrom').addEventListener('change',render);
+ $('inboundReportTo').addEventListener('change',render);
+ $('closeInboundReport').addEventListener('click',()=>{document.querySelector('#inventorySectionMenu').style.display='grid';document.querySelectorAll('#inventory .inventory-view').forEach(x=>x.classList.remove('active','voucher-modal-open','inbound-modal-open','sale-invoice-modal-open','inbound-report-modal-open'));});
+ $('inboundReportPrint').addEventListener('click',()=>{render();document.body.classList.add('inbound-report-printing');window.print();});
+ window.addEventListener('afterprint',()=>document.body.classList.remove('inbound-report-printing'));
+ document.addEventListener('click',e=>{const b=e.target.closest('#inventory [data-inv-view="inbound"]');if(b)render();},true);
+})();
+</script>
+</html>
 
 <style id="home-icons-layout-update">
 /* ترتيب مختصر وواضح لأيقونات الصفحة الرئيسية */
