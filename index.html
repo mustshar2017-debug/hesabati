@@ -1019,10 +1019,10 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
  function refresh(){
   const opts=db.products.map(p=>'<option value="'+p.id+'">'+esc(p.name)+' (متاح '+p.qty+')</option>').join('');
   document.querySelectorAll('.product-options').forEach(s=>{const old=s.value;s.innerHTML=opts;s.value=old&&db.products.some(p=>p.id===old)?old:(db.products[0]?.id||'')});
-  $('invProductCount').textContent=db.products.length;
-  $('invUnitCount').textContent=fmt(db.products.reduce((a,p)=>a+p.qty,0));
-  $('invCostValue').textContent=fmt(db.products.reduce((a,p)=>a+p.qty*p.buy,0))+' SDG';
-  $('invLowCount').textContent=db.products.filter(p=>p.qty<=p.min).length;
+  if($('invProductCount'))$('invProductCount').textContent=db.products.length;
+  if($('invUnitCount'))$('invUnitCount').textContent=fmt(db.products.reduce((a,p)=>a+p.qty,0));
+  if($('invCostValue'))$('invCostValue').textContent=fmt(db.products.reduce((a,p)=>a+p.qty*p.buy,0))+' SDG';
+  if($('invLowCount'))$('invLowCount').textContent=db.products.filter(p=>p.qty<=p.min).length;
   $('productsQuickRows').innerHTML=db.products.map(p=>{const latestSale=[...db.invoices].reverse().find(i=>i.product===p.id&&i.price!==undefined&&i.price!==null&&i.price!=='');const price=latestSale?Number(latestSale.price):Number(p.sell||0);return '<tr><td>'+esc(p.name)+'</td><td>'+fmt(p.qty)+'</td><td>'+fmt(price)+'</td></tr>'}).join('')||'<tr><td colspan="3" class="empty">لا توجد أصناف مسجلة بعد</td></tr>';
   $('inventoryRows').innerHTML=db.products.map(p=>'<tr><td>'+esc(p.name)+'</td><td>'+esc(p.category)+'</td><td class="'+(p.qty<=p.min?'negative':'')+'">'+p.qty+'</td><td>'+fmt(p.buy)+'</td><td>'+fmt(p.sell)+'</td><td>'+fmt(p.qty*p.buy)+'</td><td><button type="button" data-edit-product="'+p.id+'">تعديل</button></td></tr>').join('')||'<tr><td colspan="7" class="empty">لا توجد أصناف مسجلة بعد</td></tr>';
   const sold=db.moves.filter(m=>m.type==='بيع');
@@ -1038,7 +1038,7 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
  $('inventoryRows').addEventListener('click',e=>{const b=e.target.closest('[data-edit-product]');if(!b)return;const p=db.products.find(x=>x.id===b.dataset.editProduct);if(!p)return;const name=prompt('اسم الصنف',p.name);if(name===null)return;const buy=prompt('سعر الشراء',p.buy);if(buy===null)return;const sell=prompt('سعر البيع',p.sell);if(sell===null)return;const min=prompt('حد التنبيه',p.min);if(min===null)return;if(!name.trim()||![buy,sell,min].every(v=>Number.isFinite(Number(v))&&Number(v)>=0)){alert('بيانات غير صحيحة');return}p.name=name.trim();p.buy=Number(buy);p.sell=Number(sell);p.min=Number(min);save();refresh()});
  $('customerPaymentForm').addEventListener('submit',e=>{e.preventDefault();const d=formData(e.currentTarget);db.customerPayments.push({customer:d.customer.trim(),amount:Number(d.amount),date:d.date});save();e.currentTarget.reset();e.currentTarget.date.value=today();refresh();alert('تم تسجيل تحصيل العميل.')});
  $('supplierPaymentForm').addEventListener('submit',e=>{e.preventDefault();const d=formData(e.currentTarget);db.supplierPayments.push({supplier:d.supplier.trim(),amount:Number(d.amount),date:d.date});save();e.currentTarget.reset();e.currentTarget.date.value=today();refresh();alert('تم تسجيل سداد المورد.')});
- $('productForm').addEventListener('submit',e=>{e.preventDefault();const d=formData(e.currentTarget);db.products.push({id:'p'+Date.now(),name:d.name.trim(),category:d.category,qty:Number(d.qty),buy:Number(d.buy),sell:Number(d.sell),min:Number(d.min||0),note:d.note});save();e.currentTarget.reset();refresh();alert('تم حفظ الصنف في المخزون.')});
+ $('productForm')?.addEventListener('submit',e=>{e.preventDefault();const d=formData(e.currentTarget);db.products.push({id:'p'+Date.now(),name:d.name.trim(),category:d.category,qty:Number(d.qty),buy:Number(d.buy),sell:Number(d.sell),min:Number(d.min||0),note:d.note});save();e.currentTarget.reset();refresh();alert('تم حفظ الصنف في المخزون.')});
  const stockInForm=$('stockInForm');
  function updateInboundTotals(){let total=0;stockInForm.querySelectorAll('.inbound-line').forEach(row=>{const q=Number(row.querySelector('[name="qty[]"]').value)||0,c=Number(row.querySelector('[name="cost[]"]').value)||0,v=q*c;row.querySelector('.inbound-line-total').textContent=fmt(v);total+=v});$('inboundGrandTotal').textContent=fmt(total)}
  function addInboundLine(){const row=stockInForm.querySelector('.inbound-line').cloneNode(true);row.querySelectorAll('select,input').forEach(el=>{if(el.tagName==='SELECT')el.selectedIndex=0;else el.value=el.name==='qty[]'?'1':''});$('inboundInvoiceRows').appendChild(row);refresh();updateInboundTotals()}
