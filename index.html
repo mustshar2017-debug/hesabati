@@ -430,7 +430,7 @@ footer{color:#aeb4c0}
 <div class="sale-invoice-meta"><label>التاريخ</label><input name="date" type="date" required></div>
 <div class="sale-lines-wrap"><table class="sale-lines"><thead><tr><th>م</th><th>الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody id="saleInvoiceRows"></tbody></table></div>
 <div class="sale-invoice-total">إجمالي الفاتورة <strong id="saleInvoiceTotal">0 SDG</strong></div>
-<div class="sale-invoice-actions"><button type="button" class="secondary" id="printSaleInvoice">🖨️ طباعة A4</button><button type="button" class="secondary" id="whatsappSaleInvoice">🟢 إرسال واتساب</button><button class="primary" type="submit">حفظ الفاتورة</button></div></form></div>
+<div class="sale-invoice-actions"><button type="button" class="secondary" id="printSaleInvoice">🖨️ طباعة A4</button><button type="button" class="secondary" id="whatsappSaleInvoice">📤 مشاركة</button><button class="primary" type="submit">حفظ الفاتورة</button></div></form></div>
 </div><div class="inventory-view" data-inventory-view="stocklist"><div class="inventory-view-head"><strong>📋 قائمة المخزون</strong><button type="button" class="secondary" data-inv-menu>رجوع للقوائم</button></div><div class="card" style="margin-top:12px"><h3>📋 قائمة المخزون</h3><div class="table-wrap"><table><thead><tr><th>الصنف</th><th>التصنيف</th><th>المتوفر</th><th>شراء</th><th>بيع</th><th>القيمة</th><th>إجراء</th></tr></thead><tbody id="inventoryRows"></tbody></table></div></div>
 </div><div class="inventory-view" data-inventory-view="slow"><div class="inventory-view-head"><strong>🐌 البضاعة الراكدة</strong><button type="button" class="secondary" data-inv-menu>رجوع للقوائم</button></div><div class="card" id="slowStock" style="margin-top:12px"><h3>🐌 البضاعة الراكدة</h3><p class="muted">الأصناف التي لم تسجل عليها حركة بيع خلال 30 يوماً أو أكثر.</p><div class="table-wrap"><table><thead><tr><th>الصنف</th><th>الكمية</th><th>آخر بيع</th></tr></thead><tbody id="slowStockRows"></tbody></table></div></div>
 </div><div class="inventory-view" data-inventory-view="accounts"><div class="inventory-view-head"><strong>👥 حسابات العملاء والموردين</strong><button type="button" class="secondary" data-inv-menu>رجوع للقوائم</button></div><div class="card" style="margin-top:12px"><h3>👥 حسابات العملاء والموردين</h3>
@@ -1072,20 +1072,30 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
   const canvas=document.createElement('canvas');canvas.width=1240;canvas.height=1754;
   const ctx=canvas.getContext('2d');
   ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);
-  const ink='#17212b',blue='#176fe0',muted='#657080',line='#cbd3dc',right=1120,left=120;
+  const ink='#17212b',blue='#176fe0',muted='#657080',line='#b9c5cf',right=1120,left=120;
   function txt(value,x,y,size=30,color=ink,weight='normal',align='right'){
    ctx.font=weight+' '+size+'px Tahoma, Arial, sans-serif';ctx.fillStyle=color;ctx.textAlign=align;ctx.direction='rtl';ctx.fillText(String(value??''),x,y);
   }
   function rule(y,color=line,width=2){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(right,y);ctx.stroke();}
+  // إطار فاتورة أنيق بزوايا مزدوجة
+  ctx.strokeStyle=blue;ctx.lineWidth=5;ctx.strokeRect(55,55,1130,1644);
+  ctx.strokeStyle='#c9a34a';ctx.lineWidth=2;ctx.strokeRect(70,70,1100,1614);
+  function corner(x,y,sx,sy){ctx.strokeStyle='#c9a34a';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(x,y+sy*52);ctx.lineTo(x,y);ctx.lineTo(x+sx*52,y);ctx.stroke();}
+  corner(83,83,1,1);corner(1157,83,-1,1);corner(83,1670,1,-1);corner(1157,1670,-1,-1);
   ctx.fillStyle=blue;ctx.fillRect(left,100,right-left,9);
   txt('أبو التيمان فون',right,190,58,blue,'bold');
   txt('لبيع الهواتف ومستلزماتها',right,245,27,muted);
-  txt('فاتورة بيع',620,345,43,ink,'bold','center');
+  txt('فاتورة بيع مبدئية',620,345,43,ink,'bold','center');
   txt('رقم الفاتورة: '+invoiceNo,left,190,25,ink,'bold','left');
   txt('التاريخ: '+(d.date||'—'),left,240,24,muted,'normal','left');
   rule(390,blue,4);
   txt('اسم العميل: '+(d.customer||'عميل نقدي'),right,465,28);
   txt('طريقة الدفع: '+(d.payment||'—'),left,465,28,ink,'normal','left');
+  // شعار التطبيق كعلامة مائية شفافة في منتصف الورقة
+  const logoSvg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="g" x2="1" y2="1"><stop stop-color="#0b806c"/><stop offset="1" stop-color="#123b3b"/></linearGradient><linearGradient id="gold" x2="0" y2="1"><stop stop-color="#ffe7a0"/><stop offset="1" stop-color="#c58b24"/></linearGradient></defs><rect width="512" height="512" rx="104" fill="url(#g)"/><path d="M92 190a38 38 0 0 1 38-38h258a32 32 0 0 1 32 32v180a38 38 0 0 1-38 38H130a38 38 0 0 1-38-38z" fill="#f4f8f4"/><path d="M92 208h292a36 36 0 0 1 36 36v36H92z" fill="#d6e7df"/><path d="M310 249h148v100H310a42 42 0 0 1 0-100z" fill="#087f70"/><circle cx="345" cy="299" r="11" fill="url(#gold)"/><circle cx="178" cy="174" r="42" fill="url(#gold)" stroke="#fff0bd" stroke-width="8"/><path d="M165 174h26m-13-13v26" stroke="#7a5414" stroke-width="8" stroke-linecap="round"/><rect x="205" y="305" width="112" height="93" rx="20" fill="url(#gold)"/><path d="M229 305v-25a32 32 0 0 1 64 0v25" fill="none" stroke="#ffe7a0" stroke-width="16" stroke-linecap="round"/><circle cx="261" cy="349" r="8" fill="#65470e"/><path d="M261 356v17" stroke="#65470e" stroke-width="8" stroke-linecap="round"/><text x="256" y="468" text-anchor="middle" font-size="37" font-weight="700" fill="#fff" font-family="Tahoma,Arial,sans-serif">حساباتي</text></svg>';
+  const logo=new Image();
+  logo.onload=()=>{ctx.save();ctx.globalAlpha=.075;ctx.drawImage(logo,365,760,510,510);ctx.restore();};
+  logo.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(logoSvg);
   const top=535,rowH=78;
   ctx.fillStyle='#edf3fa';ctx.fillRect(left,top,right-left,rowH);
   const cols=[right-35,850,620,390,left+25];
@@ -1097,7 +1107,7 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
   let y=top+rowH;
   for(let i=0;i<10;i++){
    const item=items[i];
-   ctx.fillStyle=i%2?'#fafbfd':'#fff';ctx.fillRect(left,y,right-left,rowH);
+   ctx.fillStyle=i%2?'#fafbfd':'#fff';ctx.fillRect(left,y,right-left,rowH);ctx.strokeStyle='#aeb9c4';ctx.lineWidth=1.5;ctx.strokeRect(left,y,right-left,rowH);
    txt(String(i+1),cols[0],y+49,23);
    txt(item?item.product.name:'',cols[1],y+49,23);
    txt(item?fmt(item.qty):'',cols[2],y+49,23);
@@ -1112,6 +1122,7 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
   rule(totalY+190,'#aab3bd',2);
   txt('توقيع محمد عمر محمد اسحق',right,totalY+250,27,ink,'bold');
   txt('شكراً لتعاملكم معنا',620,1660,25,muted,'normal','center');
+  await new Promise(resolve=>{if(logo.complete&&logo.naturalWidth)resolve();else{logo.onload=resolve;logo.onerror=resolve;setTimeout(resolve,500);}});
   const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
   if(!blob){alert('تعذر تجهيز صورة الفاتورة. حاول مرة أخرى.');return;}
   const file=new File([blob],'فاتورة-ابو-التيمان-فون.png',{type:'image/png'});
