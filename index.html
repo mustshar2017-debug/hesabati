@@ -205,6 +205,20 @@ footer{color:#aeb4c0}
  #home .quick-section .quick-link{min-height:44px}
 }
 </style>
+<style id="products-a4-sheet-style">
+#inventory .products-a4-sheet{box-sizing:border-box;width:100%;max-width:210mm;min-height:297mm;margin:14px auto;padding:18mm 14mm;background:#fff;color:#17212b;border:1px solid #d5dbe2;box-shadow:0 3px 14px rgba(0,0,0,.12);direction:rtl}
+#inventory .products-a4-heading{text-align:center;padding:0 0 18px;margin-bottom:22px;border-bottom:3px double #176fe0}
+#inventory .products-a4-heading h2{margin:0 0 7px;color:#176fe0;font-size:25px}
+#inventory .products-a4-heading p{margin:0;color:#657080;font-size:14px}
+#inventory .products-a4-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:15px}
+#inventory .products-a4-table th,#inventory .products-a4-table td{border:1px solid #8794a2;padding:12px 8px;text-align:center;overflow-wrap:anywhere}
+#inventory .products-a4-table th{background:#edf3fa;color:#17212b;font-weight:800}
+#inventory .products-a4-table th:first-child,#inventory .products-a4-table td:first-child{text-align:right;width:56%}
+#inventory .products-a4-table tbody tr:nth-child(even){background:#f8fafc}
+#inventory .products-a4-footer{margin-top:24px;padding-top:10px;border-top:1px solid #cbd3dc;text-align:center;color:#77818d;font-size:11px}
+@media(max-width:520px){#inventory .products-a4-sheet{min-height:297mm;padding:14mm 8mm;margin:10px auto}#inventory .products-a4-table{font-size:13px}#inventory .products-a4-table th,#inventory .products-a4-table td{padding:10px 5px}}
+@media print{@page{size:A4 portrait;margin:0}body *{visibility:hidden!important}#inventory .products-a4-sheet,#inventory .products-a4-sheet *{visibility:visible!important}#inventory .products-a4-sheet{position:absolute;left:0;top:0;width:210mm;min-height:297mm;max-width:none;margin:0;padding:18mm 14mm;border:0;box-shadow:none}}
+</style>
 <style id="inventory-separated-views">#inventory .inventory-section-menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:12px 0}#inventory .inventory-section-menu button{min-height:68px;padding:9px 6px;border:1px solid #3989fa;border-radius:12px;background:#087cf0;color:#fff;font:inherit;font-size:13px;font-weight:800;line-height:1.35}#inventory .inventory-section-menu button:nth-child(3n+2){background:#6042c9;border-color:#8269e6}#inventory .inventory-view{display:none}#inventory .inventory-view.active{display:block}#inventory .inventory-view-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:12px 0;padding:10px 12px;background:#202a39;border:1px solid #315f9d;border-radius:12px;color:#f4f5f7;font-size:14px}#inventory .inventory-view-head .secondary{font-size:11px;padding:7px 9px;white-space:nowrap}@media(min-width:700px){#inventory .inventory-section-menu{grid-template-columns:repeat(4,minmax(0,1fr))}}</style><style id="assets-bank-profit-hubs">
 #assetsHub,#bankProfitHub{min-height:65vh;padding:12px 0 30px}
 #assetsHub .asset-choice{cursor:pointer;text-align:right;color:inherit;font:inherit}
@@ -386,24 +400,13 @@ footer{color:#aeb4c0}
 <div class="inventory-page-head"><button type="button" class="secondary" id="inventoryBack">↩ رجوع للرئيسية</button><span>حساباتي / إدارة الطبلية</span></div>
 <h2 class="section-title">📦 إدارة الطبلية</h2>
 <div class="inventory-section-menu" id="inventorySectionMenu"><button type="button" data-inv-view="products">➕ الأصناف</button><button type="button" data-inv-view="inbound">📥 الوارد</button><button type="button" data-inv-view="outbound">📤 الصرف</button><button type="button" data-inv-view="invoice">🧾 فاتورة بيع</button><button type="button" data-inv-view="stocklist">📋 قائمة المخزون</button><button type="button" data-inv-view="slow">🐌 البضاعة الراكدة</button><button type="button" data-inv-view="accounts">👥 حسابات العملاء والموردين</button><button type="button" data-inv-view="history">📚 سجل الحركات والفواتير</button></div>
-<div class="inventory-view" data-inventory-view="products"><div class="inventory-view-head"><strong>➕ الأصناف ومؤشرات المخزون</strong><button type="button" class="secondary" data-inv-menu>رجوع للقوائم</button></div>
-<div class="inventory-grid">
-<div class="card inventory-kpi"><small>عدد الأصناف</small><strong id="invProductCount">0</strong></div>
-<div class="card inventory-kpi"><small>إجمالي الوحدات</small><strong id="invUnitCount">0</strong></div>
-<div class="card inventory-kpi"><small>قيمة المخزون بالتكلفة</small><strong id="invCostValue">0 SDG</strong></div>
-<div class="card inventory-kpi"><small>الأصناف منخفضة الكمية</small><strong id="invLowCount">0</strong></div>
+<div class="inventory-view" data-inventory-view="products">
+<div class="inventory-view-head"><strong>📦 الأصناف</strong><button type="button" class="secondary" data-inv-menu>رجوع للقوائم</button></div>
+<div class="products-a4-sheet" aria-label="قائمة الأصناف الثابتة">
+<div class="products-a4-heading"><h2>قائمة الأصناف</h2><p>الأصناف المتبقية بالمخزون</p></div>
+<table class="products-a4-table"><thead><tr><th>الصنف</th><th>الكمية</th><th>السعر</th></tr></thead><tbody id="productsQuickRows"><tr><td colspan="3" class="empty">لا توجد أصناف مسجلة بعد</td></tr></tbody></table>
+<div class="products-a4-footer">حساباتي · قائمة المخزون</div>
 </div>
-<div class="card" style="margin-top:12px"><h3>📦 الأصناف المتبقية</h3><div class="table-wrap"><table class="products-quick-table"><thead><tr><th>الصنف</th><th>الكمية المتبقية</th><th>السعر</th></tr></thead><tbody id="productsQuickRows"><tr><td colspan="3" class="empty">لا توجد أصناف مسجلة بعد</td></tr></tbody></table></div></div>
-<div class="card" style="margin-top:12px"><h3>➕ إضافة صنف للمخزون</h3>
-<form id="productForm" class="stock-form">
-<div><label>اسم الصنف</label><input name="name" required placeholder="مثال: بطارية سامسونج"></div>
-<div><label>التصنيف</label><select name="category"><option>هواتف</option><option>إكسسوارات</option><option>بطاريات</option><option>شواحن وكوابل</option><option>سماعات</option><option>أخرى</option></select></div>
-<div><label>الكمية الافتتاحية</label><input name="qty" type="number" min="0" step="1" value="0" required></div>
-<div><label>سعر الشراء للوحدة</label><input name="buy" type="number" min="0" step="0.01" required></div>
-<div><label>سعر البيع للوحدة</label><input name="sell" type="number" min="0" step="0.01" required></div>
-<div><label>حد التنبيه عند الكمية</label><input name="min" type="number" min="0" step="1" value="2"></div>
-<div class="full"><label>رقم تسلسلي / ملاحظات (اختياري)</label><input name="note"></div>
-<button class="primary full">حفظ الصنف</button></form></div>
 </div><div class="inventory-view" data-inventory-view="inboundEntry"><div class="inbound-modal-card"><div class="inbound-modal-head"><div><strong>📥 سند الوارد</strong><small>فاتورة إدخال بضاعة للمخزون</small></div><button type="button" class="secondary" id="closeInboundInvoice">إغلاق ✕</button></div><form id="stockInForm">
 <div class="inbound-table-wrap"><table class="inbound-lines"><thead><tr><th>اسم الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>السعر</th><th></th></tr></thead><tbody id="inboundInvoiceRows"><tr class="inbound-line"><td><select name="product[]" class="product-options" required></select></td><td><input name="qty[]" type="number" min="1" step="1" value="1" required></td><td><input name="cost[]" type="number" min="0" step="0.01" required></td><td class="inbound-line-total">0</td><td><button type="button" class="danger remove-inbound-line" aria-label="حذف الصف">×</button></td></tr></tbody></table></div>
 <div class="inbound-summary"><button type="button" class="secondary" id="addInboundLine">＋ إضافة صنف</button><strong>إجمالي الفاتورة: <span id="inboundGrandTotal">0</span> SDG</strong></div>
@@ -1020,7 +1023,7 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
   $('invUnitCount').textContent=fmt(db.products.reduce((a,p)=>a+p.qty,0));
   $('invCostValue').textContent=fmt(db.products.reduce((a,p)=>a+p.qty*p.buy,0))+' SDG';
   $('invLowCount').textContent=db.products.filter(p=>p.qty<=p.min).length;
-  $('productsQuickRows').innerHTML=db.products.map(p=>{const latestSale=db.invoices.filter(i=>i.product===p.id&&Number.isFinite(Number(i.price))).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')))[0];const price=latestSale?Number(latestSale.price):Number(p.sell||0);return '<tr><td>'+esc(p.name)+'</td><td class="'+(p.qty<=p.min?'negative':'')+'">'+fmt(p.qty)+'</td><td>'+fmt(price)+' SDG</td></tr>'}).join('')||'<tr><td colspan="3" class="empty">لا توجد أصناف مسجلة بعد</td></tr>';
+  $('productsQuickRows').innerHTML=db.products.map(p=>{const latestSale=[...db.invoices].reverse().find(i=>i.product===p.id&&i.price!==undefined&&i.price!==null&&i.price!=='');const price=latestSale?Number(latestSale.price):Number(p.sell||0);return '<tr><td>'+esc(p.name)+'</td><td>'+fmt(p.qty)+'</td><td>'+fmt(price)+'</td></tr>'}).join('')||'<tr><td colspan="3" class="empty">لا توجد أصناف مسجلة بعد</td></tr>';
   $('inventoryRows').innerHTML=db.products.map(p=>'<tr><td>'+esc(p.name)+'</td><td>'+esc(p.category)+'</td><td class="'+(p.qty<=p.min?'negative':'')+'">'+p.qty+'</td><td>'+fmt(p.buy)+'</td><td>'+fmt(p.sell)+'</td><td>'+fmt(p.qty*p.buy)+'</td><td><button type="button" data-edit-product="'+p.id+'">تعديل</button></td></tr>').join('')||'<tr><td colspan="7" class="empty">لا توجد أصناف مسجلة بعد</td></tr>';
   const sold=db.moves.filter(m=>m.type==='بيع');
   $('slowStockRows').innerHTML=db.products.filter(p=>p.qty>0&&!sold.some(m=>m.product===p.id&&Date.now()-new Date(m.date).getTime()<30*86400000)).map(p=>{const last=sold.filter(m=>m.product===p.id).sort((a,b)=>b.date.localeCompare(a.date))[0];return '<tr><td>'+esc(p.name)+'</td><td>'+p.qty+'</td><td>'+(last?esc(last.date):'لم تبع من قبل')+'</td></tr>'}).join('')||'<tr><td colspan="3" class="empty">لا توجد بضائع راكدة حالياً</td></tr>';
