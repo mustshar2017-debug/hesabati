@@ -720,13 +720,12 @@ if ('serviceWorker' in navigator) {
  function bank(){return state.banks[selected]}
  const bankakDashboard=$('bankProfitHub');
  function bankakProfitData(){
-  window.render?.();
   const read=id=>{const raw=$(id)?.textContent||'0';return Number(String(raw).replace(/[^0-9.-]/g,''))||0};
   const inventory=read('inventoryProfit'),credit=read('creditProfit'),recharge=read('rechargeProfit'),services=read('serviceProfit');
   const banks=state.banks.reduce((n,b)=>n+(Array.isArray(b.records)?b.records.reduce((a,r)=>a+Number(r.gain||0),0):0),0);
   return {inventory,credit,recharge,services,banks,total:inventory+credit+recharge+services+banks};
  }
- function openBankakDashboard(){const d=bankakProfitData();$('bankakTotalProfit').textContent=fmt(d.total)+' SDG';const rows=[['📦 أرباح الطبلية',d.inventory],['📈 أرباح الرصيد',d.credit],['📱 أرباح شحن الهواتف',d.recharge],['🤝 أرباح خدمات الزبائن',d.services],['🏦 أرباح التحويلات البنكية',d.banks]];$('bankakStatementRows').innerHTML=rows.map(x=>'<tr><td>'+x[0]+'</td><td>'+fmt(x[1])+'</td><td>'+((d.total>0?(x[1]/d.total*100):0).toFixed(2))+'%</td></tr>').join('')+'<tr class="total-row"><td>إجمالي الأرباح</td><td>'+fmt(d.total)+'</td><td>'+(d.total>0?'100.00':'0.00')+'%</td></tr>';showHomeHub('bankProfitHub');}
+ function openBankakDashboard(){const d=bankakProfitData();const total=$('bankakTotalProfit'),body=$('bankakStatementRows');if(!total||!body||!$('bankProfitHub')){console.error('Bankak dashboard elements missing');return;}total.textContent=fmt(d.total)+' SDG';const rows=[['📦 أرباح الطبلية',d.inventory],['📈 أرباح الرصيد',d.credit],['📱 أرباح شحن الهواتف',d.recharge],['🤝 أرباح خدمات الزبائن',d.services],['🏦 أرباح التحويلات البنكية',d.banks]];body.innerHTML=rows.map(x=>'<tr><td>'+x[0]+'</td><td>'+fmt(x[1])+'</td><td>'+((d.total>0?(x[1]/d.total*100):0).toFixed(2))+'%</td></tr>').join('')+'<tr class="total-row"><td>إجمالي الأرباح</td><td>'+fmt(d.total)+'</td><td>'+(d.total>0?'100.00':'0.00')+'%</td></tr>';if(typeof showHomeHub==='function')showHomeHub('bankProfitHub');else{document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$('bankProfitHub').classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}}
  window.openBankakDashboard=openBankakDashboard;
  $('bankakBack').addEventListener('click',()=>showHomeHub('home'));
  const bankakStatement=$('bankakStatement');$('bankakShowStatement').addEventListener('click',()=>{bankakStatement.classList.add('open');bankakStatement.setAttribute('aria-hidden','false');});$('bankakStatementClose').addEventListener('click',()=>{bankakStatement.classList.remove('open');bankakStatement.setAttribute('aria-hidden','true');});bankakStatement.addEventListener('click',e=>{if(e.target===bankakStatement){bankakStatement.classList.remove('open');bankakStatement.setAttribute('aria-hidden','true');}});
@@ -751,7 +750,7 @@ if ('serviceWorker' in navigator) {
  window.openBankTransfersPicker=openPicker;
  function closePicker(){picker.classList.remove('open');picker.setAttribute('aria-hidden','true');}
  
- $('bankPickerClose').addEventListener('click',closePicker);picker.addEventListener('click',e=>{if(e.target===picker)closePicker();const b=e.target.closest('[data-pick-bank]');if(!b)return;selected=Number(b.dataset.pickBank);closePicker();if(String(bank().name).trim()==='بنكك'){openBankakDashboard();return;}modal.classList.add('open');modal.setAttribute('aria-hidden','false');render();});
+ $('bankPickerClose').addEventListener('click',closePicker);picker.addEventListener('click',e=>{if(e.target===picker)closePicker();const b=e.target.closest('[data-pick-bank]');if(!b)return;selected=Number(b.dataset.pickBank);closePicker();modal.classList.add('open');modal.setAttribute('aria-hidden','false');render();});
  $('bankClose').addEventListener('click',()=>{modal.classList.remove('open');modal.setAttribute('aria-hidden','true');});
  modal.addEventListener('click',e=>{if(e.target===modal)$('bankClose').click();});
  $('bankTabs').addEventListener('click',e=>{const b=e.target.closest('[data-bank]');if(!b)return;selected=Number(b.dataset.bank);render();});
