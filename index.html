@@ -727,6 +727,7 @@ if ('serviceWorker' in navigator) {
   return {inventory,credit,recharge,services,banks,total:inventory+credit+recharge+services+banks};
  }
  function openBankakDashboard(){const d=bankakProfitData();$('bankakTotalProfit').textContent=fmt(d.total)+' SDG';const rows=[['📦 أرباح الطبلية',d.inventory],['📈 أرباح الرصيد',d.credit],['📱 أرباح شحن الهواتف',d.recharge],['🤝 أرباح خدمات الزبائن',d.services],['🏦 أرباح التحويلات البنكية',d.banks]];$('bankakStatementRows').innerHTML=rows.map(x=>'<tr><td>'+x[0]+'</td><td>'+fmt(x[1])+'</td><td>'+((d.total>0?(x[1]/d.total*100):0).toFixed(2))+'%</td></tr>').join('')+'<tr class="total-row"><td>إجمالي الأرباح</td><td>'+fmt(d.total)+'</td><td>'+(d.total>0?'100.00':'0.00')+'%</td></tr>';showHomeHub('bankProfitHub');}
+ window.openBankakDashboard=openBankakDashboard;
  $('bankakBack').addEventListener('click',()=>showHomeHub('home'));
  const bankakStatement=$('bankakStatement');$('bankakShowStatement').addEventListener('click',()=>{bankakStatement.classList.add('open');bankakStatement.setAttribute('aria-hidden','false');});$('bankakStatementClose').addEventListener('click',()=>{bankakStatement.classList.remove('open');bankakStatement.setAttribute('aria-hidden','true');});bankakStatement.addEventListener('click',e=>{if(e.target===bankakStatement){bankakStatement.classList.remove('open');bankakStatement.setAttribute('aria-hidden','true');}});
  $('bankakQrButton').addEventListener('click',()=>{$('bankakQrArea').hidden=!$('bankakQrArea').hidden;});
@@ -748,7 +749,7 @@ if ('serviceWorker' in navigator) {
  const brandStyles={'Bravo':['bravo','linear-gradient(145deg,#5550a8,#302d78)','bravo'],'CashiLite':['☺','#4d2b83','☺'],'فوري السودان':['≫','#520078','فوري'],'ريال Pay':['ريال Pay','#fff','Pay'],'بنكك':['بنكك','#e71920','بنكك'],'MyCashi':['☺','#ffb400','☺'],'Masrafk':['M','#ffca28','Masrafk'],'MASHREG':['مشرق','#fff','MASHREG'],'ساهل':['ساهل','#159bd0','Sahil']};
  function openPicker(){picker.classList.add('open');picker.setAttribute('aria-hidden','false');$('bankPickerGrid').innerHTML=state.banks.map((b,i)=>{const d=brandStyles[b.name]||[String(b.name).slice(0,5),'#e8f1ed',String(b.name).slice(0,5)];return '<button type="button" class="bank-pick" data-pick-bank="'+i+'"><span class="bank-pick-logo" style="background:'+d[1]+';color:'+(d[1]==='#fff'?'#245b83':'#fff')+'">'+escapeHtml(d[2])+'</span><span class="bank-pick-name">'+escapeHtml(b.name)+'</span></button>';}).join('');}
  function closePicker(){picker.classList.remove('open');picker.setAttribute('aria-hidden','true');}
- $('bankLaunch').addEventListener('click',openPicker);$('bankLaunchCategory')?.addEventListener('click',openPicker);
+ $('bankLaunchCategory')?.addEventListener('click',openPicker);
  $('bankPickerClose').addEventListener('click',closePicker);picker.addEventListener('click',e=>{if(e.target===picker)closePicker();const b=e.target.closest('[data-pick-bank]');if(!b)return;selected=Number(b.dataset.pickBank);closePicker();if(String(bank().name).trim()==='بنكك'){openBankakDashboard();return;}modal.classList.add('open');modal.setAttribute('aria-hidden','false');render();});
  $('bankClose').addEventListener('click',()=>{modal.classList.remove('open');modal.setAttribute('aria-hidden','true');});
  modal.addEventListener('click',e=>{if(e.target===modal)$('bankClose').click();});
@@ -1234,7 +1235,7 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
  function showAssetDetail(kind){const a=refreshAssets(),inv=readStore('hisabati_inventory_v1',{});$('assetCapitalDetails').hidden=false;if(kind==='balance'){$('assetCapitalTitle').textContent='رأس مال الرصيد';$('assetCapitalValue').textContent=fmt(a.balanceCapital)+' SDG';$('assetCapitalNote').textContent='إجمالي مبالغ الرصيد التي أُضيفت كرأس مال.';}else{$('assetCapitalTitle').textContent='رأس مال الطبلية';$('assetCapitalValue').textContent=fmt(a.inventoryCapital)+' SDG';$('assetCapitalNote').textContent='القيمة الحالية للمخزون المتبقي محسوبة بسعر الشراء.';}}
  function refreshBankProfit(){const core=readStore('hisabati_v1',{}),inv=readStore('hisabati_inventory_v1',{}),bank=readStore('hisabati_bank_transfer_v1',{banks:[]});const arr=k=>Array.isArray(core[k])?core[k]:[];const p=a=>a.reduce((n,x)=>n+Number(x.sale||0)-Number(x.cost||0),0);const inventory=(inv.invoices||[]).reduce((n,x)=>n+(Number(x.price||0)-Number(x.cost??0))*Number(x.qty||0),0);const credit=p(arr('transfers')),recharge=p(arr('recharges')),service=p(arr('services'));const bankProfit=(bank.banks||[]).reduce((n,b)=>n+(Array.isArray(b.records)?b.records.reduce((z,x)=>z+Number(x.gain||0),0):Number(b.profit||0)),0);const total=inventory+credit+recharge+service+bankProfit;const values={bankTotalProfit:total,bankInventoryProfit:inventory,bankCreditProfit:credit,bankRechargeProfit:recharge,bankServiceProfit:service,bankTransferProfit:bankProfit};Object.entries(values).forEach(([id,value])=>{const el=$(id);if(el)el.textContent=fmt(value);});return total;}
  $('assetsLaunch')?.addEventListener('click',()=>{showHomeHub('assetsHub');refreshAssets();$('assetCapitalDetails').hidden=true;});
- $('bankProfitLaunch')?.addEventListener('click',()=>openBankakDashboard());
+ $('bankProfitLaunch')?.addEventListener('click',()=>window.openBankakDashboard?.());
  $('balanceCapitalOpen')?.addEventListener('click',()=>showAssetDetail('balance'));
  $('inventoryCapitalOpen')?.addEventListener('click',()=>showAssetDetail('inventory'));
  $('refreshBankProfit')?.addEventListener('click',refreshBankProfit);
@@ -1245,8 +1246,8 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
  $('inventoryBack')?.addEventListener('click',()=>{document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$('home').classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab==='home'));window.scrollTo({top:0,behavior:'smooth'});});
  $('balanceHubBack')?.addEventListener('click',()=>{document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$('home').classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab==='home'));window.scrollTo({top:0,behavior:'smooth'});});
  $('phonesHubBack')?.addEventListener('click',()=>{document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$('home').classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab==='home'));window.scrollTo({top:0,behavior:'smooth'});});
- $('bankLaunchShortcut')?.addEventListener('click',()=>$('bankLaunch').click());
- $('bankLaunchCategory')?.addEventListener('click',()=>$('bankLaunch').click());
+ 
+ 
  ['stockInForm','stockOutForm','invoiceForm','customerPaymentForm','supplierPaymentForm'].forEach(id=>{const f=$(id);if(f)f.date.value=today()});
  addSaleRows();updateSaleInvoiceTotal();
  refresh();
