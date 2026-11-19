@@ -236,6 +236,26 @@ footer{color:#aeb4c0}
 #home .category-launcher button{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
 @media(max-width:380px){#home .category-launcher{gap:7px}#home .category-launcher button{min-height:78px;padding:8px 3px;font-size:11px}}
 </style>
+
+<style id="products-a4-mobile-fit">
+/* ضبط ورقة الأصناف داخل عرض الهاتف مع إبقاء قياس A4 للطباعة */
+#inventory.inventory-standalone{box-sizing:border-box;max-width:100%;min-width:0}
+#inventory .inventory-view[data-inventory-view="products"]{box-sizing:border-box;width:100%;max-width:100%;min-width:0;overflow-x:hidden}
+#inventory .products-a4-sheet{box-sizing:border-box;width:100%;max-width:100%;min-width:0;margin:10px auto;overflow:hidden}
+#inventory .products-a4-table{box-sizing:border-box;width:100%;max-width:100%;min-width:0;table-layout:fixed;border-collapse:collapse}
+#inventory .products-a4-table th,#inventory .products-a4-table td{box-sizing:border-box;min-width:0;white-space:normal;overflow-wrap:anywhere}
+@media(max-width:700px){
+ #inventory.inventory-standalone{width:100%;max-width:100vw;padding-left:8px;padding-right:8px;overflow-x:hidden}
+ #inventory .inventory-view[data-inventory-view="products"]{width:100%;max-width:100%;padding:0}
+ #inventory .products-a4-sheet{width:100%;max-width:100%;min-height:297mm;margin:10px 0;padding:14mm 6mm}
+ #inventory .products-a4-table{font-size:12px}
+ #inventory .products-a4-table th,#inventory .products-a4-table td{padding:9px 3px}
+}
+@media print{
+ #inventory .products-a4-sheet{width:210mm;max-width:none;min-height:297mm;margin:0;padding:18mm 14mm;overflow:visible}
+ #inventory .products-a4-table{width:100%;max-width:none}
+}
+</style>
 </head>
 <body>
 <header><div class="wrap header-row"><div><div class="brand-line"><h1>حساباتي</h1><button id="themeToggle" class="theme-toggle" type="button" aria-label="تفعيل الوضع الليلي" title="تفعيل الوضع الليلي">☀️</button></div><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><div class="header-actions"><button class="menu-trigger" id="menuTrigger" type="button" aria-label="القائمة" aria-expanded="false">⋮</button><button class="secondary" id="lockNow" type="button">🔒 قفل الآن</button><div class="app-menu" id="appMenu" hidden><button type="button" data-menu-action="backup">💾 حفظ نسخة احتياطية</button><button type="button" data-menu-action="labels">✏️ تعديل أسماء الأيقونات</button><button type="button" data-menu-action="generalReport">📊 تقرير عام مفصل</button><button type="button" data-menu-action="monthlyReport">📅 التقرير الشهري</button><button type="button" data-menu-action="settings">⚙️ إعدادات التطبيق</button><button type="button" data-menu-action="about">ℹ️ نبذة عنّا</button><button type="button" data-menu-action="share">📤 مشاركة التطبيق</button><button type="button" data-menu-action="rate">⭐ تقييم التطبيق</button><button type="button" data-menu-action="feedback">✉️ إرسال ملاحظات أو الإبلاغ عن مشكلة</button></div></div></div></header>
