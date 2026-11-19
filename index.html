@@ -748,8 +748,9 @@ if ('serviceWorker' in navigator) {
  function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
  const brandStyles={'Bravo':['bravo','linear-gradient(145deg,#5550a8,#302d78)','bravo'],'CashiLite':['☺','#4d2b83','☺'],'فوري السودان':['≫','#520078','فوري'],'ريال Pay':['ريال Pay','#fff','Pay'],'بنكك':['بنكك','#e71920','بنكك'],'MyCashi':['☺','#ffb400','☺'],'Masrafk':['M','#ffca28','Masrafk'],'MASHREG':['مشرق','#fff','MASHREG'],'ساهل':['ساهل','#159bd0','Sahil']};
  function openPicker(){picker.classList.add('open');picker.setAttribute('aria-hidden','false');$('bankPickerGrid').innerHTML=state.banks.map((b,i)=>{const d=brandStyles[b.name]||[String(b.name).slice(0,5),'#e8f1ed',String(b.name).slice(0,5)];return '<button type="button" class="bank-pick" data-pick-bank="'+i+'"><span class="bank-pick-logo" style="background:'+d[1]+';color:'+(d[1]==='#fff'?'#245b83':'#fff')+'">'+escapeHtml(d[2])+'</span><span class="bank-pick-name">'+escapeHtml(b.name)+'</span></button>';}).join('');}
+ window.openBankTransfersPicker=openPicker;
  function closePicker(){picker.classList.remove('open');picker.setAttribute('aria-hidden','true');}
- $('bankLaunchCategory')?.addEventListener('click',openPicker);
+ 
  $('bankPickerClose').addEventListener('click',closePicker);picker.addEventListener('click',e=>{if(e.target===picker)closePicker();const b=e.target.closest('[data-pick-bank]');if(!b)return;selected=Number(b.dataset.pickBank);closePicker();if(String(bank().name).trim()==='بنكك'){openBankakDashboard();return;}modal.classList.add('open');modal.setAttribute('aria-hidden','false');render();});
  $('bankClose').addEventListener('click',()=>{modal.classList.remove('open');modal.setAttribute('aria-hidden','true');});
  modal.addEventListener('click',e=>{if(e.target===modal)$('bankClose').click();});
@@ -1235,7 +1236,7 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
  function showAssetDetail(kind){const a=refreshAssets(),inv=readStore('hisabati_inventory_v1',{});$('assetCapitalDetails').hidden=false;if(kind==='balance'){$('assetCapitalTitle').textContent='رأس مال الرصيد';$('assetCapitalValue').textContent=fmt(a.balanceCapital)+' SDG';$('assetCapitalNote').textContent='إجمالي مبالغ الرصيد التي أُضيفت كرأس مال.';}else{$('assetCapitalTitle').textContent='رأس مال الطبلية';$('assetCapitalValue').textContent=fmt(a.inventoryCapital)+' SDG';$('assetCapitalNote').textContent='القيمة الحالية للمخزون المتبقي محسوبة بسعر الشراء.';}}
  function refreshBankProfit(){const core=readStore('hisabati_v1',{}),inv=readStore('hisabati_inventory_v1',{}),bank=readStore('hisabati_bank_transfer_v1',{banks:[]});const arr=k=>Array.isArray(core[k])?core[k]:[];const p=a=>a.reduce((n,x)=>n+Number(x.sale||0)-Number(x.cost||0),0);const inventory=(inv.invoices||[]).reduce((n,x)=>n+(Number(x.price||0)-Number(x.cost??0))*Number(x.qty||0),0);const credit=p(arr('transfers')),recharge=p(arr('recharges')),service=p(arr('services'));const bankProfit=(bank.banks||[]).reduce((n,b)=>n+(Array.isArray(b.records)?b.records.reduce((z,x)=>z+Number(x.gain||0),0):Number(b.profit||0)),0);const total=inventory+credit+recharge+service+bankProfit;const values={bankTotalProfit:total,bankInventoryProfit:inventory,bankCreditProfit:credit,bankRechargeProfit:recharge,bankServiceProfit:service,bankTransferProfit:bankProfit};Object.entries(values).forEach(([id,value])=>{const el=$(id);if(el)el.textContent=fmt(value);});return total;}
  $('assetsLaunch')?.addEventListener('click',()=>{showHomeHub('assetsHub');refreshAssets();$('assetCapitalDetails').hidden=true;});
- $('bankProfitLaunch')?.addEventListener('click',()=>window.openBankakDashboard?.());
+ 
  $('balanceCapitalOpen')?.addEventListener('click',()=>showAssetDetail('balance'));
  $('inventoryCapitalOpen')?.addEventListener('click',()=>showAssetDetail('inventory'));
  $('refreshBankProfit')?.addEventListener('click',refreshBankProfit);
@@ -1588,6 +1589,8 @@ body.dark .supplier-balance-line{background:#203a33;color:#b9f1df}body.dark .sup
  document.addEventListener('click',e=>{const b=e.target.closest('#inventory [data-inv-view="inbound"]');if(b)render();},true);
 })();
 </script>
+<script id="bank-home-icons-delegated-fix">(function(){document.addEventListener('click',function(e){const bankak=e.target.closest('#bankProfitLaunch');const transfers=e.target.closest('#bankLaunchCategory');if(!bankak&&!transfers)return;e.preventDefault();e.stopImmediatePropagation();if(bankak){if(typeof window.openBankakDashboard==='function')window.openBankakDashboard();else console.error('Bankak dashboard handler unavailable');}if(transfers){if(typeof window.openBankTransfersPicker==='function')window.openBankTransfersPicker();else console.error('Bank transfers picker unavailable');}},true);})();</script>
+
 <style id="abu-altaiman-sales-invoice">
 .sale-invoice-form{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .sale-invoice-meta{min-width:0}.sale-lines-wrap{grid-column:1/-1;overflow:auto;border:1px solid #42658f;border-radius:10px}
