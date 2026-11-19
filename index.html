@@ -1109,6 +1109,7 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
  $('bankLaunchShortcut')?.addEventListener('click',()=>$('bankLaunch').click());
  $('bankLaunchCategory')?.addEventListener('click',()=>$('bankLaunch').click());
  ['stockInForm','stockOutForm','invoiceForm','customerPaymentForm','supplierPaymentForm'].forEach(id=>{const f=$(id);if(f)f.date.value=today()});
+ addSaleRows();updateSaleInvoiceTotal();
  refresh();
  // ربط ربح مبيعات الطبلية ببطاقة الأرباح في الصفحة الرئيسية
  function inventoryProfit(){return db.invoices.reduce((a,x)=>a+(Number(x.price||0)-Number(x.cost??db.products.find(p=>p.id===x.product)?.buy??0))*Number(x.qty||0),0)}
