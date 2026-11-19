@@ -1067,11 +1067,61 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
   w.document.open();w.document.write('<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>فاتورة أبو التيمان فون</title><style>@page{size:A4 portrait;margin:14mm}*{box-sizing:border-box}body{font-family:Tahoma,Arial,sans-serif;color:#111;margin:0;font-size:13px}.paper{width:100%;min-height:270mm}.head{display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #176fe0;padding-bottom:13px}.brand{font-size:27px;font-weight:900;color:#176fe0}.meta{text-align:left;line-height:1.9}.title{text-align:center;font-size:22px;font-weight:800;margin:18px 0}.details{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}.details div{border:1px solid #ccc;padding:10px}.items{width:100%;border-collapse:collapse;margin-top:12px}.items th,.items td{border:1px solid #888;padding:9px 7px;text-align:center;height:34px}.items th{background:#edf2f8}.total{margin:18px 0 0 auto;width:48%;border:2px solid #176fe0;padding:12px;font-size:17px;font-weight:bold;display:flex;justify-content:space-between}.foot{display:flex;justify-content:flex-end;margin-top:65px}.sign{width:42%;border-top:1px solid #555;padding-top:10px;text-align:center;font-weight:bold}.note{margin-top:24px;text-align:center;color:#555}</style></head><body><main class="paper"><header class="head"><div><div class="brand">أبو التيمان فون</div><div>لبيع الهواتف ومستلزماتها</div></div><div class="meta"><div>التاريخ: '+safe(d.date)+'</div><div>رقم الفاتورة: '+safe(invoiceNo)+'</div></div></header><div class="title">فاتورة بيع</div><section class="details"><div><b>اسم العميل:</b> '+safe(d.customer||'عميل نقدي')+'</div><div><b>طريقة الدفع:</b> '+safe(d.payment)+'</div></section><table class="items"><thead><tr><th>م</th><th>الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody>'+rows+'</tbody></table><div class="total"><span>الإجمالي الكلي</span><span>'+fmt(total)+' SDG</span></div><div class="foot"><div class="sign">توقيع محمد عمر محمد اسحق</div></div><div class="note">شكراً لتعاملكم معنا</div></main><script>window.onload=function(){setTimeout(function(){window.print()},350)};<\/script></body></html>');w.document.close();
  }
  let lastSaleInvoice=null;
- function sendSaleWhatsApp(d,items,invoiceNo){
+ async function sendSaleWhatsApp(d,items,invoiceNo){
   const total=items.reduce((a,x)=>a+Number(x.value||0),0);
-  const lines=items.map((x,i)=>(i+1)+'. '+x.product.name+' | الكمية: '+fmt(x.qty)+' | سعر الوحدة: '+fmt(x.price)+' SDG | الإجمالي: '+fmt(x.value)+' SDG');
-  const msg=['أبو التيمان فون','فاتورة بيع','رقم الفاتورة: '+invoiceNo,'التاريخ: '+d.date,'العميل: '+(d.customer||'عميل نقدي'),'طريقة الدفع: '+d.payment,'',...lines,'','الإجمالي الكلي: '+fmt(total)+' SDG','توقيع: محمد عمر محمد اسحق'].join('\n');
-  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+  const canvas=document.createElement('canvas');canvas.width=1240;canvas.height=1754;
+  const ctx=canvas.getContext('2d');
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);
+  const ink='#17212b',blue='#176fe0',muted='#657080',line='#cbd3dc',right=1120,left=120;
+  function txt(value,x,y,size=30,color=ink,weight='normal',align='right'){
+   ctx.font=weight+' '+size+'px Tahoma, Arial, sans-serif';ctx.fillStyle=color;ctx.textAlign=align;ctx.direction='rtl';ctx.fillText(String(value??''),x,y);
+  }
+  function rule(y,color=line,width=2){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(right,y);ctx.stroke();}
+  ctx.fillStyle=blue;ctx.fillRect(left,100,right-left,9);
+  txt('أبو التيمان فون',right,190,58,blue,'bold');
+  txt('لبيع الهواتف ومستلزماتها',right,245,27,muted);
+  txt('فاتورة بيع',620,345,43,ink,'bold','center');
+  txt('رقم الفاتورة: '+invoiceNo,left,190,25,ink,'bold','left');
+  txt('التاريخ: '+(d.date||'—'),left,240,24,muted,'normal','left');
+  rule(390,blue,4);
+  txt('اسم العميل: '+(d.customer||'عميل نقدي'),right,465,28);
+  txt('طريقة الدفع: '+(d.payment||'—'),left,465,28,ink,'normal','left');
+  const top=535,rowH=78;
+  ctx.fillStyle='#edf3fa';ctx.fillRect(left,top,right-left,rowH);
+  const cols=[right-35,850,620,390,left+25];
+  txt('م',cols[0],top+50,25,ink,'bold');
+  txt('الصنف',cols[1],top+50,25,ink,'bold');
+  txt('الكمية',cols[2],top+50,25,ink,'bold');
+  txt('سعر الوحدة',cols[3],top+50,25,ink,'bold');
+  txt('الإجمالي',cols[4],top+50,25,ink,'bold','left');
+  let y=top+rowH;
+  for(let i=0;i<10;i++){
+   const item=items[i];
+   ctx.fillStyle=i%2?'#fafbfd':'#fff';ctx.fillRect(left,y,right-left,rowH);
+   txt(String(i+1),cols[0],y+49,23);
+   txt(item?item.product.name:'',cols[1],y+49,23);
+   txt(item?fmt(item.qty):'',cols[2],y+49,23);
+   txt(item?fmt(item.price)+' SDG':'',cols[3],y+49,22);
+   txt(item?fmt(item.value)+' SDG':'',cols[4],y+49,22,ink,'normal','left');
+   rule(y+rowH,'#dce2e8',1);y+=rowH;
+  }
+  const totalY=y+65;
+  ctx.strokeStyle=blue;ctx.lineWidth=3;ctx.strokeRect(570,totalY,550,100);
+  txt('الإجمالي الكلي',right-35,totalY+62,30,ink,'bold');
+  txt(fmt(total)+' SDG',600,totalY+62,30,blue,'bold','left');
+  rule(totalY+190,'#aab3bd',2);
+  txt('توقيع محمد عمر محمد اسحق',right,totalY+250,27,ink,'bold');
+  txt('شكراً لتعاملكم معنا',620,1660,25,muted,'normal','center');
+  const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
+  if(!blob){alert('تعذر تجهيز صورة الفاتورة. حاول مرة أخرى.');return;}
+  const file=new File([blob],'فاتورة-ابو-التيمان-فون.png',{type:'image/png'});
+  if(navigator.canShare&&navigator.canShare({files:[file]})&&navigator.share){
+   try{await navigator.share({files:[file],title:'فاتورة أبو التيمان فون',text:'فاتورة بيع من أبو التيمان فون'});}
+   catch(e){if(e&&e.name!=='AbortError')alert('تعذر فتح المشاركة. يمكنك حفظ صورة الفاتورة وإرفاقها في واتساب.');}
+  }else{
+   const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);
+   alert('تم تجهيز صورة الفاتورة وحفظها. افتح واتساب وأرفق الصورة من التنزيلات لإرسالها.');
+  }
  }
  $('whatsappSaleInvoice').addEventListener('click',()=>{
   if(lastSaleInvoice){sendSaleWhatsApp(lastSaleInvoice.d,lastSaleInvoice.items,lastSaleInvoice.invoiceNo);return}
