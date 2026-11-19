@@ -404,7 +404,7 @@ footer{color:#aeb4c0}
 <div class="inventory-view-head"><strong>📦 الأصناف</strong><button type="button" class="secondary" data-inv-menu>رجوع للقوائم</button></div>
 <div class="products-a4-sheet" aria-label="قائمة الأصناف الثابتة">
 <div class="products-a4-heading"><h2>قائمة الأصناف</h2><p>الأصناف المتبقية بالمخزون</p></div>
-<table class="products-a4-table"><thead><tr><th>الصنف</th><th>الكمية</th><th>السعر</th></tr></thead><tbody id="productsQuickRows"><tr><td colspan="3" class="empty">لا توجد أصناف مسجلة بعد</td></tr></tbody></table>
+<table class="products-a4-table"><colgroup><col style="width:56%"><col style="width:22%"><col style="width:22%"></colgroup><thead><tr><th>الصنف</th><th>الكمية</th><th>السعر</th></tr></thead><tbody id="productsQuickRows"><tr><td colspan="3" class="empty">لا توجد أصناف مسجلة بعد</td></tr></tbody></table>
 <div class="products-a4-footer">حساباتي · قائمة المخزون</div>
 </div>
 </div><div class="inventory-view" data-inventory-view="inboundEntry"><div class="inbound-modal-card"><div class="inbound-modal-head"><div><strong>📥 سند الوارد</strong><small>فاتورة إدخال بضاعة للمخزون</small></div><button type="button" class="secondary" id="closeInboundInvoice">إغلاق ✕</button></div><form id="stockInForm">
@@ -1676,3 +1676,14 @@ body.dark #home .bank-launch{background:linear-gradient(135deg,#087f55,#10a875);
 @media(min-width:700px){#nav button{min-height:48px;font-size:14px}}
 </style>
 <!-- Top navigation updated: six requested destinations -->
+
+<style id="products-a4-column-alignment-fix">
+#inventory .products-a4-sheet .products-a4-table{display:table!important;width:100%!important;table-layout:fixed!important;border-collapse:collapse!important;border-spacing:0!important;direction:rtl!important}
+#inventory .products-a4-sheet .products-a4-table col:nth-child(1){width:56%!important}
+#inventory .products-a4-sheet .products-a4-table col:nth-child(2),#inventory .products-a4-sheet .products-a4-table col:nth-child(3){width:22%!important}
+#inventory .products-a4-sheet .products-a4-table thead{display:table-header-group!important}
+#inventory .products-a4-sheet .products-a4-table tbody{display:table-row-group!important}
+#inventory .products-a4-sheet .products-a4-table tr{display:table-row!important;height:auto!important}
+#inventory .products-a4-sheet .products-a4-table th,#inventory .products-a4-sheet .products-a4-table td{display:table-cell!important;box-sizing:border-box!important;vertical-align:middle!important;text-align:center!important;border:1px solid #8794a2!important;padding:11px 8px!important;line-height:1.45!important;white-space:normal!important;overflow-wrap:anywhere!important}
+#inventory .products-a4-sheet .products-a4-table th:first-child,#inventory .products-a4-sheet .products-a4-table td:first-child{text-align:right!important}
+</style>
