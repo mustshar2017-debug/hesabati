@@ -430,7 +430,7 @@ footer{color:#aeb4c0}
 <div class="sale-invoice-meta"><label>التاريخ</label><input name="date" type="date" required></div>
 <div class="sale-lines-wrap"><table class="sale-lines"><thead><tr><th>م</th><th>الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody id="saleInvoiceRows"></tbody></table></div>
 <div class="sale-invoice-total">إجمالي الفاتورة <strong id="saleInvoiceTotal">0 SDG</strong></div>
-<div class="sale-invoice-actions"><button type="button" class="secondary" id="printSaleInvoice">🖨️ طباعة A4</button><button class="primary" type="submit">حفظ الفاتورة</button></div></form></div>
+<div class="sale-invoice-actions"><button type="button" class="secondary" id="printSaleInvoice">🖨️ طباعة A4</button><button type="button" class="secondary" id="whatsappSaleInvoice">🟢 إرسال واتساب</button><button class="primary" type="submit">حفظ الفاتورة</button></div></form></div>
 </div><div class="inventory-view" data-inventory-view="stocklist"><div class="inventory-view-head"><strong>📋 قائمة المخزون</strong><button type="button" class="secondary" data-inv-menu>رجوع للقوائم</button></div><div class="card" style="margin-top:12px"><h3>📋 قائمة المخزون</h3><div class="table-wrap"><table><thead><tr><th>الصنف</th><th>التصنيف</th><th>المتوفر</th><th>شراء</th><th>بيع</th><th>القيمة</th><th>إجراء</th></tr></thead><tbody id="inventoryRows"></tbody></table></div></div>
 </div><div class="inventory-view" data-inventory-view="slow"><div class="inventory-view-head"><strong>🐌 البضاعة الراكدة</strong><button type="button" class="secondary" data-inv-menu>رجوع للقوائم</button></div><div class="card" id="slowStock" style="margin-top:12px"><h3>🐌 البضاعة الراكدة</h3><p class="muted">الأصناف التي لم تسجل عليها حركة بيع خلال 30 يوماً أو أكثر.</p><div class="table-wrap"><table><thead><tr><th>الصنف</th><th>الكمية</th><th>آخر بيع</th></tr></thead><tbody id="slowStockRows"></tbody></table></div></div>
 </div><div class="inventory-view" data-inventory-view="accounts"><div class="inventory-view-head"><strong>👥 حسابات العملاء والموردين</strong><button type="button" class="secondary" data-inv-menu>رجوع للقوائم</button></div><div class="card" style="margin-top:12px"><h3>👥 حسابات العملاء والموردين</h3>
@@ -1066,6 +1066,19 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
   const rows=Array.from({length:10},(_,i)=>{const x=items[i];return '<tr><td>'+(i+1)+'</td><td>'+(x?safe(x.product.name):'')+'</td><td>'+(x?fmt(x.qty):'')+'</td><td>'+(x?fmt(x.price)+' SDG':'')+'</td><td>'+(x?fmt(x.value)+' SDG':'')+'</td></tr>'}).join('');
   w.document.open();w.document.write('<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>فاتورة أبو التيمان فون</title><style>@page{size:A4 portrait;margin:14mm}*{box-sizing:border-box}body{font-family:Tahoma,Arial,sans-serif;color:#111;margin:0;font-size:13px}.paper{width:100%;min-height:270mm}.head{display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #176fe0;padding-bottom:13px}.brand{font-size:27px;font-weight:900;color:#176fe0}.meta{text-align:left;line-height:1.9}.title{text-align:center;font-size:22px;font-weight:800;margin:18px 0}.details{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}.details div{border:1px solid #ccc;padding:10px}.items{width:100%;border-collapse:collapse;margin-top:12px}.items th,.items td{border:1px solid #888;padding:9px 7px;text-align:center;height:34px}.items th{background:#edf2f8}.total{margin:18px 0 0 auto;width:48%;border:2px solid #176fe0;padding:12px;font-size:17px;font-weight:bold;display:flex;justify-content:space-between}.foot{display:flex;justify-content:flex-end;margin-top:65px}.sign{width:42%;border-top:1px solid #555;padding-top:10px;text-align:center;font-weight:bold}.note{margin-top:24px;text-align:center;color:#555}</style></head><body><main class="paper"><header class="head"><div><div class="brand">أبو التيمان فون</div><div>لبيع الهواتف ومستلزماتها</div></div><div class="meta"><div>التاريخ: '+safe(d.date)+'</div><div>رقم الفاتورة: '+safe(invoiceNo)+'</div></div></header><div class="title">فاتورة بيع</div><section class="details"><div><b>اسم العميل:</b> '+safe(d.customer||'عميل نقدي')+'</div><div><b>طريقة الدفع:</b> '+safe(d.payment)+'</div></section><table class="items"><thead><tr><th>م</th><th>الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody>'+rows+'</tbody></table><div class="total"><span>الإجمالي الكلي</span><span>'+fmt(total)+' SDG</span></div><div class="foot"><div class="sign">توقيع محمد عمر محمد اسحق</div></div><div class="note">شكراً لتعاملكم معنا</div></main><script>window.onload=function(){setTimeout(function(){window.print()},350)};<\/script></body></html>');w.document.close();
  }
+ let lastSaleInvoice=null;
+ function sendSaleWhatsApp(d,items,invoiceNo){
+  const total=items.reduce((a,x)=>a+Number(x.value||0),0);
+  const lines=items.map((x,i)=>(i+1)+'. '+x.product.name+' | الكمية: '+fmt(x.qty)+' | سعر الوحدة: '+fmt(x.price)+' SDG | الإجمالي: '+fmt(x.value)+' SDG');
+  const msg=['أبو التيمان فون','فاتورة بيع','رقم الفاتورة: '+invoiceNo,'التاريخ: '+d.date,'العميل: '+(d.customer||'عميل نقدي'),'طريقة الدفع: '+d.payment,'',...lines,'','الإجمالي الكلي: '+fmt(total)+' SDG','توقيع: محمد عمر محمد اسحق'].join('\n');
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+ }
+ $('whatsappSaleInvoice').addEventListener('click',()=>{
+  if(lastSaleInvoice){sendSaleWhatsApp(lastSaleInvoice.d,lastSaleInvoice.items,lastSaleInvoice.invoiceNo);return}
+  const f=$('invoiceForm');if(!f.reportValidity())return;
+  const items=getSaleDraft();if(!validateSaleItems(items))return;
+  sendSaleWhatsApp({customer:f.elements.customer.value,payment:f.elements.payment.value,date:f.elements.date.value},items,'مسودة');
+ });
  function validateSaleItems(items){
   if(!items.length){alert('أدخل صنفاً واحداً على الأقل مع الكمية والسعر.');return false}
   for(const x of items){if(x.qty>x.product.qty){alert('الكمية المطلوبة من ('+x.product.name+') أكبر من المخزون المتاح.');return false}}
@@ -1075,6 +1088,7 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
   e.preventDefault();const f=e.currentTarget,d={customer:f.elements.customer.value,payment:f.elements.payment.value,date:f.elements.date.value},items=getSaleDraft();
   if(!f.reportValidity()||!validateSaleItems(items))return;
   const invoiceNo='ATF-'+Date.now();
+  lastSaleInvoice={d:{...d},items:items.map(x=>({...x,product:{name:x.product.name}})),invoiceNo};
   items.forEach(x=>{x.product.qty-=x.qty;db.invoices.push({product:x.product.id,qty:x.qty,price:x.price,cost:Number(x.product.buy),value:x.value,customer:d.customer,payment:d.payment,date:d.date,invoiceNo});db.moves.push({type:'بيع',product:x.product.id,qty:x.qty,value:x.value,date:d.date,note:'فاتورة '+invoiceNo+' · '+d.payment+' '+d.customer})});
   save();refresh();printSaleDocument(d,items,invoiceNo);
   f.reset();f.elements.date.value=today();addSaleRows();updateSaleInvoiceTotal();alert('تم حفظ الفاتورة وخصم الكميات من المخزون.');
