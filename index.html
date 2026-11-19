@@ -327,11 +327,11 @@ footer{color:#aeb4c0}
 <div id="recharge" class="phone-subview">
 <div class="inventory-page-head"><button class="secondary" type="button" data-phone-menu>↩ رجوع لقسم الهواتف</button><span>تسجيل عملية شحن جديدة</span></div><h2 class="section-title">شحن الهواتف</h2><div class="card" id="rechargeCard"><form id="rechargeForm">
 <div><label>قيمة الشحن المحصلة (SDG)</label><input name="sale" type="number" min="0.01" step="0.01" required></div>
-<div><label>تكلفة الشحن عليك (SDG)</label><input name="cost" type="number" min="0" step="0.01" required></div>
-<div><label>رقم الهاتف</label><input name="phone" inputmode="tel" placeholder="اختياري"></div>
+<div><label>رقم الهاتف لصاحب الهاتف</label><input name="phone" type="tel" inputmode="tel" placeholder="أدخل رقم الهاتف" required></div>
+<div><label>ربح الهواتف (إدخال يدوي) SDG</label><input name="manualProfit" type="number" min="0" step="0.01" placeholder="أدخل الربح" required></div>
 <div><label>التاريخ</label><input name="date" type="date" required></div>
 <div><label>ملاحظات</label><input name="note" placeholder="اختياري"></div>
-<button class="primary full">حفظ عملية الشحن</button></form></div>
+<div class="actions full" style="justify-content:flex-end"><button class="secondary" type="button" id="rechargeModalClose">إلغاء</button><button class="primary" type="submit">تنفيذ الشحن وحفظ العملية</button></div></form></div>
 <div id="rechargeHistoryBlock"><div class="inventory-page-head"><button class="secondary" type="button" data-phone-menu>↩ رجوع لقسم الهواتف</button><span>سجل عمليات الشحن</span></div><h2 class="section-title">سجل الشحن</h2><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>الشبكة</th><th>الهاتف</th><th>المحصّل</th><th>التكلفة</th><th>الربح</th><th></th></tr></thead><tbody id="rechargeRows"></tbody></table></div></div>
 </div>
 </section>
@@ -467,8 +467,8 @@ function edit(type,id){
   v=ask('التاريخ بصيغة YYYY-MM-DD',x.date);if(v===null)return;x.date=v;
   v=ask('ملاحظات',x.note);if(v===null)return;x.note=v;
  }else if(type==='recharges'){
-  v=num('قيمة الشحن المحصلة (SDG)',x.sale,0.01);if(v===null)return;x.sale=v;
-  v=num('تكلفة الشحن (SDG)',x.cost,0);if(v===null)return;x.cost=v;
+  v=num('قيمة الشحن (SDG)',x.sale,0.01);if(v===null)return;x.sale=v;
+  v=num('ربح الهواتف (SDG)',Number(x.sale)-Number(x.cost),0);if(v===null||v>x.sale){alert('الربح لا يمكن أن يتجاوز قيمة الشحن.');return;}x.cost=Number((x.sale-v).toFixed(2));
   v=ask('رقم الهاتف',x.phone);if(v===null)return;x.phone=v;
   v=ask('الشبكة (زين / سوداني / MTN / أخرى)',x.network);if(v===null)return;x.network=v;
   v=ask('التاريخ بصيغة YYYY-MM-DD',x.date);if(v===null)return;x.date=v;
@@ -514,7 +514,7 @@ function returnToHome(){const home=document.querySelector('#nav button[data-tab=
 function bind(id,fn){$(id).addEventListener('submit',e=>{e.preventDefault();let x=data(e.target);if(fn(x)===false)return;e.target.reset();e.target.querySelectorAll('input[type=date]').forEach(i=>i.value=today());save();returnToHome();})}
 bind('stockForm',x=>db.stock.push({...x,amount:+x.amount,id:crypto.randomUUID()}));
 bind('transferForm',x=>{const rate=Number(x.commissionRate);if(!Number.isFinite(rate)||rate<0||rate>100){alert('نسبة العمولة يجب أن تكون بين 0 و100.');return false;}const commission=Number((Number(x.sale)*rate/100).toFixed(2));const net=Number((Number(x.sale)-commission).toFixed(2));if(net>sum(db.stock,z=>z.amount)-sum(db.transfers,z=>z.cost)-sum(db.recharges,z=>z.cost)-sum(db.supplierTransfers,z=>z.amount)){alert('تنبيه: صافي الرصيد المطلوب أكبر من الرصيد المتاح المسجل.');return false}db.transfers.push({...x,sale:Number(x.sale),cost:net,commissionRate:rate,commission,network:x.network||'زين',id:crypto.randomUUID()});return true});
-bind('rechargeForm',x=>db.recharges.push({...x,sale:+x.sale,cost:+x.cost,id:crypto.randomUUID()}));
+bind('rechargeForm',x=>{const sale=Number(x.sale),manualProfit=Number(x.manualProfit);if(!Number.isFinite(sale)||sale<=0||!Number.isFinite(manualProfit)||manualProfit<0||manualProfit>sale){alert('تحقق من قيمة الشحن والربح؛ الربح يجب ألا يتجاوز قيمة الشحن.');return false;}const cost=Number((sale-manualProfit).toFixed(2));const available=sum(db.stock,z=>z.amount)-sum(db.transfers,z=>z.cost)-sum(db.recharges,z=>z.cost)-sum(db.services,z=>z.cost)-sum(db.supplierTransfers,z=>z.amount);if(cost>available){alert('الرصيد المتاح لا يكفي لتنفيذ الشحن.');return false;}db.recharges.push({...x,sale,cost,manualProfit,phone:String(x.phone||'').trim(),id:crypto.randomUUID()});return true;});
 bind('serviceForm',x=>{const sale=Number(x.sale),cost=Number(x.cost),available=sum(db.stock,z=>z.amount)-sum(db.transfers,z=>z.cost)-sum(db.recharges,z=>z.cost)-sum(db.services,z=>z.cost)-sum(db.supplierTransfers,z=>z.amount);if(!Number.isFinite(sale)||sale<=0||!Number.isFinite(cost)||cost<0){alert('أدخل المبلغ المدفوع والتكلفة بصورة صحيحة.');return false;}if(cost>available){alert('الرصيد المتاح لا يكفي لتنفيذ هذه الخدمة.');return false;}db.services.push({...x,sale,cost,network:x.network||'زين',id:crypto.randomUUID()});return true;});
 $('serviceForm').addEventListener('input',()=>{const f=$('serviceForm'),sale=Number(f.sale.value)||0,cost=Number(f.cost.value)||0;$('serviceHint').textContent='الخصم من رصيدك: '+fmt(cost)+' SDG · ربح الخدمة: '+fmt(sale-cost)+' SDG';});
 $('serviceNetwork').addEventListener('change',()=>{$('serviceFormTitle').textContent='تسجيل '+($('serviceNetwork').value==='سوداني'?'خدمة سوداني':'خدمة زين');});
@@ -1056,7 +1056,7 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
  $('refreshBankProfit')?.addEventListener('click',refreshBankProfit);
  document.querySelectorAll('[data-hub-back]').forEach(b=>b.addEventListener('click',()=>showHomeHub('home')));
 
- document.querySelectorAll('#home [data-tab-go]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.tabGo;if(id==='inventory'||id==='balanceHub'){document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});return}const tab=document.querySelector('#nav [data-tab="'+id+'"]');if(tab)tab.click();const target=b.dataset.focus;if(target)setTimeout(()=>$(target)?.scrollIntoView({behavior:'smooth',block:'start'}),100)}));
+ document.querySelectorAll('#home [data-tab-go]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.tabGo;if(id==='phonesHub'){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$('phonesHub').classList.add('active','quick-recharge');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab==='phonesHub'));$('rechargeForm').reset();$('rechargeForm').date.value=today();setTimeout(()=>$('rechargeForm').sale.focus(),100);window.scrollTo({top:0,behavior:'smooth'});return;}if(id==='inventory'||id==='balanceHub'){document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});return}const tab=document.querySelector('#nav [data-tab="'+id+'"]');if(tab)tab.click();const target=b.dataset.focus;if(target)setTimeout(()=>$(target)?.scrollIntoView({behavior:'smooth',block:'start'}),100)}));
  window.addEventListener('supplier-transfers-updated',refresh);
  $('inventoryBack')?.addEventListener('click',()=>{document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$('home').classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab==='home'));window.scrollTo({top:0,behavior:'smooth'});});
  $('balanceHubBack')?.addEventListener('click',()=>{document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$('home').classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab==='home'));window.scrollTo({top:0,behavior:'smooth'});});
@@ -1301,6 +1301,28 @@ body.dark .supplier-balance-line{background:#203a33;color:#b9f1df}body.dark .sup
 })();
 </script>
 
+<style id="phones-horizontal-recharge-modal">
+#phonesHub.quick-recharge #recharge{position:fixed!important;inset:0!important;z-index:25000!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:12px!important;background:#050b16df!important;overflow:auto!important}
+#phonesHub.quick-recharge .phone-hub-menu,#phonesHub.quick-recharge>.inventory-page-head,#phonesHub.quick-recharge>h2.section-title{display:none!important}
+#phonesHub.quick-recharge #recharge>.inventory-page-head,#phonesHub.quick-recharge #recharge>h2.section-title,#phonesHub.quick-recharge #rechargeHistoryBlock{display:none!important}
+#phonesHub.quick-recharge #rechargeCard{display:block!important;width:min(100%,760px)!important;max-height:94vh!important;overflow:auto!important;margin:auto!important;padding:clamp(14px,3vw,26px)!important;background:#1b1c20!important;border:1px solid #3979c8!important;border-radius:18px!important;box-shadow:0 20px 70px #0009!important}
+#phonesHub.quick-recharge #rechargeCard:before{content:"📱 شحن الهواتف";display:block;color:#fff;font-size:21px;font-weight:900;margin:0 0 18px}
+#phonesHub.quick-recharge #rechargeForm{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:13px!important}
+#phonesHub.quick-recharge #rechargeForm>div{min-width:0}
+#phonesHub.quick-recharge #rechargeForm .full{grid-column:1/-1}
+#phonesHub.quick-recharge #rechargeForm input{min-width:0}
+#phonesHub.quick-recharge #rechargeForm .actions{display:flex;gap:9px;flex-wrap:wrap}
+#phonesHub.quick-recharge #rechargeForm button{min-height:46px;flex:1}
+@media(max-width:520px){#phonesHub.quick-recharge #rechargeCard{padding:13px!important;border-radius:14px!important}#phonesHub.quick-recharge #rechargeForm{grid-template-columns:1fr!important;gap:9px!important}#phonesHub.quick-recharge #rechargeForm .full{grid-column:auto}#phonesHub.quick-recharge #rechargeForm .actions{display:grid;grid-template-columns:1fr 1fr}}
+</style>
+<script id="phones-modal-close-and-save">(function(){
+ const panel=document.getElementById('phonesHub'),close=document.getElementById('rechargeModalClose'),form=document.getElementById('rechargeForm');
+ function closeModal(){panel?.classList.remove('quick-recharge');}
+ close?.addEventListener('click',closeModal);
+ panel?.addEventListener('click',e=>{if(e.target===panel)closeModal();});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&panel?.classList.contains('quick-recharge'))closeModal();});
+ form?.addEventListener('submit',()=>{setTimeout(()=>{if(!form.querySelector(':invalid'))closeModal();},0);});
+})();</script>
 </body></html>
 
 <style id="home-icons-layout-update">
