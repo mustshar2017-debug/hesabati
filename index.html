@@ -297,7 +297,7 @@ footer{color:#aeb4c0}
 <div class="bankak-top"><div class="bankak-brand">بنكك<small>bankak</small></div><h2 class="bankak-header-title">تفاصيل الحساب</h2><button type="button" class="bankak-menu-mark" id="bankakMenuButton" aria-label="القائمة" title="القائمة">☰</button></div>
 <div class="bankak-content">
 <div class="bankak-account-card"><div class="bankak-account-main"><div><div class="bankak-account-label">إجمالي الأرباح من كل الأقسام</div><div class="bankak-account-title">حساب الأرباح · الجنيه السوداني</div></div><div style="text-align:left"><div class="bankak-account-icon">▣</div><div class="bankak-profit-value" id="bankakTotalProfit">0 SDG</div></div></div>
-<div class="bankak-account-actions"><button type="button" id="bankakShowStatement"><span class="bankak-action-icon">▤</span><span>عرض كشف الحساب</span></button><button type="button" id="bankakQrButton"><span class="bankak-action-icon">▦</span><span>رمز QR<br><small>تصوير / إضافة لاحقاً</small></span></button></div></div>
+<div class="bankak-account-actions"><button type="button" id="bankakShowStatement"><span class="bankak-action-icon">▤</span><span>عرض كشف الحساب</span></button><button type="button" id="bankakQrButton"><span class="bankak-action-icon">▦</span><span>رمز QR<br><small>تصوير بالكاميرا</small></span></button></div></div>
 <div class="bankak-qr-upload" id="bankakQrArea" hidden><button type="button" id="bankakQrUploadButton">📷 تصوير أو اختيار صورة رمز QR</button><input type="file" id="bankakQrInput" accept="image/*" capture="environment" hidden><img id="bankakQrImage" alt="رمز QR" hidden></div>
 <div class="bankak-statement" id="bankakStatement" aria-hidden="true"><div class="bankak-statement-card bankak-statement-image-card"><div class="bankak-statement-head"><h3>كشف حساب الأرباح</h3><button type="button" class="bankak-statement-close" id="bankakStatementClose">إغلاق ✕</button></div><img id="bankakStatementImage" alt="كشف حساب الأرباح - صورة ثابتة" /></div></div></div></section>
 
@@ -1592,7 +1592,7 @@ body.dark .supplier-balance-line{background:#203a33;color:#b9f1df}body.dark .sup
    if(img&&modal){img.src=canvas.toDataURL('image/png');modal.classList.add('open');modal.setAttribute('aria-hidden','false');}
    return;
   }
-  if(qr){e.preventDefault();e.stopImmediatePropagation();e.stopPropagation();const area=document.getElementById('bankakQrArea');if(area)area.hidden=!area.hidden;return;}
+  if(qr){e.preventDefault();e.stopImmediatePropagation();e.stopPropagation();const input=document.getElementById('bankakQrInput');if(input)input.click();return;}
   if(upload){e.preventDefault();e.stopImmediatePropagation();e.stopPropagation();document.getElementById('bankakQrInput')?.click();}
  },true);
 })();
