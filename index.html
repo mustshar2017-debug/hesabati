@@ -393,6 +393,7 @@ footer{color:#aeb4c0}
 <div class="card inventory-kpi"><small>قيمة المخزون بالتكلفة</small><strong id="invCostValue">0 SDG</strong></div>
 <div class="card inventory-kpi"><small>الأصناف منخفضة الكمية</small><strong id="invLowCount">0</strong></div>
 </div>
+<div class="card" style="margin-top:12px"><h3>📦 الأصناف المتبقية</h3><div class="table-wrap"><table class="products-quick-table"><thead><tr><th>الصنف</th><th>الكمية المتبقية</th><th>السعر</th></tr></thead><tbody id="productsQuickRows"><tr><td colspan="3" class="empty">لا توجد أصناف مسجلة بعد</td></tr></tbody></table></div></div>
 <div class="card" style="margin-top:12px"><h3>➕ إضافة صنف للمخزون</h3>
 <form id="productForm" class="stock-form">
 <div><label>اسم الصنف</label><input name="name" required placeholder="مثال: بطارية سامسونج"></div>
@@ -1019,6 +1020,7 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
   $('invUnitCount').textContent=fmt(db.products.reduce((a,p)=>a+p.qty,0));
   $('invCostValue').textContent=fmt(db.products.reduce((a,p)=>a+p.qty*p.buy,0))+' SDG';
   $('invLowCount').textContent=db.products.filter(p=>p.qty<=p.min).length;
+  $('productsQuickRows').innerHTML=db.products.map(p=>{const latestSale=db.invoices.filter(i=>i.product===p.id&&Number.isFinite(Number(i.price))).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')))[0];const price=latestSale?Number(latestSale.price):Number(p.sell||0);return '<tr><td>'+esc(p.name)+'</td><td class="'+(p.qty<=p.min?'negative':'')+'">'+fmt(p.qty)+'</td><td>'+fmt(price)+' SDG</td></tr>'}).join('')||'<tr><td colspan="3" class="empty">لا توجد أصناف مسجلة بعد</td></tr>';
   $('inventoryRows').innerHTML=db.products.map(p=>'<tr><td>'+esc(p.name)+'</td><td>'+esc(p.category)+'</td><td class="'+(p.qty<=p.min?'negative':'')+'">'+p.qty+'</td><td>'+fmt(p.buy)+'</td><td>'+fmt(p.sell)+'</td><td>'+fmt(p.qty*p.buy)+'</td><td><button type="button" data-edit-product="'+p.id+'">تعديل</button></td></tr>').join('')||'<tr><td colspan="7" class="empty">لا توجد أصناف مسجلة بعد</td></tr>';
   const sold=db.moves.filter(m=>m.type==='بيع');
   $('slowStockRows').innerHTML=db.products.filter(p=>p.qty>0&&!sold.some(m=>m.product===p.id&&Date.now()-new Date(m.date).getTime()<30*86400000)).map(p=>{const last=sold.filter(m=>m.product===p.id).sort((a,b)=>b.date.localeCompare(a.date))[0];return '<tr><td>'+esc(p.name)+'</td><td>'+p.qty+'</td><td>'+(last?esc(last.date):'لم تبع من قبل')+'</td></tr>'}).join('')||'<tr><td colspan="3" class="empty">لا توجد بضائع راكدة حالياً</td></tr>';
