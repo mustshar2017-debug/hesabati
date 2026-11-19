@@ -1566,6 +1566,35 @@ body.dark .supplier-balance-line{background:#203a33;color:#b9f1df}body.dark .sup
  });
 })();
 </script>
+<script id="bankak-actions-reliability-fix">
+(function(){
+ document.addEventListener('click',function(e){
+  const statement=e.target.closest('#bankakShowStatement');
+  const qr=e.target.closest('#bankakQrButton');
+  const upload=e.target.closest('#bankakQrUploadButton');
+  if(statement){
+   e.preventDefault();
+   const read=id=>{const el=document.getElementById(id);return Number(String(el?.textContent||'0').replace(/[^0-9.-]/g,''))||0};
+   const inventory=read('inventoryProfit'),credit=read('creditProfit'),recharge=read('rechargeProfit'),services=read('serviceProfit');
+   const total=read('bankakTotalProfit');
+   const banks=total-(inventory+credit+recharge+services);
+   const rows=[['قسم شحن الهواتف',recharge],['إدارة الطبلية',inventory],['إدارة الرصيد',credit],['خدمات الزبائن',services],['التحويلات البنكية',banks]];
+   const canvas=document.createElement('canvas');canvas.width=1240;canvas.height=1754;
+   const c=canvas.getContext('2d');c.fillStyle='#fff';c.fillRect(0,0,1240,1754);c.strokeStyle='#176b57';c.lineWidth=8;c.strokeRect(48,48,1144,1658);c.strokeStyle='#c6a45b';c.lineWidth=3;c.strokeRect(66,66,1108,1622);
+   function txt(t,x,y,size,color,align){c.font='bold '+size+'px Tahoma,Arial';c.fillStyle=color;c.textAlign=align||'right';c.direction='rtl';c.fillText(String(t),x,y);}
+   txt('حساباتي',620,205,66,'#087b65','center');txt('كشف حساب الأرباح',620,290,43,'#1c2925','center');txt('تفاصيل الأرباح حسب الأقسام',620,345,25,'#6b7771','center');
+   c.fillStyle='#eaf3ef';c.fillRect(125,430,990,100);txt('القسم',1075,495,30,'#173b35');txt('الربح (SDG)',165,495,30,'#173b35','left');
+   let y=640;rows.forEach((r,i)=>{if(i%2===0){c.fillStyle='#fafcfb';c.fillRect(125,y-65,990,112);}txt(r[0],1075,y,29,'#273a33');txt(r[1].toLocaleString('en-US'),165,y,29,'#273a33','left');c.strokeStyle='#d5ded9';c.lineWidth=2;c.beginPath();c.moveTo(125,y+48);c.lineTo(1115,y+48);c.stroke();y+=145;});
+   c.fillStyle='#eaf3ef';c.fillRect(125,y-65,990,125);txt('إجمالي الأرباح',1075,y+8,31,'#075d49');txt(total.toLocaleString('en-US')+' SDG',165,y+8,31,'#075d49','left');
+   const img=document.getElementById('bankakStatementImage'),modal=document.getElementById('bankakStatement');
+   if(img&&modal){img.src=canvas.toDataURL('image/png');modal.classList.add('open');modal.setAttribute('aria-hidden','false');}
+   return;
+  }
+  if(qr){e.preventDefault();const area=document.getElementById('bankakQrArea');if(area)area.hidden=!area.hidden;return;}
+  if(upload){e.preventDefault();document.getElementById('bankakQrInput')?.click();}
+ },true);
+})();
+</script>
 </body>
 <style id="inbound-purchases-report">
 #inventory .inventory-view.inbound-report-modal-open{position:fixed;inset:0;z-index:15002;display:flex!important;align-items:center;justify-content:center;padding:12px;background:#050b16df;overflow:auto}
