@@ -1330,8 +1330,8 @@ body.dark .supplier-balance-line{background:#203a33;color:#b9f1df}body.dark .sup
   const field=document.getElementById('rechargePhone');
   const phone=(field?.value||'').trim();
   if(!phone){alert('أدخل رقم الهاتف أولاً لإجراء الاتصال.');field?.focus();return;}
-  const normalized=phone.replace(/[\\s()-]/g,'');
-  if(!/^\\+?[0-9]+$/.test(normalized)){alert('يرجى إدخال رقم هاتف صحيح.');field?.focus();return;}
+  const normalized=phone.replace(/[\s()-]/g,'');
+  if(!/^\+?[0-9]+$/.test(normalized)){alert('يرجى إدخال رقم هاتف صحيح.');field?.focus();return;}
   window.location.href='tel:'+normalized;
  });
 })();
