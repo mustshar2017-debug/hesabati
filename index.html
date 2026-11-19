@@ -1072,7 +1072,7 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
   const canvas=document.createElement('canvas');canvas.width=1240;canvas.height=1754;
   const ctx=canvas.getContext('2d');
   ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);
-  const ink='#17212b',blue='#176fe0',muted='#657080',line='#b9c5cf',right=1120,left=120;
+  const ink='#17212b',blue='#176fe0',muted='#657080',line='#b9c5cf',right=1120,left=120,center=620;
   function txt(value,x,y,size=30,color=ink,weight='normal',align='right'){
    ctx.font=weight+' '+size+'px Tahoma, Arial, sans-serif';ctx.fillStyle=color;ctx.textAlign=align;ctx.direction='rtl';ctx.fillText(String(value??''),x,y);
   }
@@ -1083,20 +1083,25 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
   function corner(x,y,sx,sy){ctx.strokeStyle='#c9a34a';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(x,y+sy*52);ctx.lineTo(x,y);ctx.lineTo(x+sx*52,y);ctx.stroke();}
   corner(83,83,1,1);corner(1157,83,-1,1);corner(83,1670,1,-1);corner(1157,1670,-1,-1);
   ctx.fillStyle=blue;ctx.fillRect(left,100,right-left,9);
-  txt('أبو التيمان فون',right,190,58,blue,'bold');
-  txt('لبيع الهواتف ومستلزماتها',right,245,27,muted);
-  txt('فاتورة بيع مبدئية',620,345,43,ink,'bold','center');
-  txt('رقم الفاتورة: '+invoiceNo,left,190,25,ink,'bold','left');
-  txt('التاريخ: '+(d.date||'—'),left,240,24,muted,'normal','left');
-  rule(390,blue,4);
-  txt('اسم العميل: '+(d.customer||'عميل نقدي'),right,465,28);
-  txt('طريقة الدفع: '+(d.payment||'—'),left,465,28,ink,'normal','left');
-  // شعار التطبيق كعلامة مائية شفافة في منتصف الورقة
+  // رأس الفاتورة: اسم المحل في الوسط وبيانات الاتصال والفاتورة على الجانبين
+  txt('أبو التيمان فون',center,175,58,blue,'bold','center');
+  txt('لبيع الهواتف ومستلزماتها',center,220,27,muted,'normal','center');
+  txt('هاتف ٠٩١٠٠١٨٢٩٣',left,285,25,ink,'bold','left');
+  txt('هاتف ١١٣٧٨٠١٣٥',left,330,25,ink,'bold','left');
+  txt('رقم الفاتورة: '+invoiceNo,right,285,25,ink,'bold');
+  txt('التاريخ: '+(d.date||'—'),right,330,25,muted);
+  rule(365,blue,4);
+  txt('فاتورة بيع مبدئية',center,430,40,ink,'bold','center');
+  txt('اسم العميل: '+(d.customer||'عميل نقدي'),right,490,27);
+  txt('طريقة الدفع: '+(d.payment||'—'),left,490,25,ink,'normal','left');
+  // تحميل الشعار ورسمه كختم مائي قبل النصوص والجدول حتى لا يحجب التفاصيل
   const logoSvg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="g" x2="1" y2="1"><stop stop-color="#0b806c"/><stop offset="1" stop-color="#123b3b"/></linearGradient><linearGradient id="gold" x2="0" y2="1"><stop stop-color="#ffe7a0"/><stop offset="1" stop-color="#c58b24"/></linearGradient></defs><rect width="512" height="512" rx="104" fill="url(#g)"/><path d="M92 190a38 38 0 0 1 38-38h258a32 32 0 0 1 32 32v180a38 38 0 0 1-38 38H130a38 38 0 0 1-38-38z" fill="#f4f8f4"/><path d="M92 208h292a36 36 0 0 1 36 36v36H92z" fill="#d6e7df"/><path d="M310 249h148v100H310a42 42 0 0 1 0-100z" fill="#087f70"/><circle cx="345" cy="299" r="11" fill="url(#gold)"/><circle cx="178" cy="174" r="42" fill="url(#gold)" stroke="#fff0bd" stroke-width="8"/><path d="M165 174h26m-13-13v26" stroke="#7a5414" stroke-width="8" stroke-linecap="round"/><rect x="205" y="305" width="112" height="93" rx="20" fill="url(#gold)"/><path d="M229 305v-25a32 32 0 0 1 64 0v25" fill="none" stroke="#ffe7a0" stroke-width="16" stroke-linecap="round"/><circle cx="261" cy="349" r="8" fill="#65470e"/><path d="M261 356v17" stroke="#65470e" stroke-width="8" stroke-linecap="round"/><text x="256" y="468" text-anchor="middle" font-size="37" font-weight="700" fill="#fff" font-family="Tahoma,Arial,sans-serif">حساباتي</text></svg>';
   const logo=new Image();
-  logo.onload=()=>{ctx.save();ctx.globalAlpha=.075;ctx.drawImage(logo,365,760,510,510);ctx.restore();};
+  const logoReady=new Promise(resolve=>{logo.onload=resolve;logo.onerror=resolve;setTimeout(resolve,700);});
   logo.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(logoSvg);
-  const top=535,rowH=78;
+  await logoReady;
+  if(logo.complete&&logo.naturalWidth){ctx.save();ctx.globalAlpha=.075;ctx.drawImage(logo,365,700,510,510);ctx.restore();}
+  const top=545,rowH=78;
   ctx.fillStyle='#edf3fa';ctx.fillRect(left,top,right-left,rowH);
   const cols=[right-35,850,620,390,left+25];
   txt('م',cols[0],top+50,25,ink,'bold');
@@ -1105,24 +1110,28 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
   txt('سعر الوحدة',cols[3],top+50,25,ink,'bold');
   txt('الإجمالي',cols[4],top+50,25,ink,'bold','left');
   let y=top+rowH;
-  for(let i=0;i<10;i++){
-   const item=items[i];
-   ctx.fillStyle=i%2?'#fafbfd':'#fff';ctx.fillRect(left,y,right-left,rowH);ctx.strokeStyle='#aeb9c4';ctx.lineWidth=1.5;ctx.strokeRect(left,y,right-left,rowH);
+  // عرض الأسطر المضافة فقط وإغلاق الجدول مباشرة بعد آخر صنف
+  items.forEach((item,i)=>{
+   ctx.fillStyle=i%2?'#fafbfd':'#fff';ctx.fillRect(left,y,right-left,rowH);
    txt(String(i+1),cols[0],y+49,23);
-   txt(item?item.product.name:'',cols[1],y+49,23);
-   txt(item?fmt(item.qty):'',cols[2],y+49,23);
-   txt(item?fmt(item.price)+' SDG':'',cols[3],y+49,22);
-   txt(item?fmt(item.value)+' SDG':'',cols[4],y+49,22,ink,'normal','left');
-   rule(y+rowH,'#dce2e8',1);y+=rowH;
-  }
-  const totalY=y+65;
-  ctx.strokeStyle=blue;ctx.lineWidth=3;ctx.strokeRect(570,totalY,550,100);
-  txt('الإجمالي الكلي',right-35,totalY+62,30,ink,'bold');
-  txt(fmt(total)+' SDG',600,totalY+62,30,blue,'bold','left');
-  rule(totalY+190,'#aab3bd',2);
-  txt('توقيع محمد عمر محمد اسحق',right,totalY+250,27,ink,'bold');
-  txt('شكراً لتعاملكم معنا',620,1660,25,muted,'normal','center');
-  await new Promise(resolve=>{if(logo.complete&&logo.naturalWidth)resolve();else{logo.onload=resolve;logo.onerror=resolve;setTimeout(resolve,500);}});
+   txt(item.product.name,cols[1],y+49,23);
+   txt(fmt(item.qty),cols[2],y+49,23);
+   txt(fmt(item.price)+' SDG',cols[3],y+49,22);
+   txt(fmt(item.value)+' SDG',cols[4],y+49,22,ink,'normal','left');
+   y+=rowH;
+   rule(y,'#aeb9c4',1.5);
+  });
+  // حدود الأعمدة وإطار الجدول حتى آخر سطر فعلي
+  ctx.strokeStyle='#aeb9c4';ctx.lineWidth=1.5;ctx.strokeRect(left,top,right-left,y-top);
+  [right-75,880,700,475].forEach(x=>{ctx.beginPath();ctx.moveTo(x,top);ctx.lineTo(x,y);ctx.stroke();});
+  const footerY=y+55;
+  // الإجمالي والتوقيع على مستوى واحد بمحاذاة واضحة
+  ctx.strokeStyle=blue;ctx.lineWidth=3;ctx.strokeRect(650,footerY,470,88);
+  txt('الإجمالي الكلي',right-30,footerY+55,28,ink,'bold');
+  txt(fmt(total)+' SDG',675,footerY+55,27,blue,'bold','left');
+  txt('التوقيع',520,footerY+35,24,ink,'bold','center');
+  ctx.strokeStyle='#7d8790';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(120,footerY+65);ctx.lineTo(520,footerY+65);ctx.stroke();
+  txt('شكراً لتعاونكم معنا',center,footerY+145,27,muted,'bold','center');
   const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
   if(!blob){alert('تعذر تجهيز صورة الفاتورة. حاول مرة أخرى.');return;}
   const file=new File([blob],'فاتورة-ابو-التيمان-فون.png',{type:'image/png'});
