@@ -727,18 +727,13 @@ if ('serviceWorker' in navigator) {
  function bank(){return state.banks[selected]}
  const bankakDashboard=$('bankakDashboard');
  function bankakProfitData(){
-  let main={},inventory={};try{main=JSON.parse(localStorage.getItem('hisabati_v1')||'{}')}catch(e){}try{inventory=JSON.parse(localStorage.getItem('hisabati_inventory_v1')||'{}')}catch(e){}
-  const sum=(a,fn)=>Array.isArray(a)?a.reduce((n,x)=>n+fn(x),0):0;
-  const credit=sum(main.transfers,x=>Number(x.sale||0)-Number(x.cost||0));
-  const recharge=sum(main.recharges,x=>Number(x.sale||0)-Number(x.cost||0));
-  const services=sum(main.services,x=>Number(x.sale||0)-Number(x.cost||0));
-  const inventoryProfit=sum(inventory.invoices,x=>(Number(x.price||0)-Number(x.cost??inventory.products?.find(p=>p.id===x.product)?.buy??0))*Number(x.qty||0));
-  const bankProfit=sum(state.banks,b=>Array.isArray(b.records)&&b.records.length?sum(b.records,x=>Number(x.gain||0)):Number(b.profit||0));
-  const expenses=sum(main.expenses,x=>Number(x.amount||0));
-  const gross=credit+recharge+services+inventoryProfit+bankProfit;
-  return {credit,recharge,services,inventory:inventoryProfit,banks:bankProfit,expenses,gross,net:gross-expenses};
+  window.render?.();
+  const read=id=>{const raw=$(id)?.textContent||'0';return Number(String(raw).replace(/[^0-9.-]/g,''))||0};
+  const inventory=read('inventoryProfit'),credit=read('creditProfit'),recharge=read('rechargeProfit'),services=read('serviceProfit');
+  const banks=state.banks.reduce((n,b)=>n+(Array.isArray(b.records)?b.records.reduce((a,r)=>a+Number(r.gain||0),0):0),0);
+  return {inventory,credit,recharge,services,banks,total:inventory+credit+recharge+services+banks};
  }
- function openBankakDashboard(){const d=bankakProfitData();$('bankakTotalProfit').textContent=fmt(d.gross)+' SDG';$('bankakStatementRows').innerHTML=[['أرباح التحويلات البنكية',d.banks],['أرباح تحويل الرصيد',d.credit],['أرباح شحن الهواتف',d.recharge],['أرباح الخدمات',d.services],['أرباح مبيعات الطبلية',d.inventory],['إجمالي الأرباح',d.gross,'total-row'],['المصروفات',d.expenses,'expense-row'],['صافي الأرباح بعد المصروفات',d.net,'total-row']].map(x=>'<tr class="'+(x[2]||'')+'"><td>'+x[0]+'</td><td>'+fmt(x[1])+' SDG</td></tr>').join('');bankakDashboard.classList.add('open');bankakDashboard.setAttribute('aria-hidden','false');}
+ function openBankakDashboard(){const d=bankakProfitData();$('bankakTotalProfit').textContent=fmt(d.total)+' SDG';$('bankakStatementRows').innerHTML=[['📦 أرباح الطبلية',d.inventory],['📈 أرباح الرصيد',d.credit],['📱 أرباح شحن الهواتف',d.recharge],['🤝 أرباح خدمات الزبائن',d.services],['🏦 أرباح التحويلات البنكية',d.banks],['إجمالي الأرباح من كل الأقسام',d.total,'total-row']].map(x=>'<tr class="'+(x[2]||'')+'"><td>'+x[0]+'</td><td>'+fmt(x[1])+' SDG</td></tr>').join('');bankakDashboard.classList.add('open');bankakDashboard.setAttribute('aria-hidden','false');}
  $('bankakBack').addEventListener('click',()=>{bankakDashboard.classList.remove('open');bankakDashboard.setAttribute('aria-hidden','true');openPicker();});
  $('bankakShowStatement').addEventListener('click',()=>{$('bankakStatement').hidden=!$('bankakStatement').hidden;});
  $('bankakQrButton').addEventListener('click',()=>{$('bankakQrArea').hidden=!$('bankakQrArea').hidden;});
