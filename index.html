@@ -1573,7 +1573,7 @@ body.dark .supplier-balance-line{background:#203a33;color:#b9f1df}body.dark .sup
   const qr=e.target.closest('#bankakQrButton');
   const upload=e.target.closest('#bankakQrUploadButton');
   if(statement){
-   e.preventDefault();
+   e.preventDefault();e.stopImmediatePropagation();e.stopPropagation();
    const read=id=>{const el=document.getElementById(id);return Number(String(el?.textContent||'0').replace(/[^0-9.-]/g,''))||0};
    const inventory=read('inventoryProfit'),credit=read('creditProfit'),recharge=read('rechargeProfit'),services=read('serviceProfit');
    const total=read('bankakTotalProfit');
@@ -1590,8 +1590,8 @@ body.dark .supplier-balance-line{background:#203a33;color:#b9f1df}body.dark .sup
    if(img&&modal){img.src=canvas.toDataURL('image/png');modal.classList.add('open');modal.setAttribute('aria-hidden','false');}
    return;
   }
-  if(qr){e.preventDefault();const area=document.getElementById('bankakQrArea');if(area)area.hidden=!area.hidden;return;}
-  if(upload){e.preventDefault();document.getElementById('bankakQrInput')?.click();}
+  if(qr){e.preventDefault();e.stopImmediatePropagation();e.stopPropagation();const area=document.getElementById('bankakQrArea');if(area)area.hidden=!area.hidden;return;}
+  if(upload){e.preventDefault();e.stopImmediatePropagation();e.stopPropagation();document.getElementById('bankakQrInput')?.click();}
  },true);
 })();
 </script>
