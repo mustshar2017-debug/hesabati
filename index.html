@@ -1641,14 +1641,14 @@ async function startFallback(){
  scannerMode='html5';
  const supported=window.Html5QrcodeSupportedFormats||{};
  const selected=['EAN_13','EAN_8','UPC_A','UPC_E','CODE_128','CODE_39','ITF','CODABAR','QR_CODE'].map(k=>supported[k]).filter(v=>v!==undefined);
- // اطلب الكاميرا الخلفية صراحةً. لا تختَر آخر كاميرا عشوائياً لأن ترتيب الأجهزة يختلف بين الهواتف.
- let camera={facingMode:{exact:'environment'}};
+ // استخدم صيغة facingMode التي تدعمها مكتبة html5-qrcode مباشرةً؛ تمرير كائن قيود متداخل هنا قد يجعلها تتجاهل اختيار الخلفية.
+ let camera={facingMode:'environment'};
  try{
   const cameras=await HtmlScannerCameras();
   const rear=cameras.find(c=>/back|rear|environment|خلفية|الخلفية/i.test(c.label||''));
   if(rear&&rear.id)camera=rear.id;
  }catch(e){}
- await htmlScanner.start(camera,{fps:20,disableFlip:true,videoConstraints:{width:{ideal:1920},height:{ideal:1080}},...(selected.length?{formatsToSupport:selected}:{})},decoded=>{
+ await htmlScanner.start(camera,{fps:20,disableFlip:true,videoConstraints:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}},...(selected.length?{formatsToSupport:selected}:{})},decoded=>{
   if(scannerMode==='html5'){scannerMode='done';showCode(String(decoded||'').trim());}
  },()=>{});
  message('حرّك الباركود داخل الإطار الأخضر، واجعل الخطوط واضحة وكاملة دون قصّ الأطراف.');
@@ -1663,7 +1663,7 @@ async function startNative(){
  detector=new BarcodeDetector({formats:formats});
  message('يرجى السماح باستخدام الكاميرا...');
  let cameraTimedOut=false;
- const cameraPromise=navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'environment'}}}).then(cameraStream=>{if(cameraTimedOut){cameraStream.getTracks().forEach(track=>track.stop());throw new Error('انتهت مهلة تشغيل الكاميرا.');}return cameraStream;});
+ const cameraPromise=navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{exact:'environment'},width:{ideal:1920},height:{ideal:1080}}}).catch(()=>navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'environment'}}})).then(cameraStream=>{if(cameraTimedOut){cameraStream.getTracks().forEach(track=>track.stop());throw new Error('انتهت مهلة تشغيل الكاميرا.');}return cameraStream;});
  const timeout=new Promise((_,reject)=>setTimeout(()=>{cameraTimedOut=true;reject(new Error('انتهت مهلة تشغيل الكاميرا. تحقق من إذن الكاميرا ثم أعد المحاولة.'));},15000));
  stream=await Promise.race([cameraPromise,timeout]);
  const v=$('stockBarcodeVideo');v.style.display='block';$('stockBarcodeReader').style.display='none';v.srcObject=stream;await v.play();active=true;scannerMode='native';
