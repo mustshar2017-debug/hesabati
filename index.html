@@ -1998,7 +1998,7 @@ function buildUI(){
    const display=document.getElementById('hnProfileDisplay').value.trim();
    const avatar=document.getElementById('hnProfileAvatarUrl').value.trim();
    const bio=document.getElementById('hnProfileBio').value.trim();
-   if(avatar&&!/^https?:\\/\\//i.test(avatar))throw new Error('رابط الصورة يجب أن يبدأ بـ https:// أو http://');
+   if(avatar&&!/^https?:\/\//i.test(avatar))throw new Error('رابط الصورة يجب أن يبدأ بـ https:// أو http://');
    button.disabled=true;button.textContent='جارٍ الحفظ...';
    const {error}=await getClient().auth.updateUser({data:{...(display?{display_name:display}:{}),avatar_url:avatar,bio}});
    if(error)throw error;
