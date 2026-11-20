@@ -1867,6 +1867,7 @@ body.dark #home .bank-launch{background:linear-gradient(135deg,#087f55,#10a875);
 #hesabatiNetworkModal .hn-search-row,#hesabatiNetworkModal .hn-send-row{display:flex;gap:7px}
 #hesabatiNetworkModal .hn-search-row input,#hesabatiNetworkModal .hn-send-row input{min-width:0;flex:1}
 #hesabatiNetworkModal .hn-network-list{display:grid;gap:8px;margin-top:10px}
+#hesabatiNetworkModal .hn-contacts-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:18px;padding-top:12px;border-top:1px solid #dce9e2}
 #hesabatiNetworkModal .hn-user-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px;border:1px solid #dce9e2;border-radius:11px}
 #hesabatiNetworkModal .hn-user-item small{display:block;color:#6b8077;margin-top:3px}
 #hesabatiNetworkModal .hn-messages{height:260px;overflow:auto;background:#f4f8f5;border:1px solid #dce9e2;border-radius:12px;padding:9px;display:flex;flex-direction:column;gap:8px;margin:10px 0}
@@ -1901,7 +1902,7 @@ function buildUI(){
   btn.addEventListener('click',openModal);
  }
  const modal=el('div',{id:'hesabatiNetworkModal','aria-hidden':'true'});
- modal.innerHTML='<div class="hn-card" role="dialog" aria-modal="true" aria-labelledby="hnTitle"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h2 id="hnTitle">🌐 شبكة حساباتي</h2><button type="button" class="hn-close" id="hnClose">إغلاق</button></div><p class="hn-muted">أنشئ حساباً للشبكة أو ادخل بحسابك. هذا الحساب مستقل عن رمز القفل المحلي وبيانات الرصيد في التطبيق.</p><label for="hnDisplay">الاسم الظاهر</label><input id="hnDisplay" type="text" autocomplete="name" placeholder="اسمك (عند إنشاء الحساب)"><label for="hnUsername">اسم المستخدم الفريد</label><input id="hnUsername" type="text" autocomplete="username" placeholder="@username"><label for="hnEmail">البريد الإلكتروني</label><input id="hnEmail" type="text" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false" placeholder="name@example.com"><label for="hnPassword">كلمة المرور</label><div class="hn-password-wrap"><input id="hnPassword" type="password" autocomplete="current-password" placeholder="أدخل كلمة المرور"><button type="button" id="hnTogglePassword" class="hn-password-toggle" aria-label="إظهار كلمة المرور" aria-pressed="false">إظهار</button></div><div class="hn-password-hint">لإنشاء حساب جديد: 6 أحرف على الأقل. استخدم كلمة مرور شبكة حساباتي، وليس كلمة مرور Google.</div><div class="hn-actions"><button type="button" class="hn-primary" id="hnSignIn">دخول بالبريد</button><button type="button" class="hn-primary" id="hnSignUp">إنشاء حساب</button></div><button type="button" class="hn-google" id="hnGoogle">الدخول باستخدام Google</button><div class="hn-status" id="hnStatus" role="status">جاهز للاتصال بشبكة حساباتي.</div><div class="hn-account" id="hnAccount" hidden></div><section id="hnNetworkApp" hidden><div class="hn-network-head"><strong>البحث عن مستخدمين</strong><button type="button" id="hnRefreshUsers" class="hn-close">تحديث</button></div><div class="hn-search-row"><input id="hnSearchUser" type="search" placeholder="ابحث باسم المستخدم مثل mustshar" autocomplete="off"><button type="button" id="hnSearchButton" class="hn-primary">بحث</button></div><div id="hnSearchResults" class="hn-network-list"></div><div id="hnChatPanel" hidden><div class="hn-chat-head"><button type="button" id="hnBackSearch" class="hn-close">رجوع</button><strong id="hnChatTitle">المحادثة</strong><button type="button" id="hnReloadChat" class="hn-close">تحديث</button></div><div id="hnMessages" class="hn-messages"></div><div class="hn-send-row"><input id="hnMessageInput" type="text" placeholder="اكتب رسالتك..." maxlength="4000"><button type="button" id="hnSendMessage" class="hn-primary">إرسال</button></div></div></section></div>';
+ modal.innerHTML='<div class="hn-card" role="dialog" aria-modal="true" aria-labelledby="hnTitle"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h2 id="hnTitle">🌐 شبكة حساباتي</h2><button type="button" class="hn-close" id="hnClose">إغلاق</button></div><p class="hn-muted">أنشئ حساباً للشبكة أو ادخل بحسابك. هذا الحساب مستقل عن رمز القفل المحلي وبيانات الرصيد في التطبيق.</p><label for="hnDisplay">الاسم الظاهر</label><input id="hnDisplay" type="text" autocomplete="name" placeholder="اسمك (عند إنشاء الحساب)"><label for="hnUsername">اسم المستخدم الفريد</label><input id="hnUsername" type="text" autocomplete="username" placeholder="@username"><label for="hnEmail">البريد الإلكتروني</label><input id="hnEmail" type="text" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false" placeholder="name@example.com"><label for="hnPassword">كلمة المرور</label><div class="hn-password-wrap"><input id="hnPassword" type="password" autocomplete="current-password" placeholder="أدخل كلمة المرور"><button type="button" id="hnTogglePassword" class="hn-password-toggle" aria-label="إظهار كلمة المرور" aria-pressed="false">إظهار</button></div><div class="hn-password-hint">لإنشاء حساب جديد: 6 أحرف على الأقل. استخدم كلمة مرور شبكة حساباتي، وليس كلمة مرور Google.</div><div class="hn-actions"><button type="button" class="hn-primary" id="hnSignIn">دخول بالبريد</button><button type="button" class="hn-primary" id="hnSignUp">إنشاء حساب</button></div><button type="button" class="hn-google" id="hnGoogle">الدخول باستخدام Google</button><div class="hn-status" id="hnStatus" role="status">جاهز للاتصال بشبكة حساباتي.</div><div class="hn-account" id="hnAccount" hidden></div><section id="hnNetworkApp" hidden><div class="hn-network-head"><strong>البحث عن مستخدمين</strong><button type="button" id="hnRefreshUsers" class="hn-close">تحديث</button></div><div class="hn-search-row"><input id="hnSearchUser" type="search" placeholder="ابحث باسم المستخدم مثل mustshar" autocomplete="off"><button type="button" id="hnSearchButton" class="hn-primary">بحث</button></div><div id="hnSearchResults" class="hn-network-list"></div><div class="hn-contacts-head"><strong>جهات الاتصال</strong><button type="button" id="hnLoadContacts" class="hn-close">تحديث</button></div><div id="hnContactsList" class="hn-network-list"><div class="hn-empty">اضغط تحديث لعرض جهات الاتصال.</div></div><div id="hnChatPanel" hidden><div class="hn-chat-head"><button type="button" id="hnBackSearch" class="hn-close">رجوع</button><strong id="hnChatTitle">المحادثة</strong><button type="button" id="hnReloadChat" class="hn-close">تحديث</button></div><div id="hnMessages" class="hn-messages"></div><div class="hn-send-row"><input id="hnMessageInput" type="text" placeholder="اكتب رسالتك..." maxlength="4000"><button type="button" id="hnSendMessage" class="hn-primary">إرسال</button></div></div></section></div>';
  document.body.appendChild(modal);
  document.getElementById('hnClose').addEventListener('click',closeModal);
  modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
@@ -1910,6 +1911,7 @@ document.getElementById('hnTogglePassword').addEventListener('click',()=>{const 
  document.getElementById('hnSignUp').addEventListener('click',signUp);
  document.getElementById('hnGoogle').addEventListener('click',googleSignIn);
  document.getElementById('hnSearchButton').addEventListener('click',searchUsers);
+ document.getElementById('hnLoadContacts').addEventListener('click',loadContacts);
  document.getElementById('hnSearchUser').addEventListener('keydown',e=>{if(e.key==='Enter')searchUsers();});
  document.getElementById('hnRefreshUsers').addEventListener('click',searchUsers);
  document.getElementById('hnBackSearch').addEventListener('click',()=>{document.getElementById('hnChatPanel').hidden=true;document.getElementById('hnSearchResults').hidden=false;});
@@ -1933,6 +1935,32 @@ async function refreshSession(){try{const {data,error}=await getClient().auth.ge
 
 let activeConversation=null, activePeer=null;
 function networkPanelVisible(){const p=document.getElementById('hnNetworkApp');if(p&&currentUser)p.hidden=false;}
+async function loadContacts(){
+ try{
+  if(!currentUser)throw new Error('سجّل الدخول إلى شبكة حساباتي أولاً.');
+  const list=document.getElementById('hnContactsList');
+  list.textContent='جارٍ تحميل جهات الاتصال...';
+  const c=getClient();
+  const {data:conversations,error}=await c.from('conversations').select('id,user_one,user_two,created_at').or('user_one.eq.'+currentUser.id+',user_two.eq.'+currentUser.id).order('created_at',{ascending:false}).limit(100);
+  if(error)throw error;
+  const peers=[...new Set((conversations||[]).map(x=>x.user_one===currentUser.id?x.user_two:x.user_one).filter(Boolean))];
+  if(!peers.length){list.replaceChildren();const empty=el('div',{className:'hn-empty'});empty.textContent='لا توجد جهات اتصال بعد. ابحث عن مستخدم وابدأ مراسلته لتظهر هنا.';list.appendChild(empty);return;}
+  const {data:profiles,error:profileError}=await c.from('profiles').select('id,username,display_name').in('id',peers);
+  if(profileError)throw profileError;
+  const byId=new Map((profiles||[]).map(p=>[p.id,p]));
+  list.replaceChildren();
+  peers.forEach(id=>{
+   const profile=byId.get(id);if(!profile)return;
+   const item=el('div',{className:'hn-user-item'});
+   const info=el('div');const name=el('strong');name.textContent=profile.display_name||profile.username||'مستخدم';
+   const handle=el('small');handle.textContent=profile.username?'@'+profile.username:'مستخدم شبكة حساباتي';info.append(name,handle);
+   const open=el('button',{type:'button',className:'hn-primary'},'فتح المحادثة');
+   open.addEventListener('click',()=>openConversation(profile));
+   item.append(info,open);list.appendChild(item);
+  });
+  if(!list.children.length){const empty=el('div',{className:'hn-empty'});empty.textContent='لا توجد ملفات شخصية لجهات الاتصال حتى الآن.';list.appendChild(empty);}
+ }catch(e){status('تعذر تحميل جهات الاتصال: '+(e.message||''),true);}
+}
 async function searchUsers(){
  try{
   if(!currentUser)throw new Error('سجّل الدخول إلى شبكة حساباتي أولاً.');
