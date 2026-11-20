@@ -1641,7 +1641,7 @@ async function startFallback(){
  scannerMode='html5';
  const supported=window.Html5QrcodeSupportedFormats||{};
  const selected=['QR_CODE','EAN_13','EAN_8','CODE_128','CODE_39','UPC_A','UPC_E','ITF','CODABAR'].map(k=>supported[k]).filter(v=>v!==undefined);
- await htmlScanner.start({facingMode:'environment'},{fps:10,qrbox:{width:240,height:240},...(selected.length?{formatsToSupport:selected}:{})},decoded=>{if(scannerMode==='html5'){scannerMode='done';showCode(decoded);}},()=>{});
+ await htmlScanner.start({facingMode:'environment'},{fps:15,disableFlip:false,...(selected.length?{formatsToSupport:selected}:{})},decoded=>{if(scannerMode==='html5'){scannerMode='done';showCode(decoded);}},()=>{});
  message('وجّه الكاميرا الخلفية نحو رمز QR أو الباركود.');
 }
 async function startNative(){
@@ -1662,11 +1662,12 @@ async function scan(){
  if(!window.isSecureContext){message('الكاميرا تحتاج اتصالاً آمناً. افتح التطبيق من رابط HTTPS.');return;}
  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){message('الكاميرا غير متاحة في هذا المتصفح. افتح الرابط في Chrome على الهاتف.');return;}
  try{
-  try{await startNative();}
-  catch(nativeError){
-   stopNative();
-   try{await startFallback();}
-   catch(fallbackError){await stop();const detail=fallbackError&&fallbackError.message||nativeError&&nativeError.message||'تعذر بدء المسح';message('تعذر تشغيل الماسح: '+detail+'. تأكد من السماح بالكاميرا واتصال الإنترنت، ثم اضغط إعادة المسح.');}
+  // قارئ html5-qrcode أولاً لأنه يدعم نطاقاً أوسع من صيغ الباركود، ويمسح كامل إطار الكاميرا.
+  try{await startFallback();}
+  catch(fallbackError){
+   await stop();
+   try{await startNative();}
+   catch(nativeError){await stop();const detail=fallbackError&&fallbackError.message||nativeError&&nativeError.message||'تعذر بدء المسح';message('تعذر تشغيل الماسح: '+detail+'. تأكد من السماح بالكاميرا واتصال الإنترنت، ثم اضغط إعادة المسح.');}
   }
  }catch(e){await stop();message('تعذر تشغيل الكاميرا: '+(e.message||'تحقق من إذن الكاميرا ثم أعد المحاولة.'));}
 }
