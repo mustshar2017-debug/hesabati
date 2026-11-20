@@ -2968,5 +2968,28 @@ document.addEventListener('click',function(event){const button=event.target&&eve
 })();
 })();
 </script>
+
+<style id="phones-recharge-input-focus-fix">
+/* تمكين اللمس والتركيز داخل نافذة شحن الهواتف على Android */
+#phonesHub.quick-recharge #recharge,
+#phonesHub.quick-recharge #rechargeCard,
+#phonesHub.quick-recharge #rechargeForm,
+#phonesHub.quick-recharge #rechargeForm input,
+#phonesHub.quick-recharge #rechargeForm button{pointer-events:auto!important;touch-action:manipulation}
+#phonesHub.quick-recharge #rechargeCard{position:relative!important;z-index:25001!important}
+#phonesHub.quick-recharge #rechargeForm input{position:relative!important;z-index:25002!important;-webkit-user-select:text!important;user-select:text!important}
+</style>
+<script id="phones-recharge-input-focus-fix">
+(function(){
+ const panel=document.getElementById('phonesHub'),form=document.getElementById('rechargeForm');
+ if(!panel||!form||form.dataset.inputFocusFix==='1')return;
+ form.dataset.inputFocusFix='1';
+ form.addEventListener('pointerdown',function(event){
+  if(!panel.classList.contains('quick-recharge'))return;
+  const field=event.target.closest('input,textarea,select');
+  if(field&&!field.disabled&&!field.readOnly)field.focus();
+ },true);
+})();
+</script>
 </body>
 </html>
