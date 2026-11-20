@@ -1713,7 +1713,7 @@ async function startZxing(){
  });
  if(scannerMode==='zxing')zxingControls=controls;
  await improveCameraImage(video);
- try{await startZbarVideo(video);}catch(zbarError){scannerMode='zxing';message('قارئ ZXing يعمل، وتعذر تحميل محرك ZBar البديل: '+(zbarError.message||'خطأ تحميل'));}
+ message('قارئ ZXing يعمل مباشرةً؛ وجّه الباركود داخل الإطار وسيستمر في القراءة دون تبديل المحرك.');
 }
 async function startFallback(){
  message('جارٍ تجهيز قارئ QR والباركود...');
