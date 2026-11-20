@@ -1761,21 +1761,23 @@ async function startNative(){
  nativeFallbackTimer=setTimeout(async()=>{if(!active||scannerMode!=='native')return;stopNative();try{await startZxing();}catch(zxingError){try{await startFallback();}catch(fallbackError){message('تعذر قراءة الباركود تلقائياً. استخدم خانة إدخال الرقم يدوياً أو أعد المحاولة.');}}},7000);
 }
 async function scan(){
- await stop();message('جارٍ تشغيل الكاميرا...');
+ await stop();
+ message('جارٍ تشغيل قارئ الباركود مباشرة...');
  if(!window.isSecureContext){message('الكاميرا تحتاج اتصالاً آمناً. افتح التطبيق من رابط HTTPS.');return;}
  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){message('الكاميرا غير متاحة في هذا المتصفح. افتح الرابط في Chrome على الهاتف.');return;}
  try{
-  try{await startNative();}
-  catch(nativeError){
+  // ابدأ بمحرك ZXing مباشرةً؛ لا تنتظر BarcodeDetector ولا تنتقل إليه بعد مهلة.
+  await startZxing();
+ }catch(primaryError){
+  await stop();
+  try{
+   await startFallback();
+  }catch(fallbackError){
    await stop();
-   try{await startZxing();}
-   catch(zxingError){
-    await stop();
-    try{await startFallback();}
-    catch(fallbackError){await stop();const detail=fallbackError&&fallbackError.message||zxingError&&zxingError.message||nativeError&&nativeError.message||'تعذر بدء المسح';message('تعذر تشغيل الماسح: '+detail+'. تحقق من إذن الكاميرا والإنترنت ثم أعد المحاولة.');}
-   }
+   const detail=primaryError&&primaryError.message||fallbackError&&fallbackError.message||'تعذر بدء المسح';
+   message('تعذر تشغيل قارئ الباركود: '+detail+'. تحقق من إذن الكاميرا والإنترنت ثم أعد المحاولة.');
   }
- }catch(e){await stop();message('تعذر تشغيل الكاميرا: '+(e.message||'تحقق من إذن الكاميرا ثم أعد المحاولة.'));}
+ }
 }
 document.addEventListener('click',e=>{
  const target=e.target;
