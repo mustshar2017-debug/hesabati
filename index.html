@@ -1861,6 +1861,19 @@ body.dark #home .bank-launch{background:linear-gradient(135deg,#087f55,#10a875);
 #hesabatiNetworkModal .hn-status{margin-top:12px;padding:10px;border-radius:10px;background:#f0f7f3;color:#24543d;font-size:13px;line-height:1.6;white-space:pre-wrap}
 #hesabatiNetworkModal .hn-account{margin-top:12px;padding:10px;border:1px solid #dbe9e2;border-radius:10px;font-size:13px;line-height:1.7}
 @media(max-width:420px){#hesabatiNetworkModal .hn-card{padding:16px}#hesabatiNetworkModal .hn-actions{grid-template-columns:1fr}}
+
+#hesabatiNetworkModal #hnNetworkApp{margin-top:14px;border-top:1px solid #dce9e2;padding-top:14px}
+#hesabatiNetworkModal .hn-network-head,#hesabatiNetworkModal .hn-chat-head{display:flex;align-items:center;justify-content:space-between;gap:7px;margin-bottom:9px}
+#hesabatiNetworkModal .hn-search-row,#hesabatiNetworkModal .hn-send-row{display:flex;gap:7px}
+#hesabatiNetworkModal .hn-search-row input,#hesabatiNetworkModal .hn-send-row input{min-width:0;flex:1}
+#hesabatiNetworkModal .hn-network-list{display:grid;gap:8px;margin-top:10px}
+#hesabatiNetworkModal .hn-user-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px;border:1px solid #dce9e2;border-radius:11px}
+#hesabatiNetworkModal .hn-user-item small{display:block;color:#6b8077;margin-top:3px}
+#hesabatiNetworkModal .hn-messages{height:260px;overflow:auto;background:#f4f8f5;border:1px solid #dce9e2;border-radius:12px;padding:9px;display:flex;flex-direction:column;gap:8px;margin:10px 0}
+#hesabatiNetworkModal .hn-message{max-width:85%;padding:8px 10px;border-radius:12px;background:#fff;border:1px solid #e0e9e4;align-self:flex-start;white-space:pre-wrap;overflow-wrap:anywhere}
+#hesabatiNetworkModal .hn-message.mine{align-self:flex-end;background:#e2f7ed;border-color:#b8e3cd}
+#hesabatiNetworkModal .hn-message time{display:block;font-size:10px;color:#718078;margin-top:4px}
+#hesabatiNetworkModal .hn-empty{padding:12px;text-align:center;color:#718078;font-size:13px}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script id="hesabati-network-auth-v1">
@@ -1882,13 +1895,20 @@ function buildUI(){
   btn.addEventListener('click',openModal);
  }
  const modal=el('div',{id:'hesabatiNetworkModal','aria-hidden':'true'});
- modal.innerHTML='<div class="hn-card" role="dialog" aria-modal="true" aria-labelledby="hnTitle"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h2 id="hnTitle">🌐 شبكة حساباتي</h2><button type="button" class="hn-close" id="hnClose">إغلاق</button></div><p class="hn-muted">أنشئ حساباً للشبكة أو ادخل بحسابك. هذا الحساب مستقل عن رمز القفل المحلي وبيانات الرصيد في التطبيق.</p><label for="hnDisplay">الاسم الظاهر</label><input id="hnDisplay" type="text" autocomplete="name" placeholder="اسمك (عند إنشاء الحساب)"><label for="hnUsername">اسم المستخدم الفريد</label><input id="hnUsername" type="text" autocomplete="username" placeholder="@username"><label for="hnEmail">البريد الإلكتروني</label><input id="hnEmail" type="email" autocomplete="email" placeholder="name@example.com"><label for="hnPassword">كلمة المرور</label><input id="hnPassword" type="password" autocomplete="current-password" placeholder="كلمة المرور"><div class="hn-actions"><button type="button" class="hn-primary" id="hnSignIn">دخول بالبريد</button><button type="button" class="hn-primary" id="hnSignUp">إنشاء حساب</button></div><button type="button" class="hn-google" id="hnGoogle">الدخول باستخدام Google</button><div class="hn-status" id="hnStatus" role="status">جاهز للاتصال بشبكة حساباتي.</div><div class="hn-account" id="hnAccount" hidden></div></div>';
+ modal.innerHTML='<div class="hn-card" role="dialog" aria-modal="true" aria-labelledby="hnTitle"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h2 id="hnTitle">🌐 شبكة حساباتي</h2><button type="button" class="hn-close" id="hnClose">إغلاق</button></div><p class="hn-muted">أنشئ حساباً للشبكة أو ادخل بحسابك. هذا الحساب مستقل عن رمز القفل المحلي وبيانات الرصيد في التطبيق.</p><label for="hnDisplay">الاسم الظاهر</label><input id="hnDisplay" type="text" autocomplete="name" placeholder="اسمك (عند إنشاء الحساب)"><label for="hnUsername">اسم المستخدم الفريد</label><input id="hnUsername" type="text" autocomplete="username" placeholder="@username"><label for="hnEmail">البريد الإلكتروني</label><input id="hnEmail" type="email" autocomplete="email" placeholder="name@example.com"><label for="hnPassword">كلمة المرور</label><input id="hnPassword" type="password" autocomplete="current-password" placeholder="كلمة المرور"><div class="hn-actions"><button type="button" class="hn-primary" id="hnSignIn">دخول بالبريد</button><button type="button" class="hn-primary" id="hnSignUp">إنشاء حساب</button></div><button type="button" class="hn-google" id="hnGoogle">الدخول باستخدام Google</button><div class="hn-status" id="hnStatus" role="status">جاهز للاتصال بشبكة حساباتي.</div><div class="hn-account" id="hnAccount" hidden></div><section id="hnNetworkApp" hidden><div class="hn-network-head"><strong>البحث عن مستخدمين</strong><button type="button" id="hnRefreshUsers" class="hn-close">تحديث</button></div><div class="hn-search-row"><input id="hnSearchUser" type="search" placeholder="ابحث باسم المستخدم مثل mustshar" autocomplete="off"><button type="button" id="hnSearchButton" class="hn-primary">بحث</button></div><div id="hnSearchResults" class="hn-network-list"></div><div id="hnChatPanel" hidden><div class="hn-chat-head"><button type="button" id="hnBackSearch" class="hn-close">رجوع</button><strong id="hnChatTitle">المحادثة</strong><button type="button" id="hnReloadChat" class="hn-close">تحديث</button></div><div id="hnMessages" class="hn-messages"></div><div class="hn-send-row"><input id="hnMessageInput" type="text" placeholder="اكتب رسالتك..." maxlength="4000"><button type="button" id="hnSendMessage" class="hn-primary">إرسال</button></div></div></section></div>';
  document.body.appendChild(modal);
  document.getElementById('hnClose').addEventListener('click',closeModal);
  modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
  document.getElementById('hnSignIn').addEventListener('click',signIn);
  document.getElementById('hnSignUp').addEventListener('click',signUp);
  document.getElementById('hnGoogle').addEventListener('click',googleSignIn);
+ document.getElementById('hnSearchButton').addEventListener('click',searchUsers);
+ document.getElementById('hnSearchUser').addEventListener('keydown',e=>{if(e.key==='Enter')searchUsers();});
+ document.getElementById('hnRefreshUsers').addEventListener('click',searchUsers);
+ document.getElementById('hnBackSearch').addEventListener('click',()=>{document.getElementById('hnChatPanel').hidden=true;document.getElementById('hnSearchResults').hidden=false;});
+ document.getElementById('hnReloadChat').addEventListener('click',()=>{if(activeConversation)loadMessages();});
+ document.getElementById('hnSendMessage').addEventListener('click',sendMessage);
+ document.getElementById('hnMessageInput').addEventListener('keydown',e=>{if(e.key==='Enter')sendMessage();});
 }
 function openModal(){const m=document.getElementById('hesabatiNetworkModal');if(m){m.classList.add('open');m.setAttribute('aria-hidden','false');refreshSession();}}
 function closeModal(){const m=document.getElementById('hesabatiNetworkModal');if(m){m.classList.remove('open');m.setAttribute('aria-hidden','true');}}
@@ -1900,8 +1920,89 @@ async function googleSignIn(){try{status('جارٍ فتح اختيار حساب 
 async function ensureProfile(showPrompt){if(!currentUser)return;try{const c=getClient();const {data,error}=await c.from('profiles').select('id,username,display_name').eq('id',currentUser.id).maybeSingle();if(error)throw error;if(data){renderAccount(data);return;}const meta=currentUser.user_metadata||{};const suggested=normalizeUsername(meta.username||((currentUser.email||'').split('@')[0]).replace(/[^a-z0-9_.]/g,''));const box=document.getElementById('hnStatus');if(showPrompt||!suggested){status('أدخل اسم مستخدم فريداً في الخانة أعلاه ثم اضغط حفظ الملف الشخصي.');addProfileSaveButton();return;}const username=suggested.slice(0,30);if(username.length>=3){const v=formValues();v.username=username;v.display=v.display||meta.display_name||username;await saveProfile(v);}else{status('أدخل اسم مستخدم فريداً في الخانة أعلاه ثم اضغط حفظ الملف الشخصي.');addProfileSaveButton();}}catch(e){status('تم تسجيل الدخول، لكن تعذر تجهيز الملف الشخصي: '+(e.message||''),true);}}
 function addProfileSaveButton(){if(document.getElementById('hnSaveProfile'))return;const actions=document.querySelector('#hesabatiNetworkModal .hn-actions');const b=el('button',{type:'button',id:'hnSaveProfile',className:'hn-primary'},'حفظ الملف الشخصي');actions.parentNode.insertBefore(b,actions.nextSibling);b.addEventListener('click',async()=>{try{const v=formValues();if(!/^[a-z0-9_.]{3,30}$/.test(v.username))throw new Error('اسم المستخدم غير صالح.');await saveProfile(v);b.remove();status('تم حفظ الملف الشخصي.');}catch(e){status(e.message||'تعذر حفظ الملف الشخصي.',true);}});}
 async function saveProfile(v){if(!currentUser)throw new Error('سجّل الدخول أولاً.');const username=normalizeUsername(v.username);if(!/^[a-z0-9_.]{3,30}$/.test(username))throw new Error('اسم المستخدم من 3 إلى 30 حرفاً، وبالإنجليزية الصغيرة أو الأرقام أو _ أو .');const payload={id:currentUser.id,username,display_name:v.display||username};const {error}=await getClient().from('profiles').upsert(payload,{onConflict:'id'});if(error)throw error;status('تم حفظ الملف الشخصي باسم @'+username);renderAccount(payload);}
-function renderAccount(profile){const box=document.getElementById('hnAccount');if(!box)return;if(!currentUser){box.hidden=true;return;}box.hidden=false;const meta=currentUser.user_metadata||{};const name=profile&&profile.display_name||meta.display_name||currentUser.email||'حسابك';const username=profile&&profile.username?('@'+profile.username):'لم يُحدد اسم المستخدم بعد';box.textContent='الحساب الحالي: '+name+' · '+username+' · '+currentUser.email;let signout=document.getElementById('hnSignOut');if(!signout){signout=el('button',{type:'button',id:'hnSignOut',className:'hn-close'},'تسجيل الخروج');box.appendChild(document.createElement('br'));box.appendChild(signout);signout.addEventListener('click',async()=>{try{const {error}=await getClient().auth.signOut();if(error)throw error;currentUser=null;box.hidden=true;status('تم تسجيل الخروج.');}catch(e){status(e.message||'تعذر تسجيل الخروج.',true);}});}}
+function renderAccount(profile){const box=document.getElementById('hnAccount');if(!box)return;if(!currentUser){box.hidden=true;return;}box.hidden=false;networkPanelVisible();const meta=currentUser.user_metadata||{};const name=profile&&profile.display_name||meta.display_name||currentUser.email||'حسابك';const username=profile&&profile.username?('@'+profile.username):'لم يُحدد اسم المستخدم بعد';box.textContent='الحساب الحالي: '+name+' · '+username+' · '+currentUser.email;let signout=document.getElementById('hnSignOut');if(!signout){signout=el('button',{type:'button',id:'hnSignOut',className:'hn-close'},'تسجيل الخروج');box.appendChild(document.createElement('br'));box.appendChild(signout);signout.addEventListener('click',async()=>{try{const {error}=await getClient().auth.signOut();if(error)throw error;currentUser=null;box.hidden=true;status('تم تسجيل الخروج.');}catch(e){status(e.message||'تعذر تسجيل الخروج.',true);}});}}
 async function refreshSession(){try{const {data,error}=await getClient().auth.getSession();if(error)throw error;currentUser=data.session&&data.session.user||null;renderAccount();if(currentUser)await ensureProfile(false);}catch(e){status(e.message||'تعذر فحص حالة الحساب.',true);}}
+
+let activeConversation=null, activePeer=null;
+function networkPanelVisible(){const p=document.getElementById('hnNetworkApp');if(p&&currentUser)p.hidden=false;}
+async function searchUsers(){
+ try{
+  if(!currentUser)throw new Error('سجّل الدخول إلى شبكة حساباتي أولاً.');
+  const term=normalizeUsername(document.getElementById('hnSearchUser').value);
+  if(term.length<2)throw new Error('اكتب حرفين على الأقل من اسم المستخدم.');
+  const list=document.getElementById('hnSearchResults');list.hidden=false;document.getElementById('hnChatPanel').hidden=true;
+  list.textContent='جارٍ البحث...';
+  const {data,error}=await getClient().from('profiles').select('id,username,display_name').ilike('username',term+'%').neq('id',currentUser.id).order('username').limit(20);
+  if(error)throw error;
+  list.replaceChildren();
+  if(!data||!data.length){list.textContent='لم نعثر على مستخدم بهذا الاسم.';return;}
+  data.forEach(profile=>{
+   const item=el('div',{className:'hn-user-item'});
+   const info=el('div');const name=el('strong');name.textContent=profile.display_name||profile.username;
+   const handle=el('small');handle.textContent='@'+profile.username;info.append(name,handle);
+   const open=el('button',{type:'button',className:'hn-primary'},'مراسلة');
+   open.addEventListener('click',()=>openConversation(profile));
+   item.append(info,open);list.appendChild(item);
+  });
+ }catch(e){status(e.message||'تعذر البحث عن المستخدمين.',true);}
+}
+async function openConversation(profile){
+ try{
+  if(!currentUser)throw new Error('سجّل الدخول أولاً.');
+  if(profile.id===currentUser.id)throw new Error('لا يمكن فتح محادثة مع حسابك.');
+  status('جارٍ فتح المحادثة...');
+  const ids=[currentUser.id,profile.id].sort();
+  const c=getClient();
+  let {data,error}=await c.from('conversations').select('id,user_one,user_two').eq('user_one',ids[0]).eq('user_two',ids[1]).maybeSingle();
+  if(error)throw error;
+  if(!data){
+   const created=await c.from('conversations').insert({user_one:ids[0],user_two:ids[1]}).select('id,user_one,user_two').single();
+   if(created.error&&created.error.code!=='23505')throw created.error;
+   if(created.data)data=created.data;
+   else{
+    const again=await c.from('conversations').select('id,user_one,user_two').eq('user_one',ids[0]).eq('user_two',ids[1]).single();
+    if(again.error)throw again.error;data=again.data;
+   }
+  }
+  activeConversation=data;activePeer=profile;
+  document.getElementById('hnChatTitle').textContent=(profile.display_name||profile.username)+' · @'+profile.username;
+  document.getElementById('hnSearchResults').hidden=true;document.getElementById('hnChatPanel').hidden=false;
+  await loadMessages();
+ }catch(e){status('تعذر فتح المحادثة: '+(e.message||''),true);}
+}
+async function loadMessages(){
+ if(!activeConversation||!currentUser)return;
+ try{
+  const box=document.getElementById('hnMessages');box.textContent='جارٍ تحميل الرسائل...';
+  const {data,error}=await getClient().from('messages').select('id,sender_id,body,created_at,read_at').eq('conversation_id',activeConversation.id).order('created_at',{ascending:true}).limit(200);
+  if(error)throw error;
+  box.replaceChildren();
+  if(!data||!data.length){const empty=el('div',{className:'hn-empty'});empty.textContent='لا توجد رسائل بعد. ابدأ المحادثة برسالة.';box.appendChild(empty);}
+  (data||[]).forEach(msg=>{
+   const bubble=el('div',{className:'hn-message'+(msg.sender_id===currentUser.id?' mine':'')});
+   const body=el('div');body.textContent=msg.body||'';const time=el('time');
+   const date=new Date(msg.created_at);time.textContent=isNaN(date.getTime())?'':date.toLocaleString('ar');
+   bubble.append(body,time);box.appendChild(bubble);
+  });
+  box.scrollTop=box.scrollHeight;
+  const {error:readError}=await getClient().from('messages').update({read_at:new Date().toISOString()}).eq('conversation_id',activeConversation.id).neq('sender_id',currentUser.id).is('read_at',null);
+  if(readError)console.warn('تعذر تحديث حالة القراءة',readError.message);
+ }catch(e){status('تعذر تحميل الرسائل: '+(e.message||''),true);}
+}
+async function sendMessage(){
+ try{
+  const input=document.getElementById('hnMessageInput'),body=input.value.trim();
+  if(!activeConversation||!currentUser)throw new Error('افتح محادثة أولاً.');
+  if(!body)return;
+  if(body.length>4000)throw new Error('الرسالة أطول من الحد المسموح.');
+  const button=document.getElementById('hnSendMessage');button.disabled=true;
+  const {error}=await getClient().from('messages').insert({conversation_id:activeConversation.id,sender_id:currentUser.id,body});
+  if(error)throw error;
+  input.value='';await loadMessages();
+ }catch(e){status('تعذر إرسال الرسالة: '+(e.message||''),true);}
+ finally{const b=document.getElementById('hnSendMessage');if(b)b.disabled=false;}
+}
+
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',buildUI,{once:true});else buildUI();
 })();
 </script>
