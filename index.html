@@ -102,6 +102,10 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 .profit-toggle[aria-expanded="true"] #profitTotal{font-size:11px;line-height:1.25;margin-top:4px;white-space:normal;overflow-wrap:anywhere}
 .profit-toggle[aria-expanded="true"] small:last-child{display:block;font-size:9px;line-height:1.25;margin-top:3px}
 .profit-toggle[aria-expanded="true"] .kpi-icon{margin-bottom:6px}
+/* Phone hub profit cards */
+#phonesHub .phone-profit-cards{margin:12px 0 16px;grid-template-columns:repeat(2,minmax(0,1fr))}
+#phonesHub .phone-profit-cards .card{min-width:0}
+@media(min-width:700px){#phonesHub .phone-profit-cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 <style id="balance-shortcuts-fit">
 #home .balance-shortcuts .quick-link{min-height:104px;padding:8px 5px;gap:5px;overflow:hidden}
@@ -686,7 +690,15 @@ footer{color:#a9c2b5!important}
 </div>
 <div id="creditHistoryBlock"><h2 class="section-title">سجل عمليات الرصيد</h2><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>العملية</th><th>القيمة</th><th>التكلفة</th><th>الربح</th><th>تفاصيل</th><th></th></tr></thead><tbody id="creditRows"></tbody></table></div></div>
 </section>
-<section id="phonesHub" class="panel"><div class="inventory-page-head"><button class="secondary" type="button" id="phonesHubBack">↩ رجوع للرئيسية</button><span>قسم الهواتف · اختر العملية المطلوبة</span></div><h2 class="section-title">قسم الهواتف</h2><div class="quick-grid phone-hub-menu"><button class="quick-link" type="button" data-panel="phonesHub" data-target="recharge"><span class="quick-icon">📱</span><span>شحن الهواتف<small>تسجيل عملية شحن جديدة</small><small id="rechargeTodayProfit">ربح اليوم: 0 SDG</small></span></button><button class="quick-link" type="button" data-panel="phonesHub" data-target="rechargeHistory"><span class="quick-icon">📋</span><span>سجل الشحن<small>عرض وتعديل عمليات الشحن</small></span></button></div>
+<section id="phonesHub" class="panel"><div class="inventory-page-head"><button class="secondary" type="button" id="phonesHubBack">↩ رجوع للرئيسية</button><span>قسم الهواتف · اختر العملية المطلوبة</span></div><h2 class="section-title">قسم الهواتف</h2>
+<div class="grid financial-grid phone-profit-cards">
+<div class="card kpi"><span class="kpi-icon">📱</span><small>إجمالي ربح شحن الهواتف</small><strong id="phonesTotalProfit">0</strong><small>SDG</small></div>
+<div class="card kpi"><span class="kpi-icon">📈</span><small>ربح شحن اليوم</small><strong id="phonesTodayProfit">0</strong><small>SDG</small></div>
+<div class="card kpi"><span class="kpi-icon">💰</span><small>ربح الرصيد</small><strong id="phonesCreditProfit">0</strong><small>SDG</small></div>
+<div class="card kpi"><span class="kpi-icon">🤝</span><small>ربح خدمات الزبائن</small><strong id="phonesServiceProfit">0</strong><small>SDG</small></div>
+<div class="card kpi"><span class="kpi-icon">🧮</span><small>صافي ربح اليوم</small><strong id="phonesTodayNet">0</strong><small>SDG</small></div>
+</div>
+<div class="quick-grid phone-hub-menu"><button class="quick-link" type="button" data-panel="phonesHub" data-target="recharge"><span class="quick-icon">📱</span><span>شحن الهواتف<small>تسجيل عملية شحن جديدة</small><small id="rechargeTodayProfit">ربح اليوم: 0 SDG</small></span></button><button class="quick-link" type="button" data-panel="phonesHub" data-target="rechargeHistory"><span class="quick-icon">📋</span><span>سجل الشحن<small>عرض وتعديل عمليات الشحن</small></span></button></div>
 
 <div id="recharge" class="phone-subview">
 <div class="inventory-page-head"><button class="secondary" type="button" data-phone-menu>↩ رجوع لقسم الهواتف</button><span>تسجيل عملية شحن جديدة</span></div><h2 class="section-title">شحن الهواتف</h2><div class="card" id="rechargeCard"><form id="rechargeForm">
@@ -901,14 +913,16 @@ function tableRows(target,items,make){$(target).innerHTML=items.length?items.sli
 function render(){
  const cp=profit(db.transfers),rp=profit(db.recharges),svp=profit(db.services),expense=sum(db.expenses,x=>x.amount),stock=sum(db.stock,x=>x.amount),used=sum(db.transfers,x=>x.cost)+sum(db.recharges,x=>x.cost)+sum(db.services,x=>x.cost)+sum(db.supplierTransfers,x=>x.amount);
  $('balance').textContent=fmt(stock-used);$('totalCapital').textContent=fmt(stock);$('creditProfit').textContent=fmt(cp);$('rechargeProfit').textContent=fmt(rp);$('serviceProfit').textContent=fmt(svp);
+ $('phonesTotalProfit').textContent=fmt(rp);$('phonesCreditProfit').textContent=fmt(cp);$('phonesServiceProfit').textContent=fmt(svp);
  const t=today(),ti=sum(db.stock.filter(x=>x.date===t),x=>x.amount),tt=sum(db.transfers.filter(x=>x.date===t),x=>x.sale),tr=sum(db.recharges.filter(x=>x.date===t),x=>x.sale),te=sum(db.expenses.filter(x=>x.date===t),x=>x.amount),bankToday=Number(window.hisabatiTodayBankProfit?.(t)||0),tp=sum(db.transfers.filter(x=>x.date===t),x=>x.sale-x.cost)+sum(db.recharges.filter(x=>x.date===t),x=>x.sale-x.cost)+sum(db.services.filter(x=>x.date===t),x=>x.sale-x.cost)+bankToday;
  $('stockTodayMove').textContent='داخل اليوم: '+fmt(ti)+' SDG';
  $('transferTodayProfit').textContent='ربح اليوم: '+fmt(sum(db.transfers.filter(x=>x.date===t),x=>x.sale-x.cost))+' SDG';
  $('creditTodayProfit').textContent='ربح اليوم: '+fmt(sum(db.transfers.filter(x=>x.date===t),x=>x.sale-x.cost))+' SDG';
  $('expensesTodayMove').textContent='مصروف اليوم: '+fmt(te)+' SDG';
  $('rechargeTodayProfit').textContent='ربح اليوم: '+fmt(sum(db.recharges.filter(x=>x.date===t),x=>x.sale-x.cost))+' SDG';
+ $('phonesTodayProfit').textContent=fmt(sum(db.recharges.filter(x=>x.date===t),x=>x.sale-x.cost));
  $('serviceTodayProfit').textContent='ربح اليوم: '+fmt(sum(db.services.filter(x=>x.date===t),x=>x.sale-x.cost))+' SDG';
- $('todayIn').textContent=fmt(ti)+' SDG';$('todayTransfers').textContent=fmt(tt)+' SDG';$('todayRecharge').textContent=fmt(tr)+' SDG';$('todayServiceProfit').textContent=fmt(sum(db.services.filter(x=>x.date===t),x=>x.sale-x.cost))+' SDG';$('todayExpenses').textContent=fmt(te)+' SDG';$('todayProfit').textContent=fmt(tp-te)+' SDG';$('todayNet').textContent=fmt(tp-te);
+ $('todayIn').textContent=fmt(ti)+' SDG';$('todayTransfers').textContent=fmt(tt)+' SDG';$('todayRecharge').textContent=fmt(tr)+' SDG';$('todayServiceProfit').textContent=fmt(sum(db.services.filter(x=>x.date===t),x=>x.sale-x.cost))+' SDG';$('todayExpenses').textContent=fmt(te)+' SDG';$('todayProfit').textContent=fmt(tp-te)+' SDG';$('todayNet').textContent=fmt(tp-te);$('phonesTodayNet').textContent=fmt(tp-te);
  tableRows('creditRows',[...db.stock.map(x=>({...x,type:'رصيد داخل',value:x.amount,cost:x.amount,profit:0,detail:x.note})),...db.transfers.map(x=>({...x,type:'تحويل رصيد',value:x.sale,profit:x.sale-x.cost,detail:(x.network||'')+' '+(x.customer||'')+' '+(x.note||'')}))],x=>`<tr><td>${x.date}</td><td>${x.type}</td><td>${fmt(x.value)}</td><td>${fmt(x.cost)}</td><td class="${x.profit>=0?'positive':'negative'}">${fmt(x.profit)}</td><td>${esc(x.detail||'')}</td><td><div class="record-actions"><button type="button" class="secondary" onclick="edit('${x.type==='رصيد داخل'?'stock':'transfers'}','${x.id}')">✏️ تعديل</button><button type="button" class="danger" onclick="del('${x.type==='رصيد داخل'?'stock':'transfers'}','${x.id}')">🗑 حذف</button></div></td></tr>`);
  tableRows('rechargeRows',db.recharges,x=>`<tr><td>${x.date}</td><td>${esc(x.network)}</td><td>${esc(x.phone||'')}</td><td>${fmt(x.sale)}</td><td>${fmt(x.cost)}</td><td class="${x.sale-x.cost>=0?'positive':'negative'}">${fmt(x.sale-x.cost)}</td><td><div class="record-actions"><button type="button" class="secondary" onclick="edit('recharges','${x.id}')">✏️ تعديل</button><button type="button" class="danger" onclick="del('recharges','${x.id}')">🗑 حذف</button></div></td></tr>`);
  tableRows('serviceRows',db.services,x=>`<tr><td>${x.date}</td><td>${esc(x.network==='سوداني'?'خدمة سوداني':'خدمة زين')}</td><td>${esc(x.customer||'')}</td><td>${fmt(x.sale)}</td><td>${fmt(x.cost)}</td><td class="${x.sale-x.cost>=0?'positive':'negative'}">${fmt(x.sale-x.cost)}</td><td><div class="record-actions"><button type="button" class="secondary" onclick="edit('services','${x.id}')">✏️ تعديل</button><button type="button" class="danger" onclick="del('services','${x.id}')">🗑 حذف</button></div></td></tr>`);
