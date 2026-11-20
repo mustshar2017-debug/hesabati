@@ -1641,6 +1641,16 @@ async function loadZxing(){
   const script=document.createElement('script');script.id='zxing-barcode-lib';script.src='https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js';script.onload=()=>window.ZXing&&window.ZXing.BrowserMultiFormatReader?resolve():reject(new Error('لم يتم العثور على قارئ ZXing'));script.onerror=()=>reject(new Error('تعذر تحميل قارئ ZXing؛ تحقق من الإنترنت'));document.head.appendChild(script);
  });
 }
+async function improveCameraImage(video){
+ try{
+  const track=video&&video.srcObject&&video.srcObject.getVideoTracks?video.srcObject.getVideoTracks()[0]:null;
+  if(!track||!track.getCapabilities||!track.applyConstraints)return;
+  const caps=track.getCapabilities(),advanced=[];
+  if(caps.focusMode&&caps.focusMode.includes('continuous'))advanced.push({focusMode:'continuous'});
+  if(caps.zoom){const min=Number(caps.zoom.min||1),max=Number(caps.zoom.max||1);if(max>min)advanced.push({zoom:Math.min(max,Math.max(min,2.5))});}
+  if(advanced.length)await track.applyConstraints({advanced});
+ }catch(e){}
+}
 async function startZxing(){
  message('جارٍ تشغيل قارئ باركود بديل...');
  await loadZxing();
@@ -1666,7 +1676,8 @@ async function startZxing(){
   if(result){const code=result.getText?result.getText():String(result.text||'');if(code){scannerMode='done';if(ctrl)try{ctrl.stop();}catch(e){}zxingControls=null;showCode(code.trim());}}
  });
  if(scannerMode==='zxing')zxingControls=controls;
- message('قارئ ZXing يعمل الآن؛ وجّه الباركود كاملاً داخل الإطار الأخضر.');
+ await improveCameraImage(video);
+ message('قارئ ZXing يعمل الآن مع تحسين التركيز والتقريب إن كان الهاتف يدعمه. ضع الباركود داخل منتصف الإطار الأخضر واجعل الخطوط واضحة.');
 }
 async function startFallback(){
  message('جارٍ تجهيز قارئ QR والباركود...');
@@ -1707,7 +1718,7 @@ async function startNative(){
  const timeout=new Promise((_,reject)=>setTimeout(()=>{cameraTimedOut=true;reject(new Error('انتهت مهلة تشغيل الكاميرا. تحقق من إذن الكاميرا ثم أعد المحاولة.'));},15000));
  stream=await Promise.race([cameraPromise,timeout]);
  const v=$('stockBarcodeVideo');v.style.display='block';$('stockBarcodeReader').style.display='none';v.srcObject=stream;await v.play();active=true;scannerMode='native';
- const track=stream.getVideoTracks()[0];if(track&&track.applyConstraints){try{await track.applyConstraints({advanced:[{focusMode:'continuous'}]});}catch(e){}}
+ const track=stream.getVideoTracks()[0];if(track&&track.applyConstraints){try{await track.applyConstraints({advanced:[{focusMode:'continuous'}]});}catch(e){}}await improveCameraImage(v);
  message('قرّب الباركود قليلاً، واجعل الخطوط كاملة وواضحة داخل الصورة. جارٍ البحث تلقائياً...');
  const tick=async()=>{if(!active)return;try{if(v.readyState>=2){const codes=await detector.detect(v);if(codes.length){const code=String(codes[0].rawValue||'').trim();if(code){showCode(code);return;}}}}catch(e){}if(active)raf=requestAnimationFrame(tick);};tick();
  // إذا ظل القارئ الأصلي يبحث دون أن يفك الرمز، انتقل تلقائياً إلى ZXing بدلاً من إبقاء المستخدم عالقاً.
