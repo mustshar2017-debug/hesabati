@@ -581,6 +581,26 @@ footer{color:#a9c2b5!important}
 /* إخفاء ملخص الرصيد والأرباح من إدارة الرصيد لأنه متاح ضمن قسم بنكك، مع إبقاء عناصره البرمجية لتجنب التأثير على الحسابات. */
 #balanceHub .balance-overview{display:none!important}
 </style>
+<style id="hesabati-network-auth-layout-fix">
+/* إصلاح ظهور عناصر الدخول بعد نقلها إلى شاشة المصادقة */
+#hesabatiNetworkModal .hn-auth-view{display:block!important;visibility:visible!important;color:#173a32}
+#hesabatiNetworkModal .hn-auth-view>div:first-child{display:flex!important;align-items:center;justify-content:space-between;gap:10px;margin:-26px -24px 16px;padding:18px 18px 14px;background:linear-gradient(135deg,#073f35,#087f62 58%,#13a276);border-bottom:4px solid #d6ad4f}
+#hesabatiNetworkModal .hn-auth-view>div:first-child h2{margin:0;color:#fff;font-size:22px;font-weight:900}
+#hesabatiNetworkModal .hn-auth-view>div:first-child .hn-close{background:#eaf5ed;color:#14513e;flex:0 0 auto}
+#hesabatiNetworkModal .hn-auth-view>p,
+#hesabatiNetworkModal .hn-auth-view>label,
+#hesabatiNetworkModal .hn-auth-view>input,
+#hesabatiNetworkModal .hn-auth-view>.hn-password-wrap,
+#hesabatiNetworkModal .hn-auth-view>.hn-password-hint,
+#hesabatiNetworkModal .hn-auth-view>.hn-actions,
+#hesabatiNetworkModal .hn-auth-view>.hn-google,
+#hesabatiNetworkModal .hn-auth-view>.hn-status,
+#hesabatiNetworkModal .hn-auth-view>.hn-account{display:block!important;visibility:visible!important;opacity:1!important}
+#hesabatiNetworkModal .hn-auth-view>input{width:100%!important;min-height:49px!important;background:#fbfdfb!important;color:#183b30!important}
+#hesabatiNetworkModal .hn-auth-view>.hn-actions{display:grid!important}
+#hesabatiNetworkModal .hn-auth-view>.hn-google{width:100%!important}
+@media(max-width:480px){#hesabatiNetworkModal .hn-auth-view>div:first-child{margin:-21px -17px 16px}}
+</style>
 </head>
 <body>
 <header><div class="wrap header-row"><div><div class="brand-line"><h1>حساباتي</h1><button id="themeToggle" class="theme-toggle" type="button" aria-label="تفعيل الوضع الليلي" title="تفعيل الوضع الليلي">☀️</button></div><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><div class="header-actions"><button class="menu-trigger" id="menuTrigger" type="button" aria-label="القائمة" aria-expanded="false">⋮</button><button class="secondary" id="languageToggle" type="button" aria-label="تغيير لغة التطبيق">EN</button><button class="secondary" id="lockNow" type="button" aria-label="قفل التطبيق"><span class="lock-close-icon" aria-hidden="true">×</span><span>قفل الآن</span></button><div class="app-menu" id="appMenu" hidden><button type="button" data-menu-action="backup"><span class="menu-item-icon" aria-hidden="true">💾</span><span>حفظ نسخة احتياطية</span></button><button type="button" data-menu-action="labels"><span class="menu-item-icon" aria-hidden="true">✏️</span><span>تعديل أسماء الأيقونات</span></button><button type="button" data-menu-action="generalReport"><span class="menu-item-icon" aria-hidden="true">📊</span><span>تقرير عام مفصل</span></button><button type="button" data-menu-action="monthlyReport"><span class="menu-item-icon" aria-hidden="true">📅</span><span>التقرير الشهري</span></button><button type="button" data-menu-action="settings"><span class="menu-item-icon" aria-hidden="true">⚙️</span><span>إعدادات التطبيق</span></button><button type="button" data-menu-action="about"><span class="menu-item-icon" aria-hidden="true">ℹ️</span><span>نبذة عنّا</span></button><button type="button" data-menu-action="share"><span class="menu-item-icon" aria-hidden="true">📤</span><span>مشاركة التطبيق</span></button><button type="button" data-menu-action="rate"><span class="menu-item-icon" aria-hidden="true">⭐</span><span>تقييم التطبيق</span></button><button type="button" data-menu-action="feedback"><span class="menu-item-icon" aria-hidden="true">✉️</span><span>إرسال ملاحظات أو الإبلاغ عن مشكلة</span></button></div></div></div></header>
