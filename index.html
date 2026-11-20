@@ -1488,39 +1488,7 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
   const total=items.reduce((a,x)=>a+x.value,0),safe=esc;
   const rows=Array.from({length:10},(_,i)=>{const x=items[i];return '<tr><td>'+(i+1)+'</td><td>'+(x?safe(x.product.name):'')+'</td><td>'+(x?fmt(x.qty):'')+'</td><td>'+(x?fmt(x.price)+' SDG':'')+'</td><td>'+(x?fmt(x.value)+' SDG':'')+'</td></tr>'}).join('');
   w.document.open();w.document.write('<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>فاتورة أبو التيمان فون</title><style>@page{size:A4 portrait;margin:14mm}*{box-sizing:border-box}body{font-family:Tahoma,Arial,sans-serif;color:#111;margin:0;font-size:13px}.paper{width:100%;min-height:270mm}.head{display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #176fe0;padding-bottom:13px}.brand{font-size:27px;font-weight:900;color:#176fe0}.meta{text-align:left;line-height:1.9}.title{text-align:center;font-size:22px;font-weight:800;margin:18px 0}.details{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}.details div{border:1px solid #ccc;padding:10px}.items{width:100%;border-collapse:collapse;margin-top:12px}.items th,.items td{border:1px solid #888;padding:9px 7px;text-align:center;height:34px}.items th{background:#edf2f8}.total{margin:18px 0 0 auto;width:48%;border:2px solid #176fe0;padding:12px;font-size:17px;font-weight:bold;display:flex;justify-content:space-between}.foot{display:flex;justify-content:flex-end;margin-top:65px}.sign{width:42%;border-top:1px solid #555;padding-top:10px;text-align:center;font-weight:bold}.note{margin-top:24px;text-align:center;color:#555}</style></head><body><main class="paper"><header class="head"><div><div class="brand">أبو التيمان فون</div><div>لبيع الهواتف ومستلزماتها</div></div><div class="meta"><div>التاريخ: '+safe(d.date)+'</div><div>رقم الفاتورة: '+safe(invoiceNo)+'</div></div></header><div class="title">فاتورة بيع</div><section class="details"><div><b>اسم العميل:</b> '+safe(d.customer||'عميل نقدي')+'</div><div><b>طريقة الدفع:</b> '+safe(d.payment)+'</div></section><table class="items"><thead><tr><th>م</th><th>الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody>'+rows+'</tbody></table><div class="total"><span>الإجمالي الكلي</span><span>'+fmt(total)+' SDG</span></div><div class="foot"><div class="sign">توقيع محمد عمر محمد اسحق</div></div><div class="note">شكراً لتعاملكم معنا</div></main><script>window.onload=function(){setTimeout(function(){window.print()},350)};<\/script>
-<style id="hesabati-global-input-touch-fix">
-/* ضمان أن شاشة القفل المخفية لا تحجب الواجهة */
-#lockScreen[hidden]{display:none!important;visibility:hidden!important;pointer-events:none!important}
-#lockScreen:not([hidden]){pointer-events:auto!important}
-#lockScreen[hidden] *{pointer-events:none!important}
-/* تمكين التفاعل والكتابة في جميع حقول التطبيق على Android */
-input,select,textarea,[contenteditable="true"]{
-  pointer-events:auto!important;
-  -webkit-user-select:text!important;
-  user-select:text!important;
-  touch-action:manipulation;
-}
-</style>
-<script id="hesabati-global-input-touch-fix">
-(function(){
-  if(window.__hesabatiGlobalInputTouchFix)return;
-  window.__hesabatiGlobalInputTouchFix=true;
-  function focusField(event){
-    const target=event.target;
-    if(!target||!target.closest)return;
-    const field=target.closest('input,textarea,select,[contenteditable="true"]');
-    if(!field||field.disabled||field.readOnly||field.getAttribute('aria-hidden')==='true')return;
-    if(field.type==='hidden')return;
-    try{field.focus({preventScroll:true});}
-    catch(_){try{field.focus();}catch(__){}}
-  }
-  if('PointerEvent' in window){
-    document.addEventListener('pointerdown',focusField,{capture:true,passive:true});
-  }else{
-    document.addEventListener('touchstart',focusField,{capture:true,passive:true});
-  }
-})();
-</script>
+
 </body></html>');w.document.close();
  }
  let lastSaleInvoice=null;
