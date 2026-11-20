@@ -1660,27 +1660,32 @@ async function HtmlScannerCameras(){
 async function startNative(){
  if(!('BarcodeDetector'in window))throw new Error('native-unavailable');
  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw new Error('هذا المتصفح لا يتيح الكاميرا. افتح الرابط في Chrome عبر HTTPS.');
- detector=new BarcodeDetector({formats:formats});
- message('يرجى السماح باستخدام الكاميرا...');
+ const supportedFormats=await BarcodeDetector.getSupportedFormats();
+ const activeFormats=formats.filter(f=>supportedFormats.includes(f));
+ if(!activeFormats.includes('ean_13'))throw new Error('قارئ الباركود الأصلي لا يدعم EAN-13');
+ detector=new BarcodeDetector({formats:activeFormats});
+ message('يرجى السماح باستخدام الكاميرا الخلفية...');
  let cameraTimedOut=false;
- const cameraPromise=navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{exact:'environment'},width:{ideal:1920},height:{ideal:1080}}}).catch(()=>navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'environment'}}})).then(cameraStream=>{if(cameraTimedOut){cameraStream.getTracks().forEach(track=>track.stop());throw new Error('انتهت مهلة تشغيل الكاميرا.');}return cameraStream;});
+ const videoConstraints={facingMode:{exact:'environment'},width:{ideal:1920},height:{ideal:1080},advanced:[{focusMode:'continuous'}]};
+ const cameraPromise=navigator.mediaDevices.getUserMedia({audio:false,video:videoConstraints}).catch(()=>navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}}})).then(cameraStream=>{if(cameraTimedOut){cameraStream.getTracks().forEach(track=>track.stop());throw new Error('انتهت مهلة تشغيل الكاميرا.');}return cameraStream;});
  const timeout=new Promise((_,reject)=>setTimeout(()=>{cameraTimedOut=true;reject(new Error('انتهت مهلة تشغيل الكاميرا. تحقق من إذن الكاميرا ثم أعد المحاولة.'));},15000));
  stream=await Promise.race([cameraPromise,timeout]);
  const v=$('stockBarcodeVideo');v.style.display='block';$('stockBarcodeReader').style.display='none';v.srcObject=stream;await v.play();active=true;scannerMode='native';
- message('وجّه الكاميرا الخلفية نحو رمز QR أو الباركود.');
- const tick=async()=>{if(!active)return;try{const codes=await detector.detect(v);if(codes.length){const code=codes[0].rawValue;showCode(code);return;}}catch(e){}if(active)raf=requestAnimationFrame(tick);};tick();
+ const track=stream.getVideoTracks()[0];if(track&&track.applyConstraints){try{await track.applyConstraints({advanced:[{focusMode:'continuous'}]});}catch(e){}}
+ message('قرّب الباركود قليلاً، واجعل الخطوط كاملة وواضحة داخل الصورة. جارٍ البحث تلقائياً...');
+ const tick=async()=>{if(!active)return;try{if(v.readyState>=2){const codes=await detector.detect(v);if(codes.length){const code=String(codes[0].rawValue||'').trim();if(code){showCode(code);return;}}}}catch(e){}if(active)raf=requestAnimationFrame(tick);};tick();
 }
 async function scan(){
  await stop();message('جارٍ تشغيل الكاميرا...');
  if(!window.isSecureContext){message('الكاميرا تحتاج اتصالاً آمناً. افتح التطبيق من رابط HTTPS.');return;}
  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){message('الكاميرا غير متاحة في هذا المتصفح. افتح الرابط في Chrome على الهاتف.');return;}
  try{
-  // قارئ html5-qrcode أولاً لأنه يدعم نطاقاً أوسع من صيغ الباركود، ويمسح كامل إطار الكاميرا.
-  try{await startFallback();}
-  catch(fallbackError){
+  // ابدأ بقارئ المتصفح الأصلي لأنه أسرع في قراءة EAN-13 على هواتف Android، ثم استخدم المكتبة الاحتياطية إذا لم يدعمه الجهاز.
+  try{await startNative();}
+  catch(nativeError){
    await stop();
-   try{await startNative();}
-   catch(nativeError){await stop();const detail=fallbackError&&fallbackError.message||nativeError&&nativeError.message||'تعذر بدء المسح';message('تعذر تشغيل الماسح: '+detail+'. تأكد من السماح بالكاميرا واتصال الإنترنت، ثم اضغط إعادة المسح.');}
+   try{await startFallback();}
+   catch(fallbackError){await stop();const detail=fallbackError&&fallbackError.message||nativeError&&nativeError.message||'تعذر بدء المسح';message('تعذر تشغيل الماسح: '+detail+'. تحقق من إذن الكاميرا والإنترنت ثم أعد المحاولة.');}
   }
  }catch(e){await stop();message('تعذر تشغيل الكاميرا: '+(e.message||'تحقق من إذن الكاميرا ثم أعد المحاولة.'));}
 }
