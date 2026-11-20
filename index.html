@@ -1687,6 +1687,20 @@ async function improveCameraImage(video){
   if(advanced.length)await track.applyConstraints({advanced});
  }catch(e){}
 }
+async function startZbarDirect(){
+ message('جارٍ تشغيل قارئ ZBar الذي نجح سابقاً...');
+ const video=$('stockBarcodeVideo'),reader=$('stockBarcodeReader');
+ reader.style.display='none';video.style.display='block';video.srcObject=null;
+ const constraints={audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}}};
+ try{stream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{exact:'environment'},width:{ideal:1920},height:{ideal:1080}}});}
+ catch(e){stream=await navigator.mediaDevices.getUserMedia(constraints);}
+ video.srcObject=stream;
+ await video.play();
+ active=true;
+ await improveCameraImage(video);
+ await startZbarVideo(video);
+ message('قارئ ZBar يعمل مباشرةً؛ وجّه الباركود داخل الإطار الأخضر وسيواصل القراءة دون تبديل المحرك.');
+}
 async function startZxing(){
  message('جارٍ تشغيل قارئ باركود بديل...');
  await loadZxing();
@@ -1766,8 +1780,8 @@ async function scan(){
  if(!window.isSecureContext){message('الكاميرا تحتاج اتصالاً آمناً. افتح التطبيق من رابط HTTPS.');return;}
  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){message('الكاميرا غير متاحة في هذا المتصفح. افتح الرابط في Chrome على الهاتف.');return;}
  try{
-  // ابدأ بمحرك ZXing مباشرةً؛ لا تنتظر BarcodeDetector ولا تنتقل إليه بعد مهلة.
-  await startZxing();
+  // استخدم ZBar مباشرةً؛ هذا هو المحرك الذي أكد المستخدم نجاحه على هاتفه سابقاً.
+  await startZbarDirect();
  }catch(primaryError){
   await stop();
   try{
