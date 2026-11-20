@@ -3108,5 +3108,20 @@ document.addEventListener('click',function(event){const button=event.target&&eve
  },true);
 })();
 </script>
+
+<script id="android-keyboard-focus-fallback">
+/* دعم إظهار لوحة مفاتيح Android عند تركيز المستخدم على حقل قابل للتحرير.
+   لا يغيّر التركيز ولا يمنع أحداث اللمس أو النقر. */
+(function(){
+ document.addEventListener('focusin',function(event){
+  const field=event.target;
+  if(!field || !field.matches || !field.matches('input:not([disabled]):not([readonly]),textarea:not([disabled]):not([readonly])'))return;
+  const keyboard=navigator.virtualKeyboard;
+  if(keyboard && typeof keyboard.show==='function'){
+   try{keyboard.show();}catch(error){console.debug('Android keyboard fallback unavailable',error);}
+  }
+ },true);
+})();
+</script>
 </body>
 </html>
