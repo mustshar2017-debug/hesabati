@@ -1645,8 +1645,8 @@ async function loadZbar(){
  return new Promise((resolve,reject)=>{
   if(window.zbarWasm&&typeof window.zbarWasm.scanImageData==='function'){resolve();return;}
   const existing=document.getElementById('zbar-wasm-lib');
-  if(existing){existing.addEventListener('load',()=>typeof window.scanImageData==='function'?resolve():reject(new Error('قارئ ZBar لم يكتمل')),{once:true});existing.addEventListener('error',()=>reject(new Error('تعذر تحميل قارئ ZBar')),{once:true});return;}
-  const script=document.createElement('script');script.id='zbar-wasm-lib';script.src='https://cdn.jsdelivr.net/npm/@undecaf/zbar-wasm@0.11.0/dist/index.js';script.onload=()=>typeof window.scanImageData==='function'?resolve():reject(new Error('لم يتم تحميل محرك ZBar'));script.onerror=()=>reject(new Error('تعذر تحميل محرك ZBar؛ تحقق من الإنترنت'));document.head.appendChild(script);
+  if(existing){existing.addEventListener('load',()=>window.zbarWasm&&typeof window.zbarWasm.scanImageData==='function'?resolve():reject(new Error('قارئ ZBar لم يكتمل')),{once:true});existing.addEventListener('error',()=>reject(new Error('تعذر تحميل قارئ ZBar')),{once:true});return;}
+  const script=document.createElement('script');script.id='zbar-wasm-lib';script.src='https://cdn.jsdelivr.net/npm/@undecaf/zbar-wasm@0.11.0/dist/index.js';script.onload=()=>window.zbarWasm&&typeof window.zbarWasm.scanImageData==='function'?resolve():reject(new Error('لم يتم تحميل محرك ZBar'));script.onerror=()=>reject(new Error('تعذر تحميل محرك ZBar؛ تحقق من الإنترنت'));document.head.appendChild(script);
  });
 }
 async function startZbarVideo(video){
