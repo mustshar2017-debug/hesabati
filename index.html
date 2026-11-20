@@ -492,9 +492,9 @@ footer{color:#aeb4c0}
 }
 </style>
 
-</head>
+\n<style id="hesabati-language-toggle-style">\n#languageToggle{min-width:48px;font-weight:900;border:1px solid #d9c17a;background:#fff8e7;color:#155b48;padding:9px 12px;border-radius:10px;cursor:pointer}\n[dir="ltr"] #languageToggle{letter-spacing:.4px}\n@media(max-width:480px){.header-actions #languageToggle{font-size:12px;padding:8px 9px;min-width:42px}}\n</style>\n</head>
 <body>
-<header><div class="wrap header-row"><div><div class="brand-line"><h1>حساباتي</h1><button id="themeToggle" class="theme-toggle" type="button" aria-label="تفعيل الوضع الليلي" title="تفعيل الوضع الليلي">☀️</button></div><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><div class="header-actions"><button class="menu-trigger" id="menuTrigger" type="button" aria-label="القائمة" aria-expanded="false">⋮</button><button class="secondary" id="lockNow" type="button">🔒 قفل الآن</button><div class="app-menu" id="appMenu" hidden><button type="button" data-menu-action="backup"><span class="menu-item-icon" aria-hidden="true">💾</span><span>حفظ نسخة احتياطية</span></button><button type="button" data-menu-action="labels"><span class="menu-item-icon" aria-hidden="true">✏️</span><span>تعديل أسماء الأيقونات</span></button><button type="button" data-menu-action="generalReport"><span class="menu-item-icon" aria-hidden="true">📊</span><span>تقرير عام مفصل</span></button><button type="button" data-menu-action="monthlyReport"><span class="menu-item-icon" aria-hidden="true">📅</span><span>التقرير الشهري</span></button><button type="button" data-menu-action="settings"><span class="menu-item-icon" aria-hidden="true">⚙️</span><span>إعدادات التطبيق</span></button><button type="button" data-menu-action="about"><span class="menu-item-icon" aria-hidden="true">ℹ️</span><span>نبذة عنّا</span></button><button type="button" data-menu-action="share"><span class="menu-item-icon" aria-hidden="true">📤</span><span>مشاركة التطبيق</span></button><button type="button" data-menu-action="rate"><span class="menu-item-icon" aria-hidden="true">⭐</span><span>تقييم التطبيق</span></button><button type="button" data-menu-action="feedback"><span class="menu-item-icon" aria-hidden="true">✉️</span><span>إرسال ملاحظات أو الإبلاغ عن مشكلة</span></button></div></div></div></header>
+<header><div class="wrap header-row"><div><div class="brand-line"><h1>حساباتي</h1><button id="themeToggle" class="theme-toggle" type="button" aria-label="تفعيل الوضع الليلي" title="تفعيل الوضع الليلي">☀️</button></div><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><div class="header-actions"><button class="menu-trigger" id="menuTrigger" type="button" aria-label="القائمة" aria-expanded="false">⋮</button><button class="secondary" id="languageToggle" type="button" aria-label="تغيير لغة التطبيق">EN</button><button class="secondary" id="lockNow" type="button">🔒 قفل الآن</button><div class="app-menu" id="appMenu" hidden><button type="button" data-menu-action="backup"><span class="menu-item-icon" aria-hidden="true">💾</span><span>حفظ نسخة احتياطية</span></button><button type="button" data-menu-action="labels"><span class="menu-item-icon" aria-hidden="true">✏️</span><span>تعديل أسماء الأيقونات</span></button><button type="button" data-menu-action="generalReport"><span class="menu-item-icon" aria-hidden="true">📊</span><span>تقرير عام مفصل</span></button><button type="button" data-menu-action="monthlyReport"><span class="menu-item-icon" aria-hidden="true">📅</span><span>التقرير الشهري</span></button><button type="button" data-menu-action="settings"><span class="menu-item-icon" aria-hidden="true">⚙️</span><span>إعدادات التطبيق</span></button><button type="button" data-menu-action="about"><span class="menu-item-icon" aria-hidden="true">ℹ️</span><span>نبذة عنّا</span></button><button type="button" data-menu-action="share"><span class="menu-item-icon" aria-hidden="true">📤</span><span>مشاركة التطبيق</span></button><button type="button" data-menu-action="rate"><span class="menu-item-icon" aria-hidden="true">⭐</span><span>تقييم التطبيق</span></button><button type="button" data-menu-action="feedback"><span class="menu-item-icon" aria-hidden="true">✉️</span><span>إرسال ملاحظات أو الإبلاغ عن مشكلة</span></button></div></div></div></header>
 <div class="wrap">
 <nav id="nav" aria-label="القائمة الرئيسية">
 <button class="active" data-tab="home">🏠 الرئيسية</button><button data-tab="credit" data-nav-view="transfer">➕ حوالة جديد</button><button data-tab="inventory" data-nav-view="accounts">📒 كشف حساب</button><button data-tab="reports">📊 التقارير</button><button data-tab="inventory" data-nav-view="history">🔎 مراجعة الحركات</button><button data-tab="partnership">🤝 الشراكة</button>
@@ -2670,6 +2670,63 @@ async function sendMessage(){
 
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',buildUI,{once:true});else buildUI();
 document.addEventListener('click',function(event){const button=event.target&&event.target.closest?event.target.closest('#hesabatiNetworkLaunch'):null;if(button){event.preventDefault();openModal();}},true);
+
+/* Arabic / English interface switch */
+(function(){
+ const translations={
+ 'حساباتي':'Hesabati','إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG':'Balance & phone recharge · Sudanese Pound (SDG)',
+ 'قفل الآن':'Lock now','الرئيسية':'Home','حوالة جديد':'New transfer','كشف حساب':'Account statement',
+ 'التقارير':'Reports','مراجعة الحركات':'Review transactions','الشراكة':'Partnership',
+ 'إدارة الطبلية':'Inventory management','إدارة الرصيد':'Balance management','قسم الهواتف':'Phones',
+ 'الأصول':'Assets','بنكك':'Bankak','التحويلات البنكية':'Bank transfers','شبكة حساباتي':'Hesabati Network',
+ 'حفظ نسخة احتياطية':'Back up','تعديل أسماء الأيقونات':'Edit icon names','تقرير عام مفصل':'Detailed general report',
+ 'التقرير الشهري':'Monthly report','إعدادات التطبيق':'App settings','نبذة عنّا':'About us',
+ 'مشاركة التطبيق':'Share app','تقييم التطبيق':'Rate app','إرسال ملاحظات أو الإبلاغ عن مشكلة':'Send feedback or report a problem',
+ 'إغلاق':'Close','رجوع للرئيسية':'Back to home','رجوع':'Back','حفظ':'Save','إلغاء':'Cancel',
+ 'بحث':'Search','تحديث':'Refresh','إضافة':'Add','حذف':'Delete','تعديل':'Edit','عرض':'View',
+ 'الاسم':'Name','التاريخ':'Date','المبلغ':'Amount','الرصيد':'Balance','الوصف':'Description',
+ 'رقم الهاتف':'Phone number','رقم الحساب':'Account number','الحالة':'Status','الإجمالي':'Total',
+ 'الوارد':'Incoming','الصادر':'Outgoing','سند الوارد':'Incoming voucher','سند الصرف':'Outgoing voucher',
+ 'الفواتير':'Invoices','شحن الهواتف':'Phone recharge','المخزون':'Inventory','إدارة المخزون':'Inventory management',
+ 'إضافة صنف':'Add item','تسجيل الوارد':'Record incoming','تسجيل الصرف':'Record outgoing',
+ 'كشف الحساب':'Account statement','العمليات':'Transactions','العملاء':'Customers','الموردون':'Suppliers',
+ 'اسم الصنف':'Item name','الكمية':'Quantity','السعر':'Price','ملاحظات':'Notes',
+ 'تسجيل الدخول':'Log in','تسجيل الخروج':'Log out','إنشاء حساب':'Create account',
+ 'البريد الإلكتروني':'Email','كلمة المرور':'Password','اسم المستخدم':'Username',
+ 'الاسم الظاهر':'Display name','دخول بالبريد':'Log in with email',
+ 'جارٍ التحميل...':'Loading...','لا توجد بيانات':'No data available',
+ 'تم الحفظ بنجاح':'Saved successfully','نعم':'Yes','لا':'No',
+ 'إدارة الرصيد وشحن الهواتف':'Balance and phone recharge management',
+ 'إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG':'Balance & phone recharge · Sudanese Pound (SDG)',
+ 'إدارة الأصول':'Asset management','المتاجر':'Stores','خريطة المتاجر':'Store map',
+ 'بحث المستخدمين':'Find users','جهات الاتصال':'Contacts','المراسلات':'Messages','الملف الشخصي':'Profile',
+ 'المستخدمون':'Users','إرسال':'Send','فتح':'Open','التالي':'Next','السابق':'Previous'
+ };
+ const reverse=Object.fromEntries(Object.entries(translations).map(([a,b])=>[b,a]));
+ let language=localStorage.getItem('hesabati_language')==='en'?'en':'ar';
+ const excluded=new Set(['SCRIPT','STYLE','NOSCRIPT','TEXTAREA','INPUT','OPTION']);
+ function translate(){
+  const dict=language==='en'?translations:reverse;
+  const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+  const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
+  nodes.forEach(n=>{if(excluded.has(n.parentElement&&n.parentElement.tagName))return;
+   const raw=n.nodeValue, trimmed=raw.trim();if(!trimmed)return;
+   const value=dict[trimmed];if(value!==undefined)n.nodeValue=raw.replace(trimmed,value);
+  });
+  document.querySelectorAll('[placeholder],[title],[aria-label]').forEach(el=>{
+   ['placeholder','title','aria-label'].forEach(attr=>{const v=el.getAttribute(attr);if(v&&dict[v])el.setAttribute(attr,dict[v]);});
+  });
+  document.documentElement.lang=language;document.documentElement.dir=language==='en'?'ltr':'rtl';document.body.dir=language==='en'?'ltr':'rtl';
+  const btn=document.getElementById('languageToggle');if(btn){btn.textContent=language==='en'?'عربي':'EN';btn.title=language==='en'?'Switch to Arabic':'Switch to English';}
+ }
+ function init(){
+  const btn=document.getElementById('languageToggle');if(!btn||btn.dataset.bound)return;
+  btn.dataset.bound='1';btn.addEventListener('click',()=>{language=language==='ar'?'en':'ar';localStorage.setItem('hesabati_language',language);translate();});
+  translate();
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+ document.addEventListener('click',()=>{if(language==='en')setTimeout(translate,0);},true);
+})();
 })();
 </script>
 
