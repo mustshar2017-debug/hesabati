@@ -1929,6 +1929,7 @@ function buildUI(){
  const network=document.getElementById('hnNetworkApp');
  const authView=el('div',{className:'hn-auth-view',id:'hnAuthView'});
  const appView=el('div',{className:'hn-app-view',id:'hnAppView'});
+ appView.hidden=true;
  const initialChildren=[...card.children].filter(node=>node!==network);
  initialChildren.forEach(node=>authView.appendChild(node));
  card.append(authView,appView);
