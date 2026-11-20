@@ -2880,19 +2880,28 @@ document.addEventListener('click',function(event){const button=event.target&&eve
  const reverse=Object.fromEntries(Object.entries(translations).map(([a,b])=>[b,a]));
  let language=localStorage.getItem('hesabati_language')==='en'?'en':'ar';
  const excluded=new Set(['SCRIPT','STYLE','NOSCRIPT','TEXTAREA','INPUT','OPTION']);
- function translate(){
+ function translate(root=document.body){
   const dict=language==='en'?translations:reverse;
-  const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
-  const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
-  nodes.forEach(n=>{if(excluded.has(n.parentElement&&n.parentElement.tagName))return;
-   const raw=n.nodeValue, trimmed=raw.trim();if(!trimmed)return;
+  const translateText=n=>{
+   if(!n||n.nodeType!==Node.TEXT_NODE||excluded.has(n.parentElement&&n.parentElement.tagName))return;
+   const raw=n.nodeValue,trimmed=raw.trim();if(!trimmed)return;
    const value=dict[trimmed];if(value!==undefined)n.nodeValue=raw.replace(trimmed,value);
-  });
-  document.querySelectorAll('[placeholder],[title],[aria-label]').forEach(el=>{
-   ['placeholder','title','aria-label'].forEach(attr=>{const v=el.getAttribute(attr);if(v&&dict[v])el.setAttribute(attr,dict[v]);});
-  });
-  document.documentElement.lang=language;document.documentElement.dir=language==='en'?'ltr':'rtl';document.body.dir=language==='en'?'ltr':'rtl';
-  const btn=document.getElementById('languageToggle');if(btn){btn.textContent=language==='en'?'عربي':'EN';btn.title=language==='en'?'Switch to Arabic':'Switch to English';}
+  };
+  if(root.nodeType===Node.TEXT_NODE){translateText(root);return;}
+  if(root.nodeType!==Node.ELEMENT_NODE&&root.nodeType!==Node.DOCUMENT_NODE&&root.nodeType!==Node.DOCUMENT_FRAGMENT_NODE)return;
+  if(root.nodeType===Node.ELEMENT_NODE&&root.matches('[placeholder],[title],[aria-label]'))translateAttributes(root);
+  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+  while(walker.nextNode())translateText(walker.currentNode);
+  const elements=root.querySelectorAll?root.querySelectorAll('[placeholder],[title],[aria-label]'):[];
+  elements.forEach(translateAttributes);
+  if(root===document.body){
+   document.documentElement.lang=language;document.documentElement.dir=language==='en'?'ltr':'rtl';document.body.dir=language==='en'?'ltr':'rtl';
+   const btn=document.getElementById('languageToggle');if(btn){btn.textContent=language==='en'?'عربي':'EN';btn.title=language==='en'?'Switch to Arabic':'Switch to English';}
+  }
+ }
+ function translateAttributes(el){
+  const dict=language==='en'?translations:reverse;
+  ['placeholder','title','aria-label'].forEach(attr=>{const v=el.getAttribute(attr);if(v&&dict[v])el.setAttribute(attr,dict[v]);});
  }
  function init(){
   const btn=document.getElementById('languageToggle');if(!btn||btn.dataset.bound)return;
@@ -2900,13 +2909,15 @@ document.addEventListener('click',function(event){const button=event.target&&eve
   translate();
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
- document.addEventListener('click',()=>{if(language==='en')setTimeout(translate,0);},true);
- // Translate newly rendered internal pages, cards, and dynamically added labels as well.
+ // Translate only newly inserted content; never rescan the entire app for each UI change.
  const observer=new MutationObserver(records=>{
   if(language!=='en')return;
-  let added=false;
-  for(const record of records){if(record.type==='childList'&&record.addedNodes.length){added=true;break;}}
-  if(added)translate();
+  for(const record of records){
+   if(record.type!=='childList')continue;
+   record.addedNodes.forEach(node=>{
+    if(node.nodeType===Node.ELEMENT_NODE||node.nodeType===Node.TEXT_NODE)translate(node);
+   });
+  }
  });
  observer.observe(document.body,{childList:true,subtree:true});
 })();
