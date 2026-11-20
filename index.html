@@ -1600,7 +1600,7 @@ body.dark .supplier-balance-line{background:#203a33;color:#b9f1df}body.dark .sup
  },true);
 })();
 </script>
-<style id="stock-barcode-tools">#stockBarcodeModal{position:fixed;inset:0;z-index:12000;background:#071b1dcc;display:none;align-items:center;justify-content:center;padding:14px}#stockBarcodeModal.open{display:flex}#stockBarcodeModal .barcode-card{width:min(100%,520px);max-height:92vh;overflow:auto;background:#fff;color:#17212b;border-radius:16px;padding:16px}#stockBarcodeCameraFrame{position:relative;width:100%;max-height:42vh;overflow:hidden;border-radius:12px;background:#111}#stockBarcodeVideo{display:block;width:100%;max-height:42vh;object-fit:cover;background:#111;border-radius:12px}#stockBarcodeReader{position:relative;min-height:260px;background:#111;overflow:hidden}#stockBarcodeReader video{width:100%!important;max-height:42vh!important;object-fit:cover}#stockBarcodeReader:after,.stockBarcodeScanLine{content:"";position:absolute;z-index:20;left:4%;width:92%;height:3px;top:4%;background:linear-gradient(90deg,transparent,#00ff9d 12%,#fff 50%,#00ff9d 88%,transparent);box-shadow:0 0 8px 2px #00ff9d,0 0 18px 4px #00ff9d;pointer-events:none;animation:stockBarcodeSweep 2.2s ease-in-out infinite alternate}#stockBarcodeReader:after{left:4%;width:92%}@keyframes stockBarcodeSweep{from{top:4%}to{top:94%}}#stockBarcodeResult{padding:12px;background:#f2f6f4;border-radius:10px;margin-top:10px;color:#17212b;line-height:1.8}</style>
+<style id="stock-barcode-tools">#stockBarcodeModal{position:fixed;inset:0;z-index:12000;background:#071b1dcc;display:none;align-items:center;justify-content:center;padding:14px}#stockBarcodeModal.open{display:flex}#stockBarcodeModal .barcode-card{width:min(100%,520px);max-height:92vh;overflow:auto;background:#fff;color:#17212b;border-radius:16px;padding:16px}#stockBarcodeCameraFrame{position:relative;width:100%;max-height:42vh;overflow:hidden;border-radius:12px;background:#111}#stockBarcodeVideo{display:block;width:100%;max-height:42vh;object-fit:contain;background:#111;border-radius:12px}#stockBarcodeReader{position:relative;min-height:260px;background:#111;overflow:hidden}#stockBarcodeReader video{width:100%!important;max-height:42vh!important;object-fit:contain!important;background:#111}#stockBarcodeReader:after,.stockBarcodeScanLine{content:"";position:absolute;z-index:20;left:4%;width:92%;height:3px;top:4%;background:linear-gradient(90deg,transparent,#00ff9d 12%,#fff 50%,#00ff9d 88%,transparent);box-shadow:0 0 8px 2px #00ff9d,0 0 18px 4px #00ff9d;pointer-events:none;animation:stockBarcodeSweep 2.2s ease-in-out infinite alternate}#stockBarcodeReader:after{left:4%;width:92%}@keyframes stockBarcodeSweep{from{top:4%}to{top:94%}}#stockBarcodeResult{padding:12px;background:#f2f6f4;border-radius:10px;margin-top:10px;color:#17212b;line-height:1.8}</style>
 <div id="stockBarcodeModal" aria-hidden="true"><div class="barcode-card"><div style="display:flex;justify-content:space-between"><h3>ماسح رمز QR والباركود</h3><button type="button" id="stockBarcodeClose">إغلاق ✕</button></div><div id="stockBarcodeCameraFrame"><video id="stockBarcodeVideo" playsinline muted></video><div class="stockBarcodeScanLine"></div></div><div id="stockBarcodeReader" style="display:none;width:100%;overflow:hidden;border-radius:12px"></div><div id="stockBarcodeResult">وجّه الكاميرا نحو رمز QR أو الباركود لقراءته تلقائياً.</div><div style="display:flex;gap:8px;margin-top:10px;direction:ltr"><input id="stockBarcodeManual" type="text" inputmode="numeric" autocomplete="off" placeholder="أدخل رقم الباركود يدوياً" style="flex:1;min-width:0;padding:11px;border:1px solid #aab8b1;border-radius:8px;text-align:center;font-size:16px"><button type="button" id="stockBarcodeCheck" style="white-space:nowrap">تحقق</button></div><button type="button" id="stockBarcodeAgain">إعادة المسح</button></div></div>
 <script id="stock-barcode-scanner">
 (function(){
@@ -1640,9 +1640,21 @@ async function startFallback(){
  htmlScanner=new Html5Qrcode('stockBarcodeReader',{verbose:false});
  scannerMode='html5';
  const supported=window.Html5QrcodeSupportedFormats||{};
- const selected=['QR_CODE','EAN_13','EAN_8','CODE_128','CODE_39','UPC_A','UPC_E','ITF','CODABAR'].map(k=>supported[k]).filter(v=>v!==undefined);
- await htmlScanner.start({facingMode:'environment'},{fps:15,disableFlip:false,...(selected.length?{formatsToSupport:selected}:{})},decoded=>{if(scannerMode==='html5'){scannerMode='done';showCode(decoded);}},()=>{});
- message('وجّه الكاميرا الخلفية نحو رمز QR أو الباركود.');
+ const selected=['EAN_13','EAN_8','UPC_A','UPC_E','CODE_128','CODE_39','ITF','CODABAR','QR_CODE'].map(k=>supported[k]).filter(v=>v!==undefined);
+ let camera={facingMode:'environment'};
+ try{
+  const cameras=await HtmlScannerCameras();
+  const rear=cameras.find(c=>/back|rear|environment|خلف/i.test(c.label||''))||cameras[cameras.length-1];
+  if(rear&&rear.id)camera=rear.id;
+ }catch(e){}
+ await htmlScanner.start(camera,{fps:20,disableFlip:true,videoConstraints:{width:{ideal:1920},height:{ideal:1080}},...(selected.length?{formatsToSupport:selected}:{})},decoded=>{
+  if(scannerMode==='html5'){scannerMode='done';showCode(String(decoded||'').trim());}
+ },()=>{});
+ message('حرّك الباركود داخل الإطار الأخضر، واجعل الخطوط واضحة وكاملة دون قصّ الأطراف.');
+}
+async function HtmlScannerCameras(){
+ if(!window.Html5Qrcode||typeof Html5Qrcode.getCameras!=='function')return [];
+ return await Html5Qrcode.getCameras();
 }
 async function startNative(){
  if(!('BarcodeDetector'in window))throw new Error('native-unavailable');
