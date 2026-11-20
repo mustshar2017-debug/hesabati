@@ -2876,6 +2876,22 @@ document.addEventListener('click',function(event){const button=event.target&&eve
  'تعديل أسماء الأيقونات':'Edit icon names','إعدادات التطبيق':'App settings',
  'نبذة عنّا':'About us','مشاركة التطبيق':'Share app','تقييم التطبيق':'Rate app',
  'إرسال ملاحظات أو الإبلاغ عن مشكلة':'Send feedback or report a problem'
+ // Correct common legacy labels and spelling variants found in the English interface.
+ 'إدارة التوازن':'Balance management',
+ 'مراجعة التحقيقات':'Review transactions',
+ 'بنكاك':'Bankak',
+ 'طالعة جديدة':'New transfer',
+ 'حوالة جديدة':'New transfer',
+ 'حوالة جديد':'New transfer',
+ 'سند وارد':'Incoming voucher',
+ 'سند حي':'Outgoing voucher',
+ 'سندنس':'Incoming voucher',
+ 'تواريخ':'Dates',
+ 'الهند':'Home',
+ 'إدارة الطبلية':'Inventory management',
+ 'مراجعة الحركات':'Review transactions',
+ 'السعر':'Price',
+
  };
  const reverse=Object.fromEntries(Object.entries(translations).map(([a,b])=>[b,a]));
  let language=localStorage.getItem('hesabati_language')==='en'?'en':'ar';
