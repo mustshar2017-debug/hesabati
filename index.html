@@ -1956,6 +1956,11 @@ function buildUI(){
  const grid=document.getElementById('hnHomeGrid');
  tileData.forEach(([id,icon,title,sub])=>{const b=el('button',{type:'button',className:'hn-home-tile','data-page':id});b.innerHTML='<span class="hn-tile-icon">'+icon+'</span><span><strong>'+title+'</strong><small>'+sub+'</small></span>';b.addEventListener('click',()=>{showNetworkPage(id);if(id==='inbox')loadConversations();if(id==='contacts')loadContacts();});grid.appendChild(b);});
  home.innerHTML='<div class="hn-muted">اختر القسم الذي تريد فتحه</div>';
+ /* اجعل الترحيب وأيقونات الأقسام جزءاً من صفحة الرئيسية نفسها؛ وعند فتح أي قسم تختفي الرئيسية بالكامل. */
+ const welcome=document.getElementById('hnWelcome');
+ const homeGrid=document.getElementById('hnHomeGrid');
+ if(welcome)home.appendChild(welcome);
+ if(homeGrid)home.appendChild(homeGrid);
  pages.prepend(home);
  network.replaceChildren(home,pages);
  appView.appendChild(network);
