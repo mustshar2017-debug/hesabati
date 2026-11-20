@@ -969,6 +969,7 @@ function prepareLockScreen(){
 }
 $('unlockForm').addEventListener('submit',async e=>{
  e.preventDefault();
+ if(!e.isTrusted){$('lockMessage').textContent='اضغط زر فتح التطبيق بنفسك للمتابعة.';return;}
  const pin=$('pinInput').value;
  if(!pinValid(pin)){$('lockMessage').textContent='كلمة السر يجب أن تكون من 4 إلى 8 أرقام.';return;}
  try{
@@ -1005,6 +1006,11 @@ $('changePinForm').addEventListener('submit',async e=>{
  let lastDailyDate=today();
  setInterval(()=>{const current=today();if(current!==lastDailyDate){const previous=lastDailyDate;lastDailyDate=current;document.querySelectorAll('input[type=date]').forEach(input=>{if(input.value===previous)input.value=current;});render();}},30000);
  prepareLockScreen();
+ // حارس شاشة القفل: لا يسمح بإخفائها تلقائياً قبل إدخال كلمة السر يدوياً.
+ const keepLockVisible=()=>{if(!appUnlocked && $('lockScreen') && $('lockScreen').hidden)$('lockScreen').hidden=false;};
+ new MutationObserver(keepLockVisible).observe($('lockScreen'),{attributes:true,attributeFilter:['hidden']});
+ window.addEventListener('pageshow',keepLockVisible);
+ document.addEventListener('visibilitychange',keepLockVisible);
 </script>
 <script>
 if ('serviceWorker' in navigator) {
