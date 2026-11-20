@@ -3096,51 +3096,6 @@ document.addEventListener('click',function(event){const button=event.target&&eve
 #phonesHub.quick-recharge #rechargeCard{position:relative!important;z-index:25001!important}
 #phonesHub.quick-recharge #rechargeForm input{position:relative!important;z-index:25002!important;-webkit-user-select:text!important;user-select:text!important;touch-action:auto!important}
 </style>
-<style id="hesabati-input-diagnostic-style">
-#hesabatiInputDiagnostic{position:fixed;top:max(8px,env(safe-area-inset-top));left:8px;right:8px;z-index:30050;display:none;padding:9px 12px;border-radius:10px;background:#173d37;color:#fff;font:600 13px/1.5 Tahoma,Arial,sans-serif;text-align:center;box-shadow:0 3px 14px #0003;pointer-events:none}
-</style>
-<div id="hesabatiInputDiagnostic" role="status" aria-live="polite"></div>
-<script id="hesabati-input-diagnostic">
-(function(){
- 'use strict';
- const box=document.getElementById('hesabatiInputDiagnostic');
- const selector='input:not([disabled]):not([readonly]),textarea:not([disabled]):not([readonly]),select:not([disabled])';
- let lastField='',timer=0;
- function nameOf(el){
-  if(!el)return 'غير معروف';
-  return el.id?'#'+el.id:(el.name?'حقل '+el.name:el.tagName.toLowerCase());
- }
- function show(message){
-  if(!box)return;
-  box.textContent=message;
-  box.style.display='block';
-  clearTimeout(timer);
-  timer=setTimeout(()=>{box.style.display='none';},6500);
- }
- document.addEventListener('focusin',function(e){
-  if(e.target&&e.target.matches&&e.target.matches(selector)){
-   lastField=nameOf(e.target);
-   show('تم التركيز على '+lastField+' — جرّب الكتابة الآن');
-  }
- },true);
- document.addEventListener('focusout',function(e){
-  if(e.target&&e.target.matches&&e.target.matches(selector)){
-   const old=nameOf(e.target);
-   setTimeout(function(){
-    const active=document.activeElement;
-    if(active!==e.target){
-     show('الحقل '+old+' فقد التركيز. العنصر النشط الآن: '+nameOf(active));
-    }
-   },80);
-  }
- },true);
- document.addEventListener('input',function(e){
-  if(e.target&&e.target.matches&&e.target.matches(selector))show('الإدخال يعمل في '+nameOf(e.target));
- },true);
- document.addEventListener('keydown',function(e){
-  if(e.target&&e.target.matches&&e.target.matches(selector))show('وصلت ضغطة لوحة المفاتيح إلى '+nameOf(e.target));
- },true);
-})();
-</script>
+
 </body>
 </html>
