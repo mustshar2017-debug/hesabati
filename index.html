@@ -2193,6 +2193,7 @@ async function sendMessage(){
 }
 
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',buildUI,{once:true});else buildUI();
+document.addEventListener('click',function(event){const button=event.target&&event.target.closest?event.target.closest('#hesabatiNetworkLaunch'):null;if(button){event.preventDefault();openModal();}},true);
 })();
 </script>
 
