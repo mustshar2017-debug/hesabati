@@ -833,7 +833,25 @@ footer{color:#a9c2b5!important}
   </div>
 </div>
 <script>
-const KEY='hisabati_v1';let db=JSON.parse(localStorage.getItem(KEY)||'{"stock":[],"transfers":[],"recharges":[],"expenses":[],"services":[]}');db.services=db.services||[];db.supplierTransfers=Array.isArray(db.supplierTransfers)?db.supplierTransfers:[];
+const KEY='hisabati_v1';
+const DEFAULT_DB={stock:[],transfers:[],recharges:[],expenses:[],services:[],supplierTransfers:[]};
+function loadCoreDatabase(){
+ let raw=null,parsed=null;
+ try{raw=localStorage.getItem(KEY);parsed=raw?JSON.parse(raw):null;}
+ catch(error){
+  try{if(raw!==null&&!localStorage.getItem('hisabati_v1_recovery_backup'))localStorage.setItem('hisabati_v1_recovery_backup',raw);}catch(_){}
+  console.error('تعذر قراءة بيانات حساباتي؛ تم الاحتفاظ بالنص الأصلي للنسخة الاحتياطية.',error);
+  return {...DEFAULT_DB};
+ }
+ if(!parsed||typeof parsed!=='object'||Array.isArray(parsed)){
+  if(raw!==null){try{if(!localStorage.getItem('hisabati_v1_recovery_backup'))localStorage.setItem('hisabati_v1_recovery_backup',raw);}catch(_){}}
+  return {...DEFAULT_DB};
+ }
+ const data={...DEFAULT_DB,...parsed};
+ for(const key of Object.keys(DEFAULT_DB))if(!Array.isArray(data[key]))data[key]=[];
+ return data;
+}
+let db=loadCoreDatabase();
 const $=id=>document.getElementById(id), today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}, fmt=n=>(Number(n)||0).toLocaleString('en-US',{maximumFractionDigits:2});
 document.querySelectorAll('input[type=date]').forEach(x=>x.value=today());$('monthFilter').value=today().slice(0,7);
 function save(){localStorage.setItem(KEY,JSON.stringify(db));render()}
@@ -1023,15 +1041,9 @@ $('changePinForm').addEventListener('submit',async e=>{
  window.addEventListener('pageshow',keepLockVisible);
  document.addEventListener('visibilitychange',keepLockVisible);
 </script>
-<script id="hesabati-force-update-v10">
+<script id="hesabati-force-update-v11">
 (function(){
   if(!('serviceWorker' in navigator))return;
-  let reloading=false;
-  navigator.serviceWorker.addEventListener('controllerchange',function(){
-    if(reloading)return;
-    reloading=true;
-    window.location.reload();
-  });
   async function updateApp(){
     try{
       const registration=await navigator.serviceWorker.register('./service-worker.js',{updateViaCache:'none'});
