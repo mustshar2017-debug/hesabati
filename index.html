@@ -1641,10 +1641,11 @@ async function startFallback(){
  scannerMode='html5';
  const supported=window.Html5QrcodeSupportedFormats||{};
  const selected=['EAN_13','EAN_8','UPC_A','UPC_E','CODE_128','CODE_39','ITF','CODABAR','QR_CODE'].map(k=>supported[k]).filter(v=>v!==undefined);
- let camera={facingMode:'environment'};
+ // اطلب الكاميرا الخلفية صراحةً. لا تختَر آخر كاميرا عشوائياً لأن ترتيب الأجهزة يختلف بين الهواتف.
+ let camera={facingMode:{exact:'environment'}};
  try{
   const cameras=await HtmlScannerCameras();
-  const rear=cameras.find(c=>/back|rear|environment|خلف/i.test(c.label||''))||cameras[cameras.length-1];
+  const rear=cameras.find(c=>/back|rear|environment|خلفية|الخلفية/i.test(c.label||''));
   if(rear&&rear.id)camera=rear.id;
  }catch(e){}
  await htmlScanner.start(camera,{fps:20,disableFlip:true,videoConstraints:{width:{ideal:1920},height:{ideal:1080}},...(selected.length?{formatsToSupport:selected}:{})},decoded=>{
