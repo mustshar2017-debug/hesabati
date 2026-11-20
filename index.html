@@ -1910,6 +1910,8 @@ const SUPABASE_URL='https://kfljdcdqtenxiriahauh.supabase.co';
 const SUPABASE_KEY='sb_publishable_SOnPH4i93_mPmLTtTnagXg_2c_fXTbH';
 const REDIRECT_URL='https://mustshar2017-debug.github.io/hesabati/';
 let client=null, currentUser=null;
+let setNetworkView=()=>{};
+let showNetworkPage=()=>{};
 function el(tag,attrs={},html=''){const n=document.createElement(tag);Object.entries(attrs).forEach(([k,v])=>{if(k==='className')n.className=v;else n.setAttribute(k,v)});if(html)n.innerHTML=html;return n;}
 function status(message,isError=false){const box=document.getElementById('hnStatus');if(box){box.textContent=message;box.style.background=isError?'#fff0ef':'#f0f7f3';box.style.color=isError?'#9d2929':'#24543d';}}
 function normalizeUsername(v){return String(v||'').trim().replace(/^@+/,'').toLowerCase();}
@@ -1959,8 +1961,8 @@ function buildUI(){
  network.replaceChildren(home,pages);
  appView.appendChild(network);
  document.getElementById('hnAppClose').addEventListener('click',closeModal);
- function showNetworkPage(id){[...network.querySelectorAll('.hn-page')].forEach(p=>p.hidden=true);const target=id==='home'?home:document.getElementById('hnPage-'+id);if(target)target.hidden=false;}
- function setNetworkView(signedIn){authView.hidden=!!signedIn;appView.hidden=!signedIn;if(signedIn){network.hidden=false;showNetworkPage('home');const w=document.getElementById('hnWelcome');if(w&&currentUser)w.textContent='مرحباً بك · '+(currentUser.email||'حسابك');}}
+ showNetworkPage=function(id){[...network.querySelectorAll('.hn-page')].forEach(p=>p.hidden=true);const target=id==='home'?home:document.getElementById('hnPage-'+id);if(target)target.hidden=false;};
+ setNetworkView=function(signedIn){authView.hidden=!!signedIn;appView.hidden=!signedIn;if(signedIn){network.hidden=false;showNetworkPage('home');const w=document.getElementById('hnWelcome');if(w&&currentUser)w.textContent='مرحباً بك · '+(currentUser.email||'حسابك');}};
  showNetworkPage('home');
 
  document.getElementById('hnClose').addEventListener('click',closeModal);
