@@ -3106,18 +3106,24 @@ document.addEventListener('click',function(event){const button=event.target&&eve
 
 <script id="mobile-input-compatibility-v1">
 (function(){
-  // Keep numeric fields native, while explicitly requesting the suitable mobile keypad.
-  document.querySelectorAll('input[type="number"]').forEach(function(field){
+  function prepareNumericFields(root){
+    if(root.matches && root.matches('input[type="number"]')) prepare(root);
+    if(root.querySelectorAll) root.querySelectorAll('input[type="number"]').forEach(prepare);
+  }
+  function prepare(field){
     if(!field.hasAttribute('inputmode')) field.setAttribute('inputmode','decimal');
     field.setAttribute('enterkeyhint','next');
     field.setAttribute('autocomplete','off');
-  });
-  // Do not steal focus from a field after the user has started typing.
-  document.addEventListener('focusin',function(event){
-    const field=event.target;
-    if(!field || !field.matches('input,textarea,select')) return;
-    field.dataset.hesabatiUserFocused='1';
-  },true);
+  }
+  prepareNumericFields(document);
+  // Also cover forms and fields created later by the app.
+  new MutationObserver(function(records){
+    records.forEach(function(record){
+      record.addedNodes.forEach(function(node){
+        if(node.nodeType===1) prepareNumericFields(node);
+      });
+    });
+  }).observe(document.documentElement,{childList:true,subtree:true});
 })();
 </script>
 </body>
