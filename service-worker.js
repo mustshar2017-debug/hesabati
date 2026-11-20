@@ -1,23 +1,29 @@
-const CACHE = 'hesabati-shell-v9';
+const CACHE = 'hesabati-shell-v10';
 const STATIC_FILES = ['./manifest.webmanifest', './icons/icon.svg'];
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE).then(cache => cache.addAll(STATIC_FILES))
+    caches.open(CACHE)
+      .then(cache => cache.addAll(STATIC_FILES))
+      .then(() => self.skipWaiting())
   );
-  self.skipWaiting();
+});
+
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys.filter(key => key.startsWith('hesabati-shell-') && key !== CACHE)
-          .map(key => caches.delete(key))
-      )
-    )
-  );
-  self.clients.claim();
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(
+      keys.filter(key => key.startsWith('hesabati-shell-') && key !== CACHE)
+        .map(key => caches.delete(key))
+    );
+    await self.clients.claim();
+  })());
 });
 
 self.addEventListener('fetch', event => {
@@ -32,7 +38,6 @@ self.addEventListener('fetch', event => {
     url.pathname.endsWith('/');
 
   if (isAppShell) {
-    // Never serve an old cached application shell over a newer release.
     event.respondWith(
       fetch(request, { cache: 'no-store' }).catch(() =>
         new Response(
