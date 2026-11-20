@@ -257,6 +257,183 @@ footer{color:#aeb4c0}
  #inventory .products-a4-table{width:100%;max-width:none}
 }
 </style>
+
+<style id="hesabati-login-redesign-v1">
+/* إعادة تصميم شاشة الدخول فقط - دون المساس بوظائف المصادقة */
+#hesabatiNetworkModal .hn-card:has(>.hn-auth-view:not([hidden])) {
+  width:min(100%,460px);
+  max-height:94vh;
+  padding:0;
+  overflow:auto;
+  border:1px solid #d7b96b;
+  border-radius:26px;
+  background:#fff;
+  box-shadow:0 28px 90px #001b1b70;
+}
+#hesabatiNetworkModal .hn-auth-view {
+  padding:26px 24px 22px;
+  background:
+    radial-gradient(ellipse at 50% 0%,#fff4d7 0%,#fff 42%),
+    #fff;
+  text-align:center;
+}
+#hesabatiNetworkModal .hn-auth-view>h2 {
+  position:relative;
+  margin:0 -24px 8px;
+  padding:104px 18px 15px;
+  color:#fff;
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:.1px;
+  background:linear-gradient(135deg,#073f35 0%,#087f62 58%,#13a276 100%);
+  border-bottom:4px solid #d6ad4f;
+  text-shadow:0 2px 4px #002d2555;
+}
+#hesabatiNetworkModal .hn-auth-view>h2:before {
+  content:"";
+  position:absolute;
+  top:17px;
+  left:50%;
+  transform:translateX(-50%);
+  width:70px;
+  height:70px;
+  border-radius:21px;
+  border:2px solid #e4c36e;
+  background:linear-gradient(145deg,#f8e6a8,#d2a63e);
+  box-shadow:0 5px 18px #002a2445,inset 0 1px 0 #fff9;
+}
+#hesabatiNetworkModal .hn-auth-view>h2:after {
+  content:"▣";
+  position:absolute;
+  top:24px;
+  left:50%;
+  transform:translateX(-50%);
+  width:56px;
+  height:56px;
+  display:grid;
+  place-items:center;
+  color:#075342;
+  font-size:42px;
+  line-height:1;
+  text-shadow:0 1px 0 #fff8;
+}
+#hesabatiNetworkModal .hn-auth-view>.hn-muted {
+  margin:17px 0 20px;
+  color:#63786d;
+  font-size:13px;
+  line-height:1.9;
+}
+#hesabatiNetworkModal .hn-auth-view>label {
+  text-align:right;
+  color:#214b3c;
+  font-size:13px;
+  font-weight:850;
+  margin:13px 2px 6px;
+}
+#hesabatiNetworkModal .hn-auth-view>input {
+  min-height:49px;
+  border:1px solid #d4dfd6;
+  border-radius:13px;
+  background:#fbfdfb;
+  color:#183b30;
+  box-shadow:inset 0 1px 2px #123b3510;
+  transition:border-color .18s,box-shadow .18s;
+}
+#hesabatiNetworkModal .hn-auth-view>input:focus,
+#hesabatiNetworkModal .hn-auth-view .hn-password-wrap:focus-within {
+  outline:none;
+  border-color:#13815e;
+  box-shadow:0 0 0 3px #13815e20;
+  background:#fff;
+}
+#hesabatiNetworkModal .hn-auth-view .hn-password-wrap {
+  min-height:51px;
+  align-items:center;
+  border:1px solid #d4dfd6;
+  border-radius:13px;
+  padding:3px 5px;
+  background:#fbfdfb;
+  box-shadow:none;
+}
+#hesabatiNetworkModal .hn-auth-view .hn-password-wrap input {
+  min-height:43px;
+  text-align:right;
+  direction:rtl;
+  letter-spacing:normal;
+}
+#hesabatiNetworkModal .hn-auth-view .hn-password-toggle {
+  min-width:65px;
+  border-radius:9px;
+  background:#eaf5ed!important;
+  color:#126044!important;
+}
+#hesabatiNetworkModal .hn-auth-view .hn-password-hint {
+  text-align:right;
+  color:#718276;
+  line-height:1.8;
+  margin:7px 2px 4px;
+}
+#hesabatiNetworkModal .hn-auth-view .hn-actions {
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:18px;
+}
+#hesabatiNetworkModal .hn-auth-view .hn-actions button {
+  min-height:51px;
+  border-radius:13px;
+  font-size:14px;
+  box-shadow:0 5px 13px #07513a20;
+  transition:transform .15s,filter .15s;
+}
+#hesabatiNetworkModal .hn-auth-view .hn-actions button:active,
+#hesabatiNetworkModal .hn-auth-view .hn-google:active {
+  transform:translateY(1px);
+  filter:brightness(.96);
+}
+#hesabatiNetworkModal .hn-auth-view #hnSignIn {
+  background:linear-gradient(135deg,#087f62,#075442);
+  color:#fff;
+}
+#hesabatiNetworkModal .hn-auth-view #hnSignUp {
+  background:linear-gradient(135deg,#f4e3ad,#d9b65b);
+  color:#493812;
+  border:1px solid #caa64d;
+}
+#hesabatiNetworkModal .hn-auth-view .hn-google {
+  min-height:49px;
+  margin-top:11px;
+  border:1px solid #d8e1da;
+  border-radius:13px;
+  background:#fff;
+  color:#30473b;
+  box-shadow:0 2px 8px #183b3510;
+}
+#hesabatiNetworkModal .hn-auth-view .hn-status {
+  border:1px solid #dceadd;
+  border-radius:12px;
+  background:#f1f8f2;
+  color:#315d43;
+  text-align:right;
+  margin-top:14px;
+}
+#hesabatiNetworkModal .hn-auth-view .hn-account {
+  border-color:#d8e5d9;
+  border-radius:12px;
+  background:#fbfdfb;
+  text-align:right;
+}
+@media(max-width:480px) {
+  #hesabatiNetworkModal {padding:9px}
+  #hesabatiNetworkModal .hn-card:has(>.hn-auth-view:not([hidden])) {border-radius:22px}
+  #hesabatiNetworkModal .hn-auth-view {padding:21px 17px 18px}
+  #hesabatiNetworkModal .hn-auth-view>h2 {margin:0 -17px 8px;padding-top:100px;font-size:23px}
+  #hesabatiNetworkModal .hn-auth-view .hn-actions {grid-template-columns:1fr 1fr}
+}
+@media(max-width:350px) {
+  #hesabatiNetworkModal .hn-auth-view .hn-actions {grid-template-columns:1fr}
+}
+</style>
+
 </head>
 <body>
 <header><div class="wrap header-row"><div><div class="brand-line"><h1>حساباتي</h1><button id="themeToggle" class="theme-toggle" type="button" aria-label="تفعيل الوضع الليلي" title="تفعيل الوضع الليلي">☀️</button></div><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><div class="header-actions"><button class="menu-trigger" id="menuTrigger" type="button" aria-label="القائمة" aria-expanded="false">⋮</button><button class="secondary" id="lockNow" type="button">🔒 قفل الآن</button><div class="app-menu" id="appMenu" hidden><button type="button" data-menu-action="backup"><span class="menu-item-icon" aria-hidden="true">💾</span><span>حفظ نسخة احتياطية</span></button><button type="button" data-menu-action="labels"><span class="menu-item-icon" aria-hidden="true">✏️</span><span>تعديل أسماء الأيقونات</span></button><button type="button" data-menu-action="generalReport"><span class="menu-item-icon" aria-hidden="true">📊</span><span>تقرير عام مفصل</span></button><button type="button" data-menu-action="monthlyReport"><span class="menu-item-icon" aria-hidden="true">📅</span><span>التقرير الشهري</span></button><button type="button" data-menu-action="settings"><span class="menu-item-icon" aria-hidden="true">⚙️</span><span>إعدادات التطبيق</span></button><button type="button" data-menu-action="about"><span class="menu-item-icon" aria-hidden="true">ℹ️</span><span>نبذة عنّا</span></button><button type="button" data-menu-action="share"><span class="menu-item-icon" aria-hidden="true">📤</span><span>مشاركة التطبيق</span></button><button type="button" data-menu-action="rate"><span class="menu-item-icon" aria-hidden="true">⭐</span><span>تقييم التطبيق</span></button><button type="button" data-menu-action="feedback"><span class="menu-item-icon" aria-hidden="true">✉️</span><span>إرسال ملاحظات أو الإبلاغ عن مشكلة</span></button></div></div></div></header>
