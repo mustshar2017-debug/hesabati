@@ -3097,5 +3097,83 @@ document.addEventListener('click',function(event){const button=event.target&&eve
 #phonesHub.quick-recharge #rechargeForm input{position:relative!important;z-index:25002!important;-webkit-user-select:text!important;user-select:text!important;touch-action:auto!important}
 </style>
 
+<!-- Global Android input / virtual keyboard compatibility -->
+<style id="hesabati-input-window-compatibility">
+input:not([disabled]):not([readonly]),
+textarea:not([disabled]):not([readonly]),
+select:not([disabled]) {
+  pointer-events:auto !important;
+  -webkit-user-select:text !important;
+  user-select:text !important;
+  touch-action:auto !important;
+}
+body.hesabati-input-active { padding-bottom:0 !important; }
+body.hesabati-input-active #appBottomControls {
+  display:none !important;
+  pointer-events:none !important;
+}
+#appBottomControls[hidden] { display:none !important; }
+</style>
+<script id="hesabati-input-window-compatibility-script">
+(function(){
+  'use strict';
+  if (window.__hesabatiInputWindowCompatibility) return;
+  window.__hesabatiInputWindowCompatibility = true;
+
+  var editable = 'input:not([disabled]):not([readonly]),textarea:not([disabled]):not([readonly]),select:not([disabled])';
+
+  function activeField(){
+    var active = document.activeElement;
+    return !!(active && active.matches && active.matches(editable) &&
+      !active.disabled && !active.readOnly && active.type !== 'hidden');
+  }
+
+  function syncInputState(){
+    document.body.classList.toggle('hesabati-input-active', activeField());
+  }
+
+  function requestKeyboard(field){
+    if (!field || !field.matches || !field.matches(editable) ||
+        field.disabled || field.readOnly || field.type === 'hidden') return;
+    if (document.activeElement !== field) {
+      try { field.focus({preventScroll:true}); }
+      catch (_) { try { field.focus(); } catch (__) {} }
+    }
+    var keyboard = navigator.virtualKeyboard;
+    if (keyboard && typeof keyboard.show === 'function') {
+      try { keyboard.show(); }
+      catch (error) { console.debug('Virtual keyboard request unavailable', error); }
+    }
+  }
+
+  document.addEventListener('focusin', syncInputState, true);
+  document.addEventListener('focusout', function(){
+    Promise.resolve().then(syncInputState);
+  }, true);
+
+  if ('PointerEvent' in window) {
+    document.addEventListener('pointerup', function(event){
+      if (!event.isTrusted) return;
+      var field = event.target && event.target.closest ? event.target.closest(editable) : null;
+      if (field && document.activeElement === field) requestKeyboard(field);
+      syncInputState();
+    }, true);
+  } else {
+    document.addEventListener('touchend', function(event){
+      if (!event.isTrusted) return;
+      var field = event.target && event.target.closest ? event.target.closest(editable) : null;
+      if (field && document.activeElement === field) requestKeyboard(field);
+      syncInputState();
+    }, true);
+  }
+
+  window.addEventListener('resize', syncInputState, {passive:true});
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', syncInputState, {passive:true});
+  }
+  syncInputState();
+})();
+</script>
+
 </body>
 </html>
