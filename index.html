@@ -798,6 +798,14 @@ footer{color:#a9c2b5!important}
 </div><div class="inventory-view" data-inventory-view="history"><div class="inventory-view-head"><strong>📚 سجل الحركات والفواتير</strong><button type="button" class="secondary" data-inv-menu>رجوع للقوائم</button></div><div class="card" style="margin-top:12px"><h3>📚 سجل الحركات والفواتير</h3><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>الحركة</th><th>الصنف</th><th>الكمية</th><th>القيمة</th><th>التفاصيل</th></tr></thead><tbody id="inventoryHistoryRows"></tbody></table></div></div>
 </div></section>
 </main><footer id="hesabati-clean-footer"><span>حساباتي · حقوق النشر محفوظة © 2026 محمد عمر محمد اسحق</span></footer>
+<script id="remove-footer-stray-marker">
+(function(){
+ const footer=document.getElementById('hesabati-clean-footer');
+ if(!footer)return;
+ const next=footer.nextSibling;
+ if(next&&next.nodeType===Node.TEXT_NODE&&/^\\s*(?:\\/n|\\\\n)\\s*$/.test(next.nodeValue||''))next.remove();
+})();
+</script>
 </div>
 <div class="lock-screen" id="lockScreen">
   <div class="lock-card">
