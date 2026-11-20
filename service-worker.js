@@ -1,4 +1,4 @@
-const CACHE = 'hesabati-shell-v10';
+const CACHE = 'hesabati-shell-v11';
 const STATIC_FILES = ['./manifest.webmanifest', './icons/icon.svg'];
 
 self.addEventListener('install', event => {
@@ -10,9 +10,7 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('message', event => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
+  if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
@@ -29,33 +27,25 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const request = event.request;
   if (request.method !== 'GET') return;
-
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
+  // Always request the application shell from GitHub Pages; never show stale HTML.
   const isAppShell = request.mode === 'navigate' ||
-    url.pathname.endsWith('/index.html') ||
-    url.pathname.endsWith('/');
-
+    url.pathname.endsWith('/index.html') || url.pathname.endsWith('/');
   if (isAppShell) {
-    event.respondWith(
-      fetch(request, { cache: 'no-store' }).catch(() =>
-        new Response(
-          '<!doctype html><html lang="ar" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>حساباتي</title><body style="font-family:Tahoma,Arial,sans-serif;direction:rtl;padding:24px"><h2>لا يوجد اتصال بالخادم</h2><p>تحقق من الإنترنت ثم أعد فتح حساباتي.</p></body></html>',
-          { headers: { 'Content-Type': 'text/html; charset=utf-8' } }
-        )
-      )
-    );
+    event.respondWith(fetch(request, {cache:'no-store'}));
     return;
   }
 
+  // Static resources use the network first, with cache as an offline fallback.
   event.respondWith(
-    caches.match(request).then(hit => hit || fetch(request).then(response => {
+    fetch(request).then(response => {
       if (response && response.ok) {
         const copy = response.clone();
         caches.open(CACHE).then(cache => cache.put(request, copy));
       }
       return response;
-    }))
+    }).catch(() => caches.match(request))
   );
 });
