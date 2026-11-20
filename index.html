@@ -1605,10 +1605,10 @@ body.dark .supplier-balance-line{background:#203a33;color:#b9f1df}body.dark .sup
 <script id="stock-barcode-scanner">
 (function(){
 const $=id=>document.getElementById(id);
-let stream=null,active=false,raf=0,detector=null,htmlScanner=null,zxingControls=null,nativeFallbackTimer=null,scannerMode='';
+let stream=null,active=false,raf=0,detector=null,htmlScanner=null,zxingControls=null,nativeFallbackTimer=null,zbarRaf=0,zbarBusy=false,scannerMode='';
 const formats=['qr_code','ean_13','ean_8','code_128','code_39','upc_a','upc_e','itf','codabar'];
 function message(t){const n=$('stockBarcodeResult');if(n)n.textContent=t;}
-function stopNative(){active=false;if(nativeFallbackTimer){clearTimeout(nativeFallbackTimer);nativeFallbackTimer=null;}if(raf)cancelAnimationFrame(raf);raf=0;if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}const v=$('stockBarcodeVideo');if(v){v.pause();v.srcObject=null;}}
+function stopNative(){active=false;if(zbarRaf)cancelAnimationFrame(zbarRaf);zbarRaf=0;zbarBusy=false;if(nativeFallbackTimer){clearTimeout(nativeFallbackTimer);nativeFallbackTimer=null;}if(raf)cancelAnimationFrame(raf);raf=0;if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}const v=$('stockBarcodeVideo');if(v){v.pause();v.srcObject=null;}}
 async function stop(){
  stopNative();
  if(zxingControls){try{zxingControls.stop();}catch(e){}zxingControls=null;}
@@ -1640,6 +1640,42 @@ async function loadZxing(){
   if(existing){existing.addEventListener('load',()=>window.ZXing&&window.ZXing.BrowserMultiFormatReader?resolve():reject(new Error('مكتبة ZXing لم تكتمل')),{once:true});existing.addEventListener('error',()=>reject(new Error('تعذر تحميل مكتبة ZXing')),{once:true});return;}
   const script=document.createElement('script');script.id='zxing-barcode-lib';script.src='https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js';script.onload=()=>window.ZXing&&window.ZXing.BrowserMultiFormatReader?resolve():reject(new Error('لم يتم العثور على قارئ ZXing'));script.onerror=()=>reject(new Error('تعذر تحميل قارئ ZXing؛ تحقق من الإنترنت'));document.head.appendChild(script);
  });
+}
+async function loadZbar(){
+ return new Promise((resolve,reject)=>{
+  if(typeof window.scanImageData==='function'){resolve();return;}
+  const existing=document.getElementById('zbar-wasm-lib');
+  if(existing){existing.addEventListener('load',()=>typeof window.scanImageData==='function'?resolve():reject(new Error('قارئ ZBar لم يكتمل')),{once:true});existing.addEventListener('error',()=>reject(new Error('تعذر تحميل قارئ ZBar')),{once:true});return;}
+  const script=document.createElement('script');script.id='zbar-wasm-lib';script.src='https://cdn.jsdelivr.net/npm/@undecaf/zbar-wasm@0.11.0/dist/index.js';script.onload=()=>typeof window.scanImageData==='function'?resolve():reject(new Error('لم يتم تحميل محرك ZBar'));script.onerror=()=>reject(new Error('تعذر تحميل محرك ZBar؛ تحقق من الإنترنت'));document.head.appendChild(script);
+ });
+}
+async function startZbarVideo(video){
+ await loadZbar();
+ const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d',{willReadFrequently:true});
+ let last=0;
+ const run=async stamp=>{
+  if(scannerMode!=='zxing'&&scannerMode!=='zbar')return;
+  if(stamp-last<450){zbarRaf=requestAnimationFrame(run);return;}
+  last=stamp;
+  if(!zbarBusy&&video&&video.readyState>=2&&video.videoWidth){
+   zbarBusy=true;
+   try{
+    const w=video.videoWidth,h=video.videoHeight;
+    canvas.width=w;canvas.height=h;ctx.drawImage(video,0,0,w,h);
+    const imageData=ctx.getImageData(0,0,w,h);
+    const symbols=await window.scanImageData(imageData);
+    if(symbols&&symbols.length){
+     const symbol=symbols.find(x=>/EAN.?13|EAN-13/i.test(String(x.typeName||'')))||symbols[0];
+     const code=String(symbol.decode?symbol.decode():symbol.rawData||'').trim();
+     if(code){scannerMode='done';if(zbarRaf)cancelAnimationFrame(zbarRaf);zbarRaf=0;showCode(code);return;}
+    }
+   }catch(e){/* تستمر القراءة مع الإطار التالي */}
+   finally{zbarBusy=false;}
+  }
+  if(scannerMode==='zxing'||scannerMode==='zbar')zbarRaf=requestAnimationFrame(run);
+ };
+ scannerMode='zbar';message('محرك ZBar الاحتياطي يعمل الآن ويحلل صورة الكاميرا مباشرةً لقراءة EAN-13...');
+ zbarRaf=requestAnimationFrame(run);
 }
 async function improveCameraImage(video){
  try{
@@ -1677,7 +1713,7 @@ async function startZxing(){
  });
  if(scannerMode==='zxing')zxingControls=controls;
  await improveCameraImage(video);
- message('قارئ ZXing يعمل الآن مع تحسين التركيز والتقريب إن كان الهاتف يدعمه. ضع الباركود داخل منتصف الإطار الأخضر واجعل الخطوط واضحة.');
+ try{await startZbarVideo(video);}catch(zbarError){scannerMode='zxing';message('قارئ ZXing يعمل، وتعذر تحميل محرك ZBar البديل: '+(zbarError.message||'خطأ تحميل'));}
 }
 async function startFallback(){
  message('جارٍ تجهيز قارئ QR والباركود...');
