@@ -1605,12 +1605,13 @@ body.dark .supplier-balance-line{background:#203a33;color:#b9f1df}body.dark .sup
 <script id="stock-barcode-scanner">
 (function(){
 const $=id=>document.getElementById(id);
-let stream=null,active=false,raf=0,detector=null,htmlScanner=null,scannerMode='';
+let stream=null,active=false,raf=0,detector=null,htmlScanner=null,zxingControls=null,nativeFallbackTimer=null,scannerMode='';
 const formats=['qr_code','ean_13','ean_8','code_128','code_39','upc_a','upc_e','itf','codabar'];
 function message(t){const n=$('stockBarcodeResult');if(n)n.textContent=t;}
-function stopNative(){active=false;if(raf)cancelAnimationFrame(raf);raf=0;if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}const v=$('stockBarcodeVideo');if(v){v.pause();v.srcObject=null;}}
+function stopNative(){active=false;if(nativeFallbackTimer){clearTimeout(nativeFallbackTimer);nativeFallbackTimer=null;}if(raf)cancelAnimationFrame(raf);raf=0;if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}const v=$('stockBarcodeVideo');if(v){v.pause();v.srcObject=null;}}
 async function stop(){
  stopNative();
+ if(zxingControls){try{zxingControls.stop();}catch(e){}zxingControls=null;}
  if(htmlScanner){const x=htmlScanner;htmlScanner=null;try{if(x.isScanning)await x.stop();}catch(e){}try{x.clear();}catch(e){}}
  const reader=$('stockBarcodeReader');if(reader)reader.style.display='none';
  const video=$('stockBarcodeVideo');if(video)video.style.display='block';
@@ -1631,6 +1632,41 @@ function loadHtml5Qrcode(){
   if(existing){existing.addEventListener('load',()=>resolve(),{once:true});existing.addEventListener('error',()=>reject(new Error('تعذر تحميل مكتبة قارئ الرموز')),{once:true});return;}
   const script=document.createElement('script');script.id='html5-qrcode-lib';script.src='https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js';script.onload=()=>window.Html5Qrcode?resolve():reject(new Error('مكتبة المسح لم تكتمل'));script.onerror=()=>reject(new Error('تعذر تحميل مكتبة المسح؛ تحقق من الإنترنت'));document.head.appendChild(script);
  });
+}
+async function loadZxing(){
+ return new Promise((resolve,reject)=>{
+  if(window.ZXing&&window.ZXing.BrowserMultiFormatReader){resolve();return;}
+  const existing=document.getElementById('zxing-barcode-lib');
+  if(existing){existing.addEventListener('load',()=>window.ZXing&&window.ZXing.BrowserMultiFormatReader?resolve():reject(new Error('مكتبة ZXing لم تكتمل')),{once:true});existing.addEventListener('error',()=>reject(new Error('تعذر تحميل مكتبة ZXing')),{once:true});return;}
+  const script=document.createElement('script');script.id='zxing-barcode-lib';script.src='https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js';script.onload=()=>window.ZXing&&window.ZXing.BrowserMultiFormatReader?resolve():reject(new Error('لم يتم العثور على قارئ ZXing'));script.onerror=()=>reject(new Error('تعذر تحميل قارئ ZXing؛ تحقق من الإنترنت'));document.head.appendChild(script);
+ });
+}
+async function startZxing(){
+ message('جارٍ تشغيل قارئ باركود بديل...');
+ await loadZxing();
+ const video=$('stockBarcodeVideo'),reader=$('stockBarcodeReader');
+ reader.style.display='none';video.style.display='block';video.srcObject=null;
+ const cameras=await navigator.mediaDevices.enumerateDevices();
+ const devices=cameras.filter(d=>d.kind==='videoinput');
+ const rear=devices.find(d=>/back|rear|environment|خلفية|الخلفية/i.test(d.label||''))||devices[devices.length-1];
+ const hints=new Map();
+ if(window.ZXing.DecodeHintType&&window.ZXing.BarcodeFormat){
+  hints.set(window.ZXing.DecodeHintType.POSSIBLE_FORMATS,[
+   window.ZXing.BarcodeFormat.EAN_13,window.ZXing.BarcodeFormat.EAN_8,
+   window.ZXing.BarcodeFormat.UPC_A,window.ZXing.BarcodeFormat.UPC_E,
+   window.ZXing.BarcodeFormat.CODE_128,window.ZXing.BarcodeFormat.CODE_39,
+   window.ZXing.BarcodeFormat.ITF,window.ZXing.BarcodeFormat.QR_CODE
+  ].filter(Boolean));
+  hints.set(window.ZXing.DecodeHintType.TRY_HARDER,true);
+ }
+ const codeReader=new window.ZXing.BrowserMultiFormatReader(hints,350);
+ scannerMode='zxing';
+ const controls=await codeReader.decodeFromVideoDevice(rear?rear.deviceId:undefined,video,(result,err,ctrl)=>{
+  if(scannerMode!=='zxing')return;
+  if(result){const code=result.getText?result.getText():String(result.text||'');if(code){scannerMode='done';if(ctrl)try{ctrl.stop();}catch(e){}zxingControls=null;showCode(code.trim());}}
+ });
+ if(scannerMode==='zxing')zxingControls=controls;
+ message('قارئ ZXing يعمل الآن؛ وجّه الباركود كاملاً داخل الإطار الأخضر.');
 }
 async function startFallback(){
  message('جارٍ تجهيز قارئ QR والباركود...');
@@ -1674,18 +1710,23 @@ async function startNative(){
  const track=stream.getVideoTracks()[0];if(track&&track.applyConstraints){try{await track.applyConstraints({advanced:[{focusMode:'continuous'}]});}catch(e){}}
  message('قرّب الباركود قليلاً، واجعل الخطوط كاملة وواضحة داخل الصورة. جارٍ البحث تلقائياً...');
  const tick=async()=>{if(!active)return;try{if(v.readyState>=2){const codes=await detector.detect(v);if(codes.length){const code=String(codes[0].rawValue||'').trim();if(code){showCode(code);return;}}}}catch(e){}if(active)raf=requestAnimationFrame(tick);};tick();
+ // إذا ظل القارئ الأصلي يبحث دون أن يفك الرمز، انتقل تلقائياً إلى ZXing بدلاً من إبقاء المستخدم عالقاً.
+ nativeFallbackTimer=setTimeout(async()=>{if(!active||scannerMode!=='native')return;stopNative();try{await startZxing();}catch(zxingError){try{await startFallback();}catch(fallbackError){message('تعذر قراءة الباركود تلقائياً. استخدم خانة إدخال الرقم يدوياً أو أعد المحاولة.');}}},7000);
 }
 async function scan(){
  await stop();message('جارٍ تشغيل الكاميرا...');
  if(!window.isSecureContext){message('الكاميرا تحتاج اتصالاً آمناً. افتح التطبيق من رابط HTTPS.');return;}
  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){message('الكاميرا غير متاحة في هذا المتصفح. افتح الرابط في Chrome على الهاتف.');return;}
  try{
-  // ابدأ بقارئ المتصفح الأصلي لأنه أسرع في قراءة EAN-13 على هواتف Android، ثم استخدم المكتبة الاحتياطية إذا لم يدعمه الجهاز.
   try{await startNative();}
   catch(nativeError){
    await stop();
-   try{await startFallback();}
-   catch(fallbackError){await stop();const detail=fallbackError&&fallbackError.message||nativeError&&nativeError.message||'تعذر بدء المسح';message('تعذر تشغيل الماسح: '+detail+'. تحقق من إذن الكاميرا والإنترنت ثم أعد المحاولة.');}
+   try{await startZxing();}
+   catch(zxingError){
+    await stop();
+    try{await startFallback();}
+    catch(fallbackError){await stop();const detail=fallbackError&&fallbackError.message||zxingError&&zxingError.message||nativeError&&nativeError.message||'تعذر بدء المسح';message('تعذر تشغيل الماسح: '+detail+'. تحقق من إذن الكاميرا والإنترنت ثم أعد المحاولة.');}
+   }
   }
  }catch(e){await stop();message('تعذر تشغيل الكاميرا: '+(e.message||'تحقق من إذن الكاميرا ثم أعد المحاولة.'));}
 }
