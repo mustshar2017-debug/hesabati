@@ -434,6 +434,64 @@ footer{color:#aeb4c0}
 }
 </style>
 
+
+<style id="hesabati-lock-screen-redesign">
+/* تصميم شاشة القفل الأولى فقط — دون تغيير آلية الرقم السري */
+.lock-screen{
+ background:
+  radial-gradient(circle at 12% 12%,rgba(231,190,86,.22),transparent 34%),
+  radial-gradient(circle at 90% 88%,rgba(67,190,145,.24),transparent 35%),
+  linear-gradient(145deg,#063d35 0%,#087b62 52%,#06483e 100%);
+ padding:22px;
+}
+.lock-card{
+ position:relative;isolation:isolate;overflow:hidden;
+ width:min(100%,410px);padding:32px 25px 25px;
+ border:1px solid rgba(224,190,105,.65);border-radius:26px;
+ background:linear-gradient(160deg,#fff 0%,#f8fcf8 72%,#f0f7f1 100%);
+ box-shadow:0 24px 70px rgba(0,20,16,.38),inset 0 1px 0 #fff;
+}
+.lock-card:before{
+ content:"";position:absolute;z-index:-1;top:0;left:0;right:0;height:7px;
+ background:linear-gradient(90deg,#c99a36,#f0d58a,#0a8a69,#c99a36);
+}
+.lock-card:after{
+ content:"";position:absolute;z-index:-1;width:190px;height:190px;border-radius:50%;
+ top:-112px;right:-75px;background:rgba(13,139,103,.055);
+}
+.lock-card>div:first-child{
+ display:grid;place-items:center;width:82px;height:82px;margin:0 auto 16px;
+ border-radius:25px;border:1px solid #e8d39b;
+ background:linear-gradient(145deg,#e4f5eb,#fff8e5);
+ box-shadow:0 7px 18px rgba(10,93,67,.12);
+ font-size:43px!important;
+}
+.lock-card h2{font-size:25px;font-weight:900;color:#104b3d;margin:0 0 9px;letter-spacing:-.4px}
+.lock-card p{color:#64756d;font-size:14px;line-height:1.8;margin:0 0 18px}
+.lock-card form{display:grid;grid-template-columns:1fr;gap:11px;margin:0}
+.lock-card input{
+ box-sizing:border-box;width:100%;min-height:57px;margin:0;padding:13px 16px;
+ border:1.5px solid #d7e6dc;border-radius:14px;background:#fff;
+ color:#153f34;font-size:23px;font-weight:800;letter-spacing:8px;
+ box-shadow:inset 0 1px 3px rgba(15,70,48,.04);
+}
+.lock-card input:focus{outline:none;border-color:#168866;box-shadow:0 0 0 4px rgba(22,136,102,.12)}
+.lock-card input::placeholder{color:#a8b8ae;letter-spacing:4px;font-size:16px}
+.lock-card .primary{
+ width:100%;min-height:54px;margin-top:3px;border:1px solid #c79d43;border-radius:14px;
+ background:linear-gradient(115deg,#087653,#0b9a70);color:#fff;
+ font-size:16px;font-weight:900;box-shadow:0 7px 16px rgba(5,111,78,.2);
+}
+.lock-card .primary:active{transform:translateY(1px);filter:brightness(.96)}
+.lock-error{margin-top:10px;color:#b42318;font-weight:700;line-height:1.6}
+.lock-card>p:last-child{margin:13px 0 0;color:#87958d;font-size:12px}
+@media(max-width:420px){
+ .lock-screen{padding:17px}
+ .lock-card{padding:27px 19px 22px;border-radius:23px}
+ .lock-card h2{font-size:23px}
+}
+</style>
+
 </head>
 <body>
 <header><div class="wrap header-row"><div><div class="brand-line"><h1>حساباتي</h1><button id="themeToggle" class="theme-toggle" type="button" aria-label="تفعيل الوضع الليلي" title="تفعيل الوضع الليلي">☀️</button></div><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><div class="header-actions"><button class="menu-trigger" id="menuTrigger" type="button" aria-label="القائمة" aria-expanded="false">⋮</button><button class="secondary" id="lockNow" type="button">🔒 قفل الآن</button><div class="app-menu" id="appMenu" hidden><button type="button" data-menu-action="backup"><span class="menu-item-icon" aria-hidden="true">💾</span><span>حفظ نسخة احتياطية</span></button><button type="button" data-menu-action="labels"><span class="menu-item-icon" aria-hidden="true">✏️</span><span>تعديل أسماء الأيقونات</span></button><button type="button" data-menu-action="generalReport"><span class="menu-item-icon" aria-hidden="true">📊</span><span>تقرير عام مفصل</span></button><button type="button" data-menu-action="monthlyReport"><span class="menu-item-icon" aria-hidden="true">📅</span><span>التقرير الشهري</span></button><button type="button" data-menu-action="settings"><span class="menu-item-icon" aria-hidden="true">⚙️</span><span>إعدادات التطبيق</span></button><button type="button" data-menu-action="about"><span class="menu-item-icon" aria-hidden="true">ℹ️</span><span>نبذة عنّا</span></button><button type="button" data-menu-action="share"><span class="menu-item-icon" aria-hidden="true">📤</span><span>مشاركة التطبيق</span></button><button type="button" data-menu-action="rate"><span class="menu-item-icon" aria-hidden="true">⭐</span><span>تقييم التطبيق</span></button><button type="button" data-menu-action="feedback"><span class="menu-item-icon" aria-hidden="true">✉️</span><span>إرسال ملاحظات أو الإبلاغ عن مشكلة</span></button></div></div></div></header>
