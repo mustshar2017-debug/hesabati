@@ -1649,8 +1649,9 @@ async function startNative(){
  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw new Error('هذا المتصفح لا يتيح الكاميرا. افتح الرابط في Chrome عبر HTTPS.');
  detector=new BarcodeDetector({formats:formats});
  message('يرجى السماح باستخدام الكاميرا...');
- const cameraPromise=navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'environment'}}});
- const timeout=new Promise((_,reject)=>setTimeout(()=>reject(new Error('انتهت مهلة تشغيل الكاميرا. تحقق من إذن الكاميرا ثم أعد المحاولة.')),15000));
+ let cameraTimedOut=false;
+ const cameraPromise=navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'environment'}}}).then(cameraStream=>{if(cameraTimedOut){cameraStream.getTracks().forEach(track=>track.stop());throw new Error('انتهت مهلة تشغيل الكاميرا.');}return cameraStream;});
+ const timeout=new Promise((_,reject)=>setTimeout(()=>{cameraTimedOut=true;reject(new Error('انتهت مهلة تشغيل الكاميرا. تحقق من إذن الكاميرا ثم أعد المحاولة.'));},15000));
  stream=await Promise.race([cameraPromise,timeout]);
  const v=$('stockBarcodeVideo');v.style.display='block';$('stockBarcodeReader').style.display='none';v.srcObject=stream;await v.play();active=true;scannerMode='native';
  message('وجّه الكاميرا الخلفية نحو رمز QR أو الباركود.');
