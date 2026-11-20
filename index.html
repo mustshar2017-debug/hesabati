@@ -3092,35 +3092,50 @@ document.addEventListener('click',function(event){const button=event.target&&eve
 #phonesHub.quick-recharge #rechargeCard,
 #phonesHub.quick-recharge #rechargeForm,
 #phonesHub.quick-recharge #rechargeForm input,
-#phonesHub.quick-recharge #rechargeForm button{pointer-events:auto!important;touch-action:manipulation}
+#phonesHub.quick-recharge #rechargeForm button{pointer-events:auto!important}
 #phonesHub.quick-recharge #rechargeCard{position:relative!important;z-index:25001!important}
-#phonesHub.quick-recharge #rechargeForm input{position:relative!important;z-index:25002!important;-webkit-user-select:text!important;user-select:text!important}
+#phonesHub.quick-recharge #rechargeForm input{position:relative!important;z-index:25002!important;-webkit-user-select:text!important;user-select:text!important;touch-action:auto!important}
 </style>
-<script id="phones-recharge-input-focus-fix">
+<style id="hesabati-input-window-compatibility">
+/* إبقاء حقول الإدخال قابلة للمس وإبعاد شريط الرجوع الثابت أثناء الكتابة */
+input:not([disabled]):not([readonly]),
+textarea:not([disabled]):not([readonly]),
+select:not([disabled]){
+  pointer-events:auto!important;
+  -webkit-user-select:text!important;
+  user-select:text!important;
+  touch-action:auto!important;
+}
+body.hesabati-input-active{padding-bottom:0!important}
+body.hesabati-input-active #appBottomControls{display:none!important;pointer-events:none!important}
+</style>
+<script id="hesabati-input-window-compatibility">
 (function(){
- const panel=document.getElementById('phonesHub'),form=document.getElementById('rechargeForm');
- if(!panel||!form||form.dataset.inputFocusFix==='1')return;
- form.dataset.inputFocusFix='1';
- form.addEventListener('pointerdown',function(event){
-  if(!panel.classList.contains('quick-recharge'))return;
-  const field=event.target.closest('input,textarea,select');
-  if(field&&!field.disabled&&!field.readOnly)field.focus();
+ 'use strict';
+ const editable='input:not([disabled]):not([readonly]),textarea:not([disabled]):not([readonly]),select:not([disabled])';
+ function syncInputState(){
+  const active=document.activeElement;
+  const field=!!(active&&active.matches&&active.matches(editable));
+  document.body.classList.toggle('hesabati-input-active',field);
+ }
+ document.addEventListener('focusin',syncInputState,true);
+ document.addEventListener('focusout',function(){
+  setTimeout(syncInputState,0);
  },true);
-})();
-</script>
-
-<script id="android-keyboard-focus-fallback">
-/* دعم إظهار لوحة مفاتيح Android عند تركيز المستخدم على حقل قابل للتحرير.
-   لا يغيّر التركيز ولا يمنع أحداث اللمس أو النقر. */
-(function(){
- document.addEventListener('focusin',function(event){
-  const field=event.target;
-  if(!field || !field.matches || !field.matches('input:not([disabled]):not([readonly]),textarea:not([disabled]):not([readonly])'))return;
+ /* استدعاء واجهة لوحة المفاتيح فقط بعد لمسة فعلية على الحقل وبعد أن يصبح هو النشط. */
+ document.addEventListener('pointerup',function(event){
+  if(!event.isTrusted)return;
+  const target=event.target;
+  const field=target&&target.closest?target.closest(editable):null;
+  if(!field||field.disabled||field.readOnly||document.activeElement!==field)return;
   const keyboard=navigator.virtualKeyboard;
-  if(keyboard && typeof keyboard.show==='function'){
-   try{keyboard.show();}catch(error){console.debug('Android keyboard fallback unavailable',error);}
+  if(keyboard&&typeof keyboard.show==='function'){
+   try{keyboard.show();}catch(error){console.debug('Virtual keyboard request unavailable',error);}
   }
  },true);
+ window.addEventListener('resize',syncInputState,{passive:true});
+ if(window.visualViewport)window.visualViewport.addEventListener('resize',syncInputState,{passive:true});
+ syncInputState();
 })();
 </script>
 </body>
