@@ -1884,6 +1884,24 @@ body.dark #home .bank-launch{background:linear-gradient(135deg,#087f55,#10a875);
 #hesabatiNetworkModal .hn-password-toggle{background:#e4f3eb!important;color:#126346!important;min-width:66px;min-height:38px!important;padding:5px 9px!important;font-size:12px!important}
 #hesabatiNetworkModal .hn-password-hint{font-size:11px;color:#647b73;margin:5px 2px 2px;line-height:1.6}
 </style>
+
+/* شبكة حساباتي: واجهة مستقلة بعد تسجيل الدخول وصفحات منفصلة لكل قسم */
+#hesabatiNetworkModal .hn-card{width:min(100%,720px)}
+#hesabatiNetworkModal .hn-auth-view[hidden],#hesabatiNetworkModal .hn-app-view[hidden],#hesabatiNetworkModal .hn-page[hidden]{display:none!important}
+#hesabatiNetworkModal .hn-app-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+#hesabatiNetworkModal .hn-app-head h2{margin:0}
+#hesabatiNetworkModal .hn-home-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}
+#hesabatiNetworkModal .hn-home-tile{display:flex;align-items:center;gap:12px;min-height:82px;padding:12px;text-align:right;border:1px solid #dce9e2;border-radius:14px;background:#f8fcf9;color:#173a32}
+#hesabatiNetworkModal .hn-home-tile .hn-tile-icon{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:12px;background:#e2f5ec;font-size:23px}
+#hesabatiNetworkModal .hn-home-tile strong{display:block;font-size:14px}
+#hesabatiNetworkModal .hn-home-tile small{display:block;margin-top:3px;color:#6b8077;font-size:11px;font-weight:500}
+#hesabatiNetworkModal .hn-page{border-top:1px solid #dce9e2;padding-top:12px}
+#hesabatiNetworkModal .hn-page-head{display:flex;align-items:center;gap:9px;margin-bottom:12px}
+#hesabatiNetworkModal .hn-page-head h3{margin:0;font-size:18px;flex:1}
+#hesabatiNetworkModal .hn-back-home{background:#edf2ef;color:#27443b}
+#hesabatiNetworkModal .hn-coming-soon{padding:24px 14px;text-align:center;border:1px dashed #cbdcd4;border-radius:13px;color:#647b73;line-height:1.8}
+@media(max-width:420px){#hesabatiNetworkModal .hn-card{max-height:94vh;padding:15px}#hesabatiNetworkModal .hn-home-grid{gap:8px}#hesabatiNetworkModal .hn-home-tile{min-height:76px;padding:9px;gap:8px}#hesabatiNetworkModal .hn-home-tile .hn-tile-icon{width:36px;height:36px;flex-basis:36px;font-size:20px}}
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script id="hesabati-network-auth-v1">
 (function(){
@@ -1906,6 +1924,44 @@ function buildUI(){
  const modal=el('div',{id:'hesabatiNetworkModal','aria-hidden':'true'});
  modal.innerHTML='<div class="hn-card" role="dialog" aria-modal="true" aria-labelledby="hnTitle"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h2 id="hnTitle">🌐 شبكة حساباتي</h2><button type="button" class="hn-close" id="hnClose">إغلاق</button></div><p class="hn-muted">أنشئ حساباً للشبكة أو ادخل بحسابك. هذا الحساب مستقل عن رمز القفل المحلي وبيانات الرصيد في التطبيق.</p><label for="hnDisplay">الاسم الظاهر</label><input id="hnDisplay" type="text" autocomplete="name" placeholder="اسمك (عند إنشاء الحساب)"><label for="hnUsername">اسم المستخدم الفريد</label><input id="hnUsername" type="text" autocomplete="username" placeholder="@username"><label for="hnEmail">البريد الإلكتروني</label><input id="hnEmail" type="text" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false" placeholder="name@example.com"><label for="hnPassword">كلمة المرور</label><div class="hn-password-wrap"><input id="hnPassword" type="password" autocomplete="current-password" placeholder="أدخل كلمة المرور"><button type="button" id="hnTogglePassword" class="hn-password-toggle" aria-label="إظهار كلمة المرور" aria-pressed="false">إظهار</button></div><div class="hn-password-hint">لإنشاء حساب جديد: 6 أحرف على الأقل. استخدم كلمة مرور شبكة حساباتي، وليس كلمة مرور Google.</div><div class="hn-actions"><button type="button" class="hn-primary" id="hnSignIn">دخول بالبريد</button><button type="button" class="hn-primary" id="hnSignUp">إنشاء حساب</button></div><button type="button" class="hn-google" id="hnGoogle">الدخول باستخدام Google</button><div class="hn-status" id="hnStatus" role="status">جاهز للاتصال بشبكة حساباتي.</div><div class="hn-account" id="hnAccount" hidden></div><section id="hnNetworkApp" hidden><div class="hn-network-head"><strong>البحث عن مستخدمين</strong><button type="button" id="hnRefreshUsers" class="hn-close">تحديث</button></div><div class="hn-search-row"><input id="hnSearchUser" type="search" placeholder="ابحث باسم المستخدم مثل mustshar" autocomplete="off"><button type="button" id="hnSearchButton" class="hn-primary">بحث</button></div><div id="hnSearchResults" class="hn-network-list"></div><div class="hn-inbox-head"><strong>المراسلات</strong><button type="button" id="hnLoadConversations" class="hn-close">تحديث</button></div><div id="hnConversationsList" class="hn-network-list"><div class="hn-empty">اضغط تحديث لعرض محادثاتك.</div></div><div class="hn-contacts-head"><strong>جهات الاتصال</strong><button type="button" id="hnLoadContacts" class="hn-close">تحديث</button></div><div id="hnContactsList" class="hn-network-list"><div class="hn-empty">اضغط تحديث لعرض جهات الاتصال.</div></div><div id="hnChatPanel" hidden><div class="hn-chat-head"><button type="button" id="hnBackSearch" class="hn-close">رجوع</button><strong id="hnChatTitle">المحادثة</strong><button type="button" id="hnReloadChat" class="hn-close">تحديث</button></div><div id="hnMessages" class="hn-messages"></div><div class="hn-send-row"><input id="hnMessageInput" type="text" placeholder="اكتب رسالتك..." maxlength="4000"><button type="button" id="hnSendMessage" class="hn-primary">إرسال</button></div></div></section></div>';
  document.body.appendChild(modal);
+ // افصل شاشة الدخول عن تطبيق الشبكة، مع إعادة استخدام عناصر الوظائف الحالية دون نسخها.
+ const card=modal.querySelector('.hn-card');
+ const network=document.getElementById('hnNetworkApp');
+ const authView=el('div',{className:'hn-auth-view',id:'hnAuthView'});
+ const appView=el('div',{className:'hn-app-view',id:'hnAppView'});
+ const initialChildren=[...card.children].filter(node=>node!==network);
+ initialChildren.forEach(node=>authView.appendChild(node));
+ card.append(authView,appView);
+ appView.innerHTML='<div class="hn-app-head"><h2>🌐 شبكة حساباتي</h2><button type="button" class="hn-close" id="hnAppClose">إغلاق</button></div><div class="hn-welcome" id="hnWelcome">مرحباً بك في شبكة حساباتي</div><div class="hn-home-grid" id="hnHomeGrid"></div>';
+ const home=el('section',{className:'hn-page',id:'hnHomePage'});
+ const pages=el('div',{id:'hnPages'});
+ const makePage=(id,title)=>{const p=el('section',{className:'hn-page',id:'hnPage-'+id});const head=el('div',{className:'hn-page-head'});const back=el('button',{type:'button',className:'hn-back-home'},'الرئيسية');back.addEventListener('click',()=>showNetworkPage('home'));const h=el('h3');h.textContent=title;head.append(back,h);p.appendChild(head);pages.appendChild(p);return p;};
+ const pageSearch=makePage('search','بحث المستخدمين');
+ const pageInbox=makePage('inbox','المراسلات');
+ const pageContacts=makePage('contacts','جهات الاتصال');
+ const pageChat=makePage('chat','المحادثة');
+ const pageProfile=makePage('profile','الملف الشخصي');
+ const pageStores=makePage('stores','المتاجر');
+ const pageMap=makePage('map','خريطة المتاجر');
+ ['.hn-network-head','.hn-search-row','#hnSearchResults'].forEach(sel=>{const n=network.querySelector(sel);if(n)pageSearch.appendChild(n);});
+ ['.hn-inbox-head','#hnConversationsList'].forEach(sel=>{const n=network.querySelector(sel);if(n)pageInbox.appendChild(n);});
+ ['.hn-contacts-head','#hnContactsList'].forEach(sel=>{const n=network.querySelector(sel);if(n)pageContacts.appendChild(n);});
+ const chat=document.getElementById('hnChatPanel');if(chat)pageChat.appendChild(chat);
+ const account=document.getElementById('hnAccount');if(account)pageProfile.appendChild(account);
+ pageStores.appendChild(el('div',{className:'hn-coming-soon'},'قسم المتاجر — ستُعرض هنا المتاجر المسجلة في شبكة حساباتي عند تفعيل واجهتها.'));
+ pageMap.appendChild(el('div',{className:'hn-coming-soon'},'خريطة المتاجر — ستظهر هنا مواقع المتاجر بعد ربط بيانات المواقع والخريطة.'));
+ const tileData=[['search','🔎','بحث المستخدمين','اعثر على المستخدمين'],['inbox','💬','المراسلات','رسائلك ومحادثاتك'],['contacts','👥','جهات الاتصال','المستخدمون الذين تواصلت معهم'],['profile','👤','الملف الشخصي','بيانات حسابك'],['stores','🏬','المتاجر','المتاجر المسجلة'],['map','📍','خريطة المتاجر','مواقع المتاجر']];
+ const grid=document.getElementById('hnHomeGrid');
+ tileData.forEach(([id,icon,title,sub])=>{const b=el('button',{type:'button',className:'hn-home-tile','data-page':id});b.innerHTML='<span class="hn-tile-icon">'+icon+'</span><span><strong>'+title+'</strong><small>'+sub+'</small></span>';b.addEventListener('click',()=>{showNetworkPage(id);if(id==='inbox')loadConversations();if(id==='contacts')loadContacts();});grid.appendChild(b);});
+ home.innerHTML='<div class="hn-muted">اختر القسم الذي تريد فتحه</div>';
+ pages.prepend(home);
+ network.replaceChildren(home,pages);
+ appView.appendChild(network);
+ document.getElementById('hnAppClose').addEventListener('click',closeModal);
+ function showNetworkPage(id){[...network.querySelectorAll('.hn-page')].forEach(p=>p.hidden=true);const target=id==='home'?home:document.getElementById('hnPage-'+id);if(target)target.hidden=false;}
+ function setNetworkView(signedIn){authView.hidden=!!signedIn;appView.hidden=!signedIn;if(signedIn){network.hidden=false;showNetworkPage('home');const w=document.getElementById('hnWelcome');if(w&&currentUser)w.textContent='مرحباً بك · '+(currentUser.email||'حسابك');}}
+ showNetworkPage('home');
+
  document.getElementById('hnClose').addEventListener('click',closeModal);
  modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
  document.getElementById('hnSignIn').addEventListener('click',signIn);
@@ -1917,7 +1973,7 @@ document.getElementById('hnTogglePassword').addEventListener('click',()=>{const 
  document.getElementById('hnLoadConversations').addEventListener('click',loadConversations);
  document.getElementById('hnSearchUser').addEventListener('keydown',e=>{if(e.key==='Enter')searchUsers();});
  document.getElementById('hnRefreshUsers').addEventListener('click',searchUsers);
- document.getElementById('hnBackSearch').addEventListener('click',()=>{document.getElementById('hnChatPanel').hidden=true;document.getElementById('hnSearchResults').hidden=false;});
+ document.getElementById('hnBackSearch').addEventListener('click',()=>{document.getElementById('hnChatPanel').hidden=true;document.getElementById('hnSearchResults').hidden=false;showNetworkPage('search');});
  document.getElementById('hnReloadChat').addEventListener('click',()=>{if(activeConversation)loadMessages();});
  document.getElementById('hnSendMessage').addEventListener('click',sendMessage);
  document.getElementById('hnMessageInput').addEventListener('keydown',e=>{if(e.key==='Enter')sendMessage();});
@@ -1933,7 +1989,7 @@ async function googleSignIn(){try{status('جارٍ فتح اختيار حساب 
 async function ensureProfile(showPrompt){if(!currentUser)return;try{const c=getClient();const {data,error}=await c.from('profiles').select('id,username,display_name').eq('id',currentUser.id).maybeSingle();if(error)throw error;if(data){renderAccount(data);return;}const meta=currentUser.user_metadata||{};const suggested=normalizeUsername(meta.username||((currentUser.email||'').split('@')[0]).replace(/[^a-z0-9_.]/g,''));const box=document.getElementById('hnStatus');if(showPrompt||!suggested){status('أدخل اسم مستخدم فريداً في الخانة أعلاه ثم اضغط حفظ الملف الشخصي.');addProfileSaveButton();return;}const username=suggested.slice(0,30);if(username.length>=3){const v=formValues();v.username=username;v.display=v.display||meta.display_name||username;await saveProfile(v);}else{status('أدخل اسم مستخدم فريداً في الخانة أعلاه ثم اضغط حفظ الملف الشخصي.');addProfileSaveButton();}}catch(e){status('تم تسجيل الدخول، لكن تعذر تجهيز الملف الشخصي: '+(e.message||''),true);}}
 function addProfileSaveButton(){if(document.getElementById('hnSaveProfile'))return;const actions=document.querySelector('#hesabatiNetworkModal .hn-actions');const b=el('button',{type:'button',id:'hnSaveProfile',className:'hn-primary'},'حفظ الملف الشخصي');actions.parentNode.insertBefore(b,actions.nextSibling);b.addEventListener('click',async()=>{try{const v=formValues();if(!/^[a-z0-9_.]{3,30}$/.test(v.username))throw new Error('اسم المستخدم غير صالح.');await saveProfile(v);b.remove();status('تم حفظ الملف الشخصي.');}catch(e){status(e.message||'تعذر حفظ الملف الشخصي.',true);}});}
 async function saveProfile(v){if(!currentUser)throw new Error('سجّل الدخول أولاً.');const username=normalizeUsername(v.username);if(!/^[a-z0-9_.]{3,30}$/.test(username))throw new Error('اسم المستخدم من 3 إلى 30 حرفاً، وبالإنجليزية الصغيرة أو الأرقام أو _ أو .');const payload={id:currentUser.id,username,display_name:v.display||username};const {error}=await getClient().from('profiles').upsert(payload,{onConflict:'id'});if(error)throw error;status('تم حفظ الملف الشخصي باسم @'+username);renderAccount(payload);}
-function renderAccount(profile){const box=document.getElementById('hnAccount');if(!box)return;if(!currentUser){box.hidden=true;const panel=document.getElementById('hnNetworkApp');if(panel)panel.hidden=true;return;}box.hidden=false;networkPanelVisible();const meta=currentUser.user_metadata||{};const name=profile&&profile.display_name||meta.display_name||currentUser.email||'حسابك';const username=profile&&profile.username?('@'+profile.username):'لم يُحدد اسم المستخدم بعد';box.textContent='الحساب الحالي: '+name+' · '+username+' · '+currentUser.email;let signout=document.getElementById('hnSignOut');if(!signout){signout=el('button',{type:'button',id:'hnSignOut',className:'hn-close'},'تسجيل الخروج');box.appendChild(document.createElement('br'));box.appendChild(signout);signout.addEventListener('click',async()=>{try{const {error}=await getClient().auth.signOut();if(error)throw error;currentUser=null;box.hidden=true;status('تم تسجيل الخروج.');}catch(e){status(e.message||'تعذر تسجيل الخروج.',true);}});}}
+function renderAccount(profile){const box=document.getElementById('hnAccount');if(!box)return;if(!currentUser){box.hidden=true;const panel=document.getElementById('hnNetworkApp');if(panel)panel.hidden=true;setNetworkView(false);return;}box.hidden=false;networkPanelVisible();setNetworkView(true);const meta=currentUser.user_metadata||{};const name=profile&&profile.display_name||meta.display_name||currentUser.email||'حسابك';const username=profile&&profile.username?('@'+profile.username):'لم يُحدد اسم المستخدم بعد';box.textContent='الحساب الحالي: '+name+' · '+username+' · '+currentUser.email;let signout=document.getElementById('hnSignOut');if(!signout){signout=el('button',{type:'button',id:'hnSignOut',className:'hn-close'},'تسجيل الخروج');box.appendChild(document.createElement('br'));box.appendChild(signout);signout.addEventListener('click',async()=>{try{const {error}=await getClient().auth.signOut();if(error)throw error;currentUser=null;box.hidden=true;setNetworkView(false);status('تم تسجيل الخروج.');}catch(e){status(e.message||'تعذر تسجيل الخروج.',true);}});}}
 async function refreshSession(){try{const {data,error}=await getClient().auth.getSession();if(error)throw error;currentUser=data.session&&data.session.user||null;renderAccount();if(currentUser)await ensureProfile(false);}catch(e){status(e.message||'تعذر فحص حالة الحساب.',true);}}
 
 let activeConversation=null, activePeer=null;
@@ -2040,7 +2096,7 @@ async function openConversation(profile){
   }
   activeConversation=data;activePeer=profile;
   document.getElementById('hnChatTitle').textContent=(profile.display_name||profile.username)+' · @'+profile.username;
-  document.getElementById('hnSearchResults').hidden=true;document.getElementById('hnChatPanel').hidden=false;
+  document.getElementById('hnSearchResults').hidden=true;document.getElementById('hnChatPanel').hidden=false;showNetworkPage('chat');
   await loadMessages();
  }catch(e){status('تعذر فتح المحادثة: '+(e.message||''),true);}
 }
