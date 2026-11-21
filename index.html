@@ -771,7 +771,7 @@ footer{color:#a9c2b5!important}
 </div>
 </div><div class="inventory-view" data-inventory-view="inboundEntry"><div class="inbound-modal-card"><div class="inbound-modal-head"><div><strong>📥 سند الوارد</strong><small>فاتورة إدخال بضاعة للمخزون</small></div><button type="button" class="secondary" id="closeInboundInvoice">إغلاق ✕</button></div><form id="stockInForm">
 <div class="inbound-table-wrap"><table class="inbound-lines"><thead><tr><th>اسم الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>السعر</th><th></th></tr></thead><tbody id="inboundInvoiceRows"><tr class="inbound-line"><td><select name="product[]" class="product-options" required></select></td><td><input name="qty[]" type="number" min="1" step="1" value="1" required></td><td><input name="cost[]" type="number" min="0" step="0.01" required></td><td class="inbound-line-total">0</td><td><button type="button" class="danger remove-inbound-line" aria-label="حذف الصف">×</button></td></tr></tbody></table></div>
-<div class="inbound-summary"><button type="button" class="secondary" id="addInboundLine">＋ إضافة صنف</button><strong>إجمالي الفاتورة: <span id="inboundGrandTotal">0</span> SDG</strong></div>
+<div class="inbound-summary"><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="secondary" id="addInboundLine">＋ إضافة صنف للسند</button><button type="button" class="primary" id="openInboundProductModal">＋ إضافة اسم صنف جديد</button></div><strong>إجمالي الفاتورة: <span id="inboundGrandTotal">0</span> SDG</strong></div><div id="inboundProductModal" hidden style="position:fixed;inset:0;z-index:10080;background:#102f34b8;align-items:center;justify-content:center;padding:16px"><div style="width:min(100%,420px);background:#fff;border-radius:16px;padding:18px;box-shadow:0 15px 45px #0004"><h3 style="margin:0 0 12px">إضافة اسم صنف جديد</h3><label for="inboundNewProductName">اسم الصنف</label><input id="inboundNewProductName" type="text" placeholder="اكتب اسم الصنف الجديد" autocomplete="off"><div style="display:flex;gap:8px;margin-top:14px"><button type="button" class="primary" id="saveInboundNewProduct">حفظ الصنف</button><button type="button" class="secondary" id="cancelInboundNewProduct">إلغاء</button></div></div></div>
 <div class="inbound-meta"><div><label>رقم الفاتورة</label><input name="invoiceNo" required placeholder="رقم فاتورة المورد"></div><div><label>اسم المورد</label><input name="supplier" placeholder="اسم المورد"></div><div><label>حالة الشراء</label><select name="purchasePayment"><option>نقدي</option><option>آجل</option></select></div><div><label>التاريخ</label><input name="date" type="date" required></div><div><label>ملاحظات</label><input name="note"></div></div>
 <button class="primary inbound-save">حفظ سند الوارد</button></form></div></div><div class="inventory-view" data-inventory-view="inbound">
  <div class="inbound-report-modal">
@@ -1523,6 +1523,46 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
  $('customerPaymentForm').addEventListener('submit',e=>{e.preventDefault();const d=formData(e.currentTarget);db.customerPayments.push({customer:d.customer.trim(),amount:Number(d.amount),date:d.date});save();e.currentTarget.reset();e.currentTarget.date.value=today();refresh();alert('تم تسجيل تحصيل العميل.')});
  $('supplierPaymentForm').addEventListener('submit',e=>{e.preventDefault();const d=formData(e.currentTarget);db.supplierPayments.push({supplier:d.supplier.trim(),amount:Number(d.amount),date:d.date});save();e.currentTarget.reset();e.currentTarget.date.value=today();refresh();alert('تم تسجيل سداد المورد.')});
  $('productForm')?.addEventListener('submit',e=>{e.preventDefault();const d=formData(e.currentTarget);db.products.push({id:'p'+Date.now(),name:d.name.trim(),category:d.category,qty:Number(d.qty),buy:Number(d.buy),sell:Number(d.sell),min:Number(d.min||0),note:d.note,createdAt:today()});save();e.currentTarget.reset();refresh();alert('تم حفظ الصنف في المخزون.')});
+ const inboundProductModal=$('inboundProductModal'),inboundProductName=$('inboundNewProductName');
+ $('openInboundProductModal')?.addEventListener('click',()=>{
+  if(!inboundProductModal)return;
+  inboundProductModal.hidden=false;
+  inboundProductModal.style.display='flex';
+  inboundProductName.value='';
+  inboundProductName.focus();
+ });
+ function closeInboundProductModal(){
+  if(inboundProductModal){inboundProductModal.hidden=true;inboundProductModal.style.display='none';}
+ }
+ $('cancelInboundNewProduct')?.addEventListener('click',closeInboundProductModal);
+ $('saveInboundNewProduct')?.addEventListener('click',()=>{
+  const name=(inboundProductName?.value||'').trim();
+  if(!name){alert('اكتب اسم الصنف أولاً.');inboundProductName?.focus();return;}
+  const duplicate=db.products.find(p=>String(p.name||'').trim().toLocaleLowerCase()===name.toLocaleLowerCase());
+  if(duplicate){
+   refresh();
+   const first=$('stockInForm')?.querySelector('select[name="product[]"]');
+   if(first)first.value=duplicate.id;
+   closeInboundProductModal();
+   alert('هذا الصنف مسجل مسبقاً، تم اختياره في السند.');
+   return;
+  }
+  const id='p'+Date.now();
+  db.products.push({id,name,category:'عام',qty:0,buy:0,sell:0,min:0,note:'',createdAt:today()});
+  save();
+  refresh();
+  const first=$('stockInForm')?.querySelector('select[name="product[]"]');
+  if(first)first.value=id;
+  closeInboundProductModal();
+  updateInboundTotals();
+  alert('تمت إضافة الصنف إلى قائمة المخزون. أدخل الكمية وسعر الوحدة ثم احفظ سند الوارد.');
+ });
+ inboundProductName?.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){e.preventDefault();$('saveInboundNewProduct')?.click();}
+ });
+ inboundProductModal?.addEventListener('click',e=>{
+  if(e.target===inboundProductModal)closeInboundProductModal();
+ });
  const stockInForm=$('stockInForm');
  function updateInboundTotals(){let total=0;stockInForm.querySelectorAll('.inbound-line').forEach(row=>{const q=Number(row.querySelector('[name="qty[]"]').value)||0,c=Number(row.querySelector('[name="cost[]"]').value)||0,v=q*c;row.querySelector('.inbound-line-total').textContent=fmt(v);total+=v});$('inboundGrandTotal').textContent=fmt(total)}
  function addInboundLine(){const row=stockInForm.querySelector('.inbound-line').cloneNode(true);row.querySelectorAll('select,input').forEach(el=>{if(el.tagName==='SELECT')el.selectedIndex=0;else el.value=el.name==='qty[]'?'1':''});$('inboundInvoiceRows').appendChild(row);refresh();updateInboundTotals()}
