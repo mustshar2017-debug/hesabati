@@ -1360,7 +1360,7 @@ body.dark .profit-toggle{color:var(--ink)}
  if(!button)return;
  function apply(dark){
   document.body.classList.toggle('dark',dark);
-  button.textContent=dark?'🌙':'☀️';
+  button.textContent=dark?'☀️':'🌙';
   button.setAttribute('aria-label',dark?'تفعيل الوضع النهاري':'تفعيل الوضع الليلي');
   button.title=dark?'تفعيل الوضع النهاري':'تفعيل الوضع الليلي';
   const meta=document.querySelector('meta[name="theme-color"]');
@@ -3514,5 +3514,27 @@ document.addEventListener('click',function(event){const button=event.target&&eve
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',addFooter,{once:true});else addFooter();
 })();
 </script>
+
+<style id="theme-toggle-complete">
+body.dark{background:#101b1b!important;color:#e6f0ed!important}
+body.dark .wrap,body.dark main,body.dark .panel,body.dark .section-title,body.dark .muted,body.dark label,body.dark p,body.dark h2,body.dark h3,body.dark h4{color:#e6f0ed}
+body.dark .card,body.dark .table-wrap,body.dark .bank-box,body.dark .bank-form,body.dark .bank-table,body.dark .quick-link,body.dark .recharge-stat,body.dark .report-card,body.dark .modal-content{background:#1b2a29!important;color:#e6f0ed!important;border-color:#344744!important}
+body.dark .hint,body.dark .bank-note{background:#203a33!important;color:#d4eee4!important;border-color:#355b4e!important}
+body.dark input,body.dark select,body.dark textarea{background:#142120!important;color:#f1f7f4!important;border-color:#405550!important}
+body.dark input::placeholder,body.dark textarea::placeholder{color:#a6bbb5!important}
+body.dark table,body.dark tbody,body.dark tr,body.dark td{color:#e6f0ed}
+body.dark th{color:#b8d0c8!important}
+body.dark td:last-child,body.dark th:last-child{background:#1b2a29!important}
+body.dark .secondary{background:#263c37!important;color:#b9f1df!important;border-color:#42665b!important}
+body.dark .danger{background:#482929!important;color:#ffc1c1!important;border-color:#754444!important}
+body.dark .app-menu,body.dark .app-menu button{background:#1b2a29!important;color:#f1f7f4!important;border-color:#344744!important}
+body.dark .app-menu button span{color:#f1f7f4!important}
+body.dark .app-menu button:active{background:#263c37!important}
+body.dark .profit-toggle,body.dark .empty,body.dark .reportline,body.dark footer{color:#e6f0ed!important}
+body.dark .reportline{border-color:#344744!important}
+body.dark .lock-card{background:#1b2a29!important;color:#e6f0ed!important}
+body.dark .lock-card h2,body.dark .lock-card p{color:#e6f0ed!important}
+body.dark #menuInventorySheet article{background:#fff!important;color:#18231f!important}
+</style>
 </body>
 </html>
