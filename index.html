@@ -1923,7 +1923,11 @@ body.dark .supplier-balance-line{background:#203a33;color:#b9f1df}body.dark .sup
  function close(){$('supplierTransferModal').hidden=true;$('supplierTransferModal').style.display='none';}
  window.openSupplierTransferModal=open;
  $('supplierTransferClose').addEventListener('click',close);
- $('supplierAccountClose').addEventListener('click',()=>{$('supplierAccountPage').hidden=true;$('supplierAccountPage').style.display='none';});$('supplierAmountClose').addEventListener('click',()=>{$('supplierAmountModal').hidden=true;close();});
+ function closeSupplierAccountPage(){ $('supplierAccountPage').hidden=true;$('supplierAccountPage').style.display='none';const home=document.querySelector('#nav button[data-tab="home"]');if(home)home.click();window.scrollTo({top:0,behavior:'smooth'}); }
+ $('supplierAccountClose').addEventListener('click',closeSupplierAccountPage);
+ $('supplierAccountPage').addEventListener('click',e=>{if(e.target===$('supplierAccountPage'))closeSupplierAccountPage();});
+ const appBack=$('appBackButton');if(appBack)appBack.addEventListener('click',function(e){if(!$('supplierAccountPage').hidden){e.preventDefault();e.stopImmediatePropagation();closeSupplierAccountPage();}},true);
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('supplierAccountPage').hidden)closeSupplierAccountPage();});$('supplierAmountClose').addEventListener('click',()=>{$('supplierAmountModal').hidden=true;close();});
  $('supplierTransferModal').addEventListener('click',e=>{if(e.target===$('supplierTransferModal'))close();});$('supplierAmountModal').addEventListener('click',e=>{if(e.target===$('supplierAmountModal')){$('supplierAmountModal').hidden=true;close();}});
  $('supplierSearchInput').addEventListener('focus',()=>{if($('supplierSearchInput').value.trim())renderResults();});
  $('supplierSearchInput').addEventListener('input',()=>{selectedId=null;renderResults();});
