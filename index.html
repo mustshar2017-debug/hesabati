@@ -1853,7 +1853,11 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
  });
  function validateSaleItems(items){
   if(!items.length){alert('أدخل صنفاً واحداً على الأقل مع الكمية والسعر.');return false}
-  for(const x of items){if(x.qty>x.product.qty){alert('الكمية المطلوبة من ('+x.product.name+') أكبر من المخزون المتاح.');return false}}
+  const requested=new Map();
+  for(const x of items){
+   const id=String(x.product.id),total=(requested.get(id)||0)+Number(x.qty||0);requested.set(id,total);
+   if(total>Number(x.product.qty||0)){alert('إجمالي الكمية المطلوبة من ('+x.product.name+') في الفاتورة أكبر من المخزون المتاح.');return false;}
+  }
   return true;
  }
  function saveSaleInvoiceNow(){
