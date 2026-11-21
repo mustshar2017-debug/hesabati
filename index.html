@@ -2688,13 +2688,14 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden&&$('stockBa
 </style>
 <script id="inbound-purchases-report-logic">
 (function(){
+ 'use strict';
  const $=id=>document.getElementById(id);
  const modal=document.querySelector('#inventory [data-inventory-view="inbound"]');
  if(!modal)return;
  const esc=v=>String(v??'—').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const num=v=>Number(v)||0,fmt=v=>num(v).toLocaleString('en-US',{maximumFractionDigits:2});
  function render(){
-  const from=$('inboundReportFrom').value,to=$('inboundReportTo').value;
+  const from=$('inboundReportFrom')?.value||'',to=$('inboundReportTo')?.value||'';
   const store=(()=>{try{return JSON.parse(localStorage.getItem('hisabati_inventory_v1')||'{}')}catch(e){return {}}})();
   const products=Array.isArray(store.products)?store.products:[];
   const all=Array.isArray(store.moves)?store.moves:[];
@@ -2709,13 +2710,19 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden&&$('stockBa
    return '<tr><td>'+(i+1)+'</td><td>'+esc(x.date)+'</td><td>'+esc(p?.name||'صنف غير موجود')+'</td><td>'+fmt(x.qty)+'</td><td>'+esc(x.invoiceNo||'—')+'</td><td>'+fmt(unit)+'</td><td>'+fmt(x.value)+'</td><td>'+esc(x.supplier||'—')+'</td></tr>';
   }).join(''):'<tr><td colspan="8" class="empty">لا توجد أصناف واردة في الفترة المحددة.</td></tr>';
  }
- $('inboundReportApply').addEventListener('click',render);
- $('inboundReportFrom').addEventListener('change',render);
- $('inboundReportTo').addEventListener('change',render);
- $('closeInboundReport').addEventListener('click',()=>{document.querySelector('#inventorySectionMenu').style.display='grid';document.querySelectorAll('#inventory .inventory-view').forEach(x=>x.classList.remove('active','voucher-modal-open','inbound-modal-open','sale-invoice-modal-open','inbound-report-modal-open'));});
- $('inboundReportPrint').addEventListener('click',()=>{render();document.body.classList.add('inbound-report-printing');window.print();});
+ window.renderInboundPurchasesReport=render;
+ document.addEventListener('click',function(e){
+  const apply=e.target.closest('#inboundReportApply');
+  if(apply){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();render();return;}
+  const print=e.target.closest('#inboundReportPrint');
+  if(print){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();render();document.body.classList.add('inbound-report-printing');window.print();return;}
+  const close=e.target.closest('#closeInboundReport');
+  if(close){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();const menu=$('inventorySectionMenu');if(menu)menu.style.display='grid';document.querySelectorAll('#inventory .inventory-view').forEach(x=>x.classList.remove('active','voucher-modal-open','inbound-modal-open','sale-invoice-modal-open','inbound-report-modal-open'));return;}
+  const inbound=e.target.closest('#inventory [data-inv-view="inbound"]');
+  if(inbound)render();
+ },true);
+ ['inboundReportFrom','inboundReportTo'].forEach(id=>$(id)?.addEventListener('change',render));
  window.addEventListener('afterprint',()=>document.body.classList.remove('inbound-report-printing'));
- document.addEventListener('click',e=>{const b=e.target.closest('#inventory [data-inv-view="inbound"]');if(b)render();},true);
 })();
 </script>
 <script id="bank-home-icons-delegated-fix">(function(){document.addEventListener('click',function(e){const bankak=e.target.closest('#bankProfitLaunch');const transfers=e.target.closest('#bankLaunchCategory');if(!bankak&&!transfers)return;e.preventDefault();e.stopImmediatePropagation();if(bankak){if(typeof window.openBankakDashboard==='function')window.openBankakDashboard();else console.error('Bankak dashboard handler unavailable');}if(transfers){if(typeof window.openBankTransfersPicker==='function')window.openBankTransfersPicker();else console.error('Bank transfers picker unavailable');}},true);})();</script>
@@ -3747,3 +3754,33 @@ body.dark #menuInventorySheet article{background:#fff!important;color:#18231f!im
 </script>
 </body>
 </html>
+
+
+<style id="inbound-report-print-visibility-fix">
+@media print{
+ html,body,body.inbound-report-printing{background:#fff!important;color:#111!important}
+ body.inbound-report-printing #inventory,
+ body.inbound-report-printing #inventory .inventory-view[data-inventory-view="inbound"],
+ body.inbound-report-printing #inventory .inbound-report-modal,
+ body.inbound-report-printing #inventory .inbound-report-modal *{
+  visibility:visible!important;opacity:1!important;color:#111!important;text-shadow:none!important;
+  background-color:#fff!important;box-shadow:none!important;
+ }
+ body.inbound-report-printing #inventory .inbound-report-modal{position:static!important;display:block!important;overflow:visible!important;width:100%!important;max-height:none!important;border:0!important;padding:0!important}
+ body.inbound-report-printing #inventory .inbound-report-modal .inbound-modal-head{display:flex!important;color:#111!important}
+ body.inbound-report-printing #inventory .inbound-report-modal .inbound-modal-head strong,
+ body.inbound-report-printing #inventory .inbound-report-modal .inbound-modal-head small{color:#111!important}
+ body.inbound-report-printing #inventory .inbound-report-filters{display:none!important}
+ body.inbound-report-printing #inventory .inbound-report-summary,
+ body.inbound-report-printing #inventory .inbound-report-grand{display:flex!important;color:#111!important;background:#fff!important;border:1px solid #aaa!important}
+ body.inbound-report-printing #inventory .inbound-report-summary strong,
+ body.inbound-report-printing #inventory .inbound-report-grand strong{color:#111!important}
+ body.inbound-report-printing #inventory .inbound-table-wrap{display:block!important;overflow:visible!important;border:1px solid #aaa!important}
+ body.inbound-report-printing #inventory .inbound-report-table{display:table!important;width:100%!important;min-width:0!important;table-layout:auto!important;border-collapse:collapse!important}
+ body.inbound-report-printing #inventory .inbound-report-table thead{display:table-header-group!important}
+ body.inbound-report-printing #inventory .inbound-report-table tr{display:table-row!important;break-inside:avoid!important}
+ body.inbound-report-printing #inventory .inbound-report-table th,
+ body.inbound-report-printing #inventory .inbound-report-table td{display:table-cell!important;color:#111!important;background:#fff!important;border:1px solid #bbb!important;font-size:8pt!important;padding:5px 4px!important;white-space:normal!important}
+ body.inbound-report-printing #inventory .inbound-report-table th{background:#eee!important;font-weight:800!important}
+}
+</style>
