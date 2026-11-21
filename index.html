@@ -3451,5 +3451,46 @@ document.addEventListener('click',function(event){const button=event.target&&eve
  },true);
 })();
 </script>
+<style id="hesabati-social-footer-v1">
+#hesabatiNetworkModal .hn-social-footer{display:flex;justify-content:center;align-items:flex-start;gap:clamp(18px,6vw,38px);padding:22px 12px 14px;margin:10px 0 0;border-top:1px solid #f0d5d5;direction:rtl}
+#hesabatiNetworkModal .hn-social-footer a,#hesabatiNetworkModal .hn-social-footer button{display:flex;flex-direction:column;align-items:center;gap:7px;min-width:66px;padding:0;border:0;background:transparent;color:#777;font:inherit;font-size:13px;text-decoration:none;cursor:pointer}
+#hesabatiNetworkModal .hn-social-footer .hn-social-icon{width:48px;height:48px;display:grid;place-items:center;border-radius:50%;color:#fff;box-shadow:0 3px 8px #0002}
+#hesabatiNetworkModal .hn-social-footer .hn-fb{background:linear-gradient(145deg,#4c83d7,#174a9a)}
+#hesabatiNetworkModal .hn-social-footer .hn-help{background:linear-gradient(145deg,#f05a5a,#b90e18)}
+#hesabatiNetworkModal .hn-social-footer .hn-tt{background:linear-gradient(145deg,#252525,#050505)}
+#hesabatiNetworkModal .hn-social-footer svg{width:25px;height:25px;fill:currentColor}
+#hesabatiHelpModal{position:fixed;inset:0;z-index:30000;display:flex;align-items:center;justify-content:center;padding:18px;background:#0009}
+#hesabatiHelpModal[hidden]{display:none!important}
+#hesabatiHelpModal .hn-help-card{width:min(100%,380px);padding:22px;border-radius:18px;background:#fff;color:#333;text-align:center;box-shadow:0 16px 50px #0004}
+#hesabatiHelpModal h3{margin:0 0 12px;color:#c71922}
+#hesabatiHelpModal p{line-height:1.9;margin:0 0 16px}
+#hesabatiHelpModal button{border:0;border-radius:10px;padding:10px 24px;background:#d71920;color:#fff;font:inherit}
+</style>
+<script id="hesabati-social-footer-v1">
+(function(){
+ function addFooter(){
+  const view=document.querySelector('#hesabatiNetworkModal .hn-auth-view');
+  if(!view||view.querySelector('.hn-social-footer'))return;
+  const footer=document.createElement('nav');
+  footer.className='hn-social-footer';
+  footer.setAttribute('aria-label','روابط التواصل والمساعدة');
+  footer.innerHTML=
+   '<a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="فيسبوك"><span class="hn-social-icon hn-fb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1v-2c0-.9.3-1.5 1.6-1.5h1.7V3.6c-.3 0-1.4-.1-2.6-.1-2.6 0-4.3 1.6-4.3 4.5v1.9H7v3.1h2.9v8z"/></svg></span><span>فيس بوك</span></a>'+
+   '<button type="button" class="hn-help-open" aria-label="المساعدة"><span class="hn-social-icon hn-help"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20m.1 16.8a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4m1.7-5.3c-.8.6-.9 1-.9 1.7h-1.9c0-1.5.4-2.3 1.5-3.1.9-.7 1.4-1.1 1.4-2.1a2 2 0 0 0-4 0H8a3.9 3.9 0 0 1 7.8 0c0 1.8-.9 2.7-2 3.5"/></svg></span><span>المساعدة</span></button>'+
+   '<a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" aria-label="تيك توك"><span class="hn-social-icon hn-tt"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.6 7.2a6.8 6.8 0 0 1-4.2-1.5v8.1a6.1 6.1 0 1 1-6.1-6.1c.4 0 .8 0 1.2.1v3.2a3 3 0 1 0 1.8 2.8V2h3.2c.2 2.2 1.8 4 4.1 4.3z"/></svg></span><span>تيك توك</span></a>';
+  view.appendChild(footer);
+  if(!document.getElementById('hesabatiHelpModal')){
+   const modal=document.createElement('div');modal.id='hesabatiHelpModal';modal.hidden=true;
+   modal.innerHTML='<div class="hn-help-card" role="dialog" aria-modal="true" aria-labelledby="hnHelpTitle"><h3 id="hnHelpTitle">المساعدة</h3><p>مرحباً بك في حساباتي. يمكنك استخدام خيار إنشاء حساب للتسجيل، أو إدخال بياناتك لتسجيل الدخول. لإضافة روابط الدعم المباشر، أرسل لنا رابط صفحة المساعدة أو رقم التواصل المعتمد.</p><button type="button" id="hnHelpClose">إغلاق</button></div>';
+   document.body.appendChild(modal);
+   modal.addEventListener('click',e=>{if(e.target===modal||e.target.id==='hnHelpClose')modal.hidden=true;});
+  }
+  footer.querySelector('.hn-help-open').addEventListener('click',()=>{const m=document.getElementById('hesabatiHelpModal');if(m)m.hidden=false;});
+ }
+ const obs=new MutationObserver(addFooter);
+ function start(){addFooter();const modal=document.getElementById('hesabatiNetworkModal');if(modal)obs.observe(modal,{childList:true,subtree:true});}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+})();
+</script>
 </body>
 </html>
