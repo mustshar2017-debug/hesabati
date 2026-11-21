@@ -1057,7 +1057,7 @@ function openAppSection(id){
  const target={generalReport:'generalReportCard',monthlyReport:'monthlyReportCard',backup:'backupToolsCard',settings:'settingsCard',labels:'iconNamesCard'}[id];
  if(target)$(target).scrollIntoView({behavior:'smooth',block:'start'});
 }
-$('menuTrigger').addEventListener('click',()=>{const m=$('appMenu'),t=$('menuTrigger');const opening=m.hidden;if(opening){const r=t.getBoundingClientRect();m.style.position='fixed';m.style.top=Math.min(window.innerHeight-100,r.bottom+8)+'px';m.style.right=Math.max(8,window.innerWidth-r.right)+'px';m.style.left='auto';m.style.zIndex='2147483000';m.hidden=false;t.setAttribute('aria-expanded','true');}else{m.hidden=true;t.setAttribute('aria-expanded','false');}});
+$('menuTrigger').addEventListener('click',()=>{const m=$('appMenu'),t=$('menuTrigger');const opening=m.hidden;if(opening){const r=t.getBoundingClientRect();m.hidden=false;m.style.position='fixed';m.style.width='min(280px, calc(100vw - 16px))';m.style.maxHeight='min(75vh, 620px)';m.style.overflowY='auto';m.style.top=Math.max(8,Math.min(window.innerHeight-80,r.bottom+8))+'px';m.style.right='auto';m.style.left=Math.max(8,Math.min(window.innerWidth-m.offsetWidth-8,r.right-m.offsetWidth))+'px';m.style.zIndex='2147483000';t.setAttribute('aria-expanded','true');}else{m.hidden=true;t.setAttribute('aria-expanded','false');}});
 document.addEventListener('click',e=>{const m=$('appMenu'),t=$('menuTrigger');if(m&&!m.hidden&&!m.contains(e.target)&&!t.contains(e.target)){m.hidden=true;t.setAttribute('aria-expanded','false');}});
 document.querySelectorAll('[data-menu-action]').forEach(b=>b.addEventListener('click',()=>openAppSection(b.dataset.menuAction)));
 $('saveIconNames').addEventListener('click',()=>{const vals={};[...$('iconNamesForm').querySelectorAll('input')].forEach(x=>{vals[x.name]=x.value.trim()||x.name;});localStorage.setItem(ICON_NAMES_KEY,JSON.stringify(vals));loadIconNames();alert('تم حفظ أسماء الأيقونات.');});
@@ -1788,7 +1788,7 @@ header .header-row,.header-actions{overflow:visible!important}
 header .app-menu{z-index:1001!important;max-height:min(75vh,620px);overflow-y:auto;overscroll-behavior:contain}
 </style>
 
-<style id="hesabati-menu-fixed-position-v2">
+<style id="hesabati-menu-fixed-position-v3">
 #appMenu[hidden]{display:none!important}
 #appMenu:not([hidden]){display:block!important;position:fixed!important;z-index:2147483000!important;width:min(280px,calc(100vw - 16px))!important;max-height:75vh!important;overflow-y:auto!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}
 </style>
