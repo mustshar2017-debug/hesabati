@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" href="./icons/icon.svg">
 <title>حساباتي | إدارة الرصيد والشحن</title>
 <style>
-:root{--bg:#f3f6f5;--card:#fff;--ink:#183536;--muted:#6d8280;--teal:#087f70;--line:#e1e9e6;--red:#b54747;--green:#16845d}
+:root{--bg:#fff;--card:#fff;--ink:#183536;--muted:#6d8280;--teal:#087f70;--line:#e1e9e6;--red:#b54747;--green:#16845d}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif}
 header{background:linear-gradient(120deg,#102f34,#087f70);color:#fff;padding:22px 16px 18px}
 .wrap{max-width:980px;margin:auto;padding:0 14px}h1{font-size:24px;margin:0 0 4px}.sub{color:#c6e4dd;font-size:13px}
@@ -502,9 +502,11 @@ footer{color:#aeb4c0}
 @media(max-width:480px){.header-actions #languageToggle{font-size:12px;padding:8px 9px;min-width:42px}}
 </style>
 <style id="hesabati-red-close-button">
-.header-actions #lockNow{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:#fff0f0!important;border:1px solid #ef9a9a!important;color:#b42318!important;font-weight:800;box-shadow:0 1px 4px #b423181c}
-.header-actions #lockNow .lock-close-icon{display:inline-grid;place-items:center;width:21px;height:21px;border-radius:50%;background:#dc2626;color:#fff;font-size:20px;font-weight:900;line-height:18px}
-.header-actions #lockNow:active{background:#fee2e2!important;transform:scale(.97)}
+.header-actions #lockNow{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:48px!important;height:48px!important;min-width:48px!important;padding:0!important;border:0!important;border-radius:50%!important;background:transparent!important;box-shadow:none!important;overflow:visible!important}
+.header-actions #lockNow .lock-close-icon{display:block!important;width:48px!important;height:48px!important;font-size:0!important;line-height:0!important;border-radius:50%!important;background:linear-gradient(145deg,#ff2525 0%,#d90000 72%,#a90000 100%)!important;border:3px solid #850000!important;box-shadow:inset 0 2px 3px #ffffff55,0 2px 4px #0003!important;position:relative!important}
+.header-actions #lockNow .lock-close-icon:before{content:""!important;position:absolute!important;left:50%!important;top:10px!important;transform:translateX(-50%)!important;width:7px!important;height:17px!important;border-radius:6px!important;background:#fff!important}
+.header-actions #lockNow .lock-close-icon:after{content:""!important;position:absolute!important;left:50%!important;top:12px!important;transform:translateX(-50%)!important;width:21px!important;height:21px!important;border:5px solid #fff!important;border-top-color:transparent!important;border-radius:50%!important}
+.header-actions #lockNow:active{transform:scale(.94)!important}
 </style>
 
 
@@ -598,7 +600,7 @@ footer{color:#a9c2b5!important}
 </style>
 </head>
 <body>
-<header><div class="wrap header-row"><div><div class="brand-line"><h1>حساباتي</h1><button id="themeToggle" class="theme-toggle" type="button" aria-label="تفعيل الوضع الليلي" title="تفعيل الوضع الليلي">☀️</button></div><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><div class="header-actions"><button class="menu-trigger" id="menuTrigger" type="button" aria-label="القائمة" aria-expanded="false">⋮</button><button class="secondary" id="languageToggle" type="button" aria-label="تغيير لغة التطبيق">EN</button><button class="secondary" id="lockNow" type="button" aria-label="قفل التطبيق"><span class="lock-close-icon" aria-hidden="true">×</span><span>قفل الآن</span></button><div class="app-menu" id="appMenu" hidden><button type="button" data-menu-action="backup"><span class="menu-item-icon" aria-hidden="true">💾</span><span>حفظ نسخة احتياطية</span></button><button type="button" data-menu-action="labels"><span class="menu-item-icon" aria-hidden="true">✏️</span><span>تعديل أسماء الأيقونات</span></button><button type="button" data-menu-action="generalReport"><span class="menu-item-icon" aria-hidden="true">📊</span><span>تقرير عام مفصل</span></button><button type="button" data-menu-action="monthlyReport"><span class="menu-item-icon" aria-hidden="true">📅</span><span>التقرير الشهري</span></button><button type="button" data-menu-action="settings"><span class="menu-item-icon" aria-hidden="true">⚙️</span><span>إعدادات التطبيق</span></button><button type="button" data-menu-action="about"><span class="menu-item-icon" aria-hidden="true">ℹ️</span><span>نبذة عنّا</span></button><button type="button" data-menu-action="share"><span class="menu-item-icon" aria-hidden="true">📤</span><span>مشاركة التطبيق</span></button><button type="button" data-menu-action="rate"><span class="menu-item-icon" aria-hidden="true">⭐</span><span>تقييم التطبيق</span></button><button type="button" data-menu-action="feedback"><span class="menu-item-icon" aria-hidden="true">✉️</span><span>إرسال ملاحظات أو الإبلاغ عن مشكلة</span></button></div></div></div></header>
+<header><div class="wrap header-row"><div><div class="brand-line"><h1>حساباتي</h1><button id="themeToggle" class="theme-toggle" type="button" aria-label="تفعيل الوضع الليلي" title="تفعيل الوضع الليلي">☀️</button></div><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><div class="header-actions"><button class="menu-trigger" id="menuTrigger" type="button" aria-label="القائمة" aria-expanded="false">⋮</button><button class="secondary" id="languageToggle" type="button" aria-label="تغيير لغة التطبيق">EN</button><button class="secondary" id="lockNow" type="button" aria-label="قفل التطبيق" title="قفل التطبيق"><span class="lock-close-icon" aria-hidden="true"></span></button><div class="app-menu" id="appMenu" hidden><button type="button" data-menu-action="backup"><span class="menu-item-icon" aria-hidden="true">💾</span><span>حفظ نسخة احتياطية</span></button><button type="button" data-menu-action="restore"><span class="menu-item-icon" aria-hidden="true">📥</span><span>استعادة نسخة احتياطي</span></button><button type="button" data-menu-action="charts"><span class="menu-item-icon" aria-hidden="true">📈</span><span>الرسوم البيانية</span></button><button type="button" data-menu-action="productsFile"><span class="menu-item-icon" aria-hidden="true">📦</span><span>ملف الأصناف</span></button><button type="button" data-menu-action="stockFile"><span class="menu-item-icon" aria-hidden="true">📋</span><span>ملف المخزون</span></button><button type="button" data-menu-action="labels"><span class="menu-item-icon" aria-hidden="true">✏️</span><span>تعديل أسماء الأيقونات</span></button><button type="button" data-menu-action="generalReport"><span class="menu-item-icon" aria-hidden="true">📊</span><span>تقرير عام مفصل</span></button><button type="button" data-menu-action="monthlyReport"><span class="menu-item-icon" aria-hidden="true">📅</span><span>التقرير الشهري</span></button><button type="button" data-menu-action="settings"><span class="menu-item-icon" aria-hidden="true">⚙️</span><span>إعدادات التطبيق</span></button><button type="button" data-menu-action="about"><span class="menu-item-icon" aria-hidden="true">ℹ️</span><span>نبذة عنّا</span></button><button type="button" data-menu-action="share"><span class="menu-item-icon" aria-hidden="true">📤</span><span>مشاركة التطبيق</span></button><button type="button" data-menu-action="rate"><span class="menu-item-icon" aria-hidden="true">⭐</span><span>تقييم التطبيق</span></button><button type="button" data-menu-action="feedback"><span class="menu-item-icon" aria-hidden="true">✉️</span><span>إرسال ملاحظات أو الإبلاغ عن مشكلة</span></button></div></div></div></header>
 <div class="wrap">
 <nav id="nav" aria-label="القائمة الرئيسية">
 <button class="active" data-tab="home">🏠 الرئيسية</button><button data-tab="credit" data-nav-view="transfer">➕ حوالة جديد</button><button data-tab="inventory" data-nav-view="accounts">📒 كشف حساب</button><button data-tab="reports">📊 التقارير</button><button data-tab="inventory" data-nav-view="history">🔎 مراجعة الحركات</button><button data-tab="partnership">🤝 الشراكة</button>
@@ -955,6 +957,32 @@ function iconNameTargets(){
 function loadIconNames(){let names={};try{const saved=JSON.parse(localStorage.getItem(ICON_NAMES_KEY)||'{}');if(saved&&!Array.isArray(saved)&&typeof saved==='object')names=saved;}catch(_){}iconNameTargets().forEach(x=>{const original=x.quick?x.original:x.label.textContent.trim();if(x.quick){const first=x.label.firstChild;if(first&&first.nodeType===3)first.nodeValue=(names[x.key]||original)+' ';}else{x.label.textContent=names[x.key]||original;}});}
 function buildIconNameEditor(){const form=$('iconNamesForm');form.innerHTML='';iconNameTargets().forEach((x,i)=>{const current=x.quick?(x.label.firstChild&&x.label.firstChild.nodeType===3?x.label.firstChild.nodeValue.trim():x.original):x.label.textContent.trim();const wrap=document.createElement('div');const lab=document.createElement('label');lab.textContent=(x.quick?'اختصار داخلي: ':'أيقونة الواجهة: ')+current;const input=document.createElement('input');input.name=x.key;input.value=current;input.maxLength=35;wrap.append(lab,input);form.append(wrap);});}
 function openAppSection(id){
+ if(id==='restore'){$('appMenu').hidden=true;$('menuTrigger').setAttribute('aria-expanded','false');$('restoreFile').click();return;}
+ if(id==='productsFile'||id==='stockFile'){
+  $('appMenu').hidden=true;$('menuTrigger').setAttribute('aria-expanded','false');
+  let sheet=$('menuInventorySheet');if(!sheet){sheet=document.createElement('div');sheet.id='menuInventorySheet';sheet.style.cssText='position:fixed;inset:0;z-index:12000;background:#102f34ee;overflow:auto;padding:14px;display:none;direction:rtl';document.body.appendChild(sheet);}
+  const escText=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const isStock=id==='stockFile',products=Array.isArray(db.products)?db.products:[];
+  const rows=products.map((p,i)=>'<tr><td>'+String(i+1)+'</td><td>'+escText(p.name)+'</td>'+(isStock?'<td>'+fmt(p.qty||0)+'</td>':'')+'</tr>').join('');
+  const title=isStock?'ملف المخزون':'ملف الأصناف';
+  const headers=isStock?'<th>م</th><th>اسم الصنف</th><th>الكمية المتاحة</th>':'<th>م</th><th>اسم الصنف</th>';
+  sheet.innerHTML='<div style="max-width:850px;margin:0 auto 20px;display:flex;gap:8px;justify-content:space-between;flex-wrap:wrap"><button type="button" id="closeMenuInventorySheet" class="secondary">رجوع للقائمة</button><button type="button" id="printMenuInventorySheet" class="primary">🖨️ طباعة A4</button></div><article style="background:#fff;color:#18231f;max-width:850px;min-height:900px;margin:0 auto;padding:36px 30px;box-shadow:0 5px 24px #0003"><header style="text-align:center;border-bottom:2px solid #d9e4dc;padding-bottom:18px;margin-bottom:22px"><h2 style="margin:0 0 8px;color:#176b4a">'+title+'</h2><p style="margin:0;color:#66756c">حساباتي · '+(isStock?'كميات المخزون الحالية':'الأصناف المسجلة')+'</p></header><table style="width:100%;border-collapse:collapse;text-align:center;color:#18231f;background:#fff"><thead><tr style="background:#176b4a;color:#fff">'+headers.replace(/<th>/g,'<th style="background:#176b4a;color:#fff;font-weight:800;padding:13px 9px;border:1px solid #0f5439;font-size:16px">')+'</tr></thead><tbody>'+ (rows||'<tr><td colspan="'+(isStock?3:2)+'" style="padding:22px">لا توجد أصناف مسجلة</td></tr>')+'</tbody></table><footer style="text-align:center;margin-top:30px;color:#718078;font-size:12px">تاريخ الطباعة: '+new Date().toLocaleDateString('ar-EG')+'</footer></article>';
+  sheet.style.display='block';
+  $('closeMenuInventorySheet').onclick=()=>sheet.style.display='none';
+  $('printMenuInventorySheet').onclick=()=>{const w=window.open('','_blank');if(!w){alert('يرجى السماح بالنوافذ المنبثقة للطباعة');return;}const article=sheet.querySelector('article').outerHTML;w.document.write('<!doctype html><html lang="ar" dir="rtl"><meta charset="utf-8"><title>'+title+'</title><style>@page{size:A4;margin:15mm}body{font-family:Arial,sans-serif;color:#18231f}table{width:100%;border-collapse:collapse;text-align:center}th,td{border:1px solid #cbd5ce;padding:11px;color:#18231f}th{background:#176b4a!important;color:#fff!important;font-weight:800}tbody tr:nth-child(even){background:#f1f6f2}article{min-height:250mm}</style>'+article+'<script>window.onload=()=>window.print()<\\/script></html>');w.document.close();};
+  return;
+ }
+ if(id==='charts'){
+  $('appMenu').hidden=true;$('menuTrigger').setAttribute('aria-expanded','false');document.querySelector('#nav button[data-tab=reports]').click();
+  let card=$('menuChartsCard');if(!card){card=document.createElement('div');card.id='menuChartsCard';card.className='card';card.style.margin='12px 0';$('reports').prepend(card);}
+  const values=[['مبيعات التحويلات',sum(db.transfers||[],x=>x.sale)],['شحن الهواتف',sum(db.recharges||[],x=>x.sale)],['الخدمات',sum(db.services||[],x=>x.sale)],['المشتريات',sum(db.stock||[],x=>x.amount)],['المصروفات',sum(db.expenses||[],x=>x.amount)]];
+  const max=Math.max(1,...values.map(x=>Number(x[1])||0));
+  const bars=values.map((x,i)=>{const y=35+i*66,w=Math.max(2,(Number(x[1])||0)/max*600);return '<text x="890" y="'+(y+19)+'" text-anchor="end" font-size="18" font-weight="700" fill="#263b32">'+x[0]+'</text><rect x="190" y="'+y+'" width="600" height="28" rx="7" fill="#e7eee9"/><rect x="190" y="'+y+'" width="'+w+'" height="28" rx="7" fill="#15966b"/><text x="178" y="'+(y+20)+'" text-anchor="end" font-size="15" font-weight="700" fill="#263b32">'+fmt(x[1])+'</text>';}).join('');
+  card.style.cssText='margin:12px 0;background:#ffffff!important;color:#18231f!important;border:1px solid #d8e2dc;border-radius:14px;padding:18px;box-shadow:0 3px 12px #183b2b12';
+  card.innerHTML='<h3 style="color:#174d37;margin:0 0 10px">📈 الرسوم البيانية</h3><p style="color:#263b32;background:#f0f6f2;border:1px solid #d5e5da;border-radius:9px;padding:11px 13px;font-size:15px;font-weight:700;line-height:1.9;text-align:right;white-space:normal;overflow-wrap:anywhere;width:100%;box-sizing:border-box;margin:0 0 14px">الرسم يوضح إجماليات العمليات المسجلة في التطبيق بالجنيه السوداني.</p><div style="overflow-x:auto;background:#fff"><svg viewBox="0 0 920 370" role="img" aria-label="رسم بياني للمبيعات والشحن والخدمات والمشتريات والمصروفات" style="width:100%;min-width:650px;height:auto;direction:ltr;background:#fff">'+bars+'</svg></div><p style="color:#172b21;background:#fff;border-right:4px solid #15966b;padding:10px 12px;font-size:15px;font-weight:800;line-height:1.9;text-align:right;white-space:normal;overflow-wrap:anywhere;width:100%;box-sizing:border-box;margin:14px 0 0">ملاحظة: القيم المعروضة إجمالية حسب البيانات المسجلة في التطبيق.</p>';
+  card.scrollIntoView({behavior:'smooth',block:'start'});return;
+ }
+
  if(id==='feedback'){$('appMenu').hidden=true;$('menuTrigger').setAttribute('aria-expanded','false');const subject=encodeURIComponent('ملاحظات تطبيق حساباتي - النسخة التجريبية');const body=encodeURIComponent('مرحباً،\n\nأرغب في إرسال ملاحظة حول تطبيق حساباتي.\n\nنوع الملاحظة أو المشكلة:\n\nنوع الهاتف: \nإصدار التطبيق: النسخة التجريبية\n\nالتفاصيل: \n');window.location.href='mailto:Mustshar2017@gmail.com?subject='+subject+'&body='+body;return;}
  if(id==='about'){$('appMenu').hidden=true;$('menuTrigger').setAttribute('aria-expanded','false');$('aboutModal').hidden=false;return;}
  if(id==='share'){$('appMenu').hidden=true;$('menuTrigger').setAttribute('aria-expanded','false');shareHesabati();return;}
@@ -1332,7 +1360,7 @@ body.dark .profit-toggle{color:var(--ink)}
  if(!button)return;
  function apply(dark){
   document.body.classList.toggle('dark',dark);
-  button.textContent=dark?'🌙':'☀️';
+  button.textContent=dark?'☀️':'🌙';
   button.setAttribute('aria-label',dark?'تفعيل الوضع النهاري':'تفعيل الوضع الليلي');
   button.title=dark?'تفعيل الوضع النهاري':'تفعيل الوضع الليلي';
   const meta=document.querySelector('meta[name="theme-color"]');
@@ -3486,5 +3514,27 @@ document.addEventListener('click',function(event){const button=event.target&&eve
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',addFooter,{once:true});else addFooter();
 })();
 </script>
+
+<style id="theme-toggle-complete">
+body.dark{background:#101b1b!important;color:#e6f0ed!important}
+body.dark .wrap,body.dark main,body.dark .panel,body.dark .section-title,body.dark .muted,body.dark label,body.dark p,body.dark h2,body.dark h3,body.dark h4{color:#e6f0ed}
+body.dark .card,body.dark .table-wrap,body.dark .bank-box,body.dark .bank-form,body.dark .bank-table,body.dark .quick-link,body.dark .recharge-stat,body.dark .report-card,body.dark .modal-content{background:#1b2a29!important;color:#e6f0ed!important;border-color:#344744!important}
+body.dark .hint,body.dark .bank-note{background:#203a33!important;color:#d4eee4!important;border-color:#355b4e!important}
+body.dark input,body.dark select,body.dark textarea{background:#142120!important;color:#f1f7f4!important;border-color:#405550!important}
+body.dark input::placeholder,body.dark textarea::placeholder{color:#a6bbb5!important}
+body.dark table,body.dark tbody,body.dark tr,body.dark td{color:#e6f0ed}
+body.dark th{color:#b8d0c8!important}
+body.dark td:last-child,body.dark th:last-child{background:#1b2a29!important}
+body.dark .secondary{background:#263c37!important;color:#b9f1df!important;border-color:#42665b!important}
+body.dark .danger{background:#482929!important;color:#ffc1c1!important;border-color:#754444!important}
+body.dark .app-menu,body.dark .app-menu button{background:#1b2a29!important;color:#f1f7f4!important;border-color:#344744!important}
+body.dark .app-menu button span{color:#f1f7f4!important}
+body.dark .app-menu button:active{background:#263c37!important}
+body.dark .profit-toggle,body.dark .empty,body.dark .reportline,body.dark footer{color:#e6f0ed!important}
+body.dark .reportline{border-color:#344744!important}
+body.dark .lock-card{background:#1b2a29!important;color:#e6f0ed!important}
+body.dark .lock-card h2,body.dark .lock-card p{color:#e6f0ed!important}
+body.dark #menuInventorySheet article{background:#fff!important;color:#18231f!important}
+</style>
 </body>
 </html>
