@@ -934,7 +934,7 @@ function profit(a){return sum(a,x=>x.sale-x.cost)}
 function row(html){return html}
 function del(type,id){if(confirm('هل تريد حذف هذه العملية؟')){db[type]=db[type].filter(x=>x.id!==id);save()}}
 function edit(type,id){
- const x=db[type].find(v=>v.id===id);if(!x)return;
+ const original=db[type].find(v=>v.id===id);if(!original)return;const x={...original};
  const ask=(label,value)=>prompt(label,value??'');
  const num=(label,value,min=0)=>{const v=ask(label,value);if(v===null)return null;const n=Number(v);if(!Number.isFinite(n)||n<min){alert('أدخل قيمة رقمية صحيحة.');return null;}return n;};
  let v;
@@ -969,6 +969,15 @@ function edit(type,id){
   v=ask('التاريخ بصيغة YYYY-MM-DD',x.date);if(v===null)return;x.date=v;
   v=ask('البيان',x.note);if(v===null)return;x.note=v;
  }
+ if(['transfers','recharges','services'].includes(type)){
+  const available=sum(db.stock,z=>z.amount)
+   -sum(db.transfers.filter(z=>!(type==='transfers'&&z.id===id)),z=>z.cost)
+   -sum(db.recharges.filter(z=>!(type==='recharges'&&z.id===id)),z=>z.cost)
+   -sum(db.services.filter(z=>!(type==='services'&&z.id===id)),z=>z.cost)
+   -sum(db.supplierTransfers,z=>z.amount);
+  if(Number(x.cost)>available){alert('الرصيد المتاح لا يكفي لهذه العملية بعد التعديل.');return;}
+ }
+ const index=db[type].findIndex(v=>v.id===id);if(index<0)return;db[type][index]=x;
  save();
 }
 function tableRows(target,items,make){$(target).innerHTML=items.length?items.slice().reverse().map(make).join(''):'<tr><td colspan="8" class="empty">لا توجد عمليات مسجلة</td></tr>'}
