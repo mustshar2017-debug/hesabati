@@ -1601,6 +1601,38 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
 
 
 
+
+<script id="inbound-product-modal-open-fix-v2">
+(function(){
+ 'use strict';
+ document.addEventListener('click',function(e){
+  const open=e.target&&e.target.closest?e.target.closest('#openInboundProductModal'):null;
+  if(open){
+   e.preventDefault();
+   e.stopPropagation();
+   e.stopImmediatePropagation();
+   const modal=document.getElementById('inboundProductModal');
+   const input=document.getElementById('inboundNewProductName');
+   if(!modal){alert('تعذر العثور على نافذة إضافة الصنف.');return;}
+   modal.hidden=false;
+   modal.removeAttribute('hidden');
+   modal.style.setProperty('display','flex','important');
+   modal.style.setProperty('visibility','visible','important');
+   modal.style.setProperty('opacity','1','important');
+   if(input){input.value='';setTimeout(function(){input.focus();},50);}
+   return;
+  }
+  const cancel=e.target&&e.target.closest?e.target.closest('#cancelInboundNewProduct'):null;
+  if(cancel){
+   e.preventDefault();
+   e.stopPropagation();
+   e.stopImmediatePropagation();
+   const modal=document.getElementById('inboundProductModal');
+   if(modal){modal.hidden=true;modal.style.setProperty('display','none','important');}
+  }
+ },true);
+})();
+</script>
 </body></html>');w.document.close();
  }
  let lastSaleInvoice=null;
