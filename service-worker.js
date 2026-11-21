@@ -1,4 +1,4 @@
-const CACHE = 'hesabati-shell-v11';
+const CACHE = 'hesabati-shell-v12';
 const STATIC_FILES = ['./manifest.webmanifest', './icons/icon.svg'];
 
 self.addEventListener('install', event => {
@@ -30,7 +30,6 @@ self.addEventListener('fetch', event => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
-  // Always request the application shell from GitHub Pages; never show stale HTML.
   const isAppShell = request.mode === 'navigate' ||
     url.pathname.endsWith('/index.html') || url.pathname.endsWith('/');
   if (isAppShell) {
@@ -38,9 +37,8 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Static resources use the network first, with cache as an offline fallback.
   event.respondWith(
-    fetch(request).then(response => {
+    fetch(request, {cache:'no-store'}).then(response => {
       if (response && response.ok) {
         const copy = response.clone();
         caches.open(CACHE).then(cache => cache.put(request, copy));
