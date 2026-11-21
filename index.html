@@ -598,6 +598,65 @@ footer{color:#a9c2b5!important}
 #phonesHub.quick-recharge.show-recharge-history #rechargeCard{display:none!important}
 #phonesHub.quick-recharge.show-recharge-history #rechargeHistoryBlock,#phonesHub.quick-rechargeHistory #rechargeHistoryBlock{display:block!important;width:min(100%,900px);max-height:90vh;overflow:auto;margin:auto;padding:16px;background:#fff;border-radius:16px}
 </style>
+<style id="hesabati-premium-dashboard-v2">
+:root{--bg:#031b2b;--ink:#f5ffff;--muted:#c4e4ec;--teal:#00e8d0;--line:#00bce8}
+html{background:#031b2b}
+body{background:radial-gradient(ellipse at 50% 0%,#075b68 0%,#04283b 35%,#031827 75%,#021321 100%)!important;color:var(--ink)!important;position:relative}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.28;background-image:radial-gradient(#16c9e8 1px,transparent 1.5px);background-size:13px 13px;mask-image:linear-gradient(transparent 5%,#000 35%,#000 100%)}
+body>*{position:relative;z-index:1}
+header{background:radial-gradient(ellipse at 50% -70%,#11d9bd 0%,transparent 65%),linear-gradient(145deg,#003d39 0%,#00665e 52%,#003a4b 100%)!important;color:#fff!important;padding:18px 12px 16px!important;border-bottom:2px solid #00e8d0!important;box-shadow:0 8px 28px #00131dcc!important;position:relative;overflow:hidden}
+header:before{content:"";position:absolute;left:-8%;right:-8%;bottom:-62px;height:100px;border:2px solid #00e8d077;border-radius:50%;box-shadow:0 -8px 22px #00dfc733;pointer-events:none}
+header:after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,#00e8d0,#00a9ff,#8c35ff,#00e8d0)}
+.brand-line{display:flex;align-items:center;gap:12px}
+header h1{font-size:clamp(22px,5vw,29px)!important;font-weight:950!important;color:#fff!important;text-shadow:0 2px 9px #001d1dcc}
+.sub{color:#d5fff8!important;font-weight:700}
+.menu-trigger{border:1px solid #9affedaa!important;background:linear-gradient(145deg,#ffffff35,#ffffff0b)!important;box-shadow:0 4px 12px #001d2d77!important;color:#fff!important}
+.header-actions .secondary{background:linear-gradient(145deg,#087d86,#064a70)!important;border:1px solid #52e9e2!important;color:#fff!important}
+#nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;background:#031b2b!important;border:1px solid #087b98!important;border-radius:17px!important;padding:8px!important;margin:12px 0 15px!important;box-shadow:0 5px 18px #00101c99!important}
+#nav button{min-width:0;background:linear-gradient(145deg,#087fbd,#064b8e)!important;border:1px solid #31c9f0!important;color:#fff!important;border-radius:12px!important;box-shadow:inset 0 1px 0 #ffffff44,0 4px 10px #00101c88!important;font-weight:900}
+#nav button.active{background:linear-gradient(145deg,#8d28ee,#4d0ca8)!important;border-color:#db8cff!important}
+#home .document-actions{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;margin:12px 0 16px!important}
+#home .document-actions button{min-width:0!important;min-height:58px!important;padding:8px 5px!important;border:1.5px solid #00e7bf!important;border-radius:19px!important;background:linear-gradient(145deg,#05d98d,#006b50 70%,#004a43)!important;color:#fff!important;font:inherit!important;font-size:clamp(11px,3vw,14px)!important;font-weight:950!important;line-height:1.3!important;white-space:normal!important;box-shadow:inset 0 2px 5px #ffffff55,inset 0 -7px 14px #002d2366,0 5px 13px #0009,0 0 12px #00d99b55!important;text-shadow:0 2px 3px #003b2e}
+#home .document-actions button:nth-child(3n+2){background:linear-gradient(145deg,#a32cff,#5d0bbd 72%,#32056e)!important;border-color:#d17bff!important;box-shadow:inset 0 2px 5px #ffffff55,inset 0 -7px 14px #26004466,0 5px 13px #0009,0 0 12px #9d25ff66!important}
+#home .document-actions button:nth-child(3n){background:linear-gradient(145deg,#05d9ee,#087acb 72%,#064b8a)!important;border-color:#53edff!important;box-shadow:inset 0 2px 5px #ffffff55,inset 0 -7px 14px #00294d66,0 5px 13px #0009,0 0 12px #00cfff66!important}
+#home .document-actions button:active,#home .category-launcher button:active{transform:translateY(2px);filter:brightness(1.15)}
+#home .category-launcher{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px!important;margin:14px 0 20px!important}
+#home .category-launcher button{position:relative;overflow:hidden;min-width:0!important;min-height:142px!important;padding:13px 8px!important;border:2px solid #00bdf5!important;border-radius:25px!important;background:radial-gradient(ellipse at 50% 0%,#0877ad 0%,transparent 65%),linear-gradient(145deg,#07518a,#062c54 65%,#071b3d)!important;color:#fff!important;font:inherit!important;font-weight:950!important;font-size:14px!important;line-height:1.35!important;box-shadow:inset 0 2px 8px #ffffff26,inset 0 -15px 25px #00152c77,0 7px 18px #0008,0 0 10px #00bfff55!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:9px!important}
+#home .category-launcher button:before{content:"";position:absolute;inset:0;background:linear-gradient(125deg,transparent 18%,#ffffff12 28%,transparent 43%);pointer-events:none}
+#home .category-launcher button:nth-child(4n+2){background:radial-gradient(ellipse at 50% 0%,#00a981 0%,transparent 66%),linear-gradient(145deg,#007d63,#034c48 68%,#042b35)!important;border-color:#00e7a6!important;box-shadow:inset 0 2px 8px #ffffff26,inset 0 -15px 25px #002b2377,0 7px 18px #0008,0 0 12px #00e5a555!important}
+#home .category-launcher button:nth-child(4n+3){background:radial-gradient(ellipse at 50% 0%,#8525c9 0%,transparent 66%),linear-gradient(145deg,#54208f,#27105a 68%,#17143c)!important;border-color:#bd59ff!important;box-shadow:inset 0 2px 8px #ffffff26,inset 0 -15px 25px #19002d77,0 7px 18px #0008,0 0 12px #a32cff66!important}
+#home .category-launcher button:nth-child(4n){background:radial-gradient(ellipse at 50% 0%,#04b7dc 0%,transparent 66%),linear-gradient(145deg,#087c9c,#06456b 68%,#062848)!important;border-color:#00dafa!important;box-shadow:inset 0 2px 8px #ffffff26,inset 0 -15px 25px #00283a77,0 7px 18px #0008,0 0 12px #00cfff66!important}
+#home .category-launcher .home-icon-symbol{font-size:clamp(34px,9vw,48px)!important;line-height:1.1;filter:drop-shadow(0 5px 6px #000b)}
+#home .category-launcher .home-icon-label{font-size:clamp(12px,3.4vw,16px)!important;font-weight:950!important;overflow-wrap:anywhere;text-shadow:0 2px 4px #001522}
+.card,.table-wrap{background:linear-gradient(145deg,#0b3450,#061d34)!important;border:1.5px solid #087fae!important;border-radius:20px!important;color:#f4fbff!important;box-shadow:0 7px 19px #0007,inset 0 1px 0 #ffffff20!important}
+.kpi-icon,.quick-icon{background:linear-gradient(145deg,#08c9d8,#075b91)!important;color:#fff!important;border:1px solid #32e8f2!important}
+input,select,textarea{background:#10283b!important;color:#fff!important;border:1px solid #28799c!important;border-radius:12px!important}
+input::placeholder,textarea::placeholder{color:#a7bdcc!important}
+.primary{background:linear-gradient(145deg,#05d5ad,#087cba)!important;color:#fff!important;border:1px solid #5cf5dc!important;box-shadow:0 4px 12px #001a2a88!important}
+.secondary{background:linear-gradient(145deg,#673bd0,#3d278c)!important;color:#fff!important;border:1px solid #9e80ed!important}
+.quick-link{background:linear-gradient(145deg,#123f59,#0b1d31)!important;color:#fff!important;border:1px solid #168fe7!important}
+.quick-link small,.kpi small,label,.muted,th{color:#c4dce7!important}
+.quick-section .section-title,.section-title{color:#f4fbff!important}
+.hint{background:#102e40!important;color:#e4f7ff!important;border-color:#1c819e!important}
+.reportline,th,td{border-color:#28506a!important}
+td:last-child,th:last-child{background:#10263a!important}
+.app-menu{background:#10263a!important;border-color:#26769b!important}
+.app-menu button,.app-menu button span{background:#10263a!important;color:#fff!important}
+@media(min-width:600px){#home .category-launcher{grid-template-columns:repeat(2,minmax(0,1fr))!important;max-width:760px;margin-inline:auto!important}#home .document-actions{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:380px){#home .document-actions{gap:6px!important}#home .document-actions button{font-size:11px!important;min-height:53px!important}#home .category-launcher{gap:8px!important}#home .category-launcher button{min-height:120px!important;padding:9px 5px!important}}
+body:not(.dark){background:linear-gradient(145deg,#eaf6fb,#f4f0ff 55%,#e8fff8)!important;color:#17344a!important}
+body:not(.dark):before{display:none}
+body:not(.dark) header{background:linear-gradient(135deg,#075e65,#078b87 48%,#087cf0)!important}
+body:not(.dark) #nav{background:#eaf4fb!important;border-color:#bdd8ec!important}
+body:not(.dark) #nav button{color:#fff!important}
+body:not(.dark) .card,body:not(.dark) .table-wrap{background:linear-gradient(145deg,#fff,#edf7ff)!important;color:#17344a!important;border-color:#9cc9e8!important}
+body:not(.dark) .kpi small,body:not(.dark) label,body:not(.dark) .muted,body:not(.dark) th{color:#526d82!important}
+body:not(.dark) input,body:not(.dark) select,body:not(.dark) textarea{background:#fff!important;color:#17344a!important;border-color:#a9c8dc!important}
+body:not(.dark) .quick-link{background:linear-gradient(145deg,#fff,#edf7ff)!important;color:#17344a!important}
+body:not(.dark) .quick-link small{color:#526d82!important}
+body:not(.dark) .app-menu,body:not(.dark) .app-menu button,body:not(.dark) .app-menu button span{background:#fff!important;color:#17344a!important}
+@media print{body,body:not(.dark){background:#fff!important;color:#111!important}header,#nav{display:none!important}.card,.table-wrap{background:#fff!important;color:#111!important;box-shadow:none!important}}
+</style>
 </head>
 <body>
 <header><div class="wrap header-row"><div><div class="brand-line"><h1>حساباتي</h1><button id="themeToggle" class="theme-toggle" type="button" aria-label="تفعيل الوضع الليلي" title="تفعيل الوضع الليلي">☀️</button></div><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><div class="header-actions"><button class="menu-trigger" id="menuTrigger" type="button" aria-label="القائمة" aria-expanded="false">⋮</button><button class="secondary" id="languageToggle" type="button" aria-label="تغيير لغة التطبيق">EN</button><button class="secondary" id="lockNow" type="button" aria-label="قفل التطبيق" title="قفل التطبيق"><span class="lock-close-icon" aria-hidden="true"></span></button><div class="app-menu" id="appMenu" hidden><button type="button" data-menu-action="backup"><span class="menu-item-icon" aria-hidden="true">💾</span><span>حفظ نسخة احتياطية</span></button><button type="button" data-menu-action="restore"><span class="menu-item-icon" aria-hidden="true">📥</span><span>استعادة نسخة احتياطي</span></button><button type="button" data-menu-action="charts"><span class="menu-item-icon" aria-hidden="true">📈</span><span>الرسوم البيانية</span></button><button type="button" data-menu-action="productsFile"><span class="menu-item-icon" aria-hidden="true">📦</span><span>ملف الأصناف</span></button><button type="button" data-menu-action="stockFile"><span class="menu-item-icon" aria-hidden="true">📋</span><span>ملف المخزون</span></button><button type="button" data-menu-action="labels"><span class="menu-item-icon" aria-hidden="true">✏️</span><span>تعديل أسماء الأيقونات</span></button><button type="button" data-menu-action="generalReport"><span class="menu-item-icon" aria-hidden="true">📊</span><span>تقرير عام مفصل</span></button><button type="button" data-menu-action="monthlyReport"><span class="menu-item-icon" aria-hidden="true">📅</span><span>التقرير الشهري</span></button><button type="button" data-menu-action="settings"><span class="menu-item-icon" aria-hidden="true">⚙️</span><span>إعدادات التطبيق</span></button><button type="button" data-menu-action="about"><span class="menu-item-icon" aria-hidden="true">ℹ️</span><span>نبذة عنّا</span></button><button type="button" data-menu-action="share"><span class="menu-item-icon" aria-hidden="true">📤</span><span>مشاركة التطبيق</span></button><button type="button" data-menu-action="rate"><span class="menu-item-icon" aria-hidden="true">⭐</span><span>تقييم التطبيق</span></button><button type="button" data-menu-action="feedback"><span class="menu-item-icon" aria-hidden="true">✉️</span><span>إرسال ملاحظات أو الإبلاغ عن مشكلة</span></button></div></div></div></header>
@@ -610,7 +669,7 @@ footer{color:#a9c2b5!important}
 <div class="top-actions document-actions" aria-label="المستندات">
 <button type="button" data-doc-panel="inventory" data-doc-target="stockInForm">📥 سند الوارد</button>
 <button type="button" data-doc-panel="inventory" data-doc-target="stockOutForm">📤 سند الصرف</button>
-<button type="button" data-doc-panel="reports" data-doc-target="generalReportCard">📊 التقرير</button>
+
 <button type="button" data-doc-panel="inventory" data-doc-target="invoiceForm">🧾 الفواتير</button>
 </div>
 <div class="category-launcher">
@@ -1652,7 +1711,75 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
   const w=window.open('','_blank');if(!w){alert('اسمح بفتح النوافذ المنبثقة حتى تتمكن من طباعة الفاتورة.');return}
   const total=items.reduce((a,x)=>a+x.value,0),safe=esc;
   const rows=Array.from({length:10},(_,i)=>{const x=items[i];return '<tr><td>'+(i+1)+'</td><td>'+(x?safe(x.product.name):'')+'</td><td>'+(x?fmt(x.qty):'')+'</td><td>'+(x?fmt(x.price)+' SDG':'')+'</td><td>'+(x?fmt(x.value)+' SDG':'')+'</td></tr>'}).join('');
-  w.document.open();w.document.write('<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>فاتورة أبو التيمان فون</title><style>@page{size:A4 portrait;margin:14mm}*{box-sizing:border-box}body{font-family:Tahoma,Arial,sans-serif;color:#111;margin:0;font-size:13px}.paper{width:100%;min-height:270mm}.head{display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #176fe0;padding-bottom:13px}.brand{font-size:27px;font-weight:900;color:#176fe0}.meta{text-align:left;line-height:1.9}.title{text-align:center;font-size:22px;font-weight:800;margin:18px 0}.details{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}.details div{border:1px solid #ccc;padding:10px}.items{width:100%;border-collapse:collapse;margin-top:12px}.items th,.items td{border:1px solid #888;padding:9px 7px;text-align:center;height:34px}.items th{background:#edf2f8}.total{margin:18px 0 0 auto;width:48%;border:2px solid #176fe0;padding:12px;font-size:17px;font-weight:bold;display:flex;justify-content:space-between}.foot{display:flex;justify-content:flex-end;margin-top:65px}.sign{width:42%;border-top:1px solid #555;padding-top:10px;text-align:center;font-weight:bold}.note{margin-top:24px;text-align:center;color:#555}</style><style id="reports-print-visibility-fix">@media print{body.reports-printing *{visibility:visible!important}body.reports-printing #inventory .products-a4-sheet{display:none!important}body.reports-printing #reports,body.reports-printing #reports *{visibility:visible!important}}</style></head><body><main class="paper"><header class="head"><div><div class="brand">أبو التيمان فون</div><div>لبيع الهواتف ومستلزماتها</div></div><div class="meta"><div>التاريخ: '+safe(d.date)+'</div><div>رقم الفاتورة: '+safe(invoiceNo)+'</div></div></header><div class="title">فاتورة بيع</div><section class="details"><div><b>اسم العميل:</b> '+safe(d.customer||'عميل نقدي')+'</div><div><b>طريقة الدفع:</b> '+safe(d.payment)+'</div></section><table class="items"><thead><tr><th>م</th><th>الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody>'+rows+'</tbody></table><div class="total"><span>الإجمالي الكلي</span><span>'+fmt(total)+' SDG</span></div><div class="foot"><div class="sign">توقيع محمد عمر محمد اسحق</div></div><div class="note">شكراً لتعاملكم معنا</div></main><script>window.onload=function(){setTimeout(function(){window.print()},350)};<\/script></body></html>');w.document.close();
+  w.document.open();w.document.write('<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>فاتورة أبو التيمان فون</title><style>@page{size:A4 portrait;margin:14mm}*{box-sizing:border-box}body{font-family:Tahoma,Arial,sans-serif;color:#111;margin:0;font-size:13px}.paper{width:100%;min-height:270mm}.head{display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #176fe0;padding-bottom:13px}.brand{font-size:27px;font-weight:900;color:#176fe0}.meta{text-align:left;line-height:1.9}.title{text-align:center;font-size:22px;font-weight:800;margin:18px 0}.details{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}.details div{border:1px solid #ccc;padding:10px}.items{width:100%;border-collapse:collapse;margin-top:12px}.items th,.items td{border:1px solid #888;padding:9px 7px;text-align:center;height:34px}.items th{background:#edf2f8}.total{margin:18px 0 0 auto;width:48%;border:2px solid #176fe0;padding:12px;font-size:17px;font-weight:bold;display:flex;justify-content:space-between}.foot{display:flex;justify-content:flex-end;margin-top:65px}.sign{width:42%;border-top:1px solid #555;padding-top:10px;text-align:center;font-weight:bold}.note{margin-top:24px;text-align:center;color:#555}</style><style id="reports-print-visibility-fix">@media print{body.reports-printing *{visibility:visible!important}body.reports-printing #inventory .products-a4-sheet{display:none!important}body.reports-printing #reports,body.reports-printing #reports *{visibility:visible!important}}</style>
+<style id="hesabati-home-compact-fit-v1">
+/* ترتيب مضغوط للواجهة الرئيسية على الهاتف مع الحفاظ على الأقسام ووظائفها */
+@media(max-width:699px){
+ #home .category-launcher{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:7px!important;margin:8px 0 10px!important;
+ }
+ #home .category-launcher button{
+  min-height:clamp(82px,11vh,100px)!important;
+  padding:7px 4px!important;border-radius:18px!important;gap:5px!important;
+ }
+ #home .category-launcher .home-icon-symbol{font-size:clamp(27px,7vw,36px)!important}
+ #home .category-launcher .home-icon-label{font-size:clamp(10px,2.8vw,12px)!important;line-height:1.2!important}
+ #home .document-actions{gap:6px!important;margin:8px 0 10px!important}
+ #home .document-actions button{min-height:46px!important;padding:6px 3px!important;border-radius:13px!important;font-size:clamp(10px,2.8vw,12px)!important}
+ #nav{gap:5px!important;padding:6px!important;margin:8px 0 10px!important}
+ #nav button{min-height:39px!important;padding:6px 3px!important;border-radius:10px!important;font-size:clamp(10px,2.8vw,12px)!important;line-height:1.2!important}
+ header{padding:11px 10px 10px!important}
+ header h1{font-size:clamp(19px,4.8vw,24px)!important}
+}
+@media(max-width:699px) and (max-height:820px){
+ header{padding:8px 9px 8px!important}
+ #nav{margin:6px 0 7px!important}
+ #nav button{min-height:35px!important}
+ #home .document-actions{margin:6px 0 8px!important}
+ #home .document-actions button{min-height:41px!important}
+ #home .category-launcher{gap:6px!important;margin:6px 0 8px!important}
+ #home .category-launcher button{min-height:76px!important;padding:5px 3px!important;gap:3px!important}
+ #home .category-launcher .home-icon-symbol{font-size:27px!important}
+ #home .category-launcher .home-icon-label{font-size:10px!important}
+}
+</style>
+
+
+<style id="hesabati-home-icon-refine-v1">
+/* تصغير رموز الأقسام السبعة لتوازن أفضل مع شبكة الهاتف */
+@media(max-width:699px){
+ #home .category-launcher .home-icon-symbol{
+  font-size:clamp(23px,6vw,29px)!important;
+  line-height:1!important;
+ }
+ #home .category-launcher button{
+  min-height:clamp(72px,9vh,86px)!important;
+  gap:4px!important;
+ }
+ #home .category-launcher .home-icon-label{
+  font-size:clamp(9px,2.5vw,11px)!important;
+ }
+ /* تصغير أيقونات اختصارات قسم الهواتف فقط */
+ #phonesHub .phone-hub-menu .quick-icon{
+  width:34px!important;height:34px!important;flex:0 0 34px!important;
+  border-radius:10px!important;font-size:18px!important;
+ }
+ #phonesHub .phone-hub-menu .quick-link{
+  min-height:86px!important;padding:7px 5px!important;gap:4px!important;
+ }
+ #phonesHub .phone-hub-menu .quick-link span:last-child{
+  font-size:12px!important;line-height:1.3!important;
+ }
+ #phonesHub .phone-hub-menu .quick-link small{font-size:9px!important}
+ #phonesHub .phone-profit-cards .kpi-icon{
+  width:31px!important;height:31px!important;font-size:17px!important;
+  margin-bottom:5px!important;
+ }
+}
+</style>
+
+</head><body><main class="paper"><header class="head"><div><div class="brand">أبو التيمان فون</div><div>لبيع الهواتف ومستلزماتها</div></div><div class="meta"><div>التاريخ: '+safe(d.date)+'</div><div>رقم الفاتورة: '+safe(invoiceNo)+'</div></div></header><div class="title">فاتورة بيع</div><section class="details"><div><b>اسم العميل:</b> '+safe(d.customer||'عميل نقدي')+'</div><div><b>طريقة الدفع:</b> '+safe(d.payment)+'</div></section><table class="items"><thead><tr><th>م</th><th>الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody>'+rows+'</tbody></table><div class="total"><span>الإجمالي الكلي</span><span>'+fmt(total)+' SDG</span></div><div class="foot"><div class="sign">توقيع محمد عمر محمد اسحق</div></div><div class="note">شكراً لتعاملكم معنا</div></main><script>window.onload=function(){setTimeout(function(){window.print()},350)};<\/script></body></html>');w.document.close();
  }
  let lastSaleInvoice=null;
  async function sendSaleWhatsApp(d,items,invoiceNo){
