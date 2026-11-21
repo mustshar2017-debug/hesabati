@@ -1779,6 +1779,13 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
 }
 </style>
 
+
+<style id="hesabati-menu-overflow-fix">
+/* Keep the full three-dot menu visible instead of clipping it inside the header */
+header{overflow:visible!important;z-index:1000!important}
+header .header-row,.header-actions{overflow:visible!important}
+header .app-menu{z-index:1001!important;max-height:min(75vh,620px);overflow-y:auto;overscroll-behavior:contain}
+</style>
 </head><body><main class="paper"><header class="head"><div><div class="brand">أبو التيمان فون</div><div>لبيع الهواتف ومستلزماتها</div></div><div class="meta"><div>التاريخ: '+safe(d.date)+'</div><div>رقم الفاتورة: '+safe(invoiceNo)+'</div></div></header><div class="title">فاتورة بيع</div><section class="details"><div><b>اسم العميل:</b> '+safe(d.customer||'عميل نقدي')+'</div><div><b>طريقة الدفع:</b> '+safe(d.payment)+'</div></section><table class="items"><thead><tr><th>م</th><th>الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody>'+rows+'</tbody></table><div class="total"><span>الإجمالي الكلي</span><span>'+fmt(total)+' SDG</span></div><div class="foot"><div class="sign">توقيع محمد عمر محمد اسحق</div></div><div class="note">شكراً لتعاملكم معنا</div></main><script>window.onload=function(){setTimeout(function(){window.print()},350)};<\/script></body></html>');w.document.close();
  }
  let lastSaleInvoice=null;
