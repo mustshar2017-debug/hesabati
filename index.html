@@ -1382,13 +1382,15 @@ $('changePinForm').addEventListener('submit',async e=>{
 
 
 <style id="app-navigation-controls">
-body.back-control-visible{padding-bottom:86px}
-.app-bottom-controls{position:fixed;z-index:9000;left:12px;right:12px;bottom:max(10px,env(safe-area-inset-bottom));display:flex;gap:10px;max-width:520px;margin:auto;padding:8px;background:#ffffffed;border:1px solid #dce9e4;border-radius:16px;box-shadow:0 8px 28px #102f3425;backdrop-filter:blur(10px)}
+/* زر رجوع صغير وثابت أسفل يسار الشاشة دون شريط عريض */
+body.back-control-visible{padding-bottom:54px}
+.app-bottom-controls{position:fixed;z-index:8500;left:10px;right:auto;bottom:max(10px,env(safe-area-inset-bottom));display:flex;gap:0;width:auto;max-width:none;margin:0;padding:3px;background:transparent;border:0;border-radius:12px;box-shadow:none;backdrop-filter:none}
 .app-bottom-controls[hidden]{display:none!important}
-.app-bottom-controls button{flex:1;min-height:46px;border:0;border-radius:11px;font:inherit;font-weight:800;cursor:pointer}
+.app-bottom-controls button{flex:0 0 auto;min-height:34px;min-width:0;padding:7px 11px;border:1px solid #c9ddd5;border-radius:10px;font-size:12px;line-height:1.2;font-weight:700;cursor:pointer;box-shadow:0 2px 8px #102f3420}
 #appBackButton{background:#e6f3ed;color:#075f50}
-.app-bottom-controls button:active{transform:scale(.98)}
-@media(min-width:700px){.app-bottom-controls{left:20px;right:20px;bottom:16px}}
+.app-bottom-controls button:active{transform:scale(.97)}
+@media(min-width:700px){.app-bottom-controls{left:14px;right:auto;bottom:14px}}
+@media(max-width:380px){.app-bottom-controls{left:7px;bottom:max(7px,env(safe-area-inset-bottom))}.app-bottom-controls button{min-height:31px;padding:6px 9px;font-size:11px}}
 @media print{body{padding-bottom:0!important}.app-bottom-controls{display:none!important}}
 </style>
 <div class="app-bottom-controls" id="appBottomControls" hidden>
