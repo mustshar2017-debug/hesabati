@@ -844,9 +844,13 @@ body:not(.dark) .app-menu,body:not(.dark) .app-menu button,body:not(.dark) .app-
    <button type="button" class="primary" id="inboundReportApply">عرض الكشف</button>
    <button type="button" class="secondary" id="inboundReportPrint">🖨️ طباعة الكشف</button>
   </div>
-  <div class="inbound-report-summary"><span>عدد الأصناف الواردة: <strong id="inboundReportCount">0</strong></span><span>إجمالي قيمة المشتريات: <strong id="inboundReportTotal">0 SDG</strong></span></div>
-  <div class="inbound-table-wrap"><table class="inbound-report-table"><thead><tr><th>م</th><th>التاريخ</th><th>اسم الصنف</th><th>الكمية</th><th>رقم الفاتورة</th><th>سعر الوحدة</th><th>السعر الإجمالي</th><th>اسم المورد</th></tr></thead><tbody id="inboundReportRows"><tr><td colspan="8" class="empty">حدد الفترة ثم اضغط عرض الكشف.</td></tr></tbody></table></div>
-  <div class="inbound-report-grand">إجمالي قيمة المشتريات: <strong id="inboundReportGrand">0 SDG</strong></div>
+  <div class="inbound-report-paper" id="inboundReportPaper">
+   <div class="inbound-report-paper-title"><h2>كشف الأصناف الواردة</h2><p id="inboundReportPeriod">كشف فواتير الشراء حسب الفترة المحددة</p></div>
+   <div class="inbound-report-summary"><span>عدد الأصناف الواردة: <strong id="inboundReportCount">0</strong></span><span>إجمالي قيمة المشتريات: <strong id="inboundReportTotal">0 SDG</strong></span></div>
+   <div class="inbound-table-wrap"><table class="inbound-report-table"><thead><tr><th>م</th><th>التاريخ</th><th>اسم الصنف</th><th>الكمية</th><th>رقم الفاتورة</th><th>سعر الوحدة</th><th>السعر الإجمالي</th><th>اسم المورد</th></tr></thead><tbody id="inboundReportRows"><tr><td colspan="8" class="empty">حدد الفترة ثم اضغط عرض الكشف.</td></tr></tbody></table></div>
+   <div class="inbound-report-grand">إجمالي قيمة المشتريات: <strong id="inboundReportGrand">0 SDG</strong></div>
+  </div>
+  <div class="inbound-report-share-actions"><button type="button" class="primary" id="inboundReportShare">📤 مشاركة الكشف</button></div>
  </div>
 </div>
 <div class="inventory-view" data-inventory-view="outbound"><div class="inbound-modal-card"><div class="inbound-modal-head"><div><strong>📤 سند الصرف</strong><small>تسجيل إخراج بضاعة من المخزون</small></div><button type="button" class="secondary" id="closeOutboundVoucher">إغلاق ✕</button></div><form id="stockOutForm" class="voucher-form">
@@ -2704,6 +2708,8 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden&&$('stockBa
   $('inboundReportCount').textContent=fmt(rows.length);
   $('inboundReportTotal').textContent=fmt(total)+' SDG';
   $('inboundReportGrand').textContent=fmt(total)+' SDG';
+  const period=$('inboundReportPeriod');
+  if(period)period.textContent='الفترة: '+(from||'من البداية')+' إلى '+(to||'حتى اليوم');
   $('inboundReportRows').innerHTML=rows.length?rows.map((x,i)=>{
    const p=products.find(p=>p.id===x.product);
    const unit=x.unitCost!==undefined?num(x.unitCost):(num(x.qty)?num(x.value)/num(x.qty):0);
@@ -2716,6 +2722,16 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden&&$('stockBa
   if(apply){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();render();return;}
   const print=e.target.closest('#inboundReportPrint');
   if(print){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();render();document.body.classList.add('inbound-report-printing');window.print();return;}
+  const share=e.target.closest('#inboundReportShare');
+  if(share){
+   e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+   const paper=$('inboundReportPaper');
+   const text='كشف الأصناف الواردة\\n'+($('inboundReportPeriod')?.textContent||'')+'\\nعدد الأصناف الواردة: '+($('inboundReportCount')?.textContent||'0')+'\\nإجمالي قيمة المشتريات: '+($('inboundReportGrand')?.textContent||'0')+'\\n\\n'+(paper?.querySelector('.inbound-table-wrap')?.innerText||'لا توجد بيانات');
+   if(navigator.share){navigator.share({title:'كشف الأصناف الواردة - حساباتي',text:text}).catch(function(err){if(err&&err.name!=='AbortError')console.error('Share failed:',err);});}
+   else if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){alert('تم نسخ الكشف. يمكنك لصقه وإرساله عبر واتساب أو أي تطبيق.');}).catch(function(){window.prompt('انسخ نص الكشف لمشاركته:',text);});}
+   else window.prompt('انسخ نص الكشف لمشاركته:',text);
+   return;
+  }
   const close=e.target.closest('#closeInboundReport');
   if(close){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();const menu=$('inventorySectionMenu');if(menu)menu.style.display='grid';document.querySelectorAll('#inventory .inventory-view').forEach(x=>x.classList.remove('active','voucher-modal-open','inbound-modal-open','sale-invoice-modal-open','inbound-report-modal-open'));return;}
   const inbound=e.target.closest('#inventory [data-inv-view="inbound"]');
@@ -3782,5 +3798,43 @@ body.dark #menuInventorySheet article{background:#fff!important;color:#18231f!im
  body.inbound-report-printing #inventory .inbound-report-table th,
  body.inbound-report-printing #inventory .inbound-report-table td{display:table-cell!important;color:#111!important;background:#fff!important;border:1px solid #bbb!important;font-size:8pt!important;padding:5px 4px!important;white-space:normal!important}
  body.inbound-report-printing #inventory .inbound-report-table th{background:#eee!important;font-weight:800!important}
+}
+</style>
+
+
+<style id="inbound-report-a4-screen-share-v1">
+#inventory .inbound-report-modal{background:#172326!important}
+#inventory .inbound-report-paper{
+ width:min(100%,1123px);min-height:794px;aspect-ratio:297/210;margin:14px auto 0;
+ padding:34px 32px;background:#fff!important;color:#172326!important;
+ border:1px solid #d7dfdc;border-radius:3px;box-shadow:0 5px 22px #0003;
+ direction:rtl;overflow:visible
+}
+#inventory .inbound-report-paper-title{text-align:center;border-bottom:2px solid #087f70;padding:0 0 12px;margin-bottom:15px}
+#inventory .inbound-report-paper-title h2{margin:0 0 5px;color:#123b3b!important;font-size:23px;font-weight:900}
+#inventory .inbound-report-paper-title p{margin:0;color:#526765!important;font-size:13px}
+#inventory .inbound-report-paper .inbound-report-summary{color:#172326!important;background:#f2f7f5!important;border:1px solid #dce8e3;border-radius:7px;padding:11px 13px;margin:0 0 14px}
+#inventory .inbound-report-paper .inbound-report-summary strong{color:#087f70!important}
+#inventory .inbound-report-paper .inbound-table-wrap{overflow:visible;border:0;border-radius:0}
+#inventory .inbound-report-paper .inbound-report-table{width:100%;min-width:0;table-layout:fixed;border-collapse:collapse}
+#inventory .inbound-report-paper .inbound-report-table th,
+#inventory .inbound-report-paper .inbound-report-table td{color:#172326!important;background:#fff!important;border:1px solid #cbd7d2;padding:8px 5px;font-size:11px;white-space:normal;overflow-wrap:anywhere}
+#inventory .inbound-report-paper .inbound-report-table th{background:#eaf2ef!important;color:#173b37!important;font-weight:900}
+#inventory .inbound-report-paper .inbound-report-grand{color:#172326!important;background:#f5f8f7!important;border:1px solid #cbd7d2;border-radius:7px;font-size:16px}
+#inventory .inbound-report-paper .inbound-report-grand strong{color:#087f70!important}
+.inbound-report-share-actions{display:flex;justify-content:center;margin:14px auto 4px}
+.inbound-report-share-actions button{min-width:min(100%,260px);min-height:48px;font-size:16px}
+@media(max-width:650px){
+ #inventory .inbound-report-paper{width:100%;min-height:520px;aspect-ratio:auto;padding:16px 10px;margin-top:10px}
+ #inventory .inbound-report-paper-title h2{font-size:19px}
+ #inventory .inbound-report-paper .inbound-report-table th,#inventory .inbound-report-paper .inbound-report-table td{font-size:9px;padding:5px 2px}
+ #inventory .inbound-report-paper .inbound-report-grand{font-size:14px;padding:10px}
+}
+@media print{
+ @page{size:A4 landscape;margin:10mm}
+ #inventory .inbound-report-paper{width:100%!important;max-width:none!important;min-height:0!important;aspect-ratio:auto!important;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important}
+ #inventory .inbound-report-paper-title{margin-bottom:8px}
+ #inventory .inbound-report-paper .inbound-report-table th,#inventory .inbound-report-paper .inbound-report-table td{font-size:8pt!important;padding:5px 3px!important}
+ .inbound-report-share-actions{display:none!important}
 }
 </style>
