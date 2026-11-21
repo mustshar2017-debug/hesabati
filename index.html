@@ -1541,83 +1541,7 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
 
 
 
-<script id="hesabati-inbound-interaction-repair-v1">
-(function(){
- 'use strict';
- const KEY='hisabati_inventory_v1';
- const form=document.getElementById('stockInForm');
- const rows=document.getElementById('inboundInvoiceRows');
- const addButton=document.getElementById('addInboundLine');
- if(!form||!rows||!addButton)return;
- function products(){
-  try{const data=JSON.parse(localStorage.getItem(KEY)||'{}');return Array.isArray(data.products)?data.products:[];}
-  catch(_){return [];}
- }
- function fillSelect(select,keepValue){
-  const old=keepValue?select.value:'';
-  const list=products();
-  select.replaceChildren();
-  const placeholder=document.createElement('option');
-  placeholder.value='';placeholder.textContent='اختر الصنف';
-  select.appendChild(placeholder);
-  list.forEach(function(product){
-   const option=document.createElement('option');
-   option.value=String(product.id);
-   option.textContent=String(product.name||'صنف')+' (متاح '+(Number(product.qty)||0)+')';
-   select.appendChild(option);
-  });
-  if(old&&list.some(function(p){return String(p.id)===old;}))select.value=old;
-  else select.value='';
- }
- function refreshSelects(){
-  rows.querySelectorAll('select[name="product[]"]').forEach(function(select){fillSelect(select,true);});
- }
- function updateTotal(){
-  let total=0;
-  rows.querySelectorAll('.inbound-line').forEach(function(row){
-   const qty=Number(row.querySelector('[name="qty[]"]')?.value)||0;
-   const cost=Number(row.querySelector('[name="cost[]"]')?.value)||0;
-   const line=qty*cost;total+=line;
-   const output=row.querySelector('.inbound-line-total');
-   if(output)output.textContent=line.toLocaleString('en-US',{maximumFractionDigits:2});
-  });
-  const output=document.getElementById('inboundGrandTotal');
-  if(output)output.textContent=total.toLocaleString('en-US',{maximumFractionDigits:2});
- }
- function addRow(){
-  const first=rows.querySelector('.inbound-line');
-  if(!first)return;
-  const row=first.cloneNode(true);
-  row.querySelectorAll('input').forEach(function(input){
-   if(input.name==='qty[]')input.value='1';
-   else input.value='';
-  });
-  row.querySelectorAll('select[name="product[]"]').forEach(function(select){fillSelect(select,false);});
-  const lineTotal=row.querySelector('.inbound-line-total');
-  if(lineTotal)lineTotal.textContent='0';
-  rows.appendChild(row);
-  updateTotal();
- }
- // Capture before older handlers so the action remains reliable if legacy
- // listeners were registered more than once or an earlier module failed.
- document.addEventListener('click',function(event){
-  const target=event.target;
-  const button=target&&target.closest?target.closest('#addInboundLine'):null;
-  if(!button)return;
-  event.preventDefault();
-  event.stopPropagation();
-  event.stopImmediatePropagation();
-  addRow();
- },true);
- rows.addEventListener('change',function(event){
-  if(event.target&&event.target.matches('select[name="product[]"]'))refreshSelects();
-  updateTotal();
- });
- rows.addEventListener('input',updateTotal);
- refreshSelects();
- updateTotal();
-})();
-</script>
+
 
 </body></html>');w.document.close();
  }
@@ -3281,5 +3205,21 @@ document.addEventListener('click',function(event){const button=event.target&&eve
  },true);
 })();
 </script>
+
+<script id="hesabati-inbound-interaction-repair-v1">
+(function(){
+ 'use strict';
+ const KEY='hisabati_inventory_v1',form=document.getElementById('stockInForm'),rows=document.getElementById('inboundInvoiceRows'),addButton=document.getElementById('addInboundLine');
+ if(!form||!rows||!addButton)return;
+ function products(){try{const data=JSON.parse(localStorage.getItem(KEY)||'{}');return Array.isArray(data.products)?data.products:[];}catch(_){return [];}}
+ function fillSelect(select,keepValue){const old=keepValue?select.value:'',list=products();select.replaceChildren();const placeholder=document.createElement('option');placeholder.value='';placeholder.textContent='اختر الصنف';select.appendChild(placeholder);list.forEach(function(product){const option=document.createElement('option');option.value=String(product.id);option.textContent=String(product.name||'صنف')+' (متاح '+(Number(product.qty)||0)+')';select.appendChild(option);});select.value=old&&list.some(function(p){return String(p.id)===old;})?old:'';}
+ function refreshSelects(){rows.querySelectorAll('select[name="product[]"]').forEach(function(select){fillSelect(select,true);});}
+ function updateTotal(){let total=0;rows.querySelectorAll('.inbound-line').forEach(function(row){const qty=Number(row.querySelector('[name="qty[]"]')?.value)||0,cost=Number(row.querySelector('[name="cost[]"]')?.value)||0,line=qty*cost;total+=line;const output=row.querySelector('.inbound-line-total');if(output)output.textContent=line.toLocaleString('en-US',{maximumFractionDigits:2});});const output=document.getElementById('inboundGrandTotal');if(output)output.textContent=total.toLocaleString('en-US',{maximumFractionDigits:2});}
+ function addRow(){const first=rows.querySelector('.inbound-line');if(!first)return;const row=first.cloneNode(true);row.querySelectorAll('input').forEach(function(input){input.value=input.name==='qty[]'?'1':'';});row.querySelectorAll('select[name="product[]"]').forEach(function(select){fillSelect(select,false);});const lineTotal=row.querySelector('.inbound-line-total');if(lineTotal)lineTotal.textContent='0';rows.appendChild(row);updateTotal();}
+ document.addEventListener('click',function(event){const button=event.target&&event.target.closest?event.target.closest('#addInboundLine'):null;if(!button)return;event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();addRow();},true);
+ rows.addEventListener('change',function(event){if(event.target&&event.target.matches('select[name="product[]"]'))refreshSelects();updateTotal();});rows.addEventListener('input',updateTotal);refreshSelects();updateTotal();
+})();
+</script>
+
 </body>
 </html>
