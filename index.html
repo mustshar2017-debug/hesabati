@@ -3126,5 +3126,40 @@ document.addEventListener('click',function(event){const button=event.target&&eve
   }).observe(document.documentElement,{childList:true,subtree:true});
 })();
 </script>
+
+<script id="hesabati-mobile-keyboard-guard-v2">
+(function(){
+  // Android Chrome/PWA: refocus editable controls inside the real user gesture.
+  // Do not prevent the browser's native pointer/touch behavior.
+  function editableField(node){
+    if(!node || !node.closest) return null;
+    const field=node.closest('input, textarea');
+    if(!field || field.disabled || field.readOnly) return null;
+    if(field.type==='hidden' || field.getAttribute('aria-hidden')==='true') return null;
+    if(field.closest('[hidden],[inert]')) return null;
+    return field;
+  }
+  function restoreFocus(event){
+    if(!event || !event.isTrusted) return;
+    const field=editableField(event.target);
+    if(!field) return;
+    // Keep this synchronous: Android only opens the soft keyboard for focus
+    // initiated during a genuine user interaction.
+    try { field.focus({preventScroll:true}); }
+    catch (_) { try { field.focus(); } catch (_) {} }
+  }
+  document.addEventListener('pointerdown',restoreFocus,true);
+  // Fallback for older Android WebViews without Pointer Events.
+  if(!('PointerEvent' in window)){
+    document.addEventListener('touchstart',restoreFocus,{capture:true,passive:true});
+  }
+  // Also support keyboard navigation and assistive-technology activation.
+  document.addEventListener('click',function(event){
+    if(!event.isTrusted) return;
+    const field=editableField(event.target);
+    if(field && document.activeElement!==field) restoreFocus(event);
+  },true);
+})();
+</script>
 </body>
 </html>
