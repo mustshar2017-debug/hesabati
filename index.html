@@ -1055,14 +1055,26 @@ $('changePinForm').addEventListener('submit',async e=>{
  window.addEventListener('pageshow',keepLockVisible);
  document.addEventListener('visibilitychange',keepLockVisible);
 </script>
-<script id="hesabati-force-update-v11">
+<script id="hesabati-force-update-v12">
 (function(){
   if(!('serviceWorker' in navigator))return;
+  const RELOAD_KEY='hesabati_sw_controller_reload_v12';
+  let reloading=false;
+  function reloadOnce(){
+    if(reloading)return;
+    try{
+      if(sessionStorage.getItem(RELOAD_KEY)==='1')return;
+      sessionStorage.setItem(RELOAD_KEY,'1');
+    }catch(_){}
+    reloading=true;
+    const url=new URL(location.href);
+    url.searchParams.set('app_refresh',String(Date.now()));
+    location.replace(url.toString());
+  }
+  navigator.serviceWorker.addEventListener('controllerchange',reloadOnce);
   async function updateApp(){
     try{
       const registration=await navigator.serviceWorker.register('./service-worker.js',{updateViaCache:'none'});
-      await registration.update();
-      if(registration.waiting)registration.waiting.postMessage({type:'SKIP_WAITING'});
       registration.addEventListener('updatefound',function(){
         const worker=registration.installing;
         if(!worker)return;
@@ -1072,11 +1084,16 @@ $('changePinForm').addEventListener('submit',async e=>{
           }
         });
       });
+      await registration.update();
+      if(registration.waiting)registration.waiting.postMessage({type:'SKIP_WAITING'});
     }catch(error){console.warn('Hesabati update check failed',error);}
   }
   if(document.readyState==='complete')updateApp();
   else window.addEventListener('load',updateApp,{once:true});
   window.addEventListener('online',updateApp);
+  window.addEventListener('pageshow',function(){
+    try{sessionStorage.removeItem(RELOAD_KEY);}catch(_){}
+  },{once:true});
 })();
 </script>
 <script>(function(){const targets={phonesHub:function(){return document.getElementById("phonesHub")},stock:function(){return document.getElementById("stockCard")},transfer:function(){return document.getElementById("transferCard")},expenses:function(){return document.querySelector("#expenses .card")},creditHistory:function(){return document.getElementById("creditHistoryBlock")},recharge:function(){return document.getElementById("rechargeCard")},rechargeHistory:function(){return document.getElementById("rechargeHistoryBlock")},serviceHome:function(){document.getElementById('serviceFormTitle').textContent='تسجيل خدمة زبون';return document.getElementById('serviceCard')},serviceZain:function(){document.getElementById('serviceNetwork').value='زين';document.getElementById('serviceFormTitle').textContent='تسجيل خدمة زين';return document.getElementById('serviceCard')},serviceSudani:function(){document.getElementById('serviceNetwork').value='سوداني';document.getElementById('serviceFormTitle').textContent='تسجيل خدمة سوداني';return document.getElementById('serviceCard')}};document.querySelectorAll("[data-phone-menu]").forEach(function(b){b.addEventListener("click",function(){const p=document.getElementById("phonesHub");if(p)p.classList.remove("quick-recharge","quick-rechargeHistory");window.scrollTo({top:0,behavior:"smooth"});});});
