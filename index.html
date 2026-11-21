@@ -1057,7 +1057,8 @@ function openAppSection(id){
  const target={generalReport:'generalReportCard',monthlyReport:'monthlyReportCard',backup:'backupToolsCard',settings:'settingsCard',labels:'iconNamesCard'}[id];
  if(target)$(target).scrollIntoView({behavior:'smooth',block:'start'});
 }
-$('menuTrigger').addEventListener('click',()=>{const m=$('appMenu');m.hidden=!m.hidden;$('menuTrigger').setAttribute('aria-expanded',String(!m.hidden));});
+$('menuTrigger').addEventListener('click',()=>{const m=$('appMenu'),t=$('menuTrigger');const opening=m.hidden;if(opening){const r=t.getBoundingClientRect();m.style.position='fixed';m.style.top=Math.min(window.innerHeight-100,r.bottom+8)+'px';m.style.right=Math.max(8,window.innerWidth-r.right)+'px';m.style.left='auto';m.style.zIndex='2147483000';m.hidden=false;t.setAttribute('aria-expanded','true');}else{m.hidden=true;t.setAttribute('aria-expanded','false');}});
+document.addEventListener('click',e=>{const m=$('appMenu'),t=$('menuTrigger');if(m&&!m.hidden&&!m.contains(e.target)&&!t.contains(e.target)){m.hidden=true;t.setAttribute('aria-expanded','false');}});
 document.querySelectorAll('[data-menu-action]').forEach(b=>b.addEventListener('click',()=>openAppSection(b.dataset.menuAction)));
 $('saveIconNames').addEventListener('click',()=>{const vals={};[...$('iconNamesForm').querySelectorAll('input')].forEach(x=>{vals[x.name]=x.value.trim()||x.name;});localStorage.setItem(ICON_NAMES_KEY,JSON.stringify(vals));loadIconNames();alert('تم حفظ أسماء الأيقونات.');});
 $('resetIconNames').addEventListener('click',()=>{localStorage.removeItem(ICON_NAMES_KEY);loadIconNames();buildIconNameEditor();});
@@ -1785,6 +1786,11 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
 header{overflow:visible!important;z-index:1000!important}
 header .header-row,.header-actions{overflow:visible!important}
 header .app-menu{z-index:1001!important;max-height:min(75vh,620px);overflow-y:auto;overscroll-behavior:contain}
+</style>
+
+<style id="hesabati-menu-fixed-position-v2">
+#appMenu[hidden]{display:none!important}
+#appMenu:not([hidden]){display:block!important;position:fixed!important;z-index:2147483000!important;width:min(280px,calc(100vw - 16px))!important;max-height:75vh!important;overflow-y:auto!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}
 </style>
 </head><body><main class="paper"><header class="head"><div><div class="brand">أبو التيمان فون</div><div>لبيع الهواتف ومستلزماتها</div></div><div class="meta"><div>التاريخ: '+safe(d.date)+'</div><div>رقم الفاتورة: '+safe(invoiceNo)+'</div></div></header><div class="title">فاتورة بيع</div><section class="details"><div><b>اسم العميل:</b> '+safe(d.customer||'عميل نقدي')+'</div><div><b>طريقة الدفع:</b> '+safe(d.payment)+'</div></section><table class="items"><thead><tr><th>م</th><th>الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody>'+rows+'</tbody></table><div class="total"><span>الإجمالي الكلي</span><span>'+fmt(total)+' SDG</span></div><div class="foot"><div class="sign">توقيع محمد عمر محمد اسحق</div></div><div class="note">شكراً لتعاملكم معنا</div></main><script>window.onload=function(){setTimeout(function(){window.print()},350)};<\/script></body></html>');w.document.close();
  }
