@@ -3161,5 +3161,41 @@ document.addEventListener('click',function(event){const button=event.target&&eve
   },true);
 })();
 </script>
+<script id="hesabati-inventory-menu-capture-v3">
+(function(){
+ const root=document.getElementById('inventory');if(!root)return;
+ function openView(name){
+  const menu=document.getElementById('inventorySectionMenu');if(menu)menu.style.display='none';
+  root.querySelectorAll('.inventory-view[data-inventory-view]').forEach(function(v){const active=v.dataset.inventoryView===name;v.classList.toggle('active',active);v.classList.toggle('voucher-modal-open',active&&['inboundEntry','outbound','invoice','inbound'].includes(name));});
+  if(name==='invoice'){
+   const rows=document.getElementById('saleInvoiceRows');
+   if(rows){let products=[];try{products=JSON.parse(localStorage.getItem('hisabati_inventory_v1')||'{}').products||[];}catch(_){}
+    rows.innerHTML='';
+    for(let i=0;i<10;i++){
+     const tr=document.createElement('tr'),num=document.createElement('td');num.textContent=String(i+1);
+     const pc=document.createElement('td'),sel=document.createElement('select');sel.name='product[]';sel.className='product-options';if(i===0)sel.required=true;
+     const empty=document.createElement('option');empty.value='';empty.textContent='اختر الصنف';sel.appendChild(empty);
+     products.forEach(function(p){const op=document.createElement('option');op.value=p.id;op.textContent=p.name;sel.appendChild(op);});pc.appendChild(sel);
+     const qc=document.createElement('td'),qty=document.createElement('input');qty.name='qty[]';qty.type='number';qty.min='1';qty.step='1';qty.value=i===0?'1':'';qty.placeholder='—';qc.appendChild(qty);
+     const prc=document.createElement('td'),price=document.createElement('input');price.name='price[]';price.type='number';price.min='0';price.step='0.01';price.placeholder='—';prc.appendChild(price);
+     const total=document.createElement('td');total.className='sale-line-total';total.textContent='0';tr.append(num,pc,qc,prc,total);rows.appendChild(tr);
+    }
+    const total=document.getElementById('saleInvoiceTotal');if(total)total.textContent='0 SDG';
+   }
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+ }
+ function showMenu(){const menu=document.getElementById('inventorySectionMenu');if(menu)menu.style.display='grid';root.querySelectorAll('.inventory-view').forEach(function(v){v.classList.remove('active','voucher-modal-open','inbound-modal-open','sale-invoice-modal-open','inbound-report-modal-open');});window.scrollTo({top:0,behavior:'smooth'});}
+ document.addEventListener('click',function(e){
+  const t=e.target&&e.target.closest?e.target:null;if(!t)return;
+  const back=t.closest('#inventoryBack');
+  if(back){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});const home=document.getElementById('home');if(home)home.classList.add('active');document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('active',b.dataset.tab==='home');});window.scrollTo({top:0,behavior:'smooth'});return;}
+  const item=t.closest('#inventory [data-inv-view]');
+  if(item){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();openView(item.dataset.invView);return;}
+  const menuButton=t.closest('#inventory [data-inv-menu]');
+  if(menuButton){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();showMenu();}
+ },true);
+})();
+</script>
 </body>
 </html>
