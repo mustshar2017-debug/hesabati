@@ -1815,6 +1815,20 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
 #accountStatementModal .as-close{float:left}
 @media(max-width:520px){#accountStatementModal .as-summary{grid-template-columns:1fr 1fr}#accountStatementModal .as-summary .as-box:last-child{grid-column:1/-1}}
 </style>
+<style id="account-statement-print-style">
+@media print{
+ body *{visibility:hidden!important}
+ #accountStatementModal,#accountStatementModal *{visibility:visible!important}
+ #accountStatementModal{display:block!important;position:absolute!important;inset:0!important;background:#fff!important;padding:0!important;overflow:visible!important}
+ #accountStatementModal .as-card{width:100%!important;max-width:none!important;max-height:none!important;overflow:visible!important;box-shadow:none!important;border:0!important;margin:0!important;padding:12px!important;background:#fff!important;color:#000!important}
+ #asClose,#asPrint,.as-search,#asResults{display:none!important}
+ #asLedger{display:block!important}
+ #asLedger .as-table{overflow:visible!important}
+ #asLedger table{width:100%!important;border-collapse:collapse!important}
+ #asLedger th,#asLedger td{font-size:10px!important;padding:5px!important;border:1px solid #bbb!important;color:#000!important}
+ #asLedger .as-summary{break-inside:avoid}
+}
+</style>
 <div id="accountStatementModal" dir="rtl">
  <div class="as-card">
   <button type="button" class="secondary as-close" id="asClose">إغلاق ✕</button>
@@ -1860,11 +1874,11 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
   rows.forEach(x=>{debit+=Number(x.debit||0);credit+=Number(x.credit||0)});
   const balance=debit-credit;
   const status=account.type==='عميل'?(balance>0.001?'مدين – عليه لك':balance< -0.001?'دائن – له عندك':'خالص – لا يوجد رصيد'):(balance>0.001?'دائن – له عندك':balance< -0.001?'مدين – عليه لك':'خالص – لا يوجد رصيد');
-  $('asLedger').innerHTML='<h3 style="margin:14px 0 4px">'+esc(account.name)+' <small>('+account.type+')</small></h3><div class="as-summary"><div class="as-box">إجمالي المدين<strong>'+money(debit)+'</strong></div><div class="as-box">إجمالي الدائن<strong>'+money(credit)+'</strong></div><div class="as-box">الرصيد النهائي<strong>'+money(Math.abs(balance))+'<small style="display:block">'+status+'</small></strong></div></div><div class="as-table"><table><thead><tr><th>التاريخ</th><th>الحركة</th><th>التفاصيل</th><th>مدين</th><th>دائن</th><th>الرصيد</th></tr></thead><tbody>'+rows.map((x,i)=>{const running=rows.slice(0,i+1).reduce((n,y)=>n+Number(y.debit||0)-Number(y.credit||0),0);return '<tr><td>'+esc(x.date||'—')+'</td><td>'+esc(x.kind)+'</td><td>'+esc(x.detail)+'</td><td>'+money(x.debit)+'</td><td>'+money(x.credit)+'</td><td>'+money(Math.abs(running))+' '+(account.type==='عميل'?(running>=0?'مدين':'دائن'):(running>=0?'دائن':'مدين'))+'</td></tr>'}).join('')||'<tr><td colspan="6">لا توجد حركات مسجلة</td></tr>'+'</tbody></table></div>';
+  $('asLedger').innerHTML='<h3 style="margin:14px 0 4px">'+esc(account.name)+' <small>('+account.type+')</small></h3><div class="as-print-actions"><button type="button" class="primary" id="asPrint">🖨️ طباعة كشف الحساب</button></div><div class="as-summary"><div class="as-box">إجمالي المدين<strong>'+money(debit)+'</strong></div><div class="as-box">إجمالي الدائن<strong>'+money(credit)+'</strong></div><div class="as-box">الرصيد النهائي<strong>'+money(Math.abs(balance))+'<small style="display:block">'+status+'</small></strong></div></div><div class="as-table"><table><thead><tr><th>التاريخ</th><th>الحركة</th><th>التفاصيل</th><th>مدين</th><th>دائن</th><th>الرصيد</th></tr></thead><tbody>'+rows.map((x,i)=>{const running=rows.slice(0,i+1).reduce((n,y)=>n+Number(y.debit||0)-Number(y.credit||0),0);return '<tr><td>'+esc(x.date||'—')+'</td><td>'+esc(x.kind)+'</td><td>'+esc(x.detail)+'</td><td>'+money(x.debit)+'</td><td>'+money(x.credit)+'</td><td>'+money(Math.abs(running))+' '+(account.type==='عميل'?(running>=0?'مدين':'دائن'):(running>=0?'دائن':'مدين'))+'</td></tr>'}).join('')||'<tr><td colspan="6">لا توجد حركات مسجلة</td></tr>'+'</tbody></table></div>';
   $('asLedger').hidden=false;$('asResults').hidden=true;
  }
  document.addEventListener('click',e=>{const b=e.target.closest('#nav button[data-nav-view="accounts"]');if(b){e.preventDefault();e.stopImmediatePropagation();open()}},true);
- $('asSearch').addEventListener('input',renderSearch);$('asClose').addEventListener('click',close);
+ $('asSearch').addEventListener('input',renderSearch);$('asClose').addEventListener('click',close);modal.addEventListener('click',e=>{if(e.target.closest('#asPrint')){e.preventDefault();window.print();}});
  modal.addEventListener('click',e=>{if(e.target===modal)close()});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.style.display==='flex')close()});
 })();
