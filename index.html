@@ -1938,7 +1938,7 @@ body.dark .supplier-balance-line{background:#203a33;color:#b9f1df}body.dark .sup
   const balance=available();if(amount>balance){$('supplierTransferMessage').textContent='الرصيد المتاح لا يكفي. المتاح '+balance.toLocaleString('en-US')+' SDG.';return;}
   db.supplierTransfers=db.supplierTransfers||[];
   db.supplierTransfers.push({id:'supplier-transfer-'+Date.now(),supplier:supplier.name,supplierId:supplier.id,phone:supplier.phone||'',amount:Number(amount.toFixed(2)),date,note,createdAt:new Date().toISOString()});
-  save();window.dispatchEvent(new Event('supplier-transfers-updated'));renderAvailable();$('supplierTransferMessage').textContent='تم حفظ الحوالة وخصم '+amount.toLocaleString('en-US')+' SDG من الرصيد المتاح.';alert('تم تسجيل حوالة المورد وخصم المبلغ من الرصيد المتاح.');close();
+  save();window.dispatchEvent(new Event('supplier-transfers-updated'));renderAvailable();$('supplierTransferMessage').textContent='تم حفظ الحوالة وخصم '+amount.toLocaleString('en-US')+' SDG من الرصيد المتاح.';alert('تم تسجيل حوالة المورد وخصم المبلغ من الرصيد المتاح.');$('supplierAmountModal').hidden=true;close();
  });
 })();
 </script>
