@@ -1657,24 +1657,21 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
  $('saveInboundNewProduct')?.addEventListener('click',()=>{
   const name=(inboundProductName?.value||'').trim();
   if(!name){alert('اكتب اسم الصنف أولاً.');inboundProductName?.focus();return;}
-  const duplicate=db.products.find(p=>String(p.name||'').trim().toLocaleLowerCase()===name.toLocaleLowerCase());
-  if(duplicate){
-   refresh();
+  try{
+   const key='hisabati_inventory_v1';
+   const data=JSON.parse(localStorage.getItem(key)||'{}');
+   if(!Array.isArray(data.products))data.products=[];
+   const duplicate=data.products.find(p=>String(p.name||'').trim().toLocaleLowerCase()===name.toLocaleLowerCase());
+   const product=duplicate||{id:'p'+Date.now(),name,category:'عام',qty:0,buy:0,sell:0,min:0,note:'',createdAt:today()};
+   if(!duplicate)data.products.push(product);
+   localStorage.setItem(key,JSON.stringify(data));
+   window.hisabatiRefreshInventory?.();
    const first=$('stockInForm')?.querySelector('select[name="product[]"]');
-   if(first)first.value=duplicate.id;
+   if(first)first.value=product.id;
    closeInboundProductModal();
-   alert('هذا الصنف مسجل مسبقاً، تم اختياره في السند.');
-   return;
-  }
-  const id='p'+Date.now();
-  db.products.push({id,name,category:'عام',qty:0,buy:0,sell:0,min:0,note:'',createdAt:today()});
-  save();
-  refresh();
-  const first=$('stockInForm')?.querySelector('select[name="product[]"]');
-  if(first)first.value=id;
-  closeInboundProductModal();
-  updateInboundTotals();
-  alert('تمت إضافة الصنف إلى قائمة المخزون. أدخل الكمية وسعر الوحدة ثم احفظ سند الوارد.');
+   updateInboundTotals();
+   alert(duplicate?'هذا الصنف مسجل مسبقاً، تم اختياره في السند.':'تمت إضافة الصنف إلى قائمة المخزون. أدخل الكمية وسعر الوحدة ثم احفظ سند الوارد.');
+  }catch(error){console.error('تعذر حفظ الصنف:',error);alert('تعذر حفظ الصنف. تحقق من مساحة التخزين ثم حاول مرة أخرى.');}
  });
  inboundProductName?.addEventListener('keydown',e=>{
   if(e.key==='Enter'){e.preventDefault();$('saveInboundNewProduct')?.click();}
@@ -1965,6 +1962,10 @@ document.addEventListener('click',e=>{
  // ربط ربح مبيعات الطبلية ببطاقة الأرباح في الصفحة الرئيسية
  function inventoryProfit(){return db.invoices.reduce((a,x)=>a+(Number(x.price||0)-Number(x.cost??db.products.find(p=>p.id===x.product)?.buy??0))*Number(x.qty||0),0)}
  function updateInventoryKpi(){const el=$('inventoryProfit');if(el)el.textContent=fmt(inventoryProfit())}
+ window.hisabatiRefreshInventory=function(){
+  try{const latest=JSON.parse(localStorage.getItem(KEY)||'{}');if(Array.isArray(latest.products))db={...db,...latest};refresh();}
+  catch(error){console.error('تعذر تحديث قائمة المخزون:',error);}
+ };
  const oldRender=window.render;
  if(typeof oldRender==='function'){window.render=function(){oldRender();updateInventoryKpi()};}
  const originalRefresh=refresh;
