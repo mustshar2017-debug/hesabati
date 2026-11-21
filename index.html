@@ -2585,19 +2585,8 @@ async function scan(){
  if(!window.isSecureContext){message('الكاميرا تحتاج اتصالاً آمناً. افتح التطبيق من رابط HTTPS.');return;}
  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){message('الكاميرا غير متاحة في هذا المتصفح. افتح الرابط في Chrome على الهاتف.');return;}
  try{
+  // استخدم ZBar وحده طوال جلسة المسح؛ لا تبدّل المحرك تلقائياً بعد عدة ثوانٍ.
   await startZbarDirect();
-  // لا نترك ZBar عالقاً إذا عرض الكاميرا ولم يتمكن من فك الرمز؛ ننتقل تلقائياً إلى ZXing.
-  zbarFallbackTimer=setTimeout(async()=>{
-   if(scannerMode!=='zbar')return;
-   message('نجرب محرك قراءة بديل للباركود...');
-   await stop();
-   try{await startZxing();}
-   catch(zxingError){
-    await stop();
-    try{await startFallback();}
-    catch(fallbackError){await stop();message('تعذر قراءة الباركود. تحقق من وضوح الخطوط والإنترنت ثم أعد المحاولة.');}
-   }
-  },6000);
  }catch(primaryError){
   await stop();
   try{await startZxing();}
