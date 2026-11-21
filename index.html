@@ -2396,10 +2396,10 @@ body.dark .supplier-balance-line{background:#203a33;color:#b9f1df}body.dark .sup
 <script id="stock-barcode-scanner">
 (function(){
 const $=id=>document.getElementById(id);
-let stream=null,active=false,raf=0,detector=null,htmlScanner=null,zxingControls=null,nativeFallbackTimer=null,zbarRaf=0,zbarBusy=false,scannerMode='';
+let stream=null,active=false,raf=0,detector=null,htmlScanner=null,zxingControls=null,nativeFallbackTimer=null,zbarFallbackTimer=null,zbarRaf=0,zbarBusy=false,scannerMode='';
 const formats=['qr_code','ean_13','ean_8','code_128','code_39','upc_a','upc_e','itf','codabar'];
 function message(t){const n=$('stockBarcodeResult');if(n)n.textContent=t;}
-function stopNative(){active=false;if(zbarRaf)cancelAnimationFrame(zbarRaf);zbarRaf=0;zbarBusy=false;if(nativeFallbackTimer){clearTimeout(nativeFallbackTimer);nativeFallbackTimer=null;}if(raf)cancelAnimationFrame(raf);raf=0;if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}const v=$('stockBarcodeVideo');if(v){v.pause();v.srcObject=null;}}
+function stopNative(){active=false;if(zbarRaf)cancelAnimationFrame(zbarRaf);zbarRaf=0;zbarBusy=false;if(zbarFallbackTimer){clearTimeout(zbarFallbackTimer);zbarFallbackTimer=null;}if(nativeFallbackTimer){clearTimeout(nativeFallbackTimer);nativeFallbackTimer=null;}if(raf)cancelAnimationFrame(raf);raf=0;if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}const v=$('stockBarcodeVideo');if(v){v.pause();v.srcObject=null;}}
 async function stop(){
  stopNative();
  if(zxingControls){try{zxingControls.stop();}catch(e){}zxingControls=null;}
@@ -2585,16 +2585,30 @@ async function scan(){
  if(!window.isSecureContext){message('الكاميرا تحتاج اتصالاً آمناً. افتح التطبيق من رابط HTTPS.');return;}
  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){message('الكاميرا غير متاحة في هذا المتصفح. افتح الرابط في Chrome على الهاتف.');return;}
  try{
-  // استخدم ZBar مباشرةً؛ هذا هو المحرك الذي أكد المستخدم نجاحه على هاتفه سابقاً.
   await startZbarDirect();
+  // لا نترك ZBar عالقاً إذا عرض الكاميرا ولم يتمكن من فك الرمز؛ ننتقل تلقائياً إلى ZXing.
+  zbarFallbackTimer=setTimeout(async()=>{
+   if(scannerMode!=='zbar')return;
+   message('نجرب محرك قراءة بديل للباركود...');
+   await stop();
+   try{await startZxing();}
+   catch(zxingError){
+    await stop();
+    try{await startFallback();}
+    catch(fallbackError){await stop();message('تعذر قراءة الباركود. تحقق من وضوح الخطوط والإنترنت ثم أعد المحاولة.');}
+   }
+  },6000);
  }catch(primaryError){
   await stop();
-  try{
-   await startFallback();
-  }catch(fallbackError){
+  try{await startZxing();}
+  catch(zxingError){
    await stop();
-   const detail=primaryError&&primaryError.message||fallbackError&&fallbackError.message||'تعذر بدء المسح';
-   message('تعذر تشغيل قارئ الباركود: '+detail+'. تحقق من إذن الكاميرا والإنترنت ثم أعد المحاولة.');
+   try{await startFallback();}
+   catch(fallbackError){
+    await stop();
+    const detail=primaryError&&primaryError.message||zxingError&&zxingError.message||fallbackError&&fallbackError.message||'تعذر بدء المسح';
+    message('تعذر تشغيل قارئ الباركود: '+detail+'. تحقق من إذن الكاميرا والإنترنت ثم أعد المحاولة.');
+   }
   }
  }
 }
