@@ -1820,13 +1820,22 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
  body *{visibility:hidden!important}
  #accountStatementModal,#accountStatementModal *{visibility:visible!important}
  #accountStatementModal{display:block!important;position:absolute!important;inset:0!important;background:#fff!important;padding:0!important;overflow:visible!important}
- #accountStatementModal .as-card{width:100%!important;max-width:none!important;max-height:none!important;overflow:visible!important;box-shadow:none!important;border:0!important;margin:0!important;padding:12px!important;background:#fff!important;color:#000!important}
+ #accountStatementModal .as-card{width:100%!important;max-width:none!important;max-height:none!important;overflow:visible!important;box-shadow:none!important;border:0!important;margin:0!important;padding:14px!important;background:#fff!important;color:#17130f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
  #asClose,#asPrint,.as-search,#asResults{display:none!important}
- #asLedger{display:block!important}
+ #asLedger{display:block!important;color:#17130f!important}
+ #asLedger h3{font-size:20px!important;font-weight:800!important;color:#573b25!important;background:#f3e9dc!important;border:1px solid #c9ad8f!important;border-right:5px solid #9b7049!important;border-radius:6px!important;padding:10px 12px!important;margin:14px 0 10px!important}
+ #asLedger h3 small{font-size:13px!important;color:#60452f!important}
+ #asLedger .as-summary{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;margin:10px 0 14px!important;break-inside:avoid}
+ #asLedger .as-box{background:#f7f1e9!important;border:1px solid #d7c4ad!important;border-radius:6px!important;padding:9px!important;color:#30251b!important;font-weight:700!important}
+ #asLedger .as-box strong{display:block!important;color:#17130f!important;font-size:14px!important;font-weight:800!important;margin-top:5px!important}
+ #asLedger .as-box small{color:#513b29!important}
  #asLedger .as-table{overflow:visible!important}
- #asLedger table{width:100%!important;border-collapse:collapse!important}
- #asLedger th,#asLedger td{font-size:10px!important;padding:5px!important;border:1px solid #bbb!important;color:#000!important}
- #asLedger .as-summary{break-inside:avoid}
+ #asLedger table{width:100%!important;border-collapse:collapse!important;background:#fff!important}
+ #asLedger thead{display:table-header-group!important}
+ #asLedger th{font-size:11px!important;font-weight:800!important;padding:8px 6px!important;border:1px solid #b99b7a!important;background:#ead9c5!important;color:#352416!important;text-align:right!important}
+ #asLedger td{font-size:10.5px!important;font-weight:600!important;padding:7px 6px!important;border:1px solid #d5c4b1!important;color:#17130f!important;background:#fff!important;text-align:right!important}
+ #asLedger tbody tr:nth-child(even) td{background:#faf6f0!important}
+ #asLedger .as-summary,#asLedger tr{break-inside:avoid}
 }
 </style>
 <div id="accountStatementModal" dir="rtl">
