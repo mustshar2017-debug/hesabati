@@ -1745,6 +1745,40 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
 }
 </style>
 
+
+<style id="hesabati-home-icon-refine-v1">
+/* تصغير رموز الأقسام السبعة لتوازن أفضل مع شبكة الهاتف */
+@media(max-width:699px){
+ #home .category-launcher .home-icon-symbol{
+  font-size:clamp(23px,6vw,29px)!important;
+  line-height:1!important;
+ }
+ #home .category-launcher button{
+  min-height:clamp(72px,9vh,86px)!important;
+  gap:4px!important;
+ }
+ #home .category-launcher .home-icon-label{
+  font-size:clamp(9px,2.5vw,11px)!important;
+ }
+ /* تصغير أيقونات اختصارات قسم الهواتف فقط */
+ #phonesHub .phone-hub-menu .quick-icon{
+  width:34px!important;height:34px!important;flex:0 0 34px!important;
+  border-radius:10px!important;font-size:18px!important;
+ }
+ #phonesHub .phone-hub-menu .quick-link{
+  min-height:86px!important;padding:7px 5px!important;gap:4px!important;
+ }
+ #phonesHub .phone-hub-menu .quick-link span:last-child{
+  font-size:12px!important;line-height:1.3!important;
+ }
+ #phonesHub .phone-hub-menu .quick-link small{font-size:9px!important}
+ #phonesHub .phone-profit-cards .kpi-icon{
+  width:31px!important;height:31px!important;font-size:17px!important;
+  margin-bottom:5px!important;
+ }
+}
+</style>
+
 </head><body><main class="paper"><header class="head"><div><div class="brand">أبو التيمان فون</div><div>لبيع الهواتف ومستلزماتها</div></div><div class="meta"><div>التاريخ: '+safe(d.date)+'</div><div>رقم الفاتورة: '+safe(invoiceNo)+'</div></div></header><div class="title">فاتورة بيع</div><section class="details"><div><b>اسم العميل:</b> '+safe(d.customer||'عميل نقدي')+'</div><div><b>طريقة الدفع:</b> '+safe(d.payment)+'</div></section><table class="items"><thead><tr><th>م</th><th>الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody>'+rows+'</tbody></table><div class="total"><span>الإجمالي الكلي</span><span>'+fmt(total)+' SDG</span></div><div class="foot"><div class="sign">توقيع محمد عمر محمد اسحق</div></div><div class="note">شكراً لتعاملكم معنا</div></main><script>window.onload=function(){setTimeout(function(){window.print()},350)};<\/script></body></html>');w.document.close();
  }
  let lastSaleInvoice=null;
