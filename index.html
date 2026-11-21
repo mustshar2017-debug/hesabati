@@ -1538,6 +1538,62 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
   const rows=Array.from({length:10},(_,i)=>{const x=items[i];return '<tr><td>'+(i+1)+'</td><td>'+(x?safe(x.product.name):'')+'</td><td>'+(x?fmt(x.qty):'')+'</td><td>'+(x?fmt(x.price)+' SDG':'')+'</td><td>'+(x?fmt(x.value)+' SDG':'')+'</td></tr>'}).join('');
   w.document.open();w.document.write('<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>فاتورة أبو التيمان فون</title><style>@page{size:A4 portrait;margin:14mm}*{box-sizing:border-box}body{font-family:Tahoma,Arial,sans-serif;color:#111;margin:0;font-size:13px}.paper{width:100%;min-height:270mm}.head{display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #176fe0;padding-bottom:13px}.brand{font-size:27px;font-weight:900;color:#176fe0}.meta{text-align:left;line-height:1.9}.title{text-align:center;font-size:22px;font-weight:800;margin:18px 0}.details{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}.details div{border:1px solid #ccc;padding:10px}.items{width:100%;border-collapse:collapse;margin-top:12px}.items th,.items td{border:1px solid #888;padding:9px 7px;text-align:center;height:34px}.items th{background:#edf2f8}.total{margin:18px 0 0 auto;width:48%;border:2px solid #176fe0;padding:12px;font-size:17px;font-weight:bold;display:flex;justify-content:space-between}.foot{display:flex;justify-content:flex-end;margin-top:65px}.sign{width:42%;border-top:1px solid #555;padding-top:10px;text-align:center;font-weight:bold}.note{margin-top:24px;text-align:center;color:#555}</style></head><body><main class="paper"><header class="head"><div><div class="brand">أبو التيمان فون</div><div>لبيع الهواتف ومستلزماتها</div></div><div class="meta"><div>التاريخ: '+safe(d.date)+'</div><div>رقم الفاتورة: '+safe(invoiceNo)+'</div></div></header><div class="title">فاتورة بيع</div><section class="details"><div><b>اسم العميل:</b> '+safe(d.customer||'عميل نقدي')+'</div><div><b>طريقة الدفع:</b> '+safe(d.payment)+'</div></section><table class="items"><thead><tr><th>م</th><th>الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody>'+rows+'</tbody></table><div class="total"><span>الإجمالي الكلي</span><span>'+fmt(total)+' SDG</span></div><div class="foot"><div class="sign">توقيع محمد عمر محمد اسحق</div></div><div class="note">شكراً لتعاملكم معنا</div></main><script>window.onload=function(){setTimeout(function(){window.print()},350)};<\/script>
 
+
+<script id="hesabati-inventory-menu-delegated-fix">
+(function(){
+  if(window.__hesabatiInventoryMenuDelegatedFix)return;
+  window.__hesabatiInventoryMenuDelegatedFix=true;
+  const root=document.getElementById('inventory');
+  if(!root)return;
+  function showView(name){
+    const menu=document.getElementById('inventorySectionMenu');
+    if(!menu)return;
+    menu.style.display='none';
+    root.querySelectorAll('.inventory-view[data-inventory-view]').forEach(view=>{
+      const active=view.dataset.inventoryView===name;
+      view.classList.toggle('active',active);
+      view.classList.toggle('voucher-modal-open',active&&['inboundEntry','inbound','outbound','invoice'].includes(name));
+      view.classList.remove('inbound-modal-open','sale-invoice-modal-open','inbound-report-modal-open');
+    });
+    if(name==='invoice'){
+      const rows=document.getElementById('saleInvoiceRows');
+      if(rows && !rows.querySelector('tr')){
+        let products=[];
+        try{products=JSON.parse(localStorage.getItem('hisabati_inventory_v1')||'{}').products||[];}catch(_){}
+        rows.innerHTML='';
+        for(let i=0;i<10;i++){
+          const tr=document.createElement('tr');
+          const no=document.createElement('td');no.textContent=String(i+1);
+          const pc=document.createElement('td'),sel=document.createElement('select');
+          sel.name='product[]';sel.className='product-options';if(i===0)sel.required=true;
+          const empty=document.createElement('option');empty.value='';empty.textContent='اختر الصنف';sel.appendChild(empty);
+          products.forEach(p=>{const op=document.createElement('option');op.value=p.id;op.textContent=p.name;sel.appendChild(op);});
+          pc.appendChild(sel);
+          const qc=document.createElement('td'),qty=document.createElement('input');qty.name='qty[]';qty.type='number';qty.min='1';qty.step='1';qty.value=i===0?'1':'';qty.placeholder='—';qc.appendChild(qty);
+          const prc=document.createElement('td'),price=document.createElement('input');price.name='price[]';price.type='number';price.min='0';price.step='0.01';price.placeholder='—';prc.appendChild(price);
+          const total=document.createElement('td');total.className='sale-line-total';total.textContent='0';
+          tr.append(no,pc,qc,prc,total);rows.appendChild(tr);
+        }
+        const total=document.getElementById('saleInvoiceTotal');if(total)total.textContent='0 SDG';
+      }
+    }
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function showMenu(){
+    const menu=document.getElementById('inventorySectionMenu');
+    if(menu)menu.style.display='grid';
+    root.querySelectorAll('.inventory-view').forEach(v=>v.classList.remove('active','voucher-modal-open','inbound-modal-open','sale-invoice-modal-open','inbound-report-modal-open'));
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  document.addEventListener('click',function(e){
+    const item=e.target&&e.target.closest?e.target.closest('#inventory [data-inv-view]'):null;
+    if(item){e.preventDefault();showView(item.dataset.invView);return;}
+    const back=e.target&&e.target.closest?e.target.closest('#inventory [data-inv-menu]'):null;
+    if(back){e.preventDefault();showMenu();}
+  },true);
+})();
+</script>
+
 </body></html>');w.document.close();
  }
  let lastSaleInvoice=null;
