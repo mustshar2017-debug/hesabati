@@ -2453,7 +2453,7 @@ async function loadZbar(){
 async function startZbarVideo(video){
  await loadZbar();
  const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d',{willReadFrequently:true});
- let last=0;
+ let last=0,zbarErrorShown=false;
  const run=async stamp=>{
   if(scannerMode!=='zxing'&&scannerMode!=='zbar')return;
   if(stamp-last<450){zbarRaf=requestAnimationFrame(run);return;}
@@ -2470,7 +2470,9 @@ async function startZbarVideo(video){
      const code=String(symbol.decode?symbol.decode():symbol.rawData||'').trim();
      if(code){scannerMode='done';if(zbarRaf)cancelAnimationFrame(zbarRaf);zbarRaf=0;showCode(code);return;}
     }
-   }catch(e){/* تستمر القراءة مع الإطار التالي */}
+   }catch(e){
+    if(!zbarErrorShown){zbarErrorShown=true;message('تعذر تحليل صورة الكاميرا بمحرك ZBar: '+String(e&&e.message||e||'خطأ غير معروف')+'. أعد المحاولة أو تحقق من وضوح الرمز.');}
+   }
    finally{zbarBusy=false;}
   }
   if(scannerMode==='zxing'||scannerMode==='zbar')zbarRaf=requestAnimationFrame(run);
