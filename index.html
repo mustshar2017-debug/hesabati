@@ -1077,10 +1077,55 @@ $('printGeneralReport').addEventListener('click',()=>{if($('generalReportResults
 $('reportFrom').value=today();$('reportTo').value=today();
 loadIconNames();
 document.addEventListener('click',e=>{if(!$('appMenu').contains(e.target)&&e.target!==$('menuTrigger')){$('appMenu').hidden=true;$('menuTrigger').setAttribute('aria-expanded','false');}});
-$('backupBtn').onclick=()=>download('hisabati-backup.json',JSON.stringify(db,null,2),'application/json');
+$('backupBtn').onclick=()=>{
+ try{
+  const readBackupValue=(key,fallback)=>{try{const raw=localStorage.getItem(key);return raw===null?fallback:JSON.parse(raw)}catch(_){return fallback}};
+  const backup={format:'hesabati-backup',version:2,createdAt:new Date().toISOString(),data:{
+   core:db,
+   inventory:readBackupValue('hisabati_inventory_v1',{products:[],moves:[],invoices:[],customerPayments:[],supplierPayments:[]}),
+   bankTransfers:readBackupValue('hisabati_bank_transfer_v1',{banks:[]}),
+   supplierAccounts:readBackupValue('hisabati_supplier_accounts_v1',[]),
+   partnership:readBackupValue('hisabati_partnership_v1',null),
+   iconNames:readBackupValue('hisabati_icon_names_v1',{}),
+   theme:localStorage.getItem('hisabati_theme_v1'),
+   language:localStorage.getItem('hesabati_language')
+  }};
+  download('hisabati-backup.json',JSON.stringify(backup,null,2),'application/json');
+ }catch(error){alert('تعذر إنشاء النسخة الاحتياطية. تحقق من مساحة التخزين ثم حاول مرة أخرى.');}
+};
 $('exportBtn').onclick=()=>{let rows=[['القسم','التاريخ','البيان','القيمة','التكلفة','الربح']];db.stock.forEach(x=>rows.push(['رصيد داخل',x.date,x.note,x.amount,x.amount,0]));db.transfers.forEach(x=>rows.push(['تحويل رصيد',x.date,(x.network||'')+' '+(x.customer||''),x.sale,x.cost,x.sale-x.cost]));db.recharges.forEach(x=>rows.push(['شحن',x.date,x.network+' '+x.phone,x.sale,x.cost,x.sale-x.cost]));db.services.forEach(x=>rows.push(['خدمة '+x.network,x.date,x.customer||'',x.sale,x.cost,x.sale-x.cost]));db.expenses.forEach(x=>rows.push(['مصروف',x.date,x.category+' '+x.note,x.amount,'','']));download('hisabati.csv','\ufeff'+rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n'),'text/csv;charset=utf-8')};
 function download(name,content,type){let a=document.createElement('a'),u=URL.createObjectURL(new Blob([content],{type}));a.href=u;a.download=name;a.click();URL.revokeObjectURL(u)}
-$('restoreFile').onchange=async e=>{try{let d=JSON.parse(await e.target.files[0].text());if(!d.stock||!d.transfers||!d.recharges||!d.expenses)throw Error();d.services=d.services||[];db=d;db.supplierTransfers=Array.isArray(db.supplierTransfers)?db.supplierTransfers:[];save();alert('تم استيراد النسخة')}catch(_){alert('ملف النسخة غير صالح')}e.target.value=''};
+$('restoreFile').onchange=async e=>{
+ try{
+  const file=e.target.files&&e.target.files[0];if(!file)return;
+  const backup=JSON.parse(await file.text());
+  if(backup&&backup.format==='hesabati-backup'&&backup.version===2&&backup.data){
+   const d=backup.data,core=d.core,inventory=d.inventory;
+   if(!core||!['stock','transfers','recharges','expenses'].every(k=>Array.isArray(core[k])))throw Error('invalid core');
+   if(!inventory||!Array.isArray(inventory.products)||!Array.isArray(inventory.moves)||!Array.isArray(inventory.invoices))throw Error('invalid inventory');
+   db={...DEFAULT_DB,...core};
+   for(const key of Object.keys(DEFAULT_DB))if(!Array.isArray(db[key]))db[key]=[];
+   localStorage.setItem(KEY,JSON.stringify(db));
+   localStorage.setItem('hisabati_inventory_v1',JSON.stringify({...inventory,customerPayments:Array.isArray(inventory.customerPayments)?inventory.customerPayments:[],supplierPayments:Array.isArray(inventory.supplierPayments)?inventory.supplierPayments:[]}));
+   if(d.bankTransfers)localStorage.setItem('hisabati_bank_transfer_v1',JSON.stringify(d.bankTransfers));
+   if(Array.isArray(d.supplierAccounts))localStorage.setItem('hisabati_supplier_accounts_v1',JSON.stringify(d.supplierAccounts));
+   if(d.partnership)localStorage.setItem('hisabati_partnership_v1',JSON.stringify(d.partnership));
+   if(d.iconNames&&typeof d.iconNames==='object')localStorage.setItem('hisabati_icon_names_v1',JSON.stringify(d.iconNames));
+   if(d.theme==='dark'||d.theme==='light')localStorage.setItem('hisabati_theme_v1',d.theme);
+   if(d.language==='ar'||d.language==='en')localStorage.setItem('hesabati_language',d.language);
+   alert('تم استيراد النسخة الكاملة بنجاح. سيعاد تحميل التطبيق لتحديث جميع الأقسام.');
+   location.reload();
+  }else{
+   const d=backup;
+   if(!d||!['stock','transfers','recharges','expenses'].every(k=>Array.isArray(d[k])))throw Error('invalid legacy backup');
+   db={...DEFAULT_DB,...d};
+   for(const key of Object.keys(DEFAULT_DB))if(!Array.isArray(db[key]))db[key]=[];
+   save();
+   alert('تم استيراد النسخة القديمة للحسابات الأساسية. بيانات المخزون والأقسام المستقلة لم تتغير.');
+  }
+ }catch(_){alert('ملف النسخة غير صالح أو لا يحتوي على بيانات مكتملة. لم يتم استبدال البيانات الحالية.');}
+ e.target.value='';
+};
 
 // قفل التطبيق بكلمة سر رقمية (4 إلى 8 أرقام)
 const PIN_KEY='hisabati_pin_v1';
