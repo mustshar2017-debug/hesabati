@@ -1,4 +1,4 @@
-const CACHE = 'hesabati-shell-v17';
+const CACHE = 'hesabati-shell-v18';
 const STATIC_FILES = ['./manifest.webmanifest', './icons/icon.svg'];
 
 self.addEventListener('install', event => {
