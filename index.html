@@ -598,6 +598,52 @@ footer{color:#a9c2b5!important}
 #phonesHub.quick-recharge.show-recharge-history #rechargeCard{display:none!important}
 #phonesHub.quick-recharge.show-recharge-history #rechargeHistoryBlock,#phonesHub.quick-rechargeHistory #rechargeHistoryBlock{display:block!important;width:min(100%,900px);max-height:90vh;overflow:auto;margin:auto;padding:16px;background:#fff;border-radius:16px}
 </style>
+<style id="hesabati-premium-dashboard-v2">
+:root{--bg:#071725;--card:#10263a;--ink:#f4fbff;--muted:#b5c9d8;--teal:#08cbb5;--line:#087fa5;--red:#ff737e;--green:#35df9a}
+body{background:radial-gradient(ellipse at 50% -10%,#164c70 0%,#071725 55%,#04111e 100%);color:#f4fbff}
+header{background:linear-gradient(135deg,#063d43 0%,#087b78 48%,#087cf0 100%);color:#fff;padding:20px 12px 17px;border-bottom:2px solid #00d9c2;box-shadow:0 8px 28px #00101c99;position:relative}
+header:after{content:"";position:absolute;inset:auto 0 0;height:3px;background:linear-gradient(90deg,#00e5d0,#168bff,#a84cff,#00e5d0)}
+.brand-line{display:flex;align-items:center;gap:12px}header h1{font-size:clamp(22px,5vw,29px);font-weight:950;text-shadow:0 2px 8px #001b2c88}.sub{color:#d5fff8;font-weight:650}
+.menu-trigger{border:1px solid #8af9ed99;background:linear-gradient(145deg,#ffffff30,#ffffff0b);box-shadow:0 4px 12px #001d2d55}
+.header-actions .secondary{background:linear-gradient(145deg,#087cf0,#0755b6);border:1px solid #67b8ff;color:#fff}
+nav{background:#081b2b;border:1px solid #155078;border-radius:15px;padding:9px;margin:12px 0 15px;box-shadow:0 5px 18px #00101c77}
+nav button{background:linear-gradient(145deg,#087cf0,#0758ba);border:1px solid #4a9fff;color:#fff;border-radius:11px;box-shadow:inset 0 1px 0 #ffffff35,0 3px 8px #00101c66}
+nav button.active{background:linear-gradient(145deg,#8b4df0,#5522bb);border-color:#bd91ff}
+#home .document-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
+#home .document-actions button{min-width:0;min-height:56px;padding:8px 5px;border:1px solid #31aaff;border-radius:13px;background:linear-gradient(145deg,#168cff,#0757bd);color:#fff;font:inherit;font-size:clamp(11px,3vw,14px);font-weight:900;line-height:1.3;white-space:normal;box-shadow:inset 0 1px 0 #ffffff55,0 5px 12px #00132688;text-shadow:0 1px 2px #00264d}
+#home .document-actions button:nth-child(3n+2){background:linear-gradient(145deg,#9252f0,#5420bd);border-color:#bd8aff}
+#home .document-actions button:nth-child(3n){background:linear-gradient(145deg,#08c9df,#0879c9);border-color:#6cecff}
+#home .document-actions button:active,#home .category-launcher button:active{transform:translateY(2px);filter:brightness(1.12)}
+#home .category-launcher{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:14px 0 20px}
+#home .category-launcher button{min-width:0;min-height:112px;padding:12px 8px;border:1.5px solid #168fe7;border-radius:19px;background:linear-gradient(145deg,#123d60,#0b233a 65%,#101d3c);color:#fff;font:inherit;font-weight:900;font-size:14px;line-height:1.35;box-shadow:inset 0 1px 0 #ffffff35,0 7px 17px #0007;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+#home .category-launcher button:nth-child(4n+2){background:linear-gradient(145deg,#075e4e,#0a302e);border-color:#00d5a5}
+#home .category-launcher button:nth-child(4n+3){background:linear-gradient(145deg,#4d288c,#171d4b);border-color:#9d6cff}
+#home .category-launcher button:nth-child(4n){background:linear-gradient(145deg,#075e83,#102b50);border-color:#00c9ee}
+#home .category-launcher .home-icon-symbol{font-size:clamp(27px,7vw,39px);line-height:1.1;filter:drop-shadow(0 4px 5px #0008)}
+#home .category-launcher .home-icon-label{font-size:clamp(11px,3.1vw,14px);font-weight:900;overflow-wrap:anywhere}
+.card,.table-wrap{background:linear-gradient(145deg,#112b41,#0b1c2d)!important;border:1px solid #176c9e!important;border-radius:17px;color:#f4fbff;box-shadow:0 6px 18px #0005,inset 0 1px 0 #ffffff12}
+.kpi-icon,.quick-icon{background:linear-gradient(145deg,#0b8f9d,#17426a)!important;color:#fff;border:1px solid #32d9e8}
+input,select,textarea{background:#10283b;color:#fff;border:1px solid #28799c;border-radius:12px}input::placeholder,textarea::placeholder{color:#a7bdcc}
+.primary{background:linear-gradient(145deg,#0bc9b0,#087cba)!important;color:#fff;border:1px solid #5cf5dc;box-shadow:0 4px 12px #001a2a88}
+.secondary{background:linear-gradient(145deg,#673bd0,#3d278c);color:#fff;border:1px solid #9e80ed}
+.quick-link{background:linear-gradient(145deg,#12344c,#0b1d31);color:#fff;border:1px solid #168fe7}
+.quick-link small,.kpi small,label,.muted,th{color:#b9ccda}.quick-section .section-title,.section-title{color:#f4fbff}
+.hint{background:#102e40;color:#e4f7ff;border-color:#1c819e}.reportline,th,td{border-color:#28506a}td:last-child,th:last-child{background:#10263a}
+.app-menu{background:#10263a;border-color:#26769b}.app-menu button,.app-menu button span{background:#10263a!important;color:#fff!important}
+@media(min-width:600px){#home .category-launcher{grid-template-columns:repeat(3,minmax(0,1fr))}#home .document-actions{grid-template-columns:repeat(4,minmax(0,1fr))}#home .category-launcher button{min-height:132px}}
+@media(max-width:360px){#home .document-actions{gap:5px}#home .document-actions button{font-size:10px;min-height:50px}#home .category-launcher{gap:7px}#home .category-launcher button{min-height:96px;padding:8px 4px}}
+body:not(.dark){background:linear-gradient(145deg,#e9f5ff,#f5f0ff 55%,#e8fffa);color:#17344a}
+body:not(.dark) header{background:linear-gradient(135deg,#075e65,#078b87 48%,#087cf0)}
+body:not(.dark) nav{background:#eaf4fb;border-color:#bdd8ec}
+body:not(.dark) nav button{color:#fff}
+body:not(.dark) .card,body:not(.dark) .table-wrap{background:linear-gradient(145deg,#fff,#edf7ff)!important;color:#17344a;border-color:#9cc9e8!important}
+body:not(.dark) .kpi small,body:not(.dark) label,body:not(.dark) .muted,body:not(.dark) th{color:#526d82}
+body:not(.dark) input,body:not(.dark) select,body:not(.dark) textarea{background:#fff;color:#17344a;border-color:#a9c8dc}
+body:not(.dark) .quick-link{background:linear-gradient(145deg,#fff,#edf7ff);color:#17344a}
+body:not(.dark) .quick-link small{color:#526d82}
+body:not(.dark) .app-menu,body:not(.dark) .app-menu button,body:not(.dark) .app-menu button span{background:#fff!important;color:#17344a!important}
+@media print{body,body:not(.dark){background:#fff!important;color:#111!important}header,nav{display:none!important}.card,.table-wrap{background:#fff!important;color:#111!important;box-shadow:none!important}}
+</style>
 </head>
 <body>
 <header><div class="wrap header-row"><div><div class="brand-line"><h1>حساباتي</h1><button id="themeToggle" class="theme-toggle" type="button" aria-label="تفعيل الوضع الليلي" title="تفعيل الوضع الليلي">☀️</button></div><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><div class="header-actions"><button class="menu-trigger" id="menuTrigger" type="button" aria-label="القائمة" aria-expanded="false">⋮</button><button class="secondary" id="languageToggle" type="button" aria-label="تغيير لغة التطبيق">EN</button><button class="secondary" id="lockNow" type="button" aria-label="قفل التطبيق" title="قفل التطبيق"><span class="lock-close-icon" aria-hidden="true"></span></button><div class="app-menu" id="appMenu" hidden><button type="button" data-menu-action="backup"><span class="menu-item-icon" aria-hidden="true">💾</span><span>حفظ نسخة احتياطية</span></button><button type="button" data-menu-action="restore"><span class="menu-item-icon" aria-hidden="true">📥</span><span>استعادة نسخة احتياطي</span></button><button type="button" data-menu-action="charts"><span class="menu-item-icon" aria-hidden="true">📈</span><span>الرسوم البيانية</span></button><button type="button" data-menu-action="productsFile"><span class="menu-item-icon" aria-hidden="true">📦</span><span>ملف الأصناف</span></button><button type="button" data-menu-action="stockFile"><span class="menu-item-icon" aria-hidden="true">📋</span><span>ملف المخزون</span></button><button type="button" data-menu-action="labels"><span class="menu-item-icon" aria-hidden="true">✏️</span><span>تعديل أسماء الأيقونات</span></button><button type="button" data-menu-action="generalReport"><span class="menu-item-icon" aria-hidden="true">📊</span><span>تقرير عام مفصل</span></button><button type="button" data-menu-action="monthlyReport"><span class="menu-item-icon" aria-hidden="true">📅</span><span>التقرير الشهري</span></button><button type="button" data-menu-action="settings"><span class="menu-item-icon" aria-hidden="true">⚙️</span><span>إعدادات التطبيق</span></button><button type="button" data-menu-action="about"><span class="menu-item-icon" aria-hidden="true">ℹ️</span><span>نبذة عنّا</span></button><button type="button" data-menu-action="share"><span class="menu-item-icon" aria-hidden="true">📤</span><span>مشاركة التطبيق</span></button><button type="button" data-menu-action="rate"><span class="menu-item-icon" aria-hidden="true">⭐</span><span>تقييم التطبيق</span></button><button type="button" data-menu-action="feedback"><span class="menu-item-icon" aria-hidden="true">✉️</span><span>إرسال ملاحظات أو الإبلاغ عن مشكلة</span></button></div></div></div></header>
