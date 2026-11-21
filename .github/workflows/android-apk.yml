@@ -73,13 +73,27 @@ jobs:
         run: node scripts/install-android-icon.mjs
       - name: Configure reliable Maven Central mirror
         run: |
-          for file in android/settings.gradle android/build.gradle android/app/build.gradle; do
-            if [ -f "$file" ]; then
-              sed -i 's#mavenCentral()#maven { url "https://maven-central.storage-download.googleapis.com/maven2/" }; mavenCentral()#g' "$file"
-            fi
-          done
+          cat > gradle-mirror.init.gradle <<'EOF'
+          def mirrorUrl = 'https://maven-central.storage-download.googleapis.com/maven2/'
+          settingsEvaluated { settings ->
+            settings.pluginManagement.repositories {
+              maven { url = uri(mirrorUrl) }
+            }
+            settings.dependencyResolutionManagement.repositories {
+              maven { url = uri(mirrorUrl) }
+            }
+          }
+          allprojects {
+            buildscript.repositories {
+              maven { url = uri(mirrorUrl) }
+            }
+            repositories {
+              maven { url = uri(mirrorUrl) }
+            }
+          }
+          EOF
       - name: Build debug APK
-        run: cd android && ./gradlew assembleDebug
+        run: cd android && ./gradlew -I ../gradle-mirror.init.gradle assembleDebug
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
