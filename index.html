@@ -1109,10 +1109,10 @@ $('restoreFile').onchange=async e=>{
    localStorage.setItem('hisabati_inventory_v1',JSON.stringify({...inventory,customerPayments:Array.isArray(inventory.customerPayments)?inventory.customerPayments:[],supplierPayments:Array.isArray(inventory.supplierPayments)?inventory.supplierPayments:[]}));
    if(d.bankTransfers)localStorage.setItem('hisabati_bank_transfer_v1',JSON.stringify(d.bankTransfers));
    if(Array.isArray(d.supplierAccounts))localStorage.setItem('hisabati_supplier_accounts_v1',JSON.stringify(d.supplierAccounts));
-   if(d.partnership)localStorage.setItem('hisabati_partnership_v1',JSON.stringify(d.partnership));
-   if(d.iconNames&&typeof d.iconNames==='object')localStorage.setItem('hisabati_icon_names_v1',JSON.stringify(d.iconNames));
-   if(d.theme==='dark'||d.theme==='light')localStorage.setItem('hisabati_theme_v1',d.theme);
-   if(d.language==='ar'||d.language==='en')localStorage.setItem('hesabati_language',d.language);
+   if(d.partnership)localStorage.setItem('hisabati_partnership_v1',JSON.stringify(d.partnership));else localStorage.removeItem('hisabati_partnership_v1');
+   if(d.iconNames&&typeof d.iconNames==='object')localStorage.setItem('hisabati_icon_names_v1',JSON.stringify(d.iconNames));else localStorage.removeItem('hisabati_icon_names_v1');
+   if(d.theme==='dark'||d.theme==='light')localStorage.setItem('hisabati_theme_v1',d.theme);else localStorage.removeItem('hisabati_theme_v1');
+   if(d.language==='ar'||d.language==='en')localStorage.setItem('hesabati_language',d.language);else localStorage.removeItem('hesabati_language');
    alert('تم استيراد النسخة الكاملة بنجاح. سيعاد تحميل التطبيق لتحديث جميع الأقسام.');
    location.reload();
   }else{
