@@ -2391,6 +2391,7 @@ body.dark .supplier-balance-line{background:#203a33;color:#b9f1df}body.dark .sup
 })();
 </script>
 <style id="stock-scan-action-buttons">#stockBarcodeResult .stock-scan-actions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:13px}#stockBarcodeResult .stock-scan-actions button{width:100%;min-height:43px;border:1px solid #b8d9cc;border-radius:10px;background:#eaf6f0;color:#075f50;font:inherit;font-weight:800;padding:9px;cursor:pointer}#stockBarcodeResult .stock-scan-actions button:active{transform:scale(.99)}</style>\n<style id="stock-barcode-tools">#stockBarcodeModal{position:fixed;inset:0;z-index:12000;background:#071b1dcc;display:none;align-items:center;justify-content:center;padding:14px}#stockBarcodeModal.open{display:flex}#stockBarcodeModal .barcode-card{width:min(100%,520px);max-height:92vh;overflow:auto;background:#fff;color:#17212b;border-radius:16px;padding:16px}#stockBarcodeCameraFrame{position:relative;width:100%;max-height:42vh;overflow:hidden;border-radius:12px;background:#111}#stockBarcodeVideo{display:block;width:100%;max-height:42vh;object-fit:contain;background:#111;border-radius:12px}#stockBarcodeReader{position:relative;min-height:260px;background:#111;overflow:hidden}#stockBarcodeReader video{width:100%!important;max-height:42vh!important;object-fit:contain!important;background:#111}#stockBarcodeReader:after,.stockBarcodeScanLine{content:"";position:absolute;z-index:20;left:4%;width:92%;height:3px;top:4%;background:linear-gradient(90deg,transparent,#00ff9d 12%,#fff 50%,#00ff9d 88%,transparent);box-shadow:0 0 8px 2px #00ff9d,0 0 18px 4px #00ff9d;pointer-events:none;animation:stockBarcodeSweep 2.2s ease-in-out infinite alternate}#stockBarcodeReader:after{left:4%;width:92%}@keyframes stockBarcodeSweep{from{top:4%}to{top:94%}}#stockBarcodeResult{padding:12px;background:#f2f6f4;border-radius:10px;margin-top:10px;color:#17212b;line-height:1.8}</style>
+<div id="stockBarcodeNewProductModal" aria-hidden="true" style="position:fixed;inset:0;z-index:12010;background:#071b1dcc;display:none;align-items:center;justify-content:center;padding:14px"><div style="width:min(100%,440px);max-height:90vh;overflow:auto;background:#fff;color:#17212b;border-radius:16px;padding:18px;box-shadow:0 15px 45px #0005"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><h3 style="margin:0 0 14px">إضافة صنف جديد للمخزون</h3><button type="button" id="stockBarcodeNewProductClose" class="secondary">إغلاق ✕</button></div><form id="stockBarcodeNewProductForm"><label for="stockBarcodeNewProductName">اسم الصنف</label><input id="stockBarcodeNewProductName" type="text" required maxlength="120" placeholder="أدخل اسم الصنف" style="width:100%;margin:6px 0 12px;padding:12px;border:1px solid #cbd5d1;border-radius:9px"><label for="stockBarcodeNewProductCode">رقم الكود</label><input id="stockBarcodeNewProductCode" type="text" required readonly style="width:100%;margin:6px 0 12px;padding:12px;border:1px solid #cbd5d1;border-radius:9px;direction:ltr;text-align:center"><label for="stockBarcodeNewProductCountry">بلد الصنع</label><input id="stockBarcodeNewProductCountry" type="text" maxlength="80" placeholder="أدخل بلد الصنع" style="width:100%;margin:6px 0 16px;padding:12px;border:1px solid #cbd5d1;border-radius:9px"><button type="submit" class="primary" style="width:100%">حفظ الصنف في المخزون</button></form></div></div>
 <div id="stockBarcodeModal" aria-hidden="true"><div class="barcode-card"><div style="display:flex;justify-content:space-between"><h3>ماسح رمز QR والباركود</h3><button type="button" id="stockBarcodeClose">إغلاق ✕</button></div><div id="stockBarcodeCameraFrame"><video id="stockBarcodeVideo" playsinline muted></video><div class="stockBarcodeScanLine"></div></div><div id="stockBarcodeReader" style="display:none;width:100%;overflow:hidden;border-radius:12px"></div><div id="stockBarcodeResult">وجّه الكاميرا نحو رمز QR أو الباركود لقراءته تلقائياً.</div><div style="display:flex;gap:8px;margin-top:10px;direction:ltr"><input id="stockBarcodeManual" type="text" inputmode="numeric" autocomplete="off" placeholder="أدخل رقم الباركود يدوياً" style="flex:1;min-width:0;padding:11px;border:1px solid #aab8b1;border-radius:8px;text-align:center;font-size:16px"><button type="button" id="stockBarcodeCheck" style="white-space:nowrap">تحقق</button></div><button type="button" id="stockBarcodeAgain">إعادة المسح</button></div></div>
 <script id="stock-barcode-scanner">
 (function(){
@@ -2413,7 +2414,21 @@ function result(p,code){$('stockBarcodeResult').innerHTML=p?'<b>تم العثو�
 function showCode(code){
  stop().catch(()=>{});
  let db={};try{db=JSON.parse(localStorage.getItem('hisabati_inventory_v1')||'{}')}catch(e){}
- result((db.products||[]).find(p=>String(p.barcode||'').trim()===String(code).trim()),code);
+ const found=(db.products||[]).find(p=>String(p.barcode||'').trim()===String(code).trim());
+ result(found,code);
+ if(!found){
+  setTimeout(()=>{
+   const modal=$('stockBarcodeNewProductModal');
+   const codeInput=$('stockBarcodeNewProductCode');
+   if(modal&&codeInput){
+    $('stockBarcodeModal').classList.remove('open');
+    $('stockBarcodeModal').setAttribute('aria-hidden','true');
+    modal.style.display='flex';modal.setAttribute('aria-hidden','false');
+    codeInput.value=String(code).trim();
+    $('stockBarcodeNewProductName')?.focus();
+   }
+  },180);
+ }
 }
 function loadHtml5Qrcode(){
  return new Promise((resolve,reject)=>{
@@ -2600,6 +2615,32 @@ document.addEventListener('click',e=>{
 });
 const modal=$('stockBarcodeModal');if(modal)modal.addEventListener('click',e=>{if(e.target===modal)close();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&$('stockBarcodeModal')?.classList.contains('open'))stop();});
+})();
+</script>
+<script id="stock-barcode-new-product-handler">
+(function(){
+ const $=id=>document.getElementById(id);
+ const modal=$('stockBarcodeNewProductModal'),form=$('stockBarcodeNewProductForm');
+ function close(){if(modal){modal.style.display='none';modal.setAttribute('aria-hidden','true');}form?.reset();}
+ $('stockBarcodeNewProductClose')?.addEventListener('click',close);
+ modal?.addEventListener('click',e=>{if(e.target===modal)close();});
+ form?.addEventListener('submit',e=>{
+  e.preventDefault();
+  const name=$('stockBarcodeNewProductName').value.trim();
+  const barcode=$('stockBarcodeNewProductCode').value.trim();
+  const country=$('stockBarcodeNewProductCountry').value.trim();
+  if(!name||!barcode){alert('أدخل اسم الصنف وتأكد من رقم الكود.');return;}
+  let db={products:[],moves:[],invoices:[],customerPayments:[],supplierPayments:[]};
+  try{const saved=JSON.parse(localStorage.getItem('hisabati_inventory_v1')||'null');if(saved&&Array.isArray(saved.products))db={...db,...saved};}catch(err){}
+  const duplicate=(db.products||[]).find(p=>String(p.barcode||'').trim()===barcode);
+  if(duplicate){alert('رقم الكود مسجل بالفعل للصنف: '+(duplicate.name||''));close();return;}
+  db.products=db.products||[];
+  db.products.push({id:'p'+Date.now(),name,barcode,country,category:'عام',qty:0,buy:0,sell:0,min:0,note:'',createdAt:new Date().toISOString().slice(0,10)});
+  localStorage.setItem('hisabati_inventory_v1',JSON.stringify(db));
+  alert('تم حفظ الصنف ورقم الكود في قائمة المخزون.');
+  close();
+  location.reload();
+ });
 })();
 </script>
 <style id="home-icons-bank-picker-style">
