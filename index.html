@@ -3672,5 +3672,42 @@ body.dark .lock-card{background:#1b2a29!important;color:#e6f0ed!important}
 body.dark .lock-card h2,body.dark .lock-card p{color:#e6f0ed!important}
 body.dark #menuInventorySheet article{background:#fff!important;color:#18231f!important}
 </style>
+
+<script id="inbound-product-save-delegated-fix">
+(function(){
+ if(window.__inboundProductSaveDelegatedFix)return;
+ window.__inboundProductSaveDelegatedFix=true;
+ document.addEventListener('click',function(event){
+  const button=event.target&&event.target.closest?event.target.closest('#saveInboundNewProduct'):null;
+  if(!button)return;
+  event.preventDefault();event.stopImmediatePropagation();
+  const input=document.getElementById('inboundNewProductName');
+  const modal=document.getElementById('inboundProductModal');
+  const name=String(input&&input.value||'').trim();
+  if(!name){alert('اكتب اسم الصنف أولاً.');if(input)input.focus();return;}
+  try{
+   const key='hisabati_inventory_v1';
+   let data={};
+   const raw=localStorage.getItem(key);
+   if(raw){data=JSON.parse(raw);if(!data||typeof data!=='object'||Array.isArray(data))data={};}
+   if(!Array.isArray(data.products))data.products=[];
+   let product=data.products.find(function(p){return String(p&&p.name||'').trim().toLocaleLowerCase()===name.toLocaleLowerCase();});
+   const duplicate=!!product;
+   if(!product){product={id:'p'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name:name,category:'عام',qty:0,buy:0,sell:0,min:0,note:'',createdAt:new Date().toISOString().slice(0,10)};data.products.push(product);}
+   localStorage.setItem(key,JSON.stringify(data));
+   document.querySelectorAll('#stockInForm select[name="product[]"], #stockInForm select.product-options').forEach(function(select){
+    let option=Array.from(select.options).find(function(o){return o.value===String(product.id);});
+    if(!option){option=document.createElement('option');option.value=product.id;option.textContent=product.name+' (متاح '+(product.qty||0)+')';select.appendChild(option);}
+    if(select===document.querySelector('#stockInForm select[name="product[]"]'))select.value=String(product.id);
+   });
+   if(typeof window.hisabatiRefreshInventory==='function'){try{window.hisabatiRefreshInventory();}catch(refreshError){console.error('Inventory refresh failed:',refreshError);}}
+   if(modal){modal.hidden=true;modal.style.display='none';}
+   const total=document.getElementById('inboundGrandTotal');
+   if(total&&typeof window.updateInboundTotals==='function')window.updateInboundTotals();
+   alert(duplicate?'هذا الصنف مسجل مسبقاً، تم اختياره في السند.':'تمت إضافة الصنف إلى قائمة المخزون. أدخل الكمية وسعر الوحدة ثم احفظ سند الوارد.');
+  }catch(error){console.error('Inbound product save failed:',error);alert('تعذر حفظ الصنف: '+(error&&error.message?error.message:'خطأ غير معروف'));}
+ },true);
+})();
+</script>
 </body>
 </html>
