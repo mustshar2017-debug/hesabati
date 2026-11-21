@@ -3190,6 +3190,8 @@ document.addEventListener('click',function(event){const button=event.target&&eve
   const t=e.target&&e.target.closest?e.target:null;if(!t)return;
   const back=t.closest('#inventoryBack');
   if(back){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});const home=document.getElementById('home');if(home)home.classList.add('active');document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('active',b.dataset.tab==='home');});window.scrollTo({top:0,behavior:'smooth'});return;}
+  const closeButton=t.closest('#inventory #closeInboundInvoice, #inventory #closeInboundReport, #inventory #closeOutboundVoucher, #inventory #closeSaleInvoice');
+  if(closeButton){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();showMenu();return;}
   const item=t.closest('#inventory [data-inv-view]');
   if(item){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();openView(item.dataset.invView);return;}
   const menuButton=t.closest('#inventory [data-inv-menu]');
