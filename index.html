@@ -1929,7 +1929,7 @@ body.dark .supplier-balance-line{background:#203a33;color:#b9f1df}body.dark .sup
   const name=$('newSupplierName').value.trim(),phone=$('newSupplierPhone').value.trim(),note=$('newSupplierNote').value.trim();
   if(!name){alert('أدخل اسم المورد أو الحساب.');return;}
   const duplicate=contacts.find(x=>x.name.toLocaleLowerCase()===name.toLocaleLowerCase()&&(!phone||x.phone===phone));
-  if(duplicate){selectContact(duplicate.id);$('supplierAddForm').hidden=true;return;}
+  if(duplicate){closeAddModal();selectContact(duplicate.id);return;}
   const x={id:'supplier-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name,phone,note,createdAt:new Date().toISOString()};
   contacts.push(x);saveContacts();closeAddModal();selectContact(x.id);
  });
