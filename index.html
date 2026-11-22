@@ -1766,7 +1766,7 @@ body.dark .profit-toggle{color:var(--ink)}
   button.setAttribute('aria-label',dark?'تفعيل الوضع النهاري':'تفعيل الوضع الليلي');
   button.title=dark?'تفعيل الوضع النهاري':'تفعيل الوضع الليلي';
   const meta=document.querySelector('meta[name="theme-color"]');
-  if(meta)meta.setAttribute('content',dark?'#101b1b':'#123b3b');
+  if(meta)meta.setAttribute('content',dark?'#000000':'#ffffff');
  }
  let dark=false;try{dark=localStorage.getItem(KEY)==='dark';}catch(e){}
  apply(dark);
@@ -4562,39 +4562,79 @@ body.dark #menuInventorySheet article{background:#fff!important;color:#18231f!im
 </style>
 
 
-<style id="hesabati-black-site-background-v1">
-:root{
- --bg:#000000!important;
- --card:#101010!important;
- --ink:#f5f5f5!important;
- --muted:#b8b8b8!important;
- --line:#303030!important;
+<style id="hesabati-theme-backgrounds-v2">
+/* الوضع النهاري: خلفيات بيضاء واضحة */
+body:not(.dark){
+ --bg:#ffffff!important;--card:#ffffff!important;--ink:#183536!important;
+ --muted:#6d8280!important;--line:#e1e9e6!important;--teal:#087f70!important;
+ background:#fff!important;color:#183536!important;
 }
-html,body{background:#000!important;color:#f5f5f5!important}
-body{background:#000!important}
-header{background:#000!important;color:#fff!important;border-bottom:1px solid #292929!important;box-shadow:0 5px 20px #000!important}
-header .sub{color:#c8c8c8!important}
-main,.wrap,.panel,nav{background-color:#000!important;color:#f5f5f5!important}
-nav{background:#000!important}
-.card,.kpi,.app-menu,.category-launcher,.top-actions,.section-card,.report-card,
-.modal-content,.dialog,.settings-card,.account-card,.inventory-card{
+body:not(.dark),body:not(.dark) html{background:#fff!important;color:#183536!important}
+body:not(.dark) header{background:#fff!important;color:#183536!important;border-bottom:1px solid #e1e9e6!important;box-shadow:0 3px 14px #163b3510!important}
+body:not(.dark) header h1,body:not(.dark) header .sub{color:#183536!important;text-shadow:none!important}
+body:not(.dark) main,body:not(.dark) .wrap,body:not(.dark) .panel,body:not(.dark) nav{background:#fff!important;color:#183536!important}
+body:not(.dark) nav button{background:#fff!important;color:#183536!important;border-color:#e1e9e6!important}
+body:not(.dark) nav button.active{background:#087f70!important;color:#fff!important;border-color:#087f70!important}
+body:not(.dark) .card,body:not(.dark) .kpi,body:not(.dark) .table-wrap,
+body:not(.dark) .quick-link,body:not(.dark) .section-card,body:not(.dark) .report-card,
+body:not(.dark) .account-card,body:not(.dark) .inventory-card{
+ background:#fff!important;color:#183536!important;border-color:#e1e9e6!important;
+}
+body:not(.dark) input,body:not(.dark) select,body:not(.dark) textarea{
+ background:#fff!important;color:#183536!important;border-color:#d5e1dd!important;
+}
+body:not(.dark) input::placeholder,body:not(.dark) textarea::placeholder{color:#899a96!important}
+body:not(.dark) label,body:not(.dark) .muted,body:not(.dark) small{color:#6d8280}
+body:not(.dark) table{background:#fff!important;color:#183536!important}
+body:not(.dark) th{background:#f3f7f5!important;color:#36534d!important}
+body:not(.dark) td{background:#fff!important;color:#183536!important;border-color:#e1e9e6!important}
+body:not(.dark) td:last-child,body:not(.dark) th:last-child{background:#fff!important}
+body:not(.dark) .secondary{background:#edf5f2!important;color:#087f70!important;border-color:#d5e7e1!important}
+body:not(.dark) .app-menu,body:not(.dark) .app-menu button,body:not(.dark) .app-menu button span{background:#fff!important;color:#183536!important;border-color:#e1e9e6!important}
+
+/* الوضع الليلي: خلفيات سوداء مع نص واضح */
+body.dark{
+ --bg:#000000!important;--card:#101010!important;--ink:#f5f5f5!important;
+ --muted:#b8b8b8!important;--line:#303030!important;--teal:#31b49b!important;
+ background:#000!important;color:#f5f5f5!important;
+}
+html:has(body.dark),body.dark,body.dark main,body.dark .wrap,body.dark .panel,body.dark nav{
+ background:#000!important;color:#f5f5f5!important;
+}
+body.dark header{background:#000!important;color:#fff!important;border-bottom:1px solid #292929!important;box-shadow:0 5px 20px #000!important}
+body.dark header h1,body.dark header .sub{color:#fff!important;text-shadow:none!important}
+body.dark nav button{background:#101010!important;color:#f5f5f5!important;border-color:#303030!important}
+body.dark nav button.active{background:#087f70!important;color:#fff!important;border-color:#087f70!important}
+body.dark .card,body.dark .kpi,body.dark .table-wrap,body.dark .quick-link,
+body.dark .section-card,body.dark .report-card,body.dark .account-card,body.dark .inventory-card{
  background:#101010!important;color:#f5f5f5!important;border-color:#303030!important;
 }
-input,select,textarea{
- background:#181818!important;color:#fff!important;border-color:#444!important;
-}
-input::placeholder,textarea::placeholder{color:#aaa!important}
-label,.muted,small{color:#c2c2c2}
-table{background:#080808!important;color:#f5f5f5!important}
-th{background:#171717!important;color:#fff!important}
-td{background:#080808!important;color:#eee!important;border-color:#303030!important}
-.secondary{background:#202020!important;color:#f5f5f5!important;border-color:#444!important}
-button:not(.primary):not(.active):not(.danger){color:inherit}
+body.dark input,body.dark select,body.dark textarea{background:#181818!important;color:#fff!important;border-color:#444!important}
+body.dark input::placeholder,body.dark textarea::placeholder{color:#aaa!important}
+body.dark label,body.dark .muted,body.dark small{color:#c2c2c2}
+body.dark table{background:#080808!important;color:#f5f5f5!important}
+body.dark th{background:#171717!important;color:#fff!important}
+body.dark td,body.dark td:last-child,body.dark th:last-child{background:#080808!important;color:#eee!important;border-color:#303030!important}
+body.dark .secondary{background:#202020!important;color:#f5f5f5!important;border-color:#444!important}
+body.dark .app-menu,body.dark .app-menu button,body.dark .app-menu button span{background:#101010!important;color:#f5f5f5!important;border-color:#303030!important}
+
+/* تبقى أوراق A4 بيضاء للطباعة والعرض في الوضعين */
 #remainingProductsModal .remaining-products-paper,
 #allMovementsModal .all-movements-paper,
 #generalReportA4Modal .general-a4-paper,
 .general-a4-paper,.a4-paper,.print-paper,
 body.printing *{background:#fff!important;color:#111!important}
+
+/* وضع كلمة بنكك بدقة في منتصف الدائرة الحمراء */
+#home #bankProfitLaunch .home-icon-symbol{position:relative!important}
+#home #bankProfitLaunch .home-icon-symbol:before{
+ left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;
+}
+#home #bankProfitLaunch .home-icon-symbol:after{
+ position:absolute!important;left:50%!important;top:50%!important;
+ transform:translate(-50%,-50%)!important;width:auto!important;height:auto!important;
+ margin:0!important;line-height:1!important;text-align:center!important;
+}
 </style>
 
 
