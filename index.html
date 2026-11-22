@@ -745,26 +745,28 @@ body:not(.dark) .app-menu,body:not(.dark) .app-menu button,body:not(.dark) .app-
  .inbound-report-share-actions{display:none!important}
 }
 </style>
-<style id="remaining-products-paper-layout-v3">
-/* ورقة ثابتة كاملة الشاشة مثل كشف الوارد وفاتورة البيع: بلا تمرير */
+<style id="remaining-products-paper-layout-v4">
+/* كشف المخزون بنفس تنسيق كشف الوارد: عنوان وملخص وجدول مرقم متراص */
 #remainingProductsModal{position:fixed!important;inset:0!important;overflow:clip!important;padding:0!important;align-items:stretch!important;justify-content:stretch!important}
-#remainingProductsModal .remaining-products-paper{box-sizing:border-box;width:100%!important;max-width:none!important;height:100dvh!important;max-height:100dvh!important;min-height:100dvh!important;aspect-ratio:auto!important;margin:0!important;padding:clamp(8px,1.5vw,18px)!important;background:#fff!important;color:#172326!important;border:0!important;border-radius:0!important;box-shadow:none!important;display:flex!important;flex-direction:column!important;overflow:clip!important}
-#remainingProductsModal #remainingProductsTitle{color:#123b3b!important;font-size:clamp(18px,2vw,24px)!important;font-weight:900}
-#remainingProductsModal .remaining-products-paper small{color:#526765!important}
-#remainingProductsModal .remaining-products-paper>div:first-child{padding:0 0 8px!important;flex:0 0 auto!important}
-#remainingProductsModal .remaining-products-paper>div:last-child{padding:6px 0 0!important;flex:0 0 auto!important}
-#remainingProductsModal .remaining-products-table-wrap{flex:0 0 auto!important;min-height:0!important;overflow:visible!important;padding:2px 0!important}
+#remainingProductsModal .remaining-products-paper{box-sizing:border-box;width:100%!important;max-width:none!important;height:100dvh!important;max-height:100dvh!important;min-height:100dvh!important;margin:0!important;padding:12px!important;background:#fff!important;color:#172326!important;border:0!important;border-radius:0!important;box-shadow:none!important;display:flex!important;flex-direction:column!important;overflow:clip!important}
+#remainingProductsModal .remaining-products-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:0 0 10px!important;border-bottom:1px solid #dce8e2;flex:0 0 auto}
+#remainingProductsModal #remainingProductsTitle{margin:0;color:#123b3b!important;font-size:clamp(18px,2vw,24px)!important;font-weight:900}
+#remainingProductsModal .remaining-products-head small{display:block;margin-top:4px;color:#526765!important;font-size:11px}
+#remainingProductsModal .remaining-products-count{margin-top:9px;font-size:12px;color:#344d49}
+#remainingProductsModal .remaining-products-count strong{font-size:14px;color:#087f70}
+#remainingProductsModal .remaining-products-table-wrap{flex:0 0 auto!important;min-height:0!important;overflow:visible!important;padding:10px 0!important}
 #remainingProductsModal .remaining-products-table{width:100%!important;height:auto!important;border-collapse:collapse!important;table-layout:fixed!important;text-align:center!important;color:#172326!important}
-#remainingProductsModal .remaining-products-table tbody tr{height:auto!important}
-#remainingProductsModal .remaining-products-table th,#remainingProductsModal .remaining-products-table td{box-sizing:border-box;height:auto!important;background:#fff!important;color:#172326!important;border:1px solid #cbd7d2!important;padding:4px 3px!important;font-size:var(--rp-font,11px)!important;line-height:1.1!important;overflow-wrap:anywhere!important;white-space:normal!important}
+#remainingProductsModal .remaining-products-table th,#remainingProductsModal .remaining-products-table td{box-sizing:border-box;height:auto!important;background:#fff!important;color:#172326!important;border:1px solid #cbd7d2!important;padding:5px 3px!important;font-size:11px!important;line-height:1.2!important;overflow-wrap:anywhere!important;white-space:normal!important}
 #remainingProductsModal .remaining-products-table th{background:#eaf2ef!important;color:#173b37!important;font-weight:900!important}
-#remainingProductsModal .remaining-products-table td:nth-child(3){background:#fff!important;color:#172326!important}
-#remainingProductsModal .remaining-products-table th:nth-child(1){width:40%!important}
-#remainingProductsModal .remaining-products-table th:nth-child(2){width:30%!important}
-#remainingProductsModal .remaining-products-table th:nth-child(3){width:30%!important}
+#remainingProductsModal .remaining-products-table th:nth-child(1){width:9%!important}
+#remainingProductsModal .remaining-products-table th:nth-child(2){width:43%!important}
+#remainingProductsModal .remaining-products-table th:nth-child(3){width:26%!important}
+#remainingProductsModal .remaining-products-table th:nth-child(4){width:22%!important}
+#remainingProductsModal .remaining-products-paper>div:last-child{padding:8px 0 0!important;flex:0 0 auto!important}
 @media(max-width:650px){
- #remainingProductsModal .remaining-products-paper{padding:8px 6px!important}
- #remainingProductsModal .remaining-products-table th,#remainingProductsModal .remaining-products-table td{font-size:var(--rp-mobile-font,9px)!important;padding:3px 2px!important;line-height:1.08!important}
+ #remainingProductsModal .remaining-products-paper{padding:9px 6px!important}
+ #remainingProductsModal .remaining-products-table th,#remainingProductsModal .remaining-products-table td{font-size:10px!important;padding:4px 2px!important;line-height:1.15!important}
+ #remainingProductsModal .remaining-products-head small{font-size:10px}
 }
 @media print{#remainingProductsModal{position:static!important;inset:auto!important;overflow:visible!important}#remainingProductsModal .remaining-products-paper{width:100%!important;height:auto!important;max-height:none!important;min-height:0!important;overflow:visible!important;box-shadow:none!important;border:0!important}}
 </style>
@@ -937,8 +939,8 @@ body:not(.dark) .app-menu,body:not(.dark) .app-menu button,body:not(.dark) .app-
 <div class="inventory-view" data-inventory-view="products">
 <div id="remainingProductsModal" role="dialog" aria-modal="true" aria-labelledby="remainingProductsTitle" style="position:fixed;inset:0;z-index:10060;background:#102f34b8;display:none;align-items:center;justify-content:center;padding:14px">
  <div class="remaining-products-paper">
-  <div style="padding:16px;border-bottom:1px solid #dce8e2;display:flex;align-items:center;justify-content:space-between;gap:10px"><div><h2 id="remainingProductsTitle" style="margin:0;font-size:20px">الأصناف المتبقية بالمخزون</h2><small style="color:#647b72">اسم الصنف · الكمية المتبقية · السعر</small></div><button type="button" class="secondary" id="closeRemainingProducts">إغلاق ✕</button></div>
-  <div class="remaining-products-table-wrap"><table class="remaining-products-table"><thead style="position:sticky;top:0;background:#e8f4ee;z-index:1"><tr><th style="padding:12px;border:1px solid #d6e5dd">اسم الصنف</th><th style="padding:12px;border:1px solid #d6e5dd">الكمية المتبقية</th><th style="padding:12px;border:1px solid #d6e5dd">السعر</th></tr></thead><tbody id="remainingProductsRows"><tr><td colspan="3" style="padding:18px">جاري تحميل الأصناف...</td></tr></tbody></table></div>
+  <div class="remaining-products-head"><div><h2 id="remainingProductsTitle">كشف الأصناف المتبقية بالمخزون</h2><small>قائمة الكميات المتاحة حالياً</small><div class="remaining-products-count">عدد الأصناف المتبقية: <strong id="remainingProductsCount">0</strong></div></div><button type="button" class="secondary" id="closeRemainingProducts">إغلاق ✕</button></div>
+  <div class="remaining-products-table-wrap"><table class="remaining-products-table"><thead><tr><th>م</th><th>اسم الصنف</th><th>الكمية المتبقية</th><th>السعر</th></tr></thead><tbody id="remainingProductsRows"><tr><td colspan="4">جاري تحميل الأصناف...</td></tr></tbody></table></div>
   <div style="padding:10px 16px;border-top:1px solid #dce8e2;text-align:center;color:#647b72;font-size:12px">حساباتي · قائمة المخزون</div>
  </div>
 </div>
@@ -1978,7 +1980,8 @@ $('invoiceForm').addEventListener('input',updateSaleInvoiceTotal);$('invoiceForm
   try{const latest=JSON.parse(localStorage.getItem(KEY)||'null');if(latest&&Array.isArray(latest.products))db={...db,...latest};}catch(e){}
   const rows=$('remainingProductsRows');if(!rows)return;
   const products=db.products.filter(p=>Number(p.qty||0)>0);
-  rows.innerHTML=products.map(p=>'<tr><td style="padding:12px;border:1px solid #d6e5dd">'+esc(p.name)+'</td><td style="padding:12px;border:1px solid #d6e5dd">'+fmt(p.qty)+'</td><td style="padding:12px;border:1px solid #d6e5dd">'+fmt(p.sell||0)+'</td></tr>').join('')||'<tr><td colspan="3" style="padding:20px;text-align:center;color:#718078">لا توجد أصناف بكمية متبقية في المخزون</td></tr>';
+  const count=document.getElementById('remainingProductsCount');if(count)count.textContent=fmt(products.length);
+  rows.innerHTML=products.map((p,i)=>'<tr><td>'+fmt(i+1)+'</td><td>'+esc(p.name)+'</td><td>'+fmt(p.qty)+'</td><td>'+fmt(p.sell||0)+'</td></tr>').join('')||'<tr><td colspan="4" style="text-align:center;color:#718078">لا توجد أصناف بكمية متبقية في المخزون</td></tr>';
  }
  function openInventoryView(view){if(view==='products'){if(typeof window.hisabatiRefreshInventory==='function')window.hisabatiRefreshInventory();else refresh();renderRemainingProducts();}if(view==='invoice'){addSaleRows();updateSaleInvoiceTotal();}$('inventorySectionMenu').style.display='none';document.querySelectorAll('#inventory .inventory-view').forEach(x=>{x.classList.toggle('active',x.dataset.inventoryView===view);x.classList.toggle('voucher-modal-open', ['inboundEntry','outbound','invoice','inbound'].includes(view)&&x.dataset.inventoryView===view);});if(view==='products')$('remainingProductsModal').style.display='flex';window.scrollTo({top:0,behavior:'smooth'});}
  function showInventoryMenu(){$('inventorySectionMenu').style.display='grid';document.querySelectorAll('#inventory .inventory-view').forEach(x=>x.classList.remove('active','voucher-modal-open','inbound-modal-open','sale-invoice-modal-open'));window.scrollTo({top:0,behavior:'smooth'});}
@@ -3703,8 +3706,9 @@ document.addEventListener('click',function(event){const button=event.target&&eve
     if(body){
      let products=[];try{const data=JSON.parse(localStorage.getItem('hisabati_inventory_v1')||'{}');products=Array.isArray(data.products)?data.products.filter(function(p){return Number(p.qty||0)>0;}):[];}catch(_){}productsModal.dataset.count=String(products.length);productsModal.style.setProperty('--rp-font',products.length>35?'7px':products.length>22?'8px':'11px');productsModal.style.setProperty('--rp-cell-pad',products.length>35?'2px 2px':products.length>22?'3px 2px':'6px 4px');productsModal.style.setProperty('--rp-mobile-font',products.length>25?'6px':products.length>14?'7px':'9px');productsModal.style.setProperty('--rp-mobile-pad',products.length>25?'2px 1px':products.length>14?'3px 1px':'4px 2px');
      body.replaceChildren();
-     if(!products.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=3;td.textContent='لا توجد أصناف بكمية متبقية في المخزون';td.style.padding='20px';td.style.textAlign='center';tr.appendChild(td);body.appendChild(tr);}
-     products.forEach(function(p){const tr=document.createElement('tr');[p.name||'—',Number(p.qty||0).toLocaleString('en-US'),Number(p.sell||0).toLocaleString('en-US')].forEach(function(value){const td=document.createElement('td');td.textContent=String(value);td.style.padding='12px';td.style.border='1px solid #d6e5dd';tr.appendChild(td);});body.appendChild(tr);});
+     const count=document.getElementById('remainingProductsCount');if(count)count.textContent=products.length.toLocaleString('en-US');
+     if(!products.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=4;td.textContent='لا توجد أصناف بكمية متبقية في المخزون';tr.appendChild(td);body.appendChild(tr);}
+     products.forEach(function(p,index){const tr=document.createElement('tr');[String(index+1),p.name||'—',Number(p.qty||0).toLocaleString('en-US'),Number(p.sell||0).toLocaleString('en-US')].forEach(function(value){const td=document.createElement('td');td.textContent=String(value);tr.appendChild(td);});body.appendChild(tr);});
     }
    }
   }
