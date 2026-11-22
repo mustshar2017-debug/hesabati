@@ -2012,11 +2012,17 @@ $('invoiceForm').addEventListener('input',updateSaleInvoiceTotal);$('invoiceForm
   window.scrollTo({top:0,behavior:'smooth'});
  }
  function inventoryView(view){
-  const menu=$('inventorySectionMenu');if(menu)menu.style.display='none';
-  document.querySelectorAll('#inventory .inventory-view').forEach(v=>{
+  const root=$('inventory');
+  const menu=$('inventorySectionMenu');
+  if(menu){menu.hidden=true;menu.style.setProperty('display','none','important');menu.style.setProperty('visibility','hidden','important');}
+  if(root)root.querySelectorAll('.inventory-view[data-inventory-view]').forEach(v=>{
    const active=v.dataset.inventoryView===view;
    v.classList.toggle('active',active);
    v.classList.toggle('voucher-modal-open',active&&['inboundEntry','outbound','invoice','inbound'].includes(view));
+   v.classList.toggle('inbound-report-modal-open',active&&view==='stocklist');
+   v.hidden=!active;
+   v.style.setProperty('display',active?(['inboundEntry','outbound','invoice','inbound','stocklist'].includes(view)?'flex':'block'):'none','important');
+   v.style.setProperty('visibility',active?'visible':'hidden','important');
   });
   if(view==='invoice'){
    const rows=$('saleInvoiceRows');
