@@ -863,7 +863,7 @@ body:not(.dark) .app-menu,body:not(.dark) .app-menu button,body:not(.dark) .app-
 <div class="sale-lines-wrap"><table class="sale-lines"><thead><tr><th>م</th><th>الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody id="saleInvoiceRows"></tbody></table></div>
 <div class="sale-invoice-total">إجمالي الفاتورة <strong id="saleInvoiceTotal">0 SDG</strong></div>
 <div class="sale-invoice-actions"><button type="button" class="secondary" id="printSaleInvoice">🖨️ طباعة A4</button><button type="button" class="secondary" id="whatsappSaleInvoice">📤 مشاركة</button><button class="primary" type="submit">حفظ الفاتورة</button></div></form></div>
-</div><div class="inventory-view" data-inventory-view="stocklist"><div class="inventory-view-head"><strong>📋 قائمة المخزون</strong><button type="button" class="secondary" data-inv-menu>رجوع للقوائم</button></div><div class="card" style="margin-top:12px"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap"><h3>📋 قائمة المخزون</h3><button type="button" class="primary" id="inventoryScanBarcode">📷 مسح باركود صنف</button></div><p class="muted">سجّل باركود الصنف من زر «تسجيل باركود»، ثم امسحه بالكاميرا للتأكد من مطابقته.</p><div class="table-wrap"><table><thead><tr><th>الصنف</th><th>التصنيف</th><th>المتوفر</th><th>شراء</th><th>بيع</th><th>القيمة</th><th>الباركود</th><th>إجراء</th></tr></thead><tbody id="inventoryRows"></tbody></table></div></div>
+</div><div class="inventory-view" data-inventory-view="stocklist"><div class="inbound-report-modal"><div class="inbound-modal-head"><div><strong>📋 الأصناف</strong><small>قائمة جميع الأصناف المسجلة في المخزون</small></div><button type="button" class="secondary" data-inv-menu>رجوع للقوائم</button></div><div class="card" style="margin-top:12px"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap"><h3>📋 قائمة المخزون</h3><button type="button" class="primary" id="inventoryScanBarcode">📷 مسح باركود صنف</button></div><p class="muted">سجّل باركود الصنف من زر «تسجيل باركود»، ثم امسحه بالكاميرا للتأكد من مطابقته.</p><div class="table-wrap"><table><thead><tr><th>الصنف</th><th>التصنيف</th><th>المتوفر</th><th>شراء</th><th>بيع</th><th>القيمة</th><th>الباركود</th><th>إجراء</th></tr></thead><tbody id="inventoryRows"></tbody></table></div></div></div>
 </div><div class="inventory-view" data-inventory-view="audit">
 <div class="inventory-view-head"><strong>🧮 كشف الجرد</strong><button type="button" class="secondary" data-inv-menu>رجوع للقوائم</button></div>
 <div class="card" style="margin-top:12px">
@@ -3648,6 +3648,7 @@ document.addEventListener('click',function(event){const button=event.target&&eve
    const active=v.dataset.inventoryView===name;
    v.classList.toggle('active',active);
    v.classList.toggle('voucher-modal-open',active&&['inboundEntry','outbound','invoice','inbound'].includes(name));
+   v.classList.toggle('inbound-report-modal-open',active&&name==='stocklist');
    v.style.setProperty('display',active?'block':'none','important');
   });
   const selected=root.querySelector('.inventory-view[data-inventory-view="'+name+'"]');
