@@ -3639,8 +3639,19 @@ document.addEventListener('click',function(event){const button=event.target&&eve
 (function(){
  const root=document.getElementById('inventory');if(!root)return;
  function openView(name){
-  const menu=document.getElementById('inventorySectionMenu');if(menu)menu.style.display='none';
-  root.querySelectorAll('.inventory-view[data-inventory-view]').forEach(function(v){const active=v.dataset.inventoryView===name;v.classList.toggle('active',active);v.classList.toggle('voucher-modal-open',active&&['inboundEntry','outbound','invoice','inbound'].includes(name));});
+  // تأكيد إظهار لوحة إدارة المتجر ثم إظهار العرض المطلوب بشكل صريح.
+  document.querySelectorAll('.panel').forEach(function(panel){panel.classList.toggle('active',panel.id==='inventory');});
+  document.querySelectorAll('#nav button').forEach(function(button){button.classList.toggle('active',button.dataset.tab==='inventory');});
+  const menu=document.getElementById('inventorySectionMenu');
+  if(menu){menu.style.setProperty('display','none','important');menu.hidden=true;}
+  root.querySelectorAll('.inventory-view[data-inventory-view]').forEach(function(v){
+   const active=v.dataset.inventoryView===name;
+   v.classList.toggle('active',active);
+   v.classList.toggle('voucher-modal-open',active&&['inboundEntry','outbound','invoice','inbound'].includes(name));
+   v.style.setProperty('display',active?'block':'none','important');
+  });
+  const selected=root.querySelector('.inventory-view[data-inventory-view="'+name+'"]');
+  if(selected){selected.hidden=false;selected.style.visibility='visible';}
   if(name==='invoice'){
    const rows=document.getElementById('saleInvoiceRows');
    if(rows){let products=[];try{products=JSON.parse(localStorage.getItem('hisabati_inventory_v1')||'{}').products||[];}catch(_){}
