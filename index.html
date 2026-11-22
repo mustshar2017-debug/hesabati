@@ -2138,6 +2138,41 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
 }
 </style>
 
+
+<style id="hesabati-black-site-background-v1">
+:root{
+ --bg:#000000!important;
+ --card:#101010!important;
+ --ink:#f5f5f5!important;
+ --muted:#b8b8b8!important;
+ --line:#303030!important;
+}
+html,body{background:#000!important;color:#f5f5f5!important}
+body{background:#000!important}
+header{background:#000!important;color:#fff!important;border-bottom:1px solid #292929!important;box-shadow:0 5px 20px #000!important}
+header .sub{color:#c8c8c8!important}
+main,.wrap,.panel,nav{background-color:#000!important;color:#f5f5f5!important}
+nav{background:#000!important}
+.card,.kpi,.app-menu,.category-launcher,.top-actions,.section-card,.report-card,
+.modal-content,.dialog,.settings-card,.account-card,.inventory-card{
+ background:#101010!important;color:#f5f5f5!important;border-color:#303030!important;
+}
+input,select,textarea{
+ background:#181818!important;color:#fff!important;border-color:#444!important;
+}
+input::placeholder,textarea::placeholder{color:#aaa!important}
+label,.muted,small{color:#c2c2c2}
+table{background:#080808!important;color:#f5f5f5!important}
+th{background:#171717!important;color:#fff!important}
+td{background:#080808!important;color:#eee!important;border-color:#303030!important}
+.secondary{background:#202020!important;color:#f5f5f5!important;border-color:#444!important}
+button:not(.primary):not(.active):not(.danger){color:inherit}
+#remainingProductsModal .remaining-products-paper,
+#allMovementsModal .all-movements-paper,
+#generalReportA4Modal .general-a4-paper,
+.general-a4-paper,.a4-paper,.print-paper,
+body.printing *{background:#fff!important;color:#111!important}
+</style>
 </body></html>';
   w.document.open();w.document.write(html);w.document.close();
   setTimeout(()=>{try{w.focus();w.print();}catch(e){}},350);
