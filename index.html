@@ -2406,7 +2406,7 @@ async function stop(){
 }
 async function close(){await stop();$('stockBarcodeModal').classList.remove('open');$('stockBarcodeModal').setAttribute('aria-hidden','true');}
 function safe(v){return String(v??'—').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function result(p,code){const box=$('stockBarcodeResult');box.innerHTML=p?'<b>تم العثور على الصنف</b><br>الصنف: '+safe(p.name)+'<br>التصنيف: '+safe(p.category||'—')+'<br>الكمية: '+Number(p.qty||0)+'<br>الرمز: <input type="text" readonly dir="ltr" style="display:inline-block;width:min(100%,230px);padding:5px;border:1px solid #cbd8d2;border-radius:6px;background:#fff;color:#17212b" value=""><br><b>الحالة: '+safe(p.authenticity||'غير محدد')+'</b><br>ملاحظات: '+safe(p.authNote||'—')+'<br><small>الحالة مسجلة يدوياً؛ الرمز وحده لا يثبت الأصالة.</small><div class="stock-scan-actions"><button type="button" data-scan-edit="'+safe(p.id)+'">✏️ تعديل بيانات الصنف</button><button type="button" data-scan-in="'+safe(p.id)+'">📥 تسجيل وارد</button><button type="button" data-scan-out="'+safe(p.id)+'">📤 تسجيل صرف</button></div>':'<b>تمت قراءة الباركود بنجاح</b><br><label style="display:block;margin-top:6px">رقم الباركود المقروء</label><input type="text" readonly dir="ltr" inputmode="text" autocomplete="off" style="width:100%;padding:10px;border:1px solid #cbd8d2;border-radius:7px;background:#fff;color:#17212b;text-align:center" value="">';const field=box.querySelector('input[readonly]');if(field)field.value=String(code??'');}
+function result(p,code){const box=$('stockBarcodeResult');box.innerHTML=p?'<b>تم العثور على الصنف المسجل</b><br>اسم الصنف: '+safe(p.name||'—')+'<br>بلد الصنع: '+safe(p.country||'—')+'<br>التصنيف: '+safe(p.category||'—')+'<br>الكمية: '+Number(p.qty||0)+'<br>رقم الباركود: <input type="text" readonly dir="ltr" style="display:inline-block;width:min(100%,230px);padding:5px;border:1px solid #cbd8d2;border-radius:6px;background:#fff;color:#17212b" value=""><br><b>الحالة: '+safe(p.authenticity||'غير محدد')+'</b><br>ملاحظات: '+safe(p.authNote||'—')+'<br><small>الحالة مسجلة يدوياً؛ الرمز وحده لا يثبت الأصالة.</small><div class="stock-scan-actions"><button type="button" data-scan-edit="'+safe(p.id)+'">✏️ تعديل بيانات الصنف</button><button type="button" data-scan-in="'+safe(p.id)+'">📥 تسجيل وارد</button><button type="button" data-scan-out="'+safe(p.id)+'">📤 تسجيل صرف</button></div>':'<b>تمت قراءة الباركود بنجاح</b><br><label style="display:block;margin-top:6px">رقم الباركود المقروء</label><input type="text" readonly dir="ltr" inputmode="text" autocomplete="off" style="width:100%;padding:10px;border:1px solid #cbd8d2;border-radius:7px;background:#fff;color:#17212b;text-align:center" value="">';const field=box.querySelector('input[readonly]');if(field)field.value=String(code??'');}
 function normalizeBarcodeCode(value){
  let v=String(value??'').normalize('NFKC').trim().split('').filter(ch=>![8203,8204,8205,65279].includes(ch.charCodeAt(0))).join('');
  return v.replace(/[٠-٩]/g,d=>String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))).replace(/[۰-۹]/g,d=>String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)));
@@ -2455,15 +2455,22 @@ function closeBarcodeDetails(){
 }
 function showCode(code){
  stop().catch(()=>{});
+ const scannedCode=normalizeBarcodeCode(code);
  let db={};try{db=JSON.parse(localStorage.getItem('hisabati_inventory_v1')||'{}')}catch(e){}
  if(!Array.isArray(db.products))db.products=[];
- const product=findBarcodeProduct(db,code);
- if(product){openBarcodeDetails(product,code);message('هذا الباركود مسجل؛ تم عرض بيانات الصنف.');return;}
- result(null,code);
+ const product=findBarcodeProduct(db,scannedCode);
  const addModal=$('stockBarcodeAddModal');
+ const detailsModal=$('stockBarcodeDetailsModal');
+ if(product){
+  if(addModal){addModal.classList.remove('open');addModal.setAttribute('aria-hidden','true');}
+  if(detailsModal){detailsModal.classList.remove('open');detailsModal.setAttribute('aria-hidden','true');}
+  result(product,scannedCode);
+  return;
+ }
+ result(null,scannedCode);
  if(addModal){
   $('stockBarcodeNewName').value='';
-  $('stockBarcodeNewCode').value=normalizeBarcodeCode(code);
+  $('stockBarcodeNewCode').value=scannedCode;
   $('stockBarcodeNewCountry').value='';
   addModal.classList.add('open');addModal.setAttribute('aria-hidden','false');
   setTimeout(()=>$('stockBarcodeNewName')?.focus(),80);
