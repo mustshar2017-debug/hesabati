@@ -917,6 +917,21 @@ body:not(.dark) .app-menu,body:not(.dark) .app-menu button,body:not(.dark) .app-
 #stockListReportModal .stock-list-report-table th,#stockListReportModal .stock-list-report-table td{min-width:0!important;max-width:0;white-space:normal!important;overflow-wrap:anywhere;word-break:break-word}
 #stockListReportModal .stock-list-report-table th:nth-child(n+5),#stockListReportModal .stock-list-report-table td:nth-child(n+5){padding-left:1px!important;padding-right:1px!important;font-size:7px!important}
 </style>
+
+<style id="partner-allocation-action-column-white-v1">
+/* عمود الإجراء في سجل توزيعات الشريك يبقى أبيض حتى مع الوضع الداكن */
+#partnerAccountCard #partnerAllocationRows td:last-child,
+#partnerAccountCard table thead th:last-child{
+  background:#fff!important;
+  color:#172326!important;
+  opacity:1!important;
+}
+#partnerAccountCard #partnerAllocationRows td:last-child{
+  border-right:1px solid #e1e9e6!important;
+  border-left:1px solid #e1e9e6!important;
+}
+</style>
+
 </head>
 <body>
 <header><div class="wrap header-row"><div><div class="brand-line"><h1>حساباتي</h1><button id="themeToggle" class="theme-toggle" type="button" aria-label="تفعيل الوضع الليلي" title="تفعيل الوضع الليلي">☀️</button></div><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><div class="header-actions"><button class="menu-trigger" id="menuTrigger" type="button" aria-label="القائمة" aria-expanded="false">⋮</button><button class="secondary" id="languageToggle" type="button" aria-label="تغيير لغة التطبيق">EN</button><button class="secondary" id="lockNow" type="button" aria-label="قفل التطبيق" title="قفل التطبيق"><span class="lock-close-icon" aria-hidden="true"></span></button><div class="app-menu" id="appMenu" hidden><button type="button" data-menu-action="backup"><span class="menu-item-icon" aria-hidden="true">💾</span><span>حفظ نسخة احتياطية</span></button><button type="button" data-menu-action="restore"><span class="menu-item-icon" aria-hidden="true">📥</span><span>استعادة نسخة احتياطي</span></button><button type="button" data-menu-action="charts"><span class="menu-item-icon" aria-hidden="true">📈</span><span>الرسوم البيانية</span></button><button type="button" data-menu-action="productsFile"><span class="menu-item-icon" aria-hidden="true">📦</span><span>ملف الأصناف</span></button><button type="button" data-menu-action="stockFile"><span class="menu-item-icon" aria-hidden="true">📋</span><span>ملف المخزون</span></button><button type="button" data-menu-action="labels"><span class="menu-item-icon" aria-hidden="true">✏️</span><span>تعديل أسماء الأيقونات</span></button><button type="button" data-menu-action="generalReport"><span class="menu-item-icon" aria-hidden="true">📊</span><span>تقرير عام مفصل</span></button><button type="button" data-menu-action="monthlyReport"><span class="menu-item-icon" aria-hidden="true">📅</span><span>التقرير الشهري</span></button><button type="button" data-menu-action="settings"><span class="menu-item-icon" aria-hidden="true">⚙️</span><span>إعدادات التطبيق</span></button><button type="button" data-menu-action="about"><span class="menu-item-icon" aria-hidden="true">ℹ️</span><span>نبذة عنّا</span></button><button type="button" data-menu-action="updateApp"><span class="menu-item-icon" aria-hidden="true">🔄</span><span>تحديث التطبيق</span></button><button type="button" data-menu-action="tutorial"><span class="menu-item-icon" aria-hidden="true">▶️</span><span>شرح التطبيق</span></button><button type="button" data-menu-action="share"><span class="menu-item-icon" aria-hidden="true">📤</span><span>مشاركة التطبيق</span></button><button type="button" data-menu-action="rate"><span class="menu-item-icon" aria-hidden="true">⭐</span><span>تقييم التطبيق</span></button><button type="button" data-menu-action="feedback"><span class="menu-item-icon" aria-hidden="true">✉️</span><span>إرسال ملاحظات أو الإبلاغ عن مشكلة</span></button></div></div></div></header>
