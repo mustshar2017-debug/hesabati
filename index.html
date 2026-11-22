@@ -2411,7 +2411,7 @@ function showCode(code){
  if(!Array.isArray(db.products))db.products=[];
  const normalizeCode=value=>{let v=String(value??'').normalize('NFKC').trim().split('').filter(ch=>![8203,8204,8205,65279].includes(ch.charCodeAt(0))).join('');v=v.replace(/[٠-٩]/g,d=>String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))).replace(/[۰-۹]/g,d=>String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)));return v;};
  const wanted=normalizeCode(code);
- const product=db.products.find(p=>{const saved=normalizeCode(p.barcode);return saved===wanted||(saved&&wanted&&/^[0-9]+$/.test(saved)&&/^[0-9]+$/.test(wanted)&&saved.replace(/^0+(?=[0-9])/,'')===wanted.replace(/^0+(?=[0-9])/,'));});
+ const product=db.products.find(p=>{const saved=normalizeCode(p.barcode);const a=saved.replace(/^0+(?=[0-9])/,'');const b=wanted.replace(/^0+(?=[0-9])/,'');return saved===wanted||(saved&&wanted&&/^[0-9]+$/.test(saved)&&/^[0-9]+$/.test(wanted)&&a===b);});
  if(product){$('stockBarcodeAddModal')?.classList.remove('open');result(product,code);return;}
  result(null,code);
  const addModal=$('stockBarcodeAddModal');
