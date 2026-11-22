@@ -2411,18 +2411,32 @@ function normalizeBarcodeCode(value){
  let v=String(value??'').normalize('NFKC').trim().split('').filter(ch=>![8203,8204,8205,65279].includes(ch.charCodeAt(0))).join('');
  return v.replace(/[٠-٩]/g,d=>String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))).replace(/[۰-۹]/g,d=>String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)));
 }
+function barcodeCodesMatch(savedValue,scanValue){
+ const saved=normalizeBarcodeCode(savedValue),wanted=normalizeBarcodeCode(scanValue);
+ if(!saved||!wanted)return false;
+ if(saved===wanted)return true;
+ const a=saved.replace(/^0+(?=[0-9])/,'');
+ const b=wanted.replace(/^0+(?=[0-9])/,'');
+ return /^[0-9]+$/.test(saved)&&/^[0-9]+$/.test(wanted)&&a===b;
+}
 function findBarcodeProduct(data,code){
  const products=Array.isArray(data&&data.products)?data.products:[];
  const wanted=normalizeBarcodeCode(code);
  if(!wanted)return null;
- return products.find(p=>{
-  const saved=normalizeBarcodeCode(p&&p.barcode);
-  if(!saved)return false;
-  if(saved===wanted)return true;
-  const a=saved.replace(/^0+(?=[0-9])/,'');
-  const b=wanted.replace(/^0+(?=[0-9])/,'');
-  return /^[0-9]+$/.test(saved)&&/^[0-9]+$/.test(wanted)&&a===b;
- })||null;
+ let found=products.find(p=>barcodeCodesMatch(p&&p.barcode,wanted));
+ if(found)return found;
+ // سجل مستقل للباركودات المحفوظة من نافذة الماسح، حتى لا تضيع المطابقة
+ // إذا أعادت شاشة المخزون تحميل قائمتها من نسخة بيانات قديمة.
+ try{
+  const registry=JSON.parse(localStorage.getItem('hisabati_barcode_registry_v1')||'{}');
+  const records=Array.isArray(registry.items)?registry.items:[];
+  found=records.find(p=>barcodeCodesMatch(p&&p.barcode,wanted));
+  if(found){
+   const inInventory=products.find(p=>p&&p.id===found.id);
+   return inInventory||found;
+  }
+ }catch(e){}
+ return null;
 }
 function openBarcodeDetails(product,code){
  const modal=$('stockBarcodeDetailsModal');
@@ -2675,6 +2689,14 @@ $('stockBarcodeAddSave')?.addEventListener('click',()=>{
  let savedData={};try{savedData=JSON.parse(localStorage.getItem('hisabati_inventory_v1')||'{}')}catch(e){}
  const savedProduct=findBarcodeProduct(savedData,code);
  if(!savedProduct){alert('لم يتم التأكد من حفظ الصنف في المخزون. أعد المحاولة.');return;}
+ try{
+  const registry=JSON.parse(localStorage.getItem('hisabati_barcode_registry_v1')||'{}');
+  const items=Array.isArray(registry.items)?registry.items:[];
+  const index=items.findIndex(p=>barcodeCodesMatch(p&&p.barcode,code));
+  const record={id:savedProduct.id,name:savedProduct.name,barcode:savedProduct.barcode||code,country:savedProduct.country||country};
+  if(index>=0)items[index]=record;else items.push(record);
+  localStorage.setItem('hisabati_barcode_registry_v1',JSON.stringify({items}));
+ }catch(registryError){console.warn('تعذر تحديث سجل الباركود المستقل:',registryError);}
  openBarcodeDetails(savedProduct,code);
  message('تم حفظ الصنف بنجاح، وهذه بياناته المسجلة في المخزون.');
  window.hisabatiRefreshInventory?.();
