@@ -817,7 +817,7 @@ body:not(.dark) .app-menu,body:not(.dark) .app-menu button,body:not(.dark) .app-
 #inventory .stock-list-report-heading p,#inventory .stock-list-report-heading small{margin:3px;color:#526765!important}
 #inventory .stock-list-report-summary{padding:8px 10px;margin-bottom:10px;background:#f2f7f5!important;border:1px solid #dce8e3;color:#172326!important;font-weight:800}
 #inventory .stock-list-report-table-wrap{width:100%;overflow:visible}
-#inventory .stock-list-report-table{width:100%;table-layout:fixed;border-collapse:collapse}.stock-list-report-table th:nth-child(1),.stock-list-report-table td:nth-child(1){width:4%}.stock-list-report-table th:nth-child(2),.stock-list-report-table td:nth-child(2){width:30%}.stock-list-report-table th:nth-child(3),.stock-list-report-table td:nth-child(3){width:13%}.stock-list-report-table th:nth-child(4),.stock-list-report-table td:nth-child(4){width:7%}.stock-list-report-table th:nth-child(5),.stock-list-report-table td:nth-child(5){width:9%}.stock-list-report-table th:nth-child(6),.stock-list-report-table td:nth-child(6){width:9%}.stock-list-report-table th:nth-child(7),.stock-list-report-table td:nth-child(7){width:16%}.stock-list-report-table th:nth-child(8),.stock-list-report-table td:nth-child(8){width:12%}
+#inventory .stock-list-report-table{width:100%!important;min-width:0!important;max-width:100%;table-layout:fixed;border-collapse:collapse}.stock-list-report-table th:nth-child(1),.stock-list-report-table td:nth-child(1){width:4%}.stock-list-report-table th:nth-child(2),.stock-list-report-table td:nth-child(2){width:22%}.stock-list-report-table th:nth-child(3),.stock-list-report-table td:nth-child(3){width:9%}.stock-list-report-table th:nth-child(4),.stock-list-report-table td:nth-child(4){width:7%}.stock-list-report-table th:nth-child(5),.stock-list-report-table td:nth-child(5){width:10%}.stock-list-report-table th:nth-child(6),.stock-list-report-table td:nth-child(6){width:10%}.stock-list-report-table th:nth-child(7),.stock-list-report-table td:nth-child(7){width:22%}.stock-list-report-table th:nth-child(8),.stock-list-report-table td:nth-child(8){width:16%}.stock-list-report-table th:nth-child(1),.stock-list-report-table td:nth-child(1){width:4%}.stock-list-report-table th:nth-child(2),.stock-list-report-table td:nth-child(2){width:30%}.stock-list-report-table th:nth-child(3),.stock-list-report-table td:nth-child(3){width:13%}.stock-list-report-table th:nth-child(4),.stock-list-report-table td:nth-child(4){width:7%}.stock-list-report-table th:nth-child(5),.stock-list-report-table td:nth-child(5){width:9%}.stock-list-report-table th:nth-child(6),.stock-list-report-table td:nth-child(6){width:9%}.stock-list-report-table th:nth-child(7),.stock-list-report-table td:nth-child(7){width:16%}.stock-list-report-table th:nth-child(8),.stock-list-report-table td:nth-child(8){width:12%}
 #inventory .stock-list-report-table th,#inventory .stock-list-report-table td{border:1px solid #cbd7d2;padding:6px 4px;text-align:center;color:#172326!important;background:#fff!important;font-size:10px;overflow-wrap:anywhere}
 #inventory .stock-list-report-table th{background:#eaf2ef!important;color:#173b37!important;font-weight:900}
 #inventory .stock-list-report-total{margin-top:12px;padding:11px;background:#f5f8f7!important;border:1px solid #cbd7d2;text-align:center;font-size:16px;font-weight:900;color:#172326!important}
@@ -902,18 +902,20 @@ body:not(.dark) .app-menu,body:not(.dark) .app-menu button,body:not(.dark) .app-
  #stockListReportModal .stock-list-report-table td{font-size:8pt!important;white-space:normal;overflow-wrap:anywhere}
 }
 </style>
-<style id="stock-list-a4-column-widths-v1">
-/* أعمدة مالية وQR مضغوطة لإتاحة مساحة أكبر لاسم الصنف */
-#stockListReportModal .stock-list-report-table{width:100%;table-layout:fixed}
+<style id="stock-list-a4-column-widths-v2">
+/* ضغط عمودي اسم الصنف والتصنيف وإلغاء الحد الأدنى الذي يسبب السحب الأفقي */
+#stockListReportModal .stock-list-report-table-wrap{width:100%;max-width:100%;overflow:visible!important}
+#stockListReportModal .stock-list-report-table{width:100%!important;min-width:0!important;max-width:100%;table-layout:fixed;border-collapse:collapse}
 #stockListReportModal .stock-list-report-table th:nth-child(1),#stockListReportModal .stock-list-report-table td:nth-child(1){width:4%}
-#stockListReportModal .stock-list-report-table th:nth-child(2),#stockListReportModal .stock-list-report-table td:nth-child(2){width:30%}
-#stockListReportModal .stock-list-report-table th:nth-child(3),#stockListReportModal .stock-list-report-table td:nth-child(3){width:13%}
+#stockListReportModal .stock-list-report-table th:nth-child(2),#stockListReportModal .stock-list-report-table td:nth-child(2){width:22%}
+#stockListReportModal .stock-list-report-table th:nth-child(3),#stockListReportModal .stock-list-report-table td:nth-child(3){width:9%}
 #stockListReportModal .stock-list-report-table th:nth-child(4),#stockListReportModal .stock-list-report-table td:nth-child(4){width:7%}
-#stockListReportModal .stock-list-report-table th:nth-child(5),#stockListReportModal .stock-list-report-table td:nth-child(5){width:9%}
-#stockListReportModal .stock-list-report-table th:nth-child(6),#stockListReportModal .stock-list-report-table td:nth-child(6){width:9%}
-#stockListReportModal .stock-list-report-table th:nth-child(7),#stockListReportModal .stock-list-report-table td:nth-child(7){width:16%}
-#stockListReportModal .stock-list-report-table th:nth-child(8),#stockListReportModal .stock-list-report-table td:nth-child(8){width:12%}
-#stockListReportModal .stock-list-report-table th:nth-child(5),#stockListReportModal .stock-list-report-table td:nth-child(5),#stockListReportModal .stock-list-report-table th:nth-child(6),#stockListReportModal .stock-list-report-table td:nth-child(6),#stockListReportModal .stock-list-report-table th:nth-child(7),#stockListReportModal .stock-list-report-table td:nth-child(7),#stockListReportModal .stock-list-report-table th:nth-child(8),#stockListReportModal .stock-list-report-table td:nth-child(8){padding-left:1px!important;padding-right:1px!important;font-size:7px!important;overflow-wrap:anywhere;word-break:break-all}
+#stockListReportModal .stock-list-report-table th:nth-child(5),#stockListReportModal .stock-list-report-table td:nth-child(5){width:10%}
+#stockListReportModal .stock-list-report-table th:nth-child(6),#stockListReportModal .stock-list-report-table td:nth-child(6){width:10%}
+#stockListReportModal .stock-list-report-table th:nth-child(7),#stockListReportModal .stock-list-report-table td:nth-child(7){width:22%}
+#stockListReportModal .stock-list-report-table th:nth-child(8),#stockListReportModal .stock-list-report-table td:nth-child(8){width:16%}
+#stockListReportModal .stock-list-report-table th,#stockListReportModal .stock-list-report-table td{min-width:0!important;max-width:0;white-space:normal!important;overflow-wrap:anywhere;word-break:break-word}
+#stockListReportModal .stock-list-report-table th:nth-child(n+5),#stockListReportModal .stock-list-report-table td:nth-child(n+5){padding-left:1px!important;padding-right:1px!important;font-size:7px!important}
 </style>
 </head>
 <body>
