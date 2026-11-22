@@ -4569,7 +4569,7 @@ body:not(.dark){
  --muted:#6d8280!important;--line:#e1e9e6!important;--teal:#087f70!important;
  background:#fff!important;color:#183536!important;
 }
-body:not(.dark),body:not(.dark) html{background:#fff!important;color:#183536!important}
+html{background:#fff!important}html:has(body.dark){background:#000!important}body:not(.dark){background:#fff!important;color:#183536!important}
 body:not(.dark) header{background:#fff!important;color:#183536!important;border-bottom:1px solid #e1e9e6!important;box-shadow:0 3px 14px #163b3510!important}
 body:not(.dark) header h1,body:not(.dark) header .sub{color:#183536!important;text-shadow:none!important}
 body:not(.dark) main,body:not(.dark) .wrap,body:not(.dark) .panel,body:not(.dark) nav{background:#fff!important;color:#183536!important}
