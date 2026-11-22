@@ -1884,17 +1884,7 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
 $('invoiceForm').addEventListener('input',updateSaleInvoiceTotal);$('invoiceForm').addEventListener('change',updateSaleInvoiceTotal);
  $('closeSaleInvoice').addEventListener('click',showInventoryMenu);$('closeOutboundVoucher').addEventListener('click',showInventoryMenu);
  $('printSaleInvoice').addEventListener('click',()=>{const f=$('invoiceForm');if(!f.reportValidity())return;const items=getSaleDraft();if(!validateSaleItems(items))return;printSaleDocument({customer:f.elements.customer.value,payment:f.elements.payment.value,date:f.elements.date.value},items,'مسودة')});
-document.addEventListener('click',e=>{
-  const print=e.target.closest('#printSaleInvoice'),share=e.target.closest('#whatsappSaleInvoice'),saveButton=e.target.closest('#invoiceForm button[type="submit"]');
-  if(!print&&!share&&!saveButton)return;
-  e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-  if(saveButton){saveSaleInvoiceNow();return;}
-  const f=$('invoiceForm');if(!f.reportValidity())return;
-  const items=getSaleDraft();if(!validateSaleItems(items))return;
-  const d={customer:f.elements.customer.value,payment:f.elements.payment.value,date:f.elements.date.value};
-  if(print){printSaleDocument(d,items,'مسودة');return;}
-  sendSaleWhatsApp(d,items,'مسودة');
- },true);
+
  
  
 
