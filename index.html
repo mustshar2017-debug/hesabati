@@ -681,6 +681,70 @@ body:not(.dark) .app-menu,body:not(.dark) .app-menu button,body:not(.dark) .app-
 #inventory .sale-invoice-modal .sale-lines td{background:#fff!important;color:#17212b!important;border-color:#d8dee8!important}
 #inventory .sale-invoice-modal .sale-invoice-total{background:#fff!important;color:#17212b!important;border:1px solid #cbd5e1!important}
 </style>
+<style id="inbound-report-print-visibility-fix">
+@media print{
+ html,body,body.inbound-report-printing{background:#fff!important;color:#111!important}
+ body.inbound-report-printing #inventory,
+ body.inbound-report-printing #inventory .inventory-view[data-inventory-view="inbound"],
+ body.inbound-report-printing #inventory .inbound-report-modal,
+ body.inbound-report-printing #inventory .inbound-report-modal *{
+  visibility:visible!important;opacity:1!important;color:#111!important;text-shadow:none!important;
+  background-color:#fff!important;box-shadow:none!important;
+ }
+ body.inbound-report-printing #inventory .inbound-report-modal{position:static!important;display:block!important;overflow:visible!important;width:100%!important;max-height:none!important;border:0!important;padding:0!important}
+ body.inbound-report-printing #inventory .inbound-report-modal .inbound-modal-head{display:flex!important;color:#111!important}
+ body.inbound-report-printing #inventory .inbound-report-modal .inbound-modal-head strong,
+ body.inbound-report-printing #inventory .inbound-report-modal .inbound-modal-head small{color:#111!important}
+ body.inbound-report-printing #inventory .inbound-report-filters{display:none!important}
+ body.inbound-report-printing #inventory .inbound-report-summary,
+ body.inbound-report-printing #inventory .inbound-report-grand{display:flex!important;color:#111!important;background:#fff!important;border:1px solid #aaa!important}
+ body.inbound-report-printing #inventory .inbound-report-summary strong,
+ body.inbound-report-printing #inventory .inbound-report-grand strong{color:#111!important}
+ body.inbound-report-printing #inventory .inbound-table-wrap{display:block!important;overflow:visible!important;border:1px solid #aaa!important}
+ body.inbound-report-printing #inventory .inbound-report-table{display:table!important;width:100%!important;min-width:0!important;table-layout:auto!important;border-collapse:collapse!important}
+ body.inbound-report-printing #inventory .inbound-report-table thead{display:table-header-group!important}
+ body.inbound-report-printing #inventory .inbound-report-table tr{display:table-row!important;break-inside:avoid!important}
+ body.inbound-report-printing #inventory .inbound-report-table th,
+ body.inbound-report-printing #inventory .inbound-report-table td{display:table-cell!important;color:#111!important;background:#fff!important;border:1px solid #bbb!important;font-size:8pt!important;padding:5px 4px!important;white-space:normal!important}
+ body.inbound-report-printing #inventory .inbound-report-table th{background:#eee!important;font-weight:800!important}
+}
+</style>
+<style id="inbound-report-a4-screen-share-v1">
+#inventory .inbound-report-modal{background:#172326!important}
+#inventory .inbound-report-paper{
+ width:min(100%,1123px);min-height:794px;aspect-ratio:297/210;margin:14px auto 0;
+ padding:34px 32px;background:#fff!important;color:#172326!important;
+ border:1px solid #d7dfdc;border-radius:3px;box-shadow:0 5px 22px #0003;
+ direction:rtl;overflow:visible
+}
+#inventory .inbound-report-paper-title{text-align:center;border-bottom:2px solid #087f70;padding:0 0 12px;margin-bottom:15px}
+#inventory .inbound-report-paper-title h2{margin:0 0 5px;color:#123b3b!important;font-size:23px;font-weight:900}
+#inventory .inbound-report-paper-title p{margin:0;color:#526765!important;font-size:13px}
+#inventory .inbound-report-paper .inbound-report-summary{color:#172326!important;background:#f2f7f5!important;border:1px solid #dce8e3;border-radius:7px;padding:11px 13px;margin:0 0 14px}
+#inventory .inbound-report-paper .inbound-report-summary strong{color:#087f70!important}
+#inventory .inbound-report-paper .inbound-table-wrap{overflow:visible;border:0;border-radius:0}
+#inventory .inbound-report-paper .inbound-report-table{width:100%;min-width:0;table-layout:fixed;border-collapse:collapse}
+#inventory .inbound-report-paper .inbound-report-table th,
+#inventory .inbound-report-paper .inbound-report-table td{color:#172326!important;background:#fff!important;border:1px solid #cbd7d2;padding:8px 5px;font-size:11px;white-space:normal;overflow-wrap:anywhere}
+#inventory .inbound-report-paper .inbound-report-table th{background:#eaf2ef!important;color:#173b37!important;font-weight:900}
+#inventory .inbound-report-paper .inbound-report-grand{color:#172326!important;background:#f5f8f7!important;border:1px solid #cbd7d2;border-radius:7px;font-size:16px}
+#inventory .inbound-report-paper .inbound-report-grand strong{color:#087f70!important}
+.inbound-report-share-actions{display:flex;justify-content:center;margin:14px auto 4px}
+.inbound-report-share-actions button{min-width:min(100%,260px);min-height:48px;font-size:16px}
+@media(max-width:650px){
+ #inventory .inbound-report-paper{width:100%;min-height:520px;aspect-ratio:auto;padding:16px 10px;margin-top:10px}
+ #inventory .inbound-report-paper-title h2{font-size:19px}
+ #inventory .inbound-report-paper .inbound-report-table th,#inventory .inbound-report-paper .inbound-report-table td{font-size:9px;padding:5px 2px}
+ #inventory .inbound-report-paper .inbound-report-grand{font-size:14px;padding:10px}
+}
+@media print{
+ @page{size:A4 landscape;margin:10mm}
+ #inventory .inbound-report-paper{width:100%!important;max-width:none!important;min-height:0!important;aspect-ratio:auto!important;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important}
+ #inventory .inbound-report-paper-title{margin-bottom:8px}
+ #inventory .inbound-report-paper .inbound-report-table th,#inventory .inbound-report-paper .inbound-report-table td{font-size:8pt!important;padding:5px 3px!important}
+ .inbound-report-share-actions{display:none!important}
+}
+</style>
 </head>
 <body>
 <header><div class="wrap header-row"><div><div class="brand-line"><h1>حساباتي</h1><button id="themeToggle" class="theme-toggle" type="button" aria-label="تفعيل الوضع الليلي" title="تفعيل الوضع الليلي">☀️</button></div><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><div class="header-actions"><button class="menu-trigger" id="menuTrigger" type="button" aria-label="القائمة" aria-expanded="false">⋮</button><button class="secondary" id="languageToggle" type="button" aria-label="تغيير لغة التطبيق">EN</button><button class="secondary" id="lockNow" type="button" aria-label="قفل التطبيق" title="قفل التطبيق"><span class="lock-close-icon" aria-hidden="true"></span></button><div class="app-menu" id="appMenu" hidden><button type="button" data-menu-action="backup"><span class="menu-item-icon" aria-hidden="true">💾</span><span>حفظ نسخة احتياطية</span></button><button type="button" data-menu-action="restore"><span class="menu-item-icon" aria-hidden="true">📥</span><span>استعادة نسخة احتياطي</span></button><button type="button" data-menu-action="charts"><span class="menu-item-icon" aria-hidden="true">📈</span><span>الرسوم البيانية</span></button><button type="button" data-menu-action="productsFile"><span class="menu-item-icon" aria-hidden="true">📦</span><span>ملف الأصناف</span></button><button type="button" data-menu-action="stockFile"><span class="menu-item-icon" aria-hidden="true">📋</span><span>ملف المخزون</span></button><button type="button" data-menu-action="labels"><span class="menu-item-icon" aria-hidden="true">✏️</span><span>تعديل أسماء الأيقونات</span></button><button type="button" data-menu-action="generalReport"><span class="menu-item-icon" aria-hidden="true">📊</span><span>تقرير عام مفصل</span></button><button type="button" data-menu-action="monthlyReport"><span class="menu-item-icon" aria-hidden="true">📅</span><span>التقرير الشهري</span></button><button type="button" data-menu-action="settings"><span class="menu-item-icon" aria-hidden="true">⚙️</span><span>إعدادات التطبيق</span></button><button type="button" data-menu-action="about"><span class="menu-item-icon" aria-hidden="true">ℹ️</span><span>نبذة عنّا</span></button><button type="button" data-menu-action="updateApp"><span class="menu-item-icon" aria-hidden="true">🔄</span><span>تحديث التطبيق</span></button><button type="button" data-menu-action="tutorial"><span class="menu-item-icon" aria-hidden="true">▶️</span><span>شرح التطبيق</span></button><button type="button" data-menu-action="share"><span class="menu-item-icon" aria-hidden="true">📤</span><span>مشاركة التطبيق</span></button><button type="button" data-menu-action="rate"><span class="menu-item-icon" aria-hidden="true">⭐</span><span>تقييم التطبيق</span></button><button type="button" data-menu-action="feedback"><span class="menu-item-icon" aria-hidden="true">✉️</span><span>إرسال ملاحظات أو الإبلاغ عن مشكلة</span></button></div></div></div></header>
@@ -3866,78 +3930,6 @@ body.dark #menuInventorySheet article{background:#fff!important;color:#18231f!im
  },true);
 })();
 </script>
-</body>
-</html>
-
-
-<style id="inbound-report-print-visibility-fix">
-@media print{
- html,body,body.inbound-report-printing{background:#fff!important;color:#111!important}
- body.inbound-report-printing #inventory,
- body.inbound-report-printing #inventory .inventory-view[data-inventory-view="inbound"],
- body.inbound-report-printing #inventory .inbound-report-modal,
- body.inbound-report-printing #inventory .inbound-report-modal *{
-  visibility:visible!important;opacity:1!important;color:#111!important;text-shadow:none!important;
-  background-color:#fff!important;box-shadow:none!important;
- }
- body.inbound-report-printing #inventory .inbound-report-modal{position:static!important;display:block!important;overflow:visible!important;width:100%!important;max-height:none!important;border:0!important;padding:0!important}
- body.inbound-report-printing #inventory .inbound-report-modal .inbound-modal-head{display:flex!important;color:#111!important}
- body.inbound-report-printing #inventory .inbound-report-modal .inbound-modal-head strong,
- body.inbound-report-printing #inventory .inbound-report-modal .inbound-modal-head small{color:#111!important}
- body.inbound-report-printing #inventory .inbound-report-filters{display:none!important}
- body.inbound-report-printing #inventory .inbound-report-summary,
- body.inbound-report-printing #inventory .inbound-report-grand{display:flex!important;color:#111!important;background:#fff!important;border:1px solid #aaa!important}
- body.inbound-report-printing #inventory .inbound-report-summary strong,
- body.inbound-report-printing #inventory .inbound-report-grand strong{color:#111!important}
- body.inbound-report-printing #inventory .inbound-table-wrap{display:block!important;overflow:visible!important;border:1px solid #aaa!important}
- body.inbound-report-printing #inventory .inbound-report-table{display:table!important;width:100%!important;min-width:0!important;table-layout:auto!important;border-collapse:collapse!important}
- body.inbound-report-printing #inventory .inbound-report-table thead{display:table-header-group!important}
- body.inbound-report-printing #inventory .inbound-report-table tr{display:table-row!important;break-inside:avoid!important}
- body.inbound-report-printing #inventory .inbound-report-table th,
- body.inbound-report-printing #inventory .inbound-report-table td{display:table-cell!important;color:#111!important;background:#fff!important;border:1px solid #bbb!important;font-size:8pt!important;padding:5px 4px!important;white-space:normal!important}
- body.inbound-report-printing #inventory .inbound-report-table th{background:#eee!important;font-weight:800!important}
-}
-</style>
-
-
-<style id="inbound-report-a4-screen-share-v1">
-#inventory .inbound-report-modal{background:#172326!important}
-#inventory .inbound-report-paper{
- width:min(100%,1123px);min-height:794px;aspect-ratio:297/210;margin:14px auto 0;
- padding:34px 32px;background:#fff!important;color:#172326!important;
- border:1px solid #d7dfdc;border-radius:3px;box-shadow:0 5px 22px #0003;
- direction:rtl;overflow:visible
-}
-#inventory .inbound-report-paper-title{text-align:center;border-bottom:2px solid #087f70;padding:0 0 12px;margin-bottom:15px}
-#inventory .inbound-report-paper-title h2{margin:0 0 5px;color:#123b3b!important;font-size:23px;font-weight:900}
-#inventory .inbound-report-paper-title p{margin:0;color:#526765!important;font-size:13px}
-#inventory .inbound-report-paper .inbound-report-summary{color:#172326!important;background:#f2f7f5!important;border:1px solid #dce8e3;border-radius:7px;padding:11px 13px;margin:0 0 14px}
-#inventory .inbound-report-paper .inbound-report-summary strong{color:#087f70!important}
-#inventory .inbound-report-paper .inbound-table-wrap{overflow:visible;border:0;border-radius:0}
-#inventory .inbound-report-paper .inbound-report-table{width:100%;min-width:0;table-layout:fixed;border-collapse:collapse}
-#inventory .inbound-report-paper .inbound-report-table th,
-#inventory .inbound-report-paper .inbound-report-table td{color:#172326!important;background:#fff!important;border:1px solid #cbd7d2;padding:8px 5px;font-size:11px;white-space:normal;overflow-wrap:anywhere}
-#inventory .inbound-report-paper .inbound-report-table th{background:#eaf2ef!important;color:#173b37!important;font-weight:900}
-#inventory .inbound-report-paper .inbound-report-grand{color:#172326!important;background:#f5f8f7!important;border:1px solid #cbd7d2;border-radius:7px;font-size:16px}
-#inventory .inbound-report-paper .inbound-report-grand strong{color:#087f70!important}
-.inbound-report-share-actions{display:flex;justify-content:center;margin:14px auto 4px}
-.inbound-report-share-actions button{min-width:min(100%,260px);min-height:48px;font-size:16px}
-@media(max-width:650px){
- #inventory .inbound-report-paper{width:100%;min-height:520px;aspect-ratio:auto;padding:16px 10px;margin-top:10px}
- #inventory .inbound-report-paper-title h2{font-size:19px}
- #inventory .inbound-report-paper .inbound-report-table th,#inventory .inbound-report-paper .inbound-report-table td{font-size:9px;padding:5px 2px}
- #inventory .inbound-report-paper .inbound-report-grand{font-size:14px;padding:10px}
-}
-@media print{
- @page{size:A4 landscape;margin:10mm}
- #inventory .inbound-report-paper{width:100%!important;max-width:none!important;min-height:0!important;aspect-ratio:auto!important;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important}
- #inventory .inbound-report-paper-title{margin-bottom:8px}
- #inventory .inbound-report-paper .inbound-report-table th,#inventory .inbound-report-paper .inbound-report-table td{font-size:8pt!important;padding:5px 3px!important}
- .inbound-report-share-actions{display:none!important}
-}
-</style>
-
-
 <script id="hesabati-manual-update-menu-v1">
 (function(){
  'use strict';
@@ -3986,5 +3978,4 @@ body.dark #menuInventorySheet article{background:#fff!important;color:#18231f!im
  };
 })();
 </script>
-
-
+</body></html>
