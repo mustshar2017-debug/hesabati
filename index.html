@@ -3960,32 +3960,3 @@ body.dark #menuInventorySheet article{background:#fff!important;color:#18231f!im
 </script>
 
 
-<script id="sale-invoice-actions-delegated-fix-v1">
-(function(){
- if(window.__saleInvoiceActionsFix)return;
- window.__saleInvoiceActionsFix=true;
- document.addEventListener('click',function(event){
-  const button=event.target&&event.target.closest?event.target.closest('#printSaleInvoice,#whatsappSaleInvoice'):null;
-  if(!button)return;
-  event.preventDefault();
-  event.stopPropagation();
-  event.stopImmediatePropagation();
-  const form=document.getElementById('invoiceForm');
-  if(!form){alert('تعذر العثور على نموذج فاتورة البيع.');return;}
-  if(!form.reportValidity())return;
-  const items=typeof getSaleDraft==='function'?getSaleDraft():[];
-  if(typeof validateSaleItems==='function'&&!validateSaleItems(items))return;
-  const details={customer:form.elements.customer.value,payment:form.elements.payment.value,date:form.elements.date.value};
-  if(button.id==='printSaleInvoice'){
-   if(typeof printSaleDocument!=='function'){alert('تعذر تجهيز الطباعة.');return;}
-   printSaleDocument(details,items,'مسودة');
-   return;
-  }
-  if(typeof sendSaleWhatsApp!=='function'){alert('تعذر تجهيز المشاركة.');return;}
-  Promise.resolve(sendSaleWhatsApp(details,items,'مسودة')).catch(function(error){
-   console.error('Sale invoice share failed:',error);
-   alert('تعذرت مشاركة الفاتورة. حاول مرة أخرى.');
-  });
- },true);
-})();
-</script>
