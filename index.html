@@ -658,6 +658,29 @@ body:not(.dark) .app-menu,body:not(.dark) .app-menu button,body:not(.dark) .app-
 @media print{body,body:not(.dark){background:#fff!important;color:#111!important}header,#nav{display:none!important}.card,.table-wrap{background:#fff!important;color:#111!important;box-shadow:none!important}}
 </style>
 <style id="hesabati-menu-fixed-position-v3">#appMenu[hidden]{display:none!important}#appMenu:not([hidden]){display:block!important;position:fixed!important;z-index:2147483000!important;width:min(280px,calc(100vw - 16px))!important;max-height:min(75vh,620px)!important;overflow-y:auto!important;overscroll-behavior:contain!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}</style>
+<style id="sale-invoice-white-background-v1">
+/* خلفية فاتورة البيع بيضاء وواضحة */
+#inventory .sale-invoice-modal{
+ background:#fff!important;
+ color:#17212b!important;
+ border:1px solid #d7dee7!important;
+}
+#inventory .sale-invoice-modal .sale-invoice-head strong{color:#173b35!important}
+#inventory .sale-invoice-modal .sale-invoice-head small{color:#657080!important}
+#inventory .sale-invoice-modal .sale-invoice-form,
+#inventory .sale-invoice-modal .sale-invoice-meta{background:#fff!important;color:#17212b!important}
+#inventory .sale-invoice-modal .sale-invoice-form label{color:#263445!important}
+#inventory .sale-invoice-modal .sale-invoice-form input,
+#inventory .sale-invoice-modal .sale-invoice-form select,
+#inventory .sale-invoice-modal .sale-lines input,
+#inventory .sale-invoice-modal .sale-lines select{
+ background:#fff!important;color:#17212b!important;border:1px solid #cbd5e1!important;
+}
+#inventory .sale-invoice-modal .sale-lines-wrap{background:#fff!important;border-color:#cbd5e1!important}
+#inventory .sale-invoice-modal .sale-lines th{background:#eef2f7!important;color:#17212b!important}
+#inventory .sale-invoice-modal .sale-lines td{background:#fff!important;color:#17212b!important;border-color:#d8dee8!important}
+#inventory .sale-invoice-modal .sale-invoice-total{background:#fff!important;color:#17212b!important;border:1px solid #cbd5e1!important}
+</style>
 </head>
 <body>
 <header><div class="wrap header-row"><div><div class="brand-line"><h1>حساباتي</h1><button id="themeToggle" class="theme-toggle" type="button" aria-label="تفعيل الوضع الليلي" title="تفعيل الوضع الليلي">☀️</button></div><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><div class="header-actions"><button class="menu-trigger" id="menuTrigger" type="button" aria-label="القائمة" aria-expanded="false">⋮</button><button class="secondary" id="languageToggle" type="button" aria-label="تغيير لغة التطبيق">EN</button><button class="secondary" id="lockNow" type="button" aria-label="قفل التطبيق" title="قفل التطبيق"><span class="lock-close-icon" aria-hidden="true"></span></button><div class="app-menu" id="appMenu" hidden><button type="button" data-menu-action="backup"><span class="menu-item-icon" aria-hidden="true">💾</span><span>حفظ نسخة احتياطية</span></button><button type="button" data-menu-action="restore"><span class="menu-item-icon" aria-hidden="true">📥</span><span>استعادة نسخة احتياطي</span></button><button type="button" data-menu-action="charts"><span class="menu-item-icon" aria-hidden="true">📈</span><span>الرسوم البيانية</span></button><button type="button" data-menu-action="productsFile"><span class="menu-item-icon" aria-hidden="true">📦</span><span>ملف الأصناف</span></button><button type="button" data-menu-action="stockFile"><span class="menu-item-icon" aria-hidden="true">📋</span><span>ملف المخزون</span></button><button type="button" data-menu-action="labels"><span class="menu-item-icon" aria-hidden="true">✏️</span><span>تعديل أسماء الأيقونات</span></button><button type="button" data-menu-action="generalReport"><span class="menu-item-icon" aria-hidden="true">📊</span><span>تقرير عام مفصل</span></button><button type="button" data-menu-action="monthlyReport"><span class="menu-item-icon" aria-hidden="true">📅</span><span>التقرير الشهري</span></button><button type="button" data-menu-action="settings"><span class="menu-item-icon" aria-hidden="true">⚙️</span><span>إعدادات التطبيق</span></button><button type="button" data-menu-action="about"><span class="menu-item-icon" aria-hidden="true">ℹ️</span><span>نبذة عنّا</span></button><button type="button" data-menu-action="updateApp"><span class="menu-item-icon" aria-hidden="true">🔄</span><span>تحديث التطبيق</span></button><button type="button" data-menu-action="tutorial"><span class="menu-item-icon" aria-hidden="true">▶️</span><span>شرح التطبيق</span></button><button type="button" data-menu-action="share"><span class="menu-item-icon" aria-hidden="true">📤</span><span>مشاركة التطبيق</span></button><button type="button" data-menu-action="rate"><span class="menu-item-icon" aria-hidden="true">⭐</span><span>تقييم التطبيق</span></button><button type="button" data-menu-action="feedback"><span class="menu-item-icon" aria-hidden="true">✉️</span><span>إرسال ملاحظات أو الإبلاغ عن مشكلة</span></button></div></div></div></header>
@@ -1710,36 +1733,7 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
   const rows=Array.from({length:10},(_,i)=>{const x=items[i];return '<tr><td>'+(i+1)+'</td><td>'+(x?safe(x.product.name):'')+'</td><td>'+(x?fmt(x.qty):'')+'</td><td>'+(x?fmt(x.price)+' SDG':'')+'</td><td>'+(x?fmt(x.value)+' SDG':'')+'</td></tr>';}).join('');
   const html='<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>فاتورة أبو التيمان فون</title><style>'+
    '@page{size:A4 portrait;margin:14mm}*{box-sizing:border-box}body{font-family:Tahoma,Arial,sans-serif;color:#17212b;margin:0;font-size:13px}.paper{width:100%;min-height:270mm}.head{display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #176fe0;padding-bottom:13px}.brand{font-size:27px;font-weight:900;color:#176fe0}.meta{text-align:left;line-height:1.9}.title{text-align:center;font-size:22px;font-weight:800;margin:18px 0}.details{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}.details div{border:1px solid #ccc;padding:10px}.items{width:100%;border-collapse:collapse;margin-top:12px}.items th,.items td{border:1px solid #888;padding:9px 7px;text-align:center;height:34px}.items th{background:#edf2f8}.total{margin:18px 0 0 auto;width:48%;border:2px solid #176fe0;padding:12px;font-size:17px;font-weight:bold;display:flex;justify-content:space-between}.foot{display:flex;justify-content:flex-end;margin-top:65px}.sign{width:42%;border-top:1px solid #555;padding-top:10px;text-align:center;font-weight:bold}.note{margin-top:24px;text-align:center;color:#555}'+
-   '</style></head><body><main class="paper"><header class="head"><div><div class="brand">أبو التيمان فون</div><div>لبيع الهواتف ومستلزماتها</div></div><div class="meta"><div>التاريخ: '+safe(d.date)+'</div><div>رقم الفاتورة: '+safe(invoiceNo)+'</div></div></header><div class="title">فاتورة بيع</div><section class="details"><div><b>اسم العميل:</b> '+safe(d.customer||'عميل نقدي')+'</div><div><b>طريقة الدفع:</b> '+safe(d.payment)+'</div></section><table class="items"><thead><tr><th>م</th><th>الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody>'+rows+'</tbody></table><div class="total"><span>الإجمالي الكلي</span><span>'+fmt(total)+' SDG</span></div><div class="foot"><div class="sign">توقيع محمد عمر محمد اسحق</div></div><div class="note">شكراً لتعاملكم معنا</div></main>
-
-
-
-<style id="sale-invoice-white-background-v1">
-/* خلفية فاتورة البيع بيضاء وواضحة */
-#inventory .sale-invoice-modal{
- background:#fff!important;
- color:#17212b!important;
- border:1px solid #d7dee7!important;
-}
-#inventory .sale-invoice-modal .sale-invoice-head strong{color:#173b35!important}
-#inventory .sale-invoice-modal .sale-invoice-head small{color:#657080!important}
-#inventory .sale-invoice-modal .sale-invoice-form,
-#inventory .sale-invoice-modal .sale-invoice-meta{background:#fff!important;color:#17212b!important}
-#inventory .sale-invoice-modal .sale-invoice-form label{color:#263445!important}
-#inventory .sale-invoice-modal .sale-invoice-form input,
-#inventory .sale-invoice-modal .sale-invoice-form select,
-#inventory .sale-invoice-modal .sale-lines input,
-#inventory .sale-invoice-modal .sale-lines select{
- background:#fff!important;color:#17212b!important;border:1px solid #cbd5e1!important;
-}
-#inventory .sale-invoice-modal .sale-lines-wrap{background:#fff!important;border-color:#cbd5e1!important}
-#inventory .sale-invoice-modal .sale-lines th{background:#eef2f7!important;color:#17212b!important}
-#inventory .sale-invoice-modal .sale-lines td{background:#fff!important;color:#17212b!important;border-color:#d8dee8!important}
-#inventory .sale-invoice-modal .sale-invoice-total{background:#fff!important;color:#17212b!important;border:1px solid #cbd5e1!important}
-</style>
-
-
-</body></html>';
+   '</style></head><body><main class="paper"><header class="head"><div><div class="brand">أبو التيمان فون</div><div>لبيع الهواتف ومستلزماتها</div></div><div class="meta"><div>التاريخ: '+safe(d.date)+'</div><div>رقم الفاتورة: '+safe(invoiceNo)+'</div></div></header><div class="title">فاتورة بيع</div><section class="details"><div><b>اسم العميل:</b> '+safe(d.customer||'عميل نقدي')+'</div><div><b>طريقة الدفع:</b> '+safe(d.payment)+'</div></section><table class="items"><thead><tr><th>م</th><th>الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody>'+rows+'</tbody></table><div class="total"><span>الإجمالي الكلي</span><span>'+fmt(total)+' SDG</span></div><div class="foot"><div class="sign">توقيع محمد عمر محمد اسحق</div></div><div class="note">شكراً لتعاملكم معنا</div></main></body></html>';
   w.document.open();w.document.write(html);w.document.close();
   setTimeout(()=>{try{w.focus();w.print();}catch(e){}},350);
  }
