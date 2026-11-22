@@ -2094,6 +2094,50 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
 }
 </style>
 
+
+<style id="bankak-home-circle-centered-v2">
+/* تثبيت كلمة بنكك في مركز الدائرة الحمراء داخل أيقونة الرئيسية */
+#home #bankProfitLaunch .home-icon-symbol{
+  position:relative!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  overflow:visible!important;
+}
+#home #bankProfitLaunch .home-icon-symbol:before{
+  content:""!important;
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  width:62px!important;
+  height:62px!important;
+  transform:translate(-50%,-50%)!important;
+  border-radius:50%!important;
+  background:#e71920!important;
+}
+#home #bankProfitLaunch .home-icon-symbol:after{
+  content:"بنكك"!important;
+  position:relative!important;
+  z-index:2!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:100%!important;
+  height:100%!important;
+  color:#fff!important;
+  font-size:18px!important;
+  font-weight:900!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+  text-align:center!important;
+}
+#home #bankProfitLaunch .home-icon-label{display:none!important}
+@media(max-width:380px){
+  #home #bankProfitLaunch .home-icon-symbol:before{width:56px!important;height:56px!important}
+  #home #bankProfitLaunch .home-icon-symbol:after{font-size:17px!important}
+}
+</style>
+
 </body></html>';
   w.document.open();w.document.write(html);w.document.close();
   setTimeout(()=>{try{w.focus();w.print();}catch(e){}},350);
