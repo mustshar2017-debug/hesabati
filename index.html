@@ -1799,6 +1799,66 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
 #inventory .sale-invoice-modal .sale-lines td{background:#fff!important;color:#17212b!important;border-color:#d8dee8!important}
 #inventory .sale-invoice-modal .sale-invoice-total{background:#fff!important;color:#17212b!important;border:1px solid #cbd5e1!important}
 </style>
+
+<script id="inbound-submit-safety-v2">
+(function(){
+ if(window.__inboundSubmitSafetyV2)return;
+ window.__inboundSubmitSafetyV2=true;
+ document.addEventListener('submit',function(event){
+  const form=event.target;
+  if(!form||form.id!=='stockInForm')return;
+  event.preventDefault();
+  event.stopPropagation();
+  event.stopImmediatePropagation();
+  try{
+   const key='hisabati_inventory_v1';
+   const data=JSON.parse(localStorage.getItem(key)||'{}');
+   if(!Array.isArray(data.products))data.products=[];
+   if(!Array.isArray(data.moves))data.moves=[];
+   const rows=Array.from(form.querySelectorAll('.inbound-line'));
+   const invoiceNo=String(form.elements.invoiceNo.value||'').trim();
+   const supplier=String(form.elements.supplier.value||'').trim();
+   const payment=form.elements.purchasePayment.value;
+   const date=form.elements.date.value;
+   const note=String(form.elements.note.value||'').trim();
+   if(!rows.length||!invoiceNo||!date){alert('أكمل رقم الفاتورة والتاريخ وأضف صنفاً واحداً على الأقل.');return;}
+   const items=rows.map(function(row){
+    return {product:String(row.querySelector('[name="product[]"]').value||''),qty:Number(row.querySelector('[name="qty[]"]').value),cost:Number(row.querySelector('[name="cost[]"]').value)};
+   });
+   if(items.some(function(item){return !data.products.some(function(p){return String(p.id)===item.product;})||!Number.isFinite(item.qty)||item.qty<1||!Number.isFinite(item.cost)||item.cost<0;})){
+    alert('يرجى مراجعة الصنف والكمية وسعر الشراء في جميع الصفوف.');return;
+   }
+   items.forEach(function(item){
+    const product=data.products.find(function(p){return String(p.id)===item.product;});
+    const oldQty=Number(product.qty)||0,oldBuy=Number(product.buy)||0;
+    const batchValue=item.qty*item.cost;
+    product.buy=Number(((oldQty*oldBuy+batchValue)/(oldQty+item.qty)).toFixed(2));
+    product.qty=oldQty+item.qty;
+    data.moves.push({type:'وارد',product:product.id,qty:item.qty,value:batchValue,unitCost:item.cost,invoiceNo:invoiceNo,date:date,supplier:supplier,payment:payment,note:note});
+   });
+   localStorage.setItem(key,JSON.stringify(data));
+   if(typeof window.hisabatiRefreshInventory==='function')window.hisabatiRefreshInventory();
+   form.reset();
+   const tbody=document.getElementById('inboundInvoiceRows');
+   if(tbody){
+    const first=tbody.querySelector('.inbound-line');
+    if(first){
+     const clean=first.cloneNode(true);
+     clean.querySelectorAll('select,input').forEach(function(el){if(el.tagName==='SELECT')el.selectedIndex=0;else el.value=el.name==='qty[]'?'1':'';});
+     tbody.innerHTML='';tbody.appendChild(clean);
+    }
+   }
+   if(form.elements.date){const d=new Date();form.elements.date.value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+   const total=document.getElementById('inboundGrandTotal');if(total)total.textContent='0';
+   document.querySelectorAll('#stockInForm .inbound-line-total').forEach(function(el){el.textContent='0';});
+   alert('تم حفظ سند الوارد بنجاح وإضافة الكميات إلى المخزون.');
+  }catch(error){
+   console.error('Inbound save failed:',error);
+   alert('تعذر حفظ سند الوارد. لم يتم إغلاق التطبيق؛ راجع مساحة التخزين وحاول مرة أخرى.');
+  }
+ },true);
+})();
+</script>
 </body></html>';
   w.document.open();w.document.write(html);w.document.close();
   setTimeout(()=>{try{w.focus();w.print();}catch(e){}},350);
