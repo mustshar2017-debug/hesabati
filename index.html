@@ -2390,10 +2390,10 @@ body.dark .supplier-balance-line{background:#203a33;color:#b9f1df}body.dark .sup
 <script id="stock-barcode-scanner">
 (function(){
 const $=id=>document.getElementById(id);
-let stream=null,active=false,raf=0,detector=null,htmlScanner=null,zxingControls=null,nativeFallbackTimer=null,zbarRaf=0,zbarBusy=false,scannerMode='';
+let stream=null,active=false,raf=0,detector=null,htmlScanner=null,zxingControls=null,nativeFallbackTimer=null,zbarNoReadTimer=null,zbarRaf=0,zbarBusy=false,scannerMode='';
 const formats=['qr_code','ean_13','ean_8','code_128','code_39','upc_a','upc_e','itf','codabar'];
 function message(t){const n=$('stockBarcodeResult');if(n)n.textContent=t;}
-function stopNative(){active=false;if(zbarRaf)cancelAnimationFrame(zbarRaf);zbarRaf=0;zbarBusy=false;if(nativeFallbackTimer){clearTimeout(nativeFallbackTimer);nativeFallbackTimer=null;}if(raf)cancelAnimationFrame(raf);raf=0;if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}const v=$('stockBarcodeVideo');if(v){v.pause();v.srcObject=null;}}
+function stopNative(){if(zbarNoReadTimer){clearTimeout(zbarNoReadTimer);zbarNoReadTimer=null;}active=false;if(zbarRaf)cancelAnimationFrame(zbarRaf);zbarRaf=0;zbarBusy=false;if(nativeFallbackTimer){clearTimeout(nativeFallbackTimer);nativeFallbackTimer=null;}if(raf)cancelAnimationFrame(raf);raf=0;if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}const v=$('stockBarcodeVideo');if(v){v.pause();v.srcObject=null;}}
 async function stop(){
  stopNative();
  if(zxingControls){try{zxingControls.stop();}catch(e){}zxingControls=null;}
@@ -2518,6 +2518,16 @@ async function startZbarDirect(){
  await improveCameraImage(video);
  await startZbarVideo(video);
  message('قارئ ZBar يعمل مباشرةً؛ وجّه الباركود داخل الإطار الأخضر وسيواصل القراءة دون تبديل المحرك.');
+ // لا تترك الكاميرا عالقة إذا لم يلتقط ZBar الرمز؛ انتقل تلقائياً إلى القارئ الاحتياطي.
+ if(zbarNoReadTimer)clearTimeout(zbarNoReadTimer);
+ zbarNoReadTimer=setTimeout(async()=>{
+  zbarNoReadTimer=null;
+  if(scannerMode!=='zbar')return;
+  message('لم يلتقط ZBar الرمز بعد؛ جارٍ تشغيل القارئ الاحتياطي تلقائياً...');
+  await stop();
+  try{await startFallback();}
+  catch(e){await stop();message('تعذرت القراءة التلقائية. أعد المحاولة مع تقريب الباركود وتحسين الإضاءة، أو أدخل الرقم يدوياً.');}
+ },10000);
 }
 async function startZxing(){
  message('جارٍ تشغيل قارئ باركود بديل...');
