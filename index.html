@@ -753,9 +753,10 @@ body:not(.dark) .app-menu,body:not(.dark) .app-menu button,body:not(.dark) .app-
 #remainingProductsModal .remaining-products-paper small{color:#526765!important}
 #remainingProductsModal .remaining-products-paper>div:first-child{padding:0 0 8px!important;flex:0 0 auto!important}
 #remainingProductsModal .remaining-products-paper>div:last-child{padding:6px 0 0!important;flex:0 0 auto!important}
-#remainingProductsModal .remaining-products-table-wrap{flex:1 1 auto!important;min-height:0!important;overflow:clip!important;padding:2px 0!important}
-#remainingProductsModal .remaining-products-table{width:100%!important;height:100%!important;border-collapse:collapse!important;table-layout:fixed!important;text-align:center!important;color:#172326!important}
-#remainingProductsModal .remaining-products-table th,#remainingProductsModal .remaining-products-table td{box-sizing:border-box;background:#fff!important;color:#172326!important;border:1px solid #cbd7d2!important;padding:var(--rp-cell-pad,6px 4px)!important;font-size:var(--rp-font,11px)!important;line-height:1.2!important;overflow-wrap:anywhere!important;white-space:normal!important}
+#remainingProductsModal .remaining-products-table-wrap{flex:0 0 auto!important;min-height:0!important;overflow:visible!important;padding:2px 0!important}
+#remainingProductsModal .remaining-products-table{width:100%!important;height:auto!important;border-collapse:collapse!important;table-layout:fixed!important;text-align:center!important;color:#172326!important}
+#remainingProductsModal .remaining-products-table tbody tr{height:auto!important}
+#remainingProductsModal .remaining-products-table th,#remainingProductsModal .remaining-products-table td{box-sizing:border-box;height:auto!important;background:#fff!important;color:#172326!important;border:1px solid #cbd7d2!important;padding:4px 3px!important;font-size:var(--rp-font,11px)!important;line-height:1.1!important;overflow-wrap:anywhere!important;white-space:normal!important}
 #remainingProductsModal .remaining-products-table th{background:#eaf2ef!important;color:#173b37!important;font-weight:900!important}
 #remainingProductsModal .remaining-products-table td:nth-child(3){background:#fff!important;color:#172326!important}
 #remainingProductsModal .remaining-products-table th:nth-child(1){width:40%!important}
@@ -763,7 +764,7 @@ body:not(.dark) .app-menu,body:not(.dark) .app-menu button,body:not(.dark) .app-
 #remainingProductsModal .remaining-products-table th:nth-child(3){width:30%!important}
 @media(max-width:650px){
  #remainingProductsModal .remaining-products-paper{padding:8px 6px!important}
- #remainingProductsModal .remaining-products-table th,#remainingProductsModal .remaining-products-table td{font-size:var(--rp-mobile-font,9px)!important;padding:var(--rp-mobile-pad,4px 2px)!important;line-height:1.15!important}
+ #remainingProductsModal .remaining-products-table th,#remainingProductsModal .remaining-products-table td{font-size:var(--rp-mobile-font,9px)!important;padding:3px 2px!important;line-height:1.08!important}
 }
 @media print{#remainingProductsModal{position:static!important;inset:auto!important;overflow:visible!important}#remainingProductsModal .remaining-products-paper{width:100%!important;height:auto!important;max-height:none!important;min-height:0!important;overflow:visible!important;box-shadow:none!important;border:0!important}}
 </style>
