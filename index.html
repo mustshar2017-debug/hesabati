@@ -2051,7 +2051,35 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
   const total=items.reduce((a,x)=>a+Number(x.value||0),0),safe=esc;
   const rows=Array.from({length:10},(_,i)=>{const x=items[i];return '<tr><td>'+(i+1)+'</td><td>'+(x?safe(x.product.name):'')+'</td><td>'+(x?fmt(x.qty):'')+'</td><td>'+(x?fmt(x.price)+' SDG':'')+'</td><td>'+(x?fmt(x.value)+' SDG':'')+'</td></tr>';}).join('');
   const saleCss='@page{size:A4 portrait;margin:14mm}*{box-sizing:border-box}body{font-family:Tahoma,Arial,sans-serif;color:#17212b;margin:0;font-size:13px}.paper{width:100%;min-height:270mm}.head{display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #176fe0;padding-bottom:13px}.brand{font-size:27px;font-weight:900;color:#176fe0}.meta{text-align:left;line-height:1.9}.title{text-align:center;font-size:22px;font-weight:800;margin:18px 0}.details{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}.details div{border:1px solid #ccc;padding:10px}.items{width:100%;border-collapse:collapse;margin-top:12px}.items th,.items td{border:1px solid #888;padding:9px 7px;text-align:center;height:34px}.items th{background:#edf2f8}.total{margin:18px 0 0 auto;width:48%;border:2px solid #176fe0;padding:12px;font-size:17px;font-weight:bold;display:flex;justify-content:space-between}.foot{display:flex;justify-content:flex-end;margin-top:65px}.sign{width:42%;border-top:1px solid #555;padding-top:10px;text-align:center;font-weight:bold}.note{margin-top:24px;text-align:center;color:#555}';
-  const html='<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>فاتورة أبو التيمان فون</title><style>'+saleCss+'</style></head><body><main class="paper"><header class="head"><div><div class="brand">أبو التيمان فون</div><div>لبيع الهواتف ومستلزماتها</div></div><div class="meta"><div>التاريخ: '+safe(d.date)+'</div><div>رقم الفاتورة: '+safe(invoiceNo)+'</div></div></header><div class="title">فاتورة بيع</div><section class="details"><div><b>اسم العميل:</b> '+safe(d.customer||'عميل نقدي')+'</div><div><b>طريقة الدفع:</b> '+safe(d.payment)+'</div></section><table class="items"><thead><tr><th>م</th><th>الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody>'+rows+'</tbody></table><div class="total"><span>الإجمالي الكلي</span><span>'+fmt(total)+' SDG</span></div><div class="foot"><div class="sign">توقيع محمد عمر محمد اسحق</div></div><div class="note">شكراً لتعاملكم معنا</div></main><script>window.onload=()=>{window.focus();window.print();};<\\/script></body></html>';
+  const html='<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>فاتورة أبو التيمان فون</title><style>'+saleCss+'</style></head><body><main class="paper"><header class="head"><div><div class="brand">أبو التيمان فون</div><div>لبيع الهواتف ومستلزماتها</div></div><div class="meta"><div>التاريخ: '+safe(d.date)+'</div><div>رقم الفاتورة: '+safe(invoiceNo)+'</div></div></header><div class="title">فاتورة بيع</div><section class="details"><div><b>اسم العميل:</b> '+safe(d.customer||'عميل نقدي')+'</div><div><b>طريقة الدفع:</b> '+safe(d.payment)+'</div></section><table class="items"><thead><tr><th>م</th><th>الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody>'+rows+'</tbody></table><div class="total"><span>الإجمالي الكلي</span><span>'+fmt(total)+' SDG</span></div><div class="foot"><div class="sign">توقيع محمد عمر محمد اسحق</div></div><div class="note">شكراً لتعاملكم معنا</div></main><script>window.onload=()=>{window.focus();window.print();};<\\/script>
+<style id="bankak-network-icons-size-v1">
+/* تكبير دائرة بنكك قليلاً لتحتوي الكلمة بوضوح، وتوضيح رمز شبكة حساباتي */
+#home #bankProfitLaunch .home-icon-symbol:before{
+  width:56px!important;
+  height:56px!important;
+}
+#home #bankProfitLaunch .home-icon-symbol:after{
+  font-size:19px!important;
+}
+#home #hesabatiNetworkLaunch .home-icon-symbol{
+  font-size:36px!important;
+  line-height:1.15!important;
+}
+@media(max-width:380px){
+  #home #bankProfitLaunch .home-icon-symbol:before{
+    width:52px!important;
+    height:52px!important;
+  }
+  #home #bankProfitLaunch .home-icon-symbol:after{
+    font-size:18px!important;
+  }
+  #home #hesabatiNetworkLaunch .home-icon-symbol{
+    font-size:34px!important;
+  }
+}
+</style>
+
+</body></html>';
   w.document.open();w.document.write(html);w.document.close();
   setTimeout(()=>{try{w.focus();w.print();}catch(e){}},350);
  }
