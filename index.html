@@ -1498,7 +1498,7 @@ body.dark .profit-toggle{color:var(--ink)}
 </script>
 
 <style id="partnership-style">
-#partnership .quick-link{min-height:82px}#partnerAccountCard{margin-bottom:18px}#partnerAccountCard form{margin:12px 0}.partnership-breakdown{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}.partnership-breakdown .card{padding:12px}#partnerSettingsRows{display:grid;gap:9px;margin:12px 0}.partner-setting-row{display:grid;grid-template-columns:minmax(0,1fr) 105px 42px;gap:8px;align-items:center}.partner-setting-row input{min-width:0;width:100%}.partner-setting-row button{padding:8px}@media(max-width:480px){#partnership .financial-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.partner-setting-row{grid-template-columns:minmax(0,1fr) 82px 38px}}
+#partnership .quick-link{min-height:82px}#partnerAccountCard{margin-bottom:18px}#partnerAccountCard form{margin:12px 0}.partnership-breakdown{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}.partnership-breakdown .card{padding:12px}#partnerSettingsRows{display:grid;gap:9px;margin:12px 0}.partner-setting-row{display:grid;grid-template-columns:minmax(0,1fr) 105px 42px;gap:8px;align-items:center}.partner-setting-row input{min-width:0;width:100%;position:relative;z-index:1;pointer-events:auto;touch-action:manipulation}.partner-setting-row input[aria-label="نسبة الشريك"]{direction:ltr;text-align:center;cursor:text}.partner-setting-row button{padding:8px}@media(max-width:480px){#partnership .financial-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.partner-setting-row{grid-template-columns:minmax(0,1fr) 82px 38px}}
 </style>
 <script id="partnership-module">
 (function(){
@@ -1569,7 +1569,7 @@ body.dark .profit-toggle{color:var(--ink)}
   $('partnerAllocationRows').querySelectorAll('[data-edit-adjustment]').forEach(b=>b.addEventListener('click',()=>openAdjustment(b.dataset.editAdjustment)));
  }
  function renderSettings(){
-  $('partnerSettingsRows').innerHTML=state.partners.map(p=>'<div class="partner-setting-row" data-row-id="'+escapeHtml(p.id)+'"><input type="text" maxlength="60" value="'+escapeHtml(p.name)+'" placeholder="مثال: أحمد محمد" aria-label="اسم الشريك"><input type="number" min="0" max="100" step="0.01" value="'+fmt(p.percent)+'" aria-label="نسبة الشريك" placeholder="النسبة %"><button type="button" class="secondary" data-remove-partner="'+escapeHtml(p.id)+'" title="حذف الشريك">✕</button></div>').join('');
+  $('partnerSettingsRows').innerHTML=state.partners.map(p=>'<div class="partner-setting-row" data-row-id="'+escapeHtml(p.id)+'"><input type="text" maxlength="60" value="'+escapeHtml(p.name)+'" placeholder="مثال: أحمد محمد" aria-label="اسم الشريك"><input type="text" inputmode="decimal" autocomplete="off" dir="ltr" value="'+fmt(p.percent)+'" aria-label="نسبة الشريك" placeholder="النسبة %"><button type="button" class="secondary" data-remove-partner="'+escapeHtml(p.id)+'" title="حذف الشريك">✕</button></div>').join('');
   updatePercentTotal();
   $('partnerSettingsRows').querySelectorAll('[data-remove-partner]').forEach(btn=>btn.addEventListener('click',()=>{
    const id=btn.dataset.removePartner;
