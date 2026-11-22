@@ -2463,8 +2463,8 @@ function showCode(code){
  const detailsModal=$('stockBarcodeDetailsModal');
  if(product){
   if(addModal){addModal.classList.remove('open');addModal.setAttribute('aria-hidden','true');}
-  if(detailsModal){detailsModal.classList.remove('open');detailsModal.setAttribute('aria-hidden','true');}
   result(product,scannedCode);
+  openBarcodeDetails(product,scannedCode);
   return;
  }
  result(null,scannedCode);
