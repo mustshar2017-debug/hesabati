@@ -2174,39 +2174,6 @@ button:not(.primary):not(.active):not(.danger){color:inherit}
 body.printing *{background:#fff!important;color:#111!important}
 </style>
 
-<style id="remaining-products-close-fix">
-#remainingProductsModal #closeRemainingProducts{position:relative!important;z-index:100!important;pointer-events:auto!important;touch-action:manipulation!important;cursor:pointer!important}
-#remainingProductsModal .remaining-products-head,#remainingProductsModal .remaining-products-actions{position:relative!important;z-index:2!important}
-</style>
-<script id="remaining-products-close-handler">
-(function(){
- function closeRemainingProductsCard(){
-  const modal=document.getElementById('remainingProductsModal');
-  if(!modal)return;
-  modal.style.display='none';
-  const view=modal.closest('.inventory-view');
-  if(view)view.classList.remove('active','voucher-modal-open','inbound-modal-open','sale-invoice-modal-open');
-  const menu=document.getElementById('inventorySectionMenu');
-  if(menu)menu.style.display='grid';
-  window.scrollTo({top:0,behavior:'smooth'});
- }
- document.addEventListener('click',function(event){
-  const target=event.target;
-  if(!target||!target.closest)return;
-  if(target.closest('#closeRemainingProducts')){
-   event.preventDefault();
-   event.stopPropagation();
-   closeRemainingProductsCard();
-  }
- },true);
- document.addEventListener('keydown',function(event){
-  if(event.key==='Escape'){
-   const modal=document.getElementById('remainingProductsModal');
-   if(modal&&modal.style.display!=='none')closeRemainingProductsCard();
-  }
- });
-})();
-</script>
 </body></html>';
   w.document.open();w.document.write(html);w.document.close();
   setTimeout(()=>{try{w.focus();w.print();}catch(e){}},350);
@@ -4600,6 +4567,33 @@ body.dark #menuInventorySheet article{background:#fff!important;color:#18231f!im
   if(navigator.share){try{await navigator.share({title:'مراجعة الحركات',text:message});return;}catch(e){if(e&&e.name==='AbortError')return;}}
   try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(message);alert('تم نسخ كشف مراجعة الحركات للمشاركة.');return;}}catch(e){}
   window.prompt('انسخ كشف مراجعة الحركات للمشاركة:',message);
+ });
+})();
+</script>
+
+<style id="remaining-products-close-fix-v2">
+#remainingProductsModal #closeRemainingProducts{position:relative!important;z-index:100!important;pointer-events:auto!important;touch-action:manipulation!important;cursor:pointer!important}
+</style>
+<script id="remaining-products-close-handler-v2">
+(function(){
+ function closeCard(){
+  const modal=document.getElementById('remainingProductsModal');
+  if(!modal)return;
+  modal.style.display='none';
+  const view=modal.closest('.inventory-view');
+  if(view)view.classList.remove('active','voucher-modal-open','inbound-modal-open','sale-invoice-modal-open');
+  const menu=document.getElementById('inventorySectionMenu');
+  if(menu)menu.style.display='grid';
+  window.scrollTo({top:0,behavior:'smooth'});
+ }
+ document.addEventListener('click',function(e){
+  const button=e.target&&e.target.closest&&e.target.closest('#closeRemainingProducts');
+  if(!button)return;
+  e.preventDefault();e.stopPropagation();closeCard();
+ },true);
+ document.addEventListener('keydown',function(e){
+  const modal=document.getElementById('remainingProductsModal');
+  if(e.key==='Escape'&&modal&&modal.style.display!=='none')closeCard();
  });
 })();
 </script>
