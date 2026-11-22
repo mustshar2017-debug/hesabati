@@ -2409,9 +2409,9 @@ function showCode(code){
  stop().catch(()=>{});
  let db={};try{db=JSON.parse(localStorage.getItem('hisabati_inventory_v1')||'{}')}catch(e){}
  if(!Array.isArray(db.products))db.products=[];
- const normalizeCode=value=>{let v=String(value??'').normalize('NFKC').replace(/[\\u200B-\\u200D\\uFEFF\\s]/g,'').trim();v=v.replace(/[٠-٩]/g,d=>String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))).replace(/[۰-۹]/g,d=>String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)));return v;};
+ const normalizeCode=value=>{let v=String(value??'').normalize('NFKC').trim().split('').filter(ch=>![8203,8204,8205,65279].includes(ch.charCodeAt(0))).join('');v=v.replace(/[٠-٩]/g,d=>String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))).replace(/[۰-۹]/g,d=>String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)));return v;};
  const wanted=normalizeCode(code);
- const product=db.products.find(p=>{const saved=normalizeCode(p.barcode);return saved===wanted||(saved&&wanted&&/^\\d+$/.test(saved)&&/^\\d+$/.test(wanted)&&saved.replace(/^0+(?=\\d)/,'')===wanted.replace(/^0+(?=\\d)/,''));});
+ const product=db.products.find(p=>{const saved=normalizeCode(p.barcode);return saved===wanted||(saved&&wanted&&/^[0-9]+$/.test(saved)&&/^[0-9]+$/.test(wanted)&&saved.replace(/^0+(?=[0-9])/,'')===wanted.replace(/^0+(?=[0-9])/,'));});
  if(product){$('stockBarcodeAddModal')?.classList.remove('open');result(product,code);return;}
  result(null,code);
  const addModal=$('stockBarcodeAddModal');
@@ -2628,7 +2628,7 @@ document.addEventListener('click',e=>{
 });
 $('stockBarcodeAddSave')?.addEventListener('click',()=>{
  const name=String($('stockBarcodeNewName')?.value||'').trim();
- const code=String($('stockBarcodeNewCode')?.value||'').normalize('NFKC').replace(/[\\u200B-\\u200D\\uFEFF]/g,'').trim().replace(/[٠-٩]/g,d=>String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))).replace(/[۰-۹]/g,d=>String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)));
+ const code=String($('stockBarcodeNewCode')?.value||'').normalize('NFKC').trim().split('').filter(ch=>![8203,8204,8205,65279].includes(ch.charCodeAt(0))).join('').replace(/[٠-٩]/g,d=>String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))).replace(/[۰-۹]/g,d=>String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)));
  const country=String($('stockBarcodeNewCountry')?.value||'').trim();
  if(!name){alert('اكتب اسم الصنف أولاً.');$('stockBarcodeNewName')?.focus();return;}
  if(!code){alert('رقم الباركود غير موجود؛ أعد المسح.');return;}
