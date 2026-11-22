@@ -2755,18 +2755,26 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden&&$('stockBa
   const store=(()=>{try{return JSON.parse(localStorage.getItem('hisabati_inventory_v1')||'{}')}catch(e){return {}}})();
   const products=Array.isArray(store.products)?store.products:[];
   const all=Array.isArray(store.moves)?store.moves:[];
-  const rows=all.filter(x=>x.type==='وارد'&&(!from||String(x.date||'')>=from)&&(!to||String(x.date||'')<=to)).sort((a,b)=>String(a.date||'').localeCompare(String(b.date||'')));
-  const total=rows.reduce((sum,x)=>sum+num(x.value),0);
+  // استيعاب اختلافات التسمية في سجلات الوارد القديمة دون إدخال فواتير البيع.
+  const isInbound=x=>{
+   const type=String(x.type||x.kind||x.operation||'').trim().replace(/\\s+/g,' ');
+   return type==='وارد'||type.includes('وارد')||type==='شراء'||type.includes('شراء')||/^inbound$/i.test(type)||/^purchase$/i.test(type);
+  };
+  const rows=all.filter(x=>isInbound(x)&&(!from||String(x.date||'')>=from)&&(!to||String(x.date||'')<=to)).sort((a,b)=>String(a.date||'').localeCompare(String(b.date||'')));
+  const total=rows.reduce((sum,x)=>sum+num(x.value??x.total??(num(x.qty)*num(x.unitCost??x.cost))),0);
   $('inboundReportCount').textContent=fmt(rows.length);
   $('inboundReportTotal').textContent=fmt(total)+' SDG';
   $('inboundReportGrand').textContent=fmt(total)+' SDG';
   const period=$('inboundReportPeriod');
   if(period)period.textContent='الفترة: '+(from||'من البداية')+' إلى '+(to||'حتى اليوم');
   $('inboundReportRows').innerHTML=rows.length?rows.map((x,i)=>{
-   const p=products.find(p=>p.id===x.product);
-   const unit=x.unitCost!==undefined?num(x.unitCost):(num(x.qty)?num(x.value)/num(x.qty):0);
-   return '<tr><td>'+(i+1)+'</td><td>'+esc(x.date)+'</td><td>'+esc(p?.name||'صنف غير موجود')+'</td><td>'+fmt(x.qty)+'</td><td>'+esc(x.invoiceNo||'—')+'</td><td>'+fmt(unit)+'</td><td>'+fmt(x.value)+'</td><td>'+esc(x.supplier||'—')+'</td></tr>';
-  }).join(''):'<tr><td colspan="8" class="empty">لا توجد أصناف واردة في الفترة المحددة.</td></tr>';
+   const productId=typeof x.product==='object'?(x.product.id||x.product.productId):x.product;
+   const p=products.find(p=>String(p.id)===String(productId));
+   const qty=num(x.qty??x.quantity);
+   const value=num(x.value??x.total??(qty*num(x.unitCost??x.cost)));
+   const unit=x.unitCost!==undefined?num(x.unitCost):(qty?value/qty:0);
+   return '<tr><td>'+(i+1)+'</td><td>'+esc(x.date)+'</td><td>'+esc(x.productName||x.itemName||(typeof x.product==='object'?x.product.name:'')||p?.name||'صنف غير موجود')+'</td><td>'+fmt(qty)+'</td><td>'+esc(x.invoiceNo||x.invoice||'—')+'</td><td>'+fmt(unit)+'</td><td>'+fmt(value)+'</td><td>'+esc(x.supplier||x.vendor||'—')+'</td></tr>';
+  }).join(''):'<tr><td colspan="8" class="empty">لا توجد أصناف واردة في الفترة المحددة. تأكد من تسجيل سند الوارد وحفظه.</td></tr>';
  }
  window.renderInboundPurchasesReport=render;
  document.addEventListener('click',function(e){
