@@ -1775,6 +1775,30 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
    '</style></head><body><main class="paper"><header class="head"><div><div class="brand">أبو التيمان فون</div><div>لبيع الهواتف ومستلزماتها</div></div><div class="meta"><div>التاريخ: '+safe(d.date)+'</div><div>رقم الفاتورة: '+safe(invoiceNo)+'</div></div></header><div class="title">فاتورة بيع</div><section class="details"><div><b>اسم العميل:</b> '+safe(d.customer||'عميل نقدي')+'</div><div><b>طريقة الدفع:</b> '+safe(d.payment)+'</div></section><table class="items"><thead><tr><th>م</th><th>الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody>'+rows+'</tbody></table><div class="total"><span>الإجمالي الكلي</span><span>'+fmt(total)+' SDG</span></div><div class="foot"><div class="sign">توقيع محمد عمر محمد اسحق</div></div><div class="note">شكراً لتعاملكم معنا</div></main>
 
 
+
+<style id="sale-invoice-white-background-v1">
+/* خلفية فاتورة البيع بيضاء وواضحة */
+#inventory .sale-invoice-modal{
+ background:#fff!important;
+ color:#17212b!important;
+ border:1px solid #d7dee7!important;
+}
+#inventory .sale-invoice-modal .sale-invoice-head strong{color:#173b35!important}
+#inventory .sale-invoice-modal .sale-invoice-head small{color:#657080!important}
+#inventory .sale-invoice-modal .sale-invoice-form,
+#inventory .sale-invoice-modal .sale-invoice-meta{background:#fff!important;color:#17212b!important}
+#inventory .sale-invoice-modal .sale-invoice-form label{color:#263445!important}
+#inventory .sale-invoice-modal .sale-invoice-form input,
+#inventory .sale-invoice-modal .sale-invoice-form select,
+#inventory .sale-invoice-modal .sale-lines input,
+#inventory .sale-invoice-modal .sale-lines select{
+ background:#fff!important;color:#17212b!important;border:1px solid #cbd5e1!important;
+}
+#inventory .sale-invoice-modal .sale-lines-wrap{background:#fff!important;border-color:#cbd5e1!important}
+#inventory .sale-invoice-modal .sale-lines th{background:#eef2f7!important;color:#17212b!important}
+#inventory .sale-invoice-modal .sale-lines td{background:#fff!important;color:#17212b!important;border-color:#d8dee8!important}
+#inventory .sale-invoice-modal .sale-invoice-total{background:#fff!important;color:#17212b!important;border:1px solid #cbd5e1!important}
+</style>
 </body></html>';
   w.document.open();w.document.write(html);w.document.close();
   setTimeout(()=>{try{w.focus();w.print();}catch(e){}},350);
