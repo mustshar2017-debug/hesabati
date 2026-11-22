@@ -674,7 +674,7 @@ body:not(.dark) .app-menu,body:not(.dark) .app-menu button,body:not(.dark) .app-
 <button type="button" data-doc-panel="inventory" data-doc-target="invoiceForm">🧾 الفواتير</button>
 </div>
 <div class="category-launcher">
-<button type="button" data-tab-go="inventory"><span class="home-icon-symbol">📦</span><span class="home-icon-label">إدارة الطبلية</span></button>
+<button type="button" data-tab-go="inventory"><span class="home-icon-symbol">📦</span><span class="home-icon-label">إدارة المتجر</span></button>
 <button type="button" data-tab-go="balanceHub"><span class="home-icon-symbol">💰</span><span class="home-icon-label">إدارة الرصيد</span></button>
 <button type="button" data-tab-go="phonesHub"><span class="home-icon-symbol">📱</span><span class="home-icon-label">قسم الهواتف</span></button>
 <button type="button" id="assetsLaunch"><span class="home-icon-symbol">🏢</span><span class="home-icon-label">الأصول</span></button>
@@ -691,7 +691,7 @@ body:not(.dark) .app-menu,body:not(.dark) .app-menu button,body:not(.dark) .app-
  <h2 class="section-title">🏢 الأصول</h2>
  <div class="grid financial-grid">
   <button type="button" class="card kpi asset-choice" id="balanceCapitalOpen"><span class="kpi-icon">💰</span><small>رأس مال الرصيد</small><strong id="assetsBalanceCapital">0</strong><small>SDG · اضغط للعرض</small></button>
-  <button type="button" class="card kpi asset-choice" id="inventoryCapitalOpen"><span class="kpi-icon">📦</span><small>رأس مال الطبلية</small><strong id="assetsInventoryCapital">0</strong><small>SDG · اضغط للعرض</small></button>
+  <button type="button" class="card kpi asset-choice" id="inventoryCapitalOpen"><span class="kpi-icon">📦</span><small>رأس مال المتجر</small><strong id="assetsInventoryCapital">0</strong><small>SDG · اضغط للعرض</small></button>
  </div>
  <div class="card" id="assetCapitalDetails" style="margin-top:12px" hidden><h3 id="assetCapitalTitle">تفاصيل رأس المال</h3><div class="reportline"><span>القيمة الحالية</span><strong id="assetCapitalValue">0 SDG</strong></div><p class="muted" id="assetCapitalNote"></p></div>
 </section>
@@ -711,7 +711,7 @@ body:not(.dark) .app-menu,body:not(.dark) .app-menu button,body:not(.dark) .app-
 <div class="card kpi"><span class="kpi-icon">💰</span><small>الرصيد المتاح</small><strong id="balance">0</strong><small>SDG</small></div><div class="card kpi"><span class="kpi-icon">🏦</span><small>إجمالي رأس المال المضاف</small><strong id="totalCapital">0</strong><small>SDG</small></div>
 <button class="card kpi profit-toggle" id="profitToggle" type="button" aria-expanded="false" aria-controls="profitDetails"><span class="kpi-icon">📊</span><small>الأرباح</small><strong id="profitTotal">عرض التفاصيل</strong><small>اضغط لعرض الأرباح</small></button>
 </div>
-<div class="grid financial-grid profit-details" id="profitDetails" hidden><div class="card kpi"><span class="kpi-icon">📦</span><small>ربح مبيعات الطبلية</small><strong id="inventoryProfit">0</strong><small>SDG</small></div>
+<div class="grid financial-grid profit-details" id="profitDetails" hidden><div class="card kpi"><span class="kpi-icon">📦</span><small>ربح مبيعات المتجر</small><strong id="inventoryProfit">0</strong><small>SDG</small></div>
 <div class="card kpi"><span class="kpi-icon">📈</span><small>ربح الرصيد</small><strong id="creditProfit">0</strong><small>SDG</small></div>
 <div class="card kpi"><span class="kpi-icon">📱</span><small>ربح الشحن</small><strong id="rechargeProfit">0</strong><small>SDG</small></div>
 <div class="card kpi"><span class="kpi-icon">🤝</span><small>ربح خدمات الزبائن</small><strong id="serviceProfit">0</strong><small>SDG</small></div>
@@ -786,8 +786,8 @@ body:not(.dark) .app-menu,body:not(.dark) .app-menu button,body:not(.dark) .app-
 <section id="reports" class="panel">
 <h2 class="section-title">التقارير</h2><div class="card">
 <div class="card" id="generalReportCard" style="margin-bottom:12px"><h3>التقرير العام المفصل</h3><p class="muted">حدد فترة التقرير لعرض جميع الحركات والأرباح والمصروفات خلال المدة.</p><div class="report-filters"><div><label>من تاريخ</label><input type="date" id="reportFrom"></div><div><label>إلى تاريخ</label><input type="date" id="reportTo"></div></div><div class="actions"><button class="primary" type="button" id="runGeneralReport">عرض التقرير</button><button class="secondary" type="button" id="printGeneralReport">طباعة التقرير</button></div><div id="generalReportResults" hidden><div class="reportline"><span>إجمالي الرصيد الداخل</span><b id="gStock">0 SDG</b></div><div class="reportline"><span>إجمالي تحويلات الرصيد</span><b id="gTransfers">0 SDG</b></div><div class="reportline"><span>ربح تحويل الرصيد</span><b id="gCreditProfit">0 SDG</b></div><div class="reportline"><span>إجمالي شحن الهواتف</span><b id="gRecharge">0 SDG</b></div><div class="reportline"><span>ربح الشحن</span><b id="gRechargeProfit">0 SDG</b></div><div class="reportline"><span>ربح خدمات الزبائن</span><b id="gServiceProfit">0 SDG</b></div><div class="reportline"><span>المصروفات</span><b id="gExpenses">0 SDG</b></div><div class="reportline"><span><b>صافي الربح بعد المصروفات</b></span><b class="positive" id="gNet">0 SDG</b></div><h3>تفاصيل الحركات</h3><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>نوع الحركة</th><th>التفاصيل</th><th>القيمة</th><th>التكلفة</th><th>الربح/المصروف</th></tr></thead><tbody id="generalReportRows"></tbody></table></div></div></div>
-<div class="card" id="iconNamesCard" hidden style="margin-bottom:12px"><h3>تعديل أسماء أيقونات الواجهة الرئيسية</h3><p class="muted">غيّر أسماء الأيقونات الرئيسية مثل إدارة الطبلية وإدارة الرصيد وقسم الهواتف، وكذلك الاختصارات الداخلية، ثم احفظ.</p><form id="iconNamesForm" style="grid-template-columns:1fr"></form><div class="actions"><button class="primary" type="button" id="saveIconNames">حفظ الأسماء</button><button class="secondary" type="button" id="resetIconNames">استعادة الأسماء الأصلية</button></div></div><div class="card" id="monthlyReportCard" hidden style="margin-bottom:12px"><h3>التقرير الشهري</h3><p class="muted">اختر الشهر لعرض ملخص الحسابات لذلك الشهر.</p><div style="max-width:300px"><label>اختر الشهر</label><input type="month" id="monthFilter"></div>
-<div class="reportline"><span>الرصيد الداخل</span><b id="rIn">0</b></div><div class="reportline"><span>قيمة تحويلات الرصيد</span><b id="rTransfers">0</b></div><div class="reportline"><span>ربح الرصيد</span><b id="rCreditProfit">0</b></div><div class="reportline"><span>مبيعات الشحن</span><b id="rRecharge">0</b></div><div class="reportline"><span>ربح الشحن</span><b id="rRechargeProfit">0</b></div><div class="reportline"><span>ربح خدمات الزبائن</span><b id="rServiceProfit">0</b></div><div class="reportline"><span>ربح مبيعات الطبلية</span><b id="rInventoryProfit">0</b></div><div class="reportline"><span>المصروفات</span><b id="rExpenses">0</b></div><div class="reportline"><span><b>صافي الربح بعد المصروفات</b></span><b class="positive" id="rNet">0</b></div></div>
+<div class="card" id="iconNamesCard" hidden style="margin-bottom:12px"><h3>تعديل أسماء أيقونات الواجهة الرئيسية</h3><p class="muted">غيّر أسماء الأيقونات الرئيسية مثل إدارة المتجر وإدارة الرصيد وقسم الهواتف، وكذلك الاختصارات الداخلية، ثم احفظ.</p><form id="iconNamesForm" style="grid-template-columns:1fr"></form><div class="actions"><button class="primary" type="button" id="saveIconNames">حفظ الأسماء</button><button class="secondary" type="button" id="resetIconNames">استعادة الأسماء الأصلية</button></div></div><div class="card" id="monthlyReportCard" hidden style="margin-bottom:12px"><h3>التقرير الشهري</h3><p class="muted">اختر الشهر لعرض ملخص الحسابات لذلك الشهر.</p><div style="max-width:300px"><label>اختر الشهر</label><input type="month" id="monthFilter"></div>
+<div class="reportline"><span>الرصيد الداخل</span><b id="rIn">0</b></div><div class="reportline"><span>قيمة تحويلات الرصيد</span><b id="rTransfers">0</b></div><div class="reportline"><span>ربح الرصيد</span><b id="rCreditProfit">0</b></div><div class="reportline"><span>مبيعات الشحن</span><b id="rRecharge">0</b></div><div class="reportline"><span>ربح الشحن</span><b id="rRechargeProfit">0</b></div><div class="reportline"><span>ربح خدمات الزبائن</span><b id="rServiceProfit">0</b></div><div class="reportline"><span>ربح مبيعات المتجر</span><b id="rInventoryProfit">0</b></div><div class="reportline"><span>المصروفات</span><b id="rExpenses">0</b></div><div class="reportline"><span><b>صافي الربح بعد المصروفات</b></span><b class="positive" id="rNet">0</b></div></div>
 <div class="card" id="backupToolsCard" hidden style="margin:12px 0"><h3>النسخ الاحتياطي واستعادة البيانات</h3><p class="muted">احفظ نسخة من بياناتك أو استعد نسخة سابقة.</p><div class="actions"><button class="secondary" id="exportBtn">تصدير نسخة بيانات CSV</button><button class="secondary" id="backupBtn">نسخ احتياطي JSON</button><label class="secondary" style="cursor:pointer">استيراد نسخة<input id="restoreFile" type="file" accept=".json,application/json" hidden></label></div></div>
 </div>
 <div class="hint" id="backupHint" hidden>البيانات محفوظة على هذا الجهاز والمتصفح. احفظ نسخة احتياطية بانتظام، خصوصاً قبل تغيير الهاتف أو مسح بيانات المتصفح.</div>
@@ -821,8 +821,8 @@ body:not(.dark) .app-menu,body:not(.dark) .app-menu button,body:not(.dark) .app-
 </section>
 
 <section id="inventory" class="panel inventory-standalone">
-<div class="inventory-page-head"><button type="button" class="secondary" id="inventoryBack">↩ رجوع للرئيسية</button><span>حساباتي / إدارة الطبلية</span></div>
-<h2 class="section-title">📦 إدارة الطبلية</h2>
+<div class="inventory-page-head"><button type="button" class="secondary" id="inventoryBack">↩ رجوع للرئيسية</button><span>حساباتي / إدارة المتجر</span></div>
+<h2 class="section-title">📦 إدارة المتجر</h2>
 <div class="inventory-section-menu" id="inventorySectionMenu"><button type="button" data-inv-view="products">➕ الأصناف</button><button type="button" data-inv-view="inbound">📥 الوارد</button><button type="button" data-inv-view="outbound">📤 الصرف</button><button type="button" data-inv-view="invoice">🧾 فاتورة بيع</button><button type="button" data-inv-view="stocklist">📋 قائمة المخزون</button><button type="button" data-inv-view="audit">🧮 كشف الجرد</button><button type="button" data-inv-view="slow">🐌 البضاعة الراكدة</button><button type="button" data-inv-view="accounts">👥 حسابات العملاء والموردين</button><button type="button" data-inv-view="history">📚 سجل الحركات والفواتير</button></div>
 <div class="inventory-view" data-inventory-view="products">
 <div class="inventory-view-head"><strong>📦 الأصناف</strong><button type="button" class="secondary" data-inv-menu>رجوع للقوائم</button></div>
@@ -1205,7 +1205,7 @@ $('changePinForm').addEventListener('submit',async e=>{
 <script id="hesabati-force-update-v13">
 (function(){
   if(!('serviceWorker' in navigator))return;
-  const RELOAD_KEY='hesabati_sw_controller_reload_v13';
+  const RELOAD_KEY='hesabati_sw_controller_reload_v14';
   let reloading=false,pendingReload=false,registration=null,checking=false;
   function isEditing(){
     const el=document.activeElement;
@@ -1339,7 +1339,7 @@ $('changePinForm').addEventListener('submit',async e=>{
  function openBankakDashboard(){const d=bankakProfitData();const total=$('bankakTotalProfit');if(!total||!$('bankProfitHub')){console.error('Bankak dashboard elements missing');return;}total.textContent=fmt(d.total)+' SDG';if(typeof showHomeHub==='function')showHomeHub('bankProfitHub');else{document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$('bankProfitHub').classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}}
  window.openBankakDashboard=openBankakDashboard;
  $('bankakBack')?.addEventListener('click',()=>showHomeHub('home'));
- const bankakStatement=$('bankakStatement');$('bankakShowStatement').addEventListener('click',()=>{const d=bankakProfitData(),canvas=document.createElement('canvas');canvas.width=1240;canvas.height=1754;const ctx=canvas.getContext('2d');const W=canvas.width,H=canvas.height;ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);ctx.strokeStyle='#176b57';ctx.lineWidth=8;ctx.strokeRect(48,48,W-96,H-96);ctx.strokeStyle='#c6a45b';ctx.lineWidth=3;ctx.strokeRect(66,66,W-132,H-132);const center=W/2;function line(y,color='#d5ded9',width=2){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();ctx.moveTo(125,y);ctx.lineTo(W-125,y);ctx.stroke()}function txt(t,x,y,size,color='#173b35',weight='normal',align='right'){ctx.font=weight+' '+size+'px Tahoma,Arial,sans-serif';ctx.fillStyle=color;ctx.textAlign=align;ctx.direction='rtl';ctx.fillText(String(t),x,y)}txt('حساباتي',center,205,66,'#087b65','bold','center');txt('كشف حساب الأرباح',center,290,43,'#1c2925','bold','center');txt('تفاصيل الأرباح حسب الأقسام',center,345,25,'#6b7771','normal','center');line(390,'#176b57',5);ctx.fillStyle='#eaf3ef';ctx.fillRect(125,430,W-250,100);txt('القسم',W-165,495,30,'#173b35','bold');txt('الربح (SDG)',165,495,30,'#173b35','bold','left');const rows=[['قسم شحن الهواتف',d.recharge],['إدارة الطبلية',d.inventory],['إدارة الرصيد',d.credit],['خدمات الزبائن',d.services],['التحويلات البنكية',d.banks]];let y=640;rows.forEach((r,i)=>{if(i%2===0){ctx.fillStyle='#fafcfb';ctx.fillRect(125,y-65,W-250,112)}txt(r[0],W-165,y,29,'#273a33');txt(fmt(r[1]),165,y,29,'#273a33','bold','left');line(y+48);y+=145;});ctx.fillStyle='#eaf3ef';ctx.fillRect(125,y-65,W-250,125);txt('إجمالي الأرباح',W-165,y+8,31,'#075d49','bold');txt(fmt(d.total)+' SDG',165,y+8,31,'#075d49','bold','left');line(y+70,'#176b57',4);txt('الجنيه السوداني · SDG',center,H-175,24,'#75827c','normal','center');txt('حساباتي · حقوق النشر محفوظة © 2026',center,H-125,20,'#89938e','normal','center');$('bankakStatementImage').src=canvas.toDataURL('image/png');bankakStatement.classList.add('open');bankakStatement.setAttribute('aria-hidden','false');});$('bankakStatementClose').addEventListener('click',()=>{bankakStatement.classList.remove('open');bankakStatement.setAttribute('aria-hidden','true');});bankakStatement.addEventListener('click',e=>{if(e.target===bankakStatement){bankakStatement.classList.remove('open');bankakStatement.setAttribute('aria-hidden','true');}});
+ const bankakStatement=$('bankakStatement');$('bankakShowStatement').addEventListener('click',()=>{const d=bankakProfitData(),canvas=document.createElement('canvas');canvas.width=1240;canvas.height=1754;const ctx=canvas.getContext('2d');const W=canvas.width,H=canvas.height;ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);ctx.strokeStyle='#176b57';ctx.lineWidth=8;ctx.strokeRect(48,48,W-96,H-96);ctx.strokeStyle='#c6a45b';ctx.lineWidth=3;ctx.strokeRect(66,66,W-132,H-132);const center=W/2;function line(y,color='#d5ded9',width=2){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();ctx.moveTo(125,y);ctx.lineTo(W-125,y);ctx.stroke()}function txt(t,x,y,size,color='#173b35',weight='normal',align='right'){ctx.font=weight+' '+size+'px Tahoma,Arial,sans-serif';ctx.fillStyle=color;ctx.textAlign=align;ctx.direction='rtl';ctx.fillText(String(t),x,y)}txt('حساباتي',center,205,66,'#087b65','bold','center');txt('كشف حساب الأرباح',center,290,43,'#1c2925','bold','center');txt('تفاصيل الأرباح حسب الأقسام',center,345,25,'#6b7771','normal','center');line(390,'#176b57',5);ctx.fillStyle='#eaf3ef';ctx.fillRect(125,430,W-250,100);txt('القسم',W-165,495,30,'#173b35','bold');txt('الربح (SDG)',165,495,30,'#173b35','bold','left');const rows=[['قسم شحن الهواتف',d.recharge],['إدارة المتجر',d.inventory],['إدارة الرصيد',d.credit],['خدمات الزبائن',d.services],['التحويلات البنكية',d.banks]];let y=640;rows.forEach((r,i)=>{if(i%2===0){ctx.fillStyle='#fafcfb';ctx.fillRect(125,y-65,W-250,112)}txt(r[0],W-165,y,29,'#273a33');txt(fmt(r[1]),165,y,29,'#273a33','bold','left');line(y+48);y+=145;});ctx.fillStyle='#eaf3ef';ctx.fillRect(125,y-65,W-250,125);txt('إجمالي الأرباح',W-165,y+8,31,'#075d49','bold');txt(fmt(d.total)+' SDG',165,y+8,31,'#075d49','bold','left');line(y+70,'#176b57',4);txt('الجنيه السوداني · SDG',center,H-175,24,'#75827c','normal','center');txt('حساباتي · حقوق النشر محفوظة © 2026',center,H-125,20,'#89938e','normal','center');$('bankakStatementImage').src=canvas.toDataURL('image/png');bankakStatement.classList.add('open');bankakStatement.setAttribute('aria-hidden','false');});$('bankakStatementClose').addEventListener('click',()=>{bankakStatement.classList.remove('open');bankakStatement.setAttribute('aria-hidden','true');});bankakStatement.addEventListener('click',e=>{if(e.target===bankakStatement){bankakStatement.classList.remove('open');bankakStatement.setAttribute('aria-hidden','true');}});
  $('bankakQrButton').addEventListener('click',()=>{$('bankakQrArea').hidden=!$('bankakQrArea').hidden;});
  $('bankakQrUploadButton').addEventListener('click',()=>$('bankakQrInput').click());
  $('bankakQrInput').addEventListener('change',e=>{const file=e.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{$('bankakQrImage').src=reader.result;$('bankakQrImage').hidden=false;$('bankakQrArea').hidden=false;};reader.readAsDataURL(file);e.target.value='';});
@@ -1498,7 +1498,7 @@ body.dark .profit-toggle{color:var(--ink)}
 </script>
 
 <style id="partnership-style">
-#partnership .quick-link{min-height:82px}#partnerAccountCard{margin-bottom:18px}#partnerAccountCard form{margin:12px 0}.partnership-breakdown{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}.partnership-breakdown .card{padding:12px}#partnerSettingsRows{display:grid;gap:9px;margin:12px 0}.partner-setting-row{display:grid;grid-template-columns:minmax(0,1fr) 105px 42px;gap:8px;align-items:center}.partner-setting-row input{min-width:0;width:100%}.partner-setting-row button{padding:8px}@media(max-width:480px){#partnership .financial-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.partner-setting-row{grid-template-columns:minmax(0,1fr) 82px 38px}}
+#partnership .quick-link{min-height:82px}#partnerAccountCard{margin-bottom:18px}#partnerAccountCard form{margin:12px 0}.partnership-breakdown{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}.partnership-breakdown .card{padding:12px}#partnerSettingsRows{display:grid;gap:9px;margin:12px 0}.partner-setting-row{display:grid;grid-template-columns:minmax(0,1fr) 105px 42px;gap:8px;align-items:center}.partner-setting-row input{min-width:0;width:100%;position:relative;z-index:1;pointer-events:auto;touch-action:manipulation}.partner-setting-row input[aria-label="نسبة الشريك"]{direction:ltr;text-align:center;cursor:text}.partner-setting-row button{padding:8px}@media(max-width:480px){#partnership .financial-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.partner-setting-row{grid-template-columns:minmax(0,1fr) 82px 38px}}
 </style>
 <script id="partnership-module">
 (function(){
@@ -1569,7 +1569,7 @@ body.dark .profit-toggle{color:var(--ink)}
   $('partnerAllocationRows').querySelectorAll('[data-edit-adjustment]').forEach(b=>b.addEventListener('click',()=>openAdjustment(b.dataset.editAdjustment)));
  }
  function renderSettings(){
-  $('partnerSettingsRows').innerHTML=state.partners.map(p=>'<div class="partner-setting-row" data-row-id="'+escapeHtml(p.id)+'"><input type="text" maxlength="60" value="'+escapeHtml(p.name)+'" placeholder="مثال: أحمد محمد" aria-label="اسم الشريك"><input type="number" min="0" max="100" step="0.01" value="'+fmt(p.percent)+'" aria-label="نسبة الشريك" placeholder="النسبة %"><button type="button" class="secondary" data-remove-partner="'+escapeHtml(p.id)+'" title="حذف الشريك">✕</button></div>').join('');
+  $('partnerSettingsRows').innerHTML=state.partners.map(p=>'<div class="partner-setting-row" data-row-id="'+escapeHtml(p.id)+'"><input type="text" maxlength="60" value="'+escapeHtml(p.name)+'" placeholder="مثال: أحمد محمد" aria-label="اسم الشريك"><input type="text" inputmode="decimal" autocomplete="off" dir="ltr" value="'+fmt(p.percent)+'" aria-label="نسبة الشريك" placeholder="النسبة %"><button type="button" class="secondary" data-remove-partner="'+escapeHtml(p.id)+'" title="حذف الشريك">✕</button></div>').join('');
   updatePercentTotal();
   $('partnerSettingsRows').querySelectorAll('[data-remove-partner]').forEach(btn=>btn.addEventListener('click',()=>{
    const id=btn.dataset.removePartner;
@@ -1772,7 +1772,34 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
   const rows=Array.from({length:10},(_,i)=>{const x=items[i];return '<tr><td>'+(i+1)+'</td><td>'+(x?safe(x.product.name):'')+'</td><td>'+(x?fmt(x.qty):'')+'</td><td>'+(x?fmt(x.price)+' SDG':'')+'</td><td>'+(x?fmt(x.value)+' SDG':'')+'</td></tr>';}).join('');
   const html='<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>فاتورة أبو التيمان فون</title><style>'+
    '@page{size:A4 portrait;margin:14mm}*{box-sizing:border-box}body{font-family:Tahoma,Arial,sans-serif;color:#17212b;margin:0;font-size:13px}.paper{width:100%;min-height:270mm}.head{display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #176fe0;padding-bottom:13px}.brand{font-size:27px;font-weight:900;color:#176fe0}.meta{text-align:left;line-height:1.9}.title{text-align:center;font-size:22px;font-weight:800;margin:18px 0}.details{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}.details div{border:1px solid #ccc;padding:10px}.items{width:100%;border-collapse:collapse;margin-top:12px}.items th,.items td{border:1px solid #888;padding:9px 7px;text-align:center;height:34px}.items th{background:#edf2f8}.total{margin:18px 0 0 auto;width:48%;border:2px solid #176fe0;padding:12px;font-size:17px;font-weight:bold;display:flex;justify-content:space-between}.foot{display:flex;justify-content:flex-end;margin-top:65px}.sign{width:42%;border-top:1px solid #555;padding-top:10px;text-align:center;font-weight:bold}.note{margin-top:24px;text-align:center;color:#555}'+
-   '</style></head><body><main class="paper"><header class="head"><div><div class="brand">أبو التيمان فون</div><div>لبيع الهواتف ومستلزماتها</div></div><div class="meta"><div>التاريخ: '+safe(d.date)+'</div><div>رقم الفاتورة: '+safe(invoiceNo)+'</div></div></header><div class="title">فاتورة بيع</div><section class="details"><div><b>اسم العميل:</b> '+safe(d.customer||'عميل نقدي')+'</div><div><b>طريقة الدفع:</b> '+safe(d.payment)+'</div></section><table class="items"><thead><tr><th>م</th><th>الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody>'+rows+'</tbody></table><div class="total"><span>الإجمالي الكلي</span><span>'+fmt(total)+' SDG</span></div><div class="foot"><div class="sign">توقيع محمد عمر محمد اسحق</div></div><div class="note">شكراً لتعاملكم معنا</div></main></body></html>';
+   '</style></head><body><main class="paper"><header class="head"><div><div class="brand">أبو التيمان فون</div><div>لبيع الهواتف ومستلزماتها</div></div><div class="meta"><div>التاريخ: '+safe(d.date)+'</div><div>رقم الفاتورة: '+safe(invoiceNo)+'</div></div></header><div class="title">فاتورة بيع</div><section class="details"><div><b>اسم العميل:</b> '+safe(d.customer||'عميل نقدي')+'</div><div><b>طريقة الدفع:</b> '+safe(d.payment)+'</div></section><table class="items"><thead><tr><th>م</th><th>الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody>'+rows+'</tbody></table><div class="total"><span>الإجمالي الكلي</span><span>'+fmt(total)+' SDG</span></div><div class="foot"><div class="sign">توقيع محمد عمر محمد اسحق</div></div><div class="note">شكراً لتعاملكم معنا</div></main>
+
+
+
+<style id="sale-invoice-white-background-v1">
+/* خلفية فاتورة البيع بيضاء وواضحة */
+#inventory .sale-invoice-modal{
+ background:#fff!important;
+ color:#17212b!important;
+ border:1px solid #d7dee7!important;
+}
+#inventory .sale-invoice-modal .sale-invoice-head strong{color:#173b35!important}
+#inventory .sale-invoice-modal .sale-invoice-head small{color:#657080!important}
+#inventory .sale-invoice-modal .sale-invoice-form,
+#inventory .sale-invoice-modal .sale-invoice-meta{background:#fff!important;color:#17212b!important}
+#inventory .sale-invoice-modal .sale-invoice-form label{color:#263445!important}
+#inventory .sale-invoice-modal .sale-invoice-form input,
+#inventory .sale-invoice-modal .sale-invoice-form select,
+#inventory .sale-invoice-modal .sale-lines input,
+#inventory .sale-invoice-modal .sale-lines select{
+ background:#fff!important;color:#17212b!important;border:1px solid #cbd5e1!important;
+}
+#inventory .sale-invoice-modal .sale-lines-wrap{background:#fff!important;border-color:#cbd5e1!important}
+#inventory .sale-invoice-modal .sale-lines th{background:#eef2f7!important;color:#17212b!important}
+#inventory .sale-invoice-modal .sale-lines td{background:#fff!important;color:#17212b!important;border-color:#d8dee8!important}
+#inventory .sale-invoice-modal .sale-invoice-total{background:#fff!important;color:#17212b!important;border:1px solid #cbd5e1!important}
+</style>
+</body></html>';
   w.document.open();w.document.write(html);w.document.close();
   setTimeout(()=>{try{w.focus();w.print();}catch(e){}},350);
  }
@@ -1852,12 +1879,7 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
    alert('تم تجهيز صورة الفاتورة وحفظها. افتح واتساب وأرفق الصورة من التنزيلات لإرسالها.');
   }
  }
- $('whatsappSaleInvoice').addEventListener('click',()=>{
-  if(lastSaleInvoice){sendSaleWhatsApp(lastSaleInvoice.d,lastSaleInvoice.items,lastSaleInvoice.invoiceNo);return}
-  const f=$('invoiceForm');if(!f.reportValidity())return;
-  const items=getSaleDraft();if(!validateSaleItems(items))return;
-  sendSaleWhatsApp({customer:f.elements.customer.value,payment:f.elements.payment.value,date:f.elements.date.value},items,'مسودة');
- });
+
  function validateSaleItems(items){
   if(!items.length){alert('أدخل صنفاً واحداً على الأقل مع الكمية والسعر.');return false}
   const requested=new Map();
@@ -1880,18 +1902,25 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
  $('invoiceForm').addEventListener('submit',e=>{e.preventDefault();saveSaleInvoiceNow();});
 $('invoiceForm').addEventListener('input',updateSaleInvoiceTotal);$('invoiceForm').addEventListener('change',updateSaleInvoiceTotal);
  $('closeSaleInvoice').addEventListener('click',showInventoryMenu);$('closeOutboundVoucher').addEventListener('click',showInventoryMenu);
- $('printSaleInvoice').addEventListener('click',()=>{const f=$('invoiceForm');if(!f.reportValidity())return;const items=getSaleDraft();if(!validateSaleItems(items))return;printSaleDocument({customer:f.elements.customer.value,payment:f.elements.payment.value,date:f.elements.date.value},items,'مسودة')});
-document.addEventListener('click',e=>{
-  const print=e.target.closest('#printSaleInvoice'),share=e.target.closest('#whatsappSaleInvoice'),saveButton=e.target.closest('#invoiceForm button[type="submit"]');
-  if(!print&&!share&&!saveButton)return;
-  e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-  if(saveButton){saveSaleInvoiceNow();return;}
-  const f=$('invoiceForm');if(!f.reportValidity())return;
-  const items=getSaleDraft();if(!validateSaleItems(items))return;
-  const d={customer:f.elements.customer.value,payment:f.elements.payment.value,date:f.elements.date.value};
-  if(print){printSaleDocument(d,items,'مسودة');return;}
-  sendSaleWhatsApp(d,items,'مسودة');
- },true);
+ $('printSaleInvoice').onclick=function(e){
+  e.preventDefault();
+  try{
+   const f=$('invoiceForm');if(!f){alert('نموذج الفاتورة غير موجود.');return;}
+   if(!f.reportValidity())return;
+   const items=getSaleDraft();if(!validateSaleItems(items))return;
+   printSaleDocument({customer:f.elements.customer.value,payment:f.elements.payment.value,date:f.elements.date.value},items,'مسودة');
+  }catch(error){console.error('Sale print error:',error);alert('حدث خطأ أثناء تجهيز الطباعة: '+(error.message||error));}
+ };
+ $('whatsappSaleInvoice').onclick=function(e){
+  e.preventDefault();
+  try{
+   const f=$('invoiceForm');if(!f){alert('نموذج الفاتورة غير موجود.');return;}
+   if(!f.reportValidity())return;
+   const items=getSaleDraft();if(!validateSaleItems(items))return;
+   Promise.resolve(sendSaleWhatsApp({customer:f.elements.customer.value,payment:f.elements.payment.value,date:f.elements.date.value},items,'مسودة')).catch(error=>{console.error('Sale share error:',error);alert('حدث خطأ أثناء تجهيز المشاركة: '+(error.message||error));});
+  }catch(error){console.error('Sale share error:',error);alert('حدث خطأ أثناء تجهيز المشاركة: '+(error.message||error));}
+ };
+
  
  
 
@@ -1933,7 +1962,7 @@ document.addEventListener('click',e=>{
  function showHomeHub(id){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab==='home'));window.scrollTo({top:0,behavior:'smooth'});}
  function readStore(key,fallback){try{return JSON.parse(localStorage.getItem(key)||'null')||fallback}catch(e){return fallback}}
  function refreshAssets(){const core=readStore('hisabati_v1',{}),inv=readStore('hisabati_inventory_v1',{});const balanceCapital=(core.stock||[]).reduce((a,x)=>a+Number(x.amount||0),0);const inventoryCapital=(inv.products||[]).reduce((a,x)=>a+Number(x.qty||0)*Number(x.buy||0),0);$('assetsBalanceCapital').textContent=fmt(balanceCapital);$('assetsInventoryCapital').textContent=fmt(inventoryCapital);return {balanceCapital,inventoryCapital};}
- function showAssetDetail(kind){const a=refreshAssets(),inv=readStore('hisabati_inventory_v1',{});$('assetCapitalDetails').hidden=false;if(kind==='balance'){$('assetCapitalTitle').textContent='رأس مال الرصيد';$('assetCapitalValue').textContent=fmt(a.balanceCapital)+' SDG';$('assetCapitalNote').textContent='إجمالي مبالغ الرصيد التي أُضيفت كرأس مال.';}else{$('assetCapitalTitle').textContent='رأس مال الطبلية';$('assetCapitalValue').textContent=fmt(a.inventoryCapital)+' SDG';$('assetCapitalNote').textContent='القيمة الحالية للمخزون المتبقي محسوبة بسعر الشراء.';}}
+ function showAssetDetail(kind){const a=refreshAssets(),inv=readStore('hisabati_inventory_v1',{});$('assetCapitalDetails').hidden=false;if(kind==='balance'){$('assetCapitalTitle').textContent='رأس مال الرصيد';$('assetCapitalValue').textContent=fmt(a.balanceCapital)+' SDG';$('assetCapitalNote').textContent='إجمالي مبالغ الرصيد التي أُضيفت كرأس مال.';}else{$('assetCapitalTitle').textContent='رأس مال المتجر';$('assetCapitalValue').textContent=fmt(a.inventoryCapital)+' SDG';$('assetCapitalNote').textContent='القيمة الحالية للمخزون المتبقي محسوبة بسعر الشراء.';}}
  function refreshBankProfit(){const core=readStore('hisabati_v1',{}),inv=readStore('hisabati_inventory_v1',{}),bank=readStore('hisabati_bank_transfer_v1',{banks:[]});const arr=k=>Array.isArray(core[k])?core[k]:[];const p=a=>a.reduce((n,x)=>n+Number(x.sale||0)-Number(x.cost||0),0);const inventory=(inv.invoices||[]).reduce((n,x)=>n+(Number(x.price||0)-Number(x.cost??0))*Number(x.qty||0),0);const credit=p(arr('transfers')),recharge=p(arr('recharges')),service=p(arr('services'));const bankProfit=(bank.banks||[]).reduce((n,b)=>n+(Array.isArray(b.records)?b.records.reduce((z,x)=>z+Number(x.gain||0),0):Number(b.profit||0)),0);const total=inventory+credit+recharge+service+bankProfit;const values={bankTotalProfit:total,bankInventoryProfit:inventory,bankCreditProfit:credit,bankRechargeProfit:recharge,bankServiceProfit:service,bankTransferProfit:bankProfit};Object.entries(values).forEach(([id,value])=>{const el=$(id);if(el)el.textContent=fmt(value);});return total;}
  $('assetsLaunch')?.addEventListener('click',()=>{showHomeHub('assetsHub');refreshAssets();$('assetCapitalDetails').hidden=true;});
  
@@ -1952,7 +1981,7 @@ document.addEventListener('click',e=>{
  ['stockInForm','stockOutForm','invoiceForm','customerPaymentForm','supplierPaymentForm'].forEach(id=>{const f=$(id);if(f)f.date.value=today()});
  addSaleRows();updateSaleInvoiceTotal();
  refresh();
- // ربط ربح مبيعات الطبلية ببطاقة الأرباح في الصفحة الرئيسية
+ // ربط ربح مبيعات المتجر ببطاقة الأرباح في الصفحة الرئيسية
  function inventoryProfit(){return db.invoices.reduce((a,x)=>a+(Number(x.price||0)-Number(x.cost??db.products.find(p=>p.id===x.product)?.buy??0))*Number(x.qty||0),0)}
  function updateInventoryKpi(){const el=$('inventoryProfit');if(el)el.textContent=fmt(inventoryProfit())}
  window.hisabatiRefreshInventory=function(){
@@ -2367,7 +2396,7 @@ body.dark .supplier-balance-line{background:#203a33;color:#b9f1df}body.dark .sup
    const inventory=read('inventoryProfit'),credit=read('creditProfit'),recharge=read('rechargeProfit'),services=read('serviceProfit');
    const total=read('bankakTotalProfit');
    const banks=total-(inventory+credit+recharge+services);
-   const rows=[['قسم شحن الهواتف',recharge],['إدارة الطبلية',inventory],['إدارة الرصيد',credit],['خدمات الزبائن',services],['التحويلات البنكية',banks]];
+   const rows=[['قسم شحن الهواتف',recharge],['إدارة المتجر',inventory],['إدارة الرصيد',credit],['خدمات الزبائن',services],['التحويلات البنكية',banks]];
    const canvas=document.createElement('canvas');canvas.width=1240;canvas.height=1754;
    const c=canvas.getContext('2d');c.fillStyle='#fff';c.fillRect(0,0,1240,1754);c.strokeStyle='#176b57';c.lineWidth=8;c.strokeRect(48,48,1144,1658);c.strokeStyle='#c6a45b';c.lineWidth=3;c.strokeRect(66,66,1108,1622);
    function txt(t,x,y,size,color,align){c.font='bold '+size+'px Tahoma,Arial';c.fillStyle=color;c.textAlign=align||'right';c.direction='rtl';c.fillText(String(t),x,y);}
@@ -2387,6 +2416,8 @@ body.dark .supplier-balance-line{background:#203a33;color:#b9f1df}body.dark .sup
 <div id="stockBarcodeModal" aria-hidden="true"><div class="barcode-card"><div style="display:flex;justify-content:space-between"><h3>ماسح رمز QR والباركود</h3><button type="button" id="stockBarcodeClose">إغلاق ✕</button></div><div id="stockBarcodeCameraFrame"><video id="stockBarcodeVideo" playsinline muted></video><div class="stockBarcodeScanLine"></div></div><div id="stockBarcodeReader" style="display:none;width:100%;overflow:hidden;border-radius:12px"></div><div id="stockBarcodeResult">وجّه الكاميرا نحو رمز QR أو الباركود لقراءته تلقائياً.</div><div style="display:flex;gap:8px;margin-top:10px;direction:ltr"><input id="stockBarcodeManual" type="text" inputmode="numeric" autocomplete="off" placeholder="أدخل رقم الباركود يدوياً" style="flex:1;min-width:0;padding:11px;border:1px solid #aab8b1;border-radius:8px;text-align:center;font-size:16px"><button type="button" id="stockBarcodeCheck" style="white-space:nowrap">تحقق</button></div><button type="button" id="stockBarcodeAgain">إعادة المسح</button></div></div>
 <style id="stock-barcode-add-modal-style">#stockBarcodeAddModal{position:fixed;inset:0;z-index:12020;background:#071b1dcc;display:none;align-items:center;justify-content:center;padding:14px}#stockBarcodeAddModal.open{display:flex}#stockBarcodeAddModal .barcode-add-card{width:min(100%,440px);max-height:90vh;overflow:auto;background:#fff;color:#17212b;border-radius:16px;padding:18px}#stockBarcodeAddModal label{display:block;font-weight:800;margin:12px 0 5px}#stockBarcodeAddModal input{width:100%;padding:12px;border:1px solid #aab8b1;border-radius:9px;font:inherit;color:#17212b;background:#fff}#stockBarcodeAddModal .barcode-add-actions{display:flex;gap:8px;margin-top:16px}#stockBarcodeAddModal button{flex:1;min-height:44px;border:0;border-radius:9px;padding:10px;font:inherit;font-weight:800;cursor:pointer}#stockBarcodeAddSave{background:#087f70;color:#fff}#stockBarcodeAddCancel{background:#edf2ef;color:#183536}</style>
 <div id="stockBarcodeAddModal" aria-hidden="true"><div class="barcode-add-card"><h3 style="margin:0 0 8px">إضافة صنف جديد للمخزون</h3><p style="margin:0;color:#63736c;font-size:13px">تمت قراءة باركود غير مسجل. أكمل البيانات لحفظ الصنف.</p><label for="stockBarcodeNewName">اسم الصنف</label><input id="stockBarcodeNewName" type="text" autocomplete="off" placeholder="اكتب اسم الصنف"><label for="stockBarcodeNewCode">رقم الكود</label><input id="stockBarcodeNewCode" type="text" dir="ltr" autocomplete="off"><label for="stockBarcodeNewCountry">بلد الصنع</label><input id="stockBarcodeNewCountry" type="text" autocomplete="off" placeholder="مثال: الصين"><div class="barcode-add-actions"><button type="button" id="stockBarcodeAddSave">حفظ الصنف</button><button type="button" id="stockBarcodeAddCancel">إلغاء</button></div></div></div>
+<style id="stock-barcode-details-style">#stockBarcodeDetailsModal{position:fixed;inset:0;z-index:12040;background:#071b1dcc;display:none;align-items:center;justify-content:center;padding:14px}#stockBarcodeDetailsModal.open{display:flex}#stockBarcodeDetailsModal .barcode-details-card{width:min(100%,440px);max-height:90vh;overflow:auto;background:#fff;color:#17212b;border-radius:16px;padding:19px;box-shadow:0 16px 45px #0004}#stockBarcodeDetailsModal h3{margin:0 0 14px;color:#087f70}#stockBarcodeDetailsModal .barcode-details-row{padding:11px 12px;margin:8px 0;background:#f3f7f5;border:1px solid #e0e9e4;border-radius:9px;line-height:1.7}#stockBarcodeDetailsModal .barcode-details-row b{display:block;color:#63736c;font-size:12px}#stockBarcodeDetailsModal .barcode-details-row span{display:block;font-weight:800;overflow-wrap:anywhere}#stockBarcodeDetailsClose{width:100%;min-height:45px;margin-top:12px;border:0;border-radius:9px;background:#087f70;color:#fff;font:inherit;font-weight:800}</style>
+<div id="stockBarcodeDetailsModal" aria-hidden="true"><div class="barcode-details-card" role="dialog" aria-modal="true"><h3>بيانات الصنف المسجل</h3><div class="barcode-details-row"><b>اسم الصنف</b><span id="stockBarcodeDetailsName">—</span></div><div class="barcode-details-row"><b>رقم الباركود</b><span id="stockBarcodeDetailsCode" dir="ltr">—</span></div><div class="barcode-details-row"><b>بلد الصنع</b><span id="stockBarcodeDetailsCountry">—</span></div><button type="button" id="stockBarcodeDetailsClose">إغلاق</button></div></div>
 <script id="stock-barcode-scanner">
 (function(){
 const $=id=>document.getElementById(id);
@@ -2404,18 +2435,71 @@ async function stop(){
 }
 async function close(){await stop();$('stockBarcodeModal').classList.remove('open');$('stockBarcodeModal').setAttribute('aria-hidden','true');}
 function safe(v){return String(v??'—').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function result(p,code){$('stockBarcodeResult').innerHTML=p?'<b>تم العثور على الصنف</b><br>الصنف: '+safe(p.name)+'<br>التصنيف: '+safe(p.category||'—')+'<br>الكمية: '+Number(p.qty||0)+'<br>الرمز: '+safe(code)+'<br><b>الحالة: '+safe(p.authenticity||'غير محدد')+'</b><br>ملاحظات: '+safe(p.authNote||'—')+'<br><small>الحالة مسجلة يدوياً؛ الرمز وحده لا يثبت الأصالة.</small><div class="stock-scan-actions"><button type="button" data-scan-edit="'+safe(p.id)+'">✏️ تعديل بيانات الصنف</button><button type="button" data-scan-in="'+safe(p.id)+'">📥 تسجيل وارد</button><button type="button" data-scan-out="'+safe(p.id)+'">📤 تسجيل صرف</button></div>':'<b>تمت قراءة رمز QR بنجاح</b><br><div style="direction:ltr;text-align:left;overflow-wrap:anywhere;user-select:text">'+safe(code)+'</div>';}
+function result(p,code){const box=$('stockBarcodeResult');box.innerHTML=p?'<b>تم العثور على الصنف المسجل</b><br>اسم الصنف: '+safe(p.name||'—')+'<br>بلد الصنع: '+safe(p.country||'—')+'<br>التصنيف: '+safe(p.category||'—')+'<br>الكمية: '+Number(p.qty||0)+'<br>رقم الباركود: <input type="text" readonly dir="ltr" style="display:inline-block;width:min(100%,230px);padding:5px;border:1px solid #cbd8d2;border-radius:6px;background:#fff;color:#17212b" value=""><br><b>الحالة: '+safe(p.authenticity||'غير محدد')+'</b><br>ملاحظات: '+safe(p.authNote||'—')+'<br><small>الحالة مسجلة يدوياً؛ الرمز وحده لا يثبت الأصالة.</small><div class="stock-scan-actions"><button type="button" data-scan-edit="'+safe(p.id)+'">✏️ تعديل بيانات الصنف</button><button type="button" data-scan-in="'+safe(p.id)+'">📥 تسجيل وارد</button><button type="button" data-scan-out="'+safe(p.id)+'">📤 تسجيل صرف</button></div>':'<b>تمت قراءة الباركود بنجاح</b><br><label style="display:block;margin-top:6px">رقم الباركود المقروء</label><input type="text" readonly dir="ltr" inputmode="text" autocomplete="off" style="width:100%;padding:10px;border:1px solid #cbd8d2;border-radius:7px;background:#fff;color:#17212b;text-align:center" value="">';const field=box.querySelector('input[readonly]');if(field)field.value=String(code??'');}
+function normalizeBarcodeCode(value){
+ let v=String(value??'').normalize('NFKC').trim().split('').filter(ch=>![8203,8204,8205,65279].includes(ch.charCodeAt(0))).join('');
+ return v.replace(/[٠-٩]/g,d=>String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))).replace(/[۰-۹]/g,d=>String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)));
+}
+function barcodeCodesMatch(savedValue,scanValue){
+ const saved=normalizeBarcodeCode(savedValue),wanted=normalizeBarcodeCode(scanValue);
+ if(!saved||!wanted)return false;
+ if(saved===wanted)return true;
+ const a=saved.replace(/^0+(?=[0-9])/,'');
+ const b=wanted.replace(/^0+(?=[0-9])/,'');
+ return /^[0-9]+$/.test(saved)&&/^[0-9]+$/.test(wanted)&&a===b;
+}
+function findBarcodeProduct(data,code){
+ const products=Array.isArray(data&&data.products)?data.products:[];
+ const wanted=normalizeBarcodeCode(code);
+ if(!wanted)return null;
+ let found=products.find(p=>barcodeCodesMatch(p&&p.barcode,wanted));
+ if(found)return found;
+ // سجل مستقل للباركودات المحفوظة من نافذة الماسح، حتى لا تضيع المطابقة
+ // إذا أعادت شاشة المخزون تحميل قائمتها من نسخة بيانات قديمة.
+ try{
+  const registry=JSON.parse(localStorage.getItem('hisabati_barcode_registry_v1')||'{}');
+  const records=Array.isArray(registry.items)?registry.items:[];
+  found=records.find(p=>barcodeCodesMatch(p&&p.barcode,wanted));
+  if(found){
+   const inInventory=products.find(p=>p&&p.id===found.id);
+   return inInventory||found;
+  }
+ }catch(e){}
+ return null;
+}
+function openBarcodeDetails(product,code){
+ const modal=$('stockBarcodeDetailsModal');
+ if(!product||!modal)return false;
+ $('stockBarcodeDetailsName').textContent=String(product.name||'—');
+ $('stockBarcodeDetailsCode').textContent=String(product.barcode||code||'—');
+ $('stockBarcodeDetailsCountry').textContent=String(product.country||'—');
+ $('stockBarcodeAddModal')?.classList.remove('open');
+ $('stockBarcodeAddModal')?.setAttribute('aria-hidden','true');
+ modal.classList.add('open');modal.setAttribute('aria-hidden','false');
+ return true;
+}
+function closeBarcodeDetails(){
+ const modal=$('stockBarcodeDetailsModal');
+ if(modal){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');}
+}
 function showCode(code){
  stop().catch(()=>{});
+ const scannedCode=normalizeBarcodeCode(code);
  let db={};try{db=JSON.parse(localStorage.getItem('hisabati_inventory_v1')||'{}')}catch(e){}
  if(!Array.isArray(db.products))db.products=[];
- const product=db.products.find(p=>String(p.barcode||'').trim()===String(code).trim());
- if(product){$('stockBarcodeAddModal')?.classList.remove('open');result(product,code);return;}
- result(null,code);
+ const product=findBarcodeProduct(db,scannedCode);
  const addModal=$('stockBarcodeAddModal');
+ const detailsModal=$('stockBarcodeDetailsModal');
+ if(product){
+  if(addModal){addModal.classList.remove('open');addModal.setAttribute('aria-hidden','true');}
+  result(product,scannedCode);
+  openBarcodeDetails(product,scannedCode);
+  return;
+ }
+ result(null,scannedCode);
  if(addModal){
   $('stockBarcodeNewName').value='';
-  $('stockBarcodeNewCode').value=String(code||'');
+  $('stockBarcodeNewCode').value=scannedCode;
   $('stockBarcodeNewCountry').value='';
   addModal.classList.add('open');addModal.setAttribute('aria-hidden','false');
   setTimeout(()=>$('stockBarcodeNewName')?.focus(),80);
@@ -2437,8 +2521,13 @@ async function loadZxing(){
   const script=document.createElement('script');script.id='zxing-barcode-lib';script.src='https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js';script.onload=()=>window.ZXing&&window.ZXing.BrowserMultiFormatReader?resolve():reject(new Error('لم يتم العثور على قارئ ZXing'));script.onerror=()=>reject(new Error('تعذر تحميل قارئ ZXing؛ تحقق من الإنترنت'));document.head.appendChild(script);
  });
 }
+function getZbarApi(){
+ try{if(typeof zbarWasm!=='undefined'&&zbarWasm&&typeof zbarWasm.scanImageData==='function')return zbarWasm;}catch(e){}
+ if(window.zbarWasm&&typeof window.zbarWasm.scanImageData==='function')return window.zbarWasm;
+ return null;
+}
 async function loadZbar(){
- if(window.zbarWasm&&typeof window.zbarWasm.scanImageData==='function')return;
+ if(getZbarApi())return;
  const src='https://cdn.jsdelivr.net/npm/@undecaf/zbar-wasm@0.11.0/dist/index.js';
  let script=document.getElementById('zbar-wasm-lib');
  if(script&&script.dataset.zbarState==='error'){script.remove();script=null;}
@@ -2446,15 +2535,15 @@ async function loadZbar(){
   script=document.createElement('script');script.id='zbar-wasm-lib';script.src=src;
   script.dataset.zbarState='loading';document.head.appendChild(script);
  }
- if(window.zbarWasm&&typeof window.zbarWasm.scanImageData==='function')return;
+ if(getZbarApi())return;
  await new Promise((resolve,reject)=>{
   let settled=false;
   const finish=(error)=>{if(settled)return;settled=true;clearTimeout(timer);script.removeEventListener('load',onLoad);script.removeEventListener('error',onError);if(error)reject(error);else resolve();};
-  const onLoad=()=>window.zbarWasm&&typeof window.zbarWasm.scanImageData==='function'?(script.dataset.zbarState='ready',finish()):(script.dataset.zbarState='error',finish(new Error('تم تحميل ملف ZBar لكن واجهة القراءة غير متاحة')));
+  const onLoad=()=>getZbarApi()?(script.dataset.zbarState='ready',finish()):(script.dataset.zbarState='error',finish(new Error('تم تحميل ملف ZBar لكن واجهة القراءة غير متاحة')));
   const onError=()=>{script.dataset.zbarState='error';finish(new Error('تعذر تحميل محرك ZBar؛ تحقق من الإنترنت ثم أعد المحاولة'));};
   const timer=setTimeout(()=>{script.dataset.zbarState='error';finish(new Error('انتهت مهلة تحميل محرك ZBar؛ تحقق من الاتصال ثم أعد المحاولة'));},12000);
   script.addEventListener('load',onLoad,{once:true});script.addEventListener('error',onError,{once:true});
-  if(script.dataset.zbarState==='ready'||(window.zbarWasm&&typeof window.zbarWasm.scanImageData==='function'))onLoad();
+  if(script.dataset.zbarState==='ready'||getZbarApi())onLoad();
  });
 }
 async function startZbarVideo(video){
@@ -2471,7 +2560,8 @@ async function startZbarVideo(video){
     const w=video.videoWidth,h=video.videoHeight;
     canvas.width=w;canvas.height=h;ctx.drawImage(video,0,0,w,h);
     const imageData=ctx.getImageData(0,0,w,h);
-    const symbols=await window.zbarWasm.scanImageData(imageData);
+    const api=getZbarApi();if(!api)throw new Error('واجهة ZBar غير متاحة بعد التحميل');
+    const symbols=await api.scanImageData(imageData);
     if(symbols&&symbols.length){
      const symbol=symbols.find(x=>/EAN.?13|EAN-13/i.test(String(x.typeName||'')))||symbols[0];
      const code=String(symbol.decode?symbol.decode():symbol.rawData||'').trim();
@@ -2510,6 +2600,7 @@ async function startZbarDirect(){
  await improveCameraImage(video);
  await startZbarVideo(video);
  message('قارئ ZBar يعمل مباشرةً؛ وجّه الباركود داخل الإطار الأخضر وسيواصل القراءة دون تبديل المحرك.');
+
 }
 async function startZxing(){
  message('جارٍ تشغيل قارئ باركود بديل...');
@@ -2620,23 +2711,35 @@ document.addEventListener('click',e=>{
 });
 $('stockBarcodeAddSave')?.addEventListener('click',()=>{
  const name=String($('stockBarcodeNewName')?.value||'').trim();
- const code=String($('stockBarcodeNewCode')?.value||'').trim();
+ const code=normalizeBarcodeCode($('stockBarcodeNewCode')?.value||'');
  const country=String($('stockBarcodeNewCountry')?.value||'').trim();
  if(!name){alert('اكتب اسم الصنف أولاً.');$('stockBarcodeNewName')?.focus();return;}
  if(!code){alert('رقم الباركود غير موجود؛ أعد المسح.');return;}
  let data={};try{data=JSON.parse(localStorage.getItem('hisabati_inventory_v1')||'{}')}catch(e){}
  if(!Array.isArray(data.products))data.products=[];
- const duplicate=data.products.find(p=>String(p.barcode||'').trim()===code);
- if(duplicate){$('stockBarcodeAddModal')?.classList.remove('open');result(duplicate,code);message('هذا الباركود مسجل مسبقاً؛ تم عرض الصنف الموجود.');return;}
+ const duplicate=findBarcodeProduct(data,code);
+ if(duplicate){openBarcodeDetails(duplicate,code);message('هذا الباركود مسجل مسبقاً؛ تم عرض بيانات الصنف.');return;}
  data.products.push({id:'p'+Date.now(),name,category:'عام',qty:0,buy:0,sell:0,min:0,note:'',barcode:code,country,createdAt:new Date().toISOString().slice(0,10)});
  try{localStorage.setItem('hisabati_inventory_v1',JSON.stringify(data));}
  catch(error){alert('تعذر حفظ الصنف. تحقق من مساحة التخزين ثم حاول مرة أخرى.');return;}
- $('stockBarcodeAddModal')?.classList.remove('open');
- $('stockBarcodeAddModal')?.setAttribute('aria-hidden','true');
- $('stockBarcodeResult').innerHTML='<b>تمت إضافة الصنف بنجاح</b><br>الصنف: '+safe(name)+'<br>رقم الكود: '+safe(code)+'<br>بلد الصنع: '+safe(country||'—')+'<br>الكمية الحالية: 0';
+ let savedData={};try{savedData=JSON.parse(localStorage.getItem('hisabati_inventory_v1')||'{}')}catch(e){}
+ const savedProduct=findBarcodeProduct(savedData,code);
+ if(!savedProduct){alert('لم يتم التأكد من حفظ الصنف في المخزون. أعد المحاولة.');return;}
+ try{
+  const registry=JSON.parse(localStorage.getItem('hisabati_barcode_registry_v1')||'{}');
+  const items=Array.isArray(registry.items)?registry.items:[];
+  const index=items.findIndex(p=>barcodeCodesMatch(p&&p.barcode,code));
+  const record={id:savedProduct.id,name:savedProduct.name,barcode:savedProduct.barcode||code,country:savedProduct.country||country};
+  if(index>=0)items[index]=record;else items.push(record);
+  localStorage.setItem('hisabati_barcode_registry_v1',JSON.stringify({items}));
+ }catch(registryError){console.warn('تعذر تحديث سجل الباركود المستقل:',registryError);}
+ openBarcodeDetails(savedProduct,code);
+ message('تم حفظ الصنف بنجاح، وهذه بياناته المسجلة في المخزون.');
  window.hisabatiRefreshInventory?.();
 });
 $('stockBarcodeAddCancel')?.addEventListener('click',()=>{$('stockBarcodeAddModal')?.classList.remove('open');$('stockBarcodeAddModal')?.setAttribute('aria-hidden','true');});
+$('stockBarcodeDetailsClose')?.addEventListener('click',closeBarcodeDetails);
+$('stockBarcodeDetailsModal')?.addEventListener('click',e=>{if(e.target===$('stockBarcodeDetailsModal'))closeBarcodeDetails();});
 $('stockBarcodeNewName')?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('stockBarcodeAddSave')?.click();}});
 $('stockBarcodeNewCountry')?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('stockBarcodeAddSave')?.click();}});
 const addModal=$('stockBarcodeAddModal');if(addModal)addModal.addEventListener('click',e=>{if(e.target===addModal){addModal.classList.remove('open');addModal.setAttribute('aria-hidden','true');}});
@@ -3299,7 +3402,7 @@ document.addEventListener('click',function(event){const button=event.target&&eve
  'حساباتي':'Hesabati','إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG':'Balance & phone recharge · Sudanese Pound (SDG)',
  'قفل الآن':'Lock now','الرئيسية':'Home','حوالة جديد':'New transfer','كشف حساب':'Account statement',
  'التقارير':'Reports','مراجعة الحركات':'Review transactions','الشراكة':'Partnership',
- 'إدارة الطبلية':'Inventory management','إدارة الرصيد':'Balance management','قسم الهواتف':'Phones',
+ 'إدارة المتجر':'Inventory management','إدارة الرصيد':'Balance management','قسم الهواتف':'Phones',
  'الأصول':'Assets','بنكك':'Bankak','التحويلات البنكية':'Bank transfers','شبكة حساباتي':'Hesabati Network',
  'حفظ نسخة احتياطية':'Back up','تعديل أسماء الأيقونات':'Edit icon names','تقرير عام مفصل':'Detailed general report',
  'التقرير الشهري':'Monthly report','إعدادات التطبيق':'App settings','نبذة عنّا':'About us',
@@ -3404,7 +3507,7 @@ document.addEventListener('click',function(event){const button=event.target&&eve
  'عرض كشف الحساب':'View account statement','رمز QR':'QR code',
  'تصوير أو اختيار صورة رمز QR':'Take or choose a QR code image',
  'إدارة الرصيد · الخدمات والعمليات اليومية':'Balance management · Daily services and operations',
- 'إدارة الطبلية':'Inventory management','قسم الهواتف':'Phone section',
+ 'إدارة المتجر':'Inventory management','قسم الهواتف':'Phone section',
  'الأصول':'Assets','التحويلات البنكية':'Bank transfers','حفظ نسخة احتياطية':'Back up',
  'تعديل أسماء الأيقونات':'Edit icon names','إعدادات التطبيق':'App settings',
  'نبذة عنّا':'About us','مشاركة التطبيق':'Share app','تقييم التطبيق':'Rate app',
@@ -3421,7 +3524,7 @@ document.addEventListener('click',function(event){const button=event.target&&eve
  'سندنس':'Incoming voucher',
  'تواريخ':'Dates',
  'الهند':'Home',
- 'إدارة الطبلية':'Inventory management',
+ 'إدارة المتجر':'Inventory management',
  'مراجعة الحركات':'Review transactions',
  'السعر':'Price',
 
@@ -3891,3 +3994,5 @@ body.dark #menuInventorySheet article{background:#fff!important;color:#18231f!im
  };
 })();
 </script>
+
+
