@@ -1202,43 +1202,10 @@ $('changePinForm').addEventListener('submit',async e=>{
  window.addEventListener('pageshow',keepLockVisible);
  document.addEventListener('visibilitychange',keepLockVisible);
 </script>
-<script id="hesabati-force-update-v13">
+<script id="hesabati-force-update-v14">
 (function(){
   if(!('serviceWorker' in navigator))return;
-  const RELOAD_KEY='hesabati_sw_controller_reload_v14';
-  let reloading=false,pendingReload=false,registration=null,checking=false;
-  function isEditing(){
-    const el=document.activeElement;
-    return !!(el && (
-      el.isContentEditable ||
-      /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName) ||
-      el.closest && el.closest('[contenteditable="true"]')
-    ));
-  }
-  function reloadWhenSafe(){
-    if(reloading)return;
-    if(document.hidden || isEditing()){
-      pendingReload=true;
-      return;
-    }
-    try{
-      if(sessionStorage.getItem(RELOAD_KEY)==='1')return;
-      sessionStorage.setItem(RELOAD_KEY,'1');
-    }catch(_){}
-    reloading=true;
-    const url=new URL(location.href);
-    url.searchParams.set('app_refresh',String(Date.now()));
-    location.replace(url.toString());
-  }
-  function applyPendingReload(){
-    if(pendingReload && !document.hidden && !isEditing())reloadWhenSafe();
-  }
-  navigator.serviceWorker.addEventListener('controllerchange',function(){
-    pendingReload=true;
-    reloadWhenSafe();
-  });
-  document.addEventListener('focusout',function(){setTimeout(applyPendingReload,250);},true);
-  document.addEventListener('visibilitychange',applyPendingReload);
+  let registration=null,checking=false;
   async function updateApp(){
     if(checking || !navigator.onLine)return;
     checking=true;
@@ -1260,18 +1227,17 @@ $('changePinForm').addEventListener('submit',async e=>{
     }catch(error){console.warn('Hesabati automatic update check failed',error);}
     finally{checking=false;}
   }
-  function start(){
-    updateApp();
-    window.setInterval(function(){if(!document.hidden)updateApp();},60000);
-  }
+  // لا نعيد تحميل التطبيق تلقائياً عند تفعيل نسخة جديدة؛ إعادة التحميل
+  // أثناء العمل كانت تعيد إظهار شاشة كلمة السر بعد حفظ السند.
+  navigator.serviceWorker.addEventListener('controllerchange',function(){
+    document.documentElement.dataset.appUpdateReady='true';
+  });
+  function start(){updateApp();window.setInterval(function(){if(!document.hidden)updateApp();},60000);}
   if(document.readyState==='complete')start();
   else window.addEventListener('load',start,{once:true});
   window.addEventListener('online',updateApp);
   window.addEventListener('focus',updateApp);
-  window.addEventListener('pageshow',function(){
-    try{sessionStorage.removeItem(RELOAD_KEY);}catch(_){}
-    updateApp();
-  });
+  window.addEventListener('pageshow',updateApp);
 })();
 </script>
 <script>(function(){const targets={phonesHub:function(){return document.getElementById("phonesHub")},stock:function(){return document.getElementById("stockCard")},transfer:function(){return document.getElementById("transferCard")},expenses:function(){return document.querySelector("#expenses .card")},creditHistory:function(){return document.getElementById("creditHistoryBlock")},recharge:function(){return document.getElementById("rechargeCard")},rechargeHistory:function(){return document.getElementById("rechargeHistoryBlock")},serviceHome:function(){document.getElementById('serviceFormTitle').textContent='تسجيل خدمة زبون';return document.getElementById('serviceCard')},serviceZain:function(){document.getElementById('serviceNetwork').value='زين';document.getElementById('serviceFormTitle').textContent='تسجيل خدمة زين';return document.getElementById('serviceCard')},serviceSudani:function(){document.getElementById('serviceNetwork').value='سوداني';document.getElementById('serviceFormTitle').textContent='تسجيل خدمة سوداني';return document.getElementById('serviceCard')}};document.querySelectorAll("[data-phone-menu]").forEach(function(b){b.addEventListener("click",function(){const p=document.getElementById("phonesHub");if(p)p.classList.remove("quick-recharge","quick-rechargeHistory");window.scrollTo({top:0,behavior:"smooth"});});});
