@@ -2173,6 +2173,40 @@ button:not(.primary):not(.active):not(.danger){color:inherit}
 .general-a4-paper,.a4-paper,.print-paper,
 body.printing *{background:#fff!important;color:#111!important}
 </style>
+
+<style id="remaining-products-close-fix">
+#remainingProductsModal #closeRemainingProducts{position:relative!important;z-index:100!important;pointer-events:auto!important;touch-action:manipulation!important;cursor:pointer!important}
+#remainingProductsModal .remaining-products-head,#remainingProductsModal .remaining-products-actions{position:relative!important;z-index:2!important}
+</style>
+<script id="remaining-products-close-handler">
+(function(){
+ function closeRemainingProductsCard(){
+  const modal=document.getElementById('remainingProductsModal');
+  if(!modal)return;
+  modal.style.display='none';
+  const view=modal.closest('.inventory-view');
+  if(view)view.classList.remove('active','voucher-modal-open','inbound-modal-open','sale-invoice-modal-open');
+  const menu=document.getElementById('inventorySectionMenu');
+  if(menu)menu.style.display='grid';
+  window.scrollTo({top:0,behavior:'smooth'});
+ }
+ document.addEventListener('click',function(event){
+  const target=event.target;
+  if(!target||!target.closest)return;
+  if(target.closest('#closeRemainingProducts')){
+   event.preventDefault();
+   event.stopPropagation();
+   closeRemainingProductsCard();
+  }
+ },true);
+ document.addEventListener('keydown',function(event){
+  if(event.key==='Escape'){
+   const modal=document.getElementById('remainingProductsModal');
+   if(modal&&modal.style.display!=='none')closeRemainingProductsCard();
+  }
+ });
+})();
+</script>
 </body></html>';
   w.document.open();w.document.write(html);w.document.close();
   setTimeout(()=>{try{w.focus();w.print();}catch(e){}},350);
