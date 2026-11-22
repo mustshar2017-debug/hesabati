@@ -954,7 +954,7 @@ body:not(.dark) .app-menu,body:not(.dark) .app-menu button,body:not(.dark) .app-
 <div class="inventory-view" data-inventory-view="products">
 <div id="remainingProductsModal" role="dialog" aria-modal="true" aria-labelledby="remainingProductsTitle" style="position:fixed;inset:0;z-index:10060;background:#102f34d9;display:none;align-items:center;justify-content:center;padding:10px">
  <div class="remaining-products-paper">
-  <div class="remaining-products-head"><div><h2 id="remainingProductsTitle">كرت ميزانية الأصناف المتبقية بالمخزن</h2><small>كشف الكميات المتاحة وقيمتها الإجمالية</small><div class="remaining-products-count">عدد الأصناف المتبقية: <strong id="remainingProductsCount">0</strong></div></div><div class="remaining-products-actions"><button type="button" class="primary" id="printRemainingProducts">🖨️ طباعة</button><button type="button" class="secondary" id="closeRemainingProducts">إغلاق ✕</button></div></div>
+  <div class="remaining-products-head"><div><h2 id="remainingProductsTitle">كرت ميزانية الأصناف المتبقية بالمخزن</h2><small>كشف الكميات المتاحة وقيمتها الإجمالية</small><div class="remaining-products-count">عدد الأصناف المتبقية: <strong id="remainingProductsCount">0</strong></div></div><div class="remaining-products-actions"><button type="button" class="primary" id="printRemainingProducts">🖨️ طباعة</button><button type="button" class="secondary" id="shareRemainingProducts">↗ مشاركة</button><button type="button" class="secondary" id="closeRemainingProducts">إغلاق ✕</button></div></div>
   <div class="remaining-products-table-wrap"><table class="remaining-products-table"><thead><tr><th>م</th><th>اسم الصنف</th><th>الكمية</th><th>السعر</th><th>إجمالي السعر</th></tr></thead><tbody id="remainingProductsRows"><tr><td colspan="5">جاري تحميل الأصناف...</td></tr></tbody></table></div>
   <div class="remaining-products-grand">إجمالي الميزانية العامة للمخزون: <strong id="remainingProductsGrandTotal">0</strong> <span>SDG</span></div>
   <div class="remaining-products-foot">حساباتي · كرت ميزانية المخزون</div>
@@ -2011,10 +2011,32 @@ $('invoiceForm').addEventListener('input',updateSaleInvoiceTotal);$('invoiceForm
   const copy=paper.cloneNode(true);
   copy.querySelector('#closeRemainingProducts')?.remove();
   copy.querySelector('#printRemainingProducts')?.remove();
+  copy.querySelector('#shareRemainingProducts')?.remove();
   const w=window.open('','_blank');
   if(!w){alert('يرجى السماح بالنوافذ المنبثقة حتى تتم الطباعة.');return;}
   w.document.write('<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>كرت ميزانية الأصناف المتبقية بالمخزن</title><style>@page{size:A4 portrait;margin:10mm}*{box-sizing:border-box;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}body{margin:0;padding:0;font-family:Arial,Tahoma,sans-serif;background:#fff;color:#29240b;direction:rtl}.remaining-products-paper{width:100%;min-height:270mm;padding:12mm;background:#fff2a6;border:2px solid #d7b94c;color:#29240b}.remaining-products-head{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:12px;border-bottom:2px solid #c8a936}.remaining-products-head h2{margin:0 0 5px;font-size:22px;color:#493b08}.remaining-products-head small{font-size:12px;color:#675719}.remaining-products-count{margin-top:8px;font-size:12px}.remaining-products-table-wrap{padding:12px 0}.remaining-products-table{width:100%;border-collapse:collapse;table-layout:fixed;text-align:center}.remaining-products-table th,.remaining-products-table td{border:1px solid #9e842e;padding:7px 4px;font-size:10pt;color:#29240b;background:#fff9d9;overflow-wrap:anywhere}.remaining-products-table th{background:#e8cf68;font-weight:900}.remaining-products-table th:nth-child(1){width:8%}.remaining-products-table th:nth-child(2){width:34%}.remaining-products-table th:nth-child(3),.remaining-products-table th:nth-child(4){width:18%}.remaining-products-table th:nth-child(5){width:22%}.remaining-products-grand{margin-top:18px;padding:13px;background:#f3d75e;border:2px solid #98751a;text-align:center;font-size:16pt;font-weight:900;color:#392b00}.remaining-products-grand strong{font-size:21pt}.remaining-products-foot{margin-top:12px;padding-top:9px;border-top:1px solid #c8a936;text-align:center;font-size:10pt;color:#675719}@media print{body{background:#fff}.remaining-products-paper{min-height:0!important;padding:8mm!important}}</style></head><body>'+copy.outerHTML+'<script>window.onload=()=>{window.focus();window.print();};<\/script></body></html>');
   w.document.close();
+ });
+ $('shareRemainingProducts')?.addEventListener('click',async()=>{
+  const table=document.querySelector('#remainingProductsModal .remaining-products-table');
+  if(!table)return;
+  const title=$('remainingProductsTitle')?.textContent||'كرت ميزانية الأصناف المتبقية بالمخزن';
+  const rows=Array.from(table.querySelectorAll('tr')).map(tr=>Array.from(tr.cells).map(td=>td.textContent.trim()).join(' | ')).join('\\n');
+  const count=$('remainingProductsCount')?.textContent||'0';
+  const total=$('remainingProductsGrandTotal')?.textContent||'0';
+  const message=title+'\\nعدد الأصناف: '+count+'\\n'+rows+'\\nإجمالي الميزانية العامة للمخزون: '+total+' SDG\\nحساباتي';
+  if(navigator.share){
+   try{await navigator.share({title:title,text:message});return;}
+   catch(error){if(error&&error.name==='AbortError')return;}
+  }
+  try{
+   if(navigator.clipboard&&navigator.clipboard.writeText){
+    await navigator.clipboard.writeText(message);
+    alert('تم نسخ كشف المخزون. يمكنك لصقه في واتساب أو أي تطبيق مشاركة.');
+    return;
+   }
+  }catch(error){}
+  window.prompt('انسخ كشف المخزون للمشاركة:',message);
  });
  document.querySelectorAll('#inventory [data-inv-menu]').forEach(b=>b.addEventListener('click',showInventoryMenu));
  document.querySelectorAll('#home [data-doc-panel]').forEach(b=>b.addEventListener('click',()=>{const panel=b.dataset.docPanel,target=b.dataset.docTarget;document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$(panel)?.classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab===panel));if(panel==='inventory'){const map={stockInForm:'inboundEntry',stockOutForm:'outbound',invoiceForm:'invoice'};openInventoryView(map[target]||'products')}else{window.scrollTo({top:0,behavior:'smooth'});setTimeout(()=>$(target)?.scrollIntoView({behavior:'smooth',block:'start'}),120)}}));
