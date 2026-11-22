@@ -2437,8 +2437,13 @@ async function loadZxing(){
   const script=document.createElement('script');script.id='zxing-barcode-lib';script.src='https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js';script.onload=()=>window.ZXing&&window.ZXing.BrowserMultiFormatReader?resolve():reject(new Error('لم يتم العثور على قارئ ZXing'));script.onerror=()=>reject(new Error('تعذر تحميل قارئ ZXing؛ تحقق من الإنترنت'));document.head.appendChild(script);
  });
 }
+function getZbarApi(){
+ try{if(typeof zbarWasm!=='undefined'&&zbarWasm&&typeof zbarWasm.scanImageData==='function')return zbarWasm;}catch(e){}
+ if(window.zbarWasm&&typeof window.zbarWasm.scanImageData==='function')return window.zbarWasm;
+ return null;
+}
 async function loadZbar(){
- if(window.zbarWasm&&typeof window.zbarWasm.scanImageData==='function')return;
+ if(getZbarApi())return;
  const src='https://cdn.jsdelivr.net/npm/@undecaf/zbar-wasm@0.11.0/dist/index.js';
  let script=document.getElementById('zbar-wasm-lib');
  if(script&&script.dataset.zbarState==='error'){script.remove();script=null;}
@@ -2446,15 +2451,15 @@ async function loadZbar(){
   script=document.createElement('script');script.id='zbar-wasm-lib';script.src=src;
   script.dataset.zbarState='loading';document.head.appendChild(script);
  }
- if(window.zbarWasm&&typeof window.zbarWasm.scanImageData==='function')return;
+ if(getZbarApi())return;
  await new Promise((resolve,reject)=>{
   let settled=false;
   const finish=(error)=>{if(settled)return;settled=true;clearTimeout(timer);script.removeEventListener('load',onLoad);script.removeEventListener('error',onError);if(error)reject(error);else resolve();};
-  const onLoad=()=>window.zbarWasm&&typeof window.zbarWasm.scanImageData==='function'?(script.dataset.zbarState='ready',finish()):(script.dataset.zbarState='error',finish(new Error('تم تحميل ملف ZBar لكن واجهة القراءة غير متاحة')));
+  const onLoad=()=>getZbarApi()?(script.dataset.zbarState='ready',finish()):(script.dataset.zbarState='error',finish(new Error('تم تحميل ملف ZBar لكن واجهة القراءة غير متاحة')));
   const onError=()=>{script.dataset.zbarState='error';finish(new Error('تعذر تحميل محرك ZBar؛ تحقق من الإنترنت ثم أعد المحاولة'));};
   const timer=setTimeout(()=>{script.dataset.zbarState='error';finish(new Error('انتهت مهلة تحميل محرك ZBar؛ تحقق من الاتصال ثم أعد المحاولة'));},12000);
   script.addEventListener('load',onLoad,{once:true});script.addEventListener('error',onError,{once:true});
-  if(script.dataset.zbarState==='ready'||(window.zbarWasm&&typeof window.zbarWasm.scanImageData==='function'))onLoad();
+  if(script.dataset.zbarState==='ready'||getZbarApi())onLoad();
  });
 }
 async function startZbarVideo(video){
@@ -2471,7 +2476,8 @@ async function startZbarVideo(video){
     const w=video.videoWidth,h=video.videoHeight;
     canvas.width=w;canvas.height=h;ctx.drawImage(video,0,0,w,h);
     const imageData=ctx.getImageData(0,0,w,h);
-    const symbols=await window.zbarWasm.scanImageData(imageData);
+    const api=getZbarApi();if(!api)throw new Error('واجهة ZBar غير متاحة بعد التحميل');
+    const symbols=await api.scanImageData(imageData);
     if(symbols&&symbols.length){
      const symbol=symbols.find(x=>/EAN.?13|EAN-13/i.test(String(x.typeName||'')))||symbols[0];
      const code=String(symbol.decode?symbol.decode():symbol.rawData||'').trim();
