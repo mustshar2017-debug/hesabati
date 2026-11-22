@@ -1855,12 +1855,7 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
    alert('تم تجهيز صورة الفاتورة وحفظها. افتح واتساب وأرفق الصورة من التنزيلات لإرسالها.');
   }
  }
- $('whatsappSaleInvoice').addEventListener('click',()=>{
-  if(lastSaleInvoice){sendSaleWhatsApp(lastSaleInvoice.d,lastSaleInvoice.items,lastSaleInvoice.invoiceNo);return}
-  const f=$('invoiceForm');if(!f.reportValidity())return;
-  const items=getSaleDraft();if(!validateSaleItems(items))return;
-  sendSaleWhatsApp({customer:f.elements.customer.value,payment:f.elements.payment.value,date:f.elements.date.value},items,'مسودة');
- });
+
  function validateSaleItems(items){
   if(!items.length){alert('أدخل صنفاً واحداً على الأقل مع الكمية والسعر.');return false}
   const requested=new Map();
@@ -1883,7 +1878,24 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
  $('invoiceForm').addEventListener('submit',e=>{e.preventDefault();saveSaleInvoiceNow();});
 $('invoiceForm').addEventListener('input',updateSaleInvoiceTotal);$('invoiceForm').addEventListener('change',updateSaleInvoiceTotal);
  $('closeSaleInvoice').addEventListener('click',showInventoryMenu);$('closeOutboundVoucher').addEventListener('click',showInventoryMenu);
- $('printSaleInvoice').addEventListener('click',()=>{const f=$('invoiceForm');if(!f.reportValidity())return;const items=getSaleDraft();if(!validateSaleItems(items))return;printSaleDocument({customer:f.elements.customer.value,payment:f.elements.payment.value,date:f.elements.date.value},items,'مسودة')});
+ $('printSaleInvoice').onclick=function(e){
+  e.preventDefault();
+  try{
+   const f=$('invoiceForm');if(!f){alert('نموذج الفاتورة غير موجود.');return;}
+   if(!f.reportValidity())return;
+   const items=getSaleDraft();if(!validateSaleItems(items))return;
+   printSaleDocument({customer:f.elements.customer.value,payment:f.elements.payment.value,date:f.elements.date.value},items,'مسودة');
+  }catch(error){console.error('Sale print error:',error);alert('حدث خطأ أثناء تجهيز الطباعة: '+(error.message||error));}
+ };
+ $('whatsappSaleInvoice').onclick=function(e){
+  e.preventDefault();
+  try{
+   const f=$('invoiceForm');if(!f){alert('نموذج الفاتورة غير موجود.');return;}
+   if(!f.reportValidity())return;
+   const items=getSaleDraft();if(!validateSaleItems(items))return;
+   Promise.resolve(sendSaleWhatsApp({customer:f.elements.customer.value,payment:f.elements.payment.value,date:f.elements.date.value},items,'مسودة')).catch(error=>{console.error('Sale share error:',error);alert('حدث خطأ أثناء تجهيز المشاركة: '+(error.message||error));});
+  }catch(error){console.error('Sale share error:',error);alert('حدث خطأ أثناء تجهيز المشاركة: '+(error.message||error));}
+ };
 
  
  
