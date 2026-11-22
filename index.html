@@ -1320,8 +1320,8 @@ function openAppSection(id){
   $('appMenu').hidden=true;$('menuTrigger').setAttribute('aria-expanded','false');
   const inventoryTab=document.querySelector('#nav button[data-tab="inventory"]');
   if(inventoryTab)inventoryTab.click();
-  const stockListButton=document.querySelector('#inventorySectionMenu [data-inv-view="stocklist"]');
-  if(stockListButton)stockListButton.click();
+  const productsButton=document.querySelector('#inventorySectionMenu [data-inv-view="products"]');
+  if(productsButton)productsButton.click();
   return;
  }
  if(id==='charts'){
