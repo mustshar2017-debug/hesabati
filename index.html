@@ -1109,7 +1109,7 @@ body:not(.dark) .app-menu,body:not(.dark) .app-menu button,body:not(.dark) .app-
 </div>
 </div><div class="inventory-view" data-inventory-view="inboundEntry"><div class="inbound-modal-card"><div class="inbound-modal-head"><div><strong>📥 سند الوارد</strong><small>فاتورة إدخال بضاعة للمخزون</small></div><button type="button" class="secondary" id="closeInboundInvoice">إغلاق ✕</button></div><form id="stockInForm">
 <div class="inbound-table-wrap"><table class="inbound-lines"><thead><tr><th>اسم الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>السعر</th><th></th></tr></thead><tbody id="inboundInvoiceRows"><tr class="inbound-line"><td><select name="product[]" class="product-options" required></select></td><td><input name="qty[]" type="number" min="1" step="1" value="1" required></td><td><input name="cost[]" type="number" min="0" step="0.01" required></td><td class="inbound-line-total">0</td><td><button type="button" class="danger remove-inbound-line" aria-label="حذف الصف">×</button></td></tr></tbody></table></div>
-<div class="inbound-summary"><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="secondary" id="addInboundLine">＋ إضافة صنف للسند</button><button type="button" class="primary" id="openInboundProductModal">＋ إضافة اسم صنف جديد</button></div><strong>إجمالي الفاتورة: <span id="inboundGrandTotal">0</span> SDG</strong></div><div id="inboundProductModal" hidden style="position:fixed;inset:0;z-index:10080;background:#102f34b8;align-items:center;justify-content:center;padding:16px"><div style="width:min(100%,420px);background:#fff;border-radius:16px;padding:18px;box-shadow:0 15px 45px #0004"><h3 style="margin:0 0 12px">إضافة اسم صنف جديد</h3><label for="inboundNewProductName">اسم الصنف</label><input id="inboundNewProductName" type="text" placeholder="اكتب اسم الصنف الجديد" autocomplete="off"><div style="display:flex;gap:8px;margin-top:14px"><button type="button" class="primary" id="saveInboundNewProduct">حفظ الصنف</button><button type="button" class="secondary" id="cancelInboundNewProduct">إلغاء</button></div></div></div>
+<div class="inbound-summary"><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="secondary" id="addInboundLine">＋ إضافة صنف للسند</button><button type="button" class="primary" id="openInboundProductModal">＋ إضافة اسم صنف جديد</button></div><strong>إجمالي الفاتورة: <span id="inboundGrandTotal">0</span> SDG</strong></div><div id="inboundProductModal" hidden style="position:fixed;inset:0;z-index:10080;background:#102f34b8;align-items:center;justify-content:center;padding:16px"><div style="width:min(100%,420px);background:#fff;border-radius:16px;padding:18px;box-shadow:0 15px 45px #0004"><h3 style="margin:0 0 12px">إضافة اسم صنف جديد</h3><label for="inboundNewProductName">اسم الصنف</label><input id="inboundNewProductName" type="text" placeholder="اكتب اسم الصنف الجديد" autocomplete="off"><label for="inboundNewProductUnit" style="margin-top:12px">تصنيف الوحدة</label><select id="inboundNewProductUnit"><option value="حبة">حبة</option><option value="كرتونة">كرتونة</option><option value="طقم">طقم</option></select><div style="display:flex;gap:8px;margin-top:14px"><button type="button" class="primary" id="saveInboundNewProduct">حفظ الصنف</button><button type="button" class="secondary" id="cancelInboundNewProduct">إلغاء</button></div></div></div>
 <div class="inbound-meta"><div><label>رقم الفاتورة</label><input name="invoiceNo" required placeholder="رقم فاتورة المورد"></div><div><label>اسم المورد</label><input name="supplier" placeholder="اسم المورد"></div><div><label>حالة الشراء</label><select name="purchasePayment"><option>نقدي</option><option>آجل</option></select></div><div><label>التاريخ</label><input name="date" type="date" required></div><div><label>ملاحظات</label><input name="note"></div></div>
 <button class="primary inbound-save">حفظ سند الوارد</button></form></div></div><div class="inventory-view" data-inventory-view="inbound">
  <div class="inbound-report-modal">
@@ -1896,13 +1896,13 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
  const save=()=>localStorage.setItem(KEY,JSON.stringify(db));
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  function refresh(){
-  const opts=db.products.map(p=>'<option value="'+p.id+'">'+esc(p.name)+' (متاح '+p.qty+')</option>').join('');
+  const opts=db.products.map(p=>'<option value="'+p.id+'">'+esc(p.name)+' · '+esc(p.unitType||'غير محدد')+' (متاح '+p.qty+')</option>').join('');
   document.querySelectorAll('.product-options').forEach(s=>{const old=s.value;s.innerHTML=opts;s.value=old&&db.products.some(p=>p.id===old)?old:(db.products[0]?.id||'')});
   if($('invProductCount'))$('invProductCount').textContent=db.products.length;
   if($('invUnitCount'))$('invUnitCount').textContent=fmt(db.products.reduce((a,p)=>a+p.qty,0));
   if($('invCostValue'))$('invCostValue').textContent=fmt(db.products.reduce((a,p)=>a+p.qty*p.buy,0))+' SDG';
   if($('invLowCount'))$('invLowCount').textContent=db.products.filter(p=>p.qty<=p.min).length;
-  $('inventoryRows').innerHTML=db.products.map((p,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(p.name)+'</td><td>'+esc(p.category)+'</td><td class="'+(p.qty<=p.min?'negative':'')+'">'+p.qty+'</td><td>'+fmt(p.buy)+'</td><td>'+fmt(p.sell)+'</td><td>'+fmt(p.qty*p.buy)+'</td><td>'+esc(p.barcode||'—')+'</td><td><button type="button" class="stock-list-barcode-btn" data-set-barcode="'+p.id+'">تسجيل الباركود</button> <button type="button" class="stock-list-edit-btn" data-edit-product="'+p.id+'">تعديل</button></td></tr>').join('')||'<tr><td colspan="9" class="empty">لا توجد أصناف مسجلة بعد</td></tr>';
+  $('inventoryRows').innerHTML=db.products.map((p,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(p.name)+'</td><td>'+esc(p.category)+'<br><small>الوحدة: '+esc(p.unitType||'—')+'</small></td><td class="'+(p.qty<=p.min?'negative':'')+'">'+p.qty+'</td><td>'+fmt(p.buy)+'</td><td>'+fmt(p.sell)+'</td><td>'+fmt(p.qty*p.buy)+'</td><td>'+esc(p.barcode||'—')+'</td><td><button type="button" class="stock-list-barcode-btn" data-set-barcode="'+p.id+'">تسجيل الباركود</button> <button type="button" class="stock-list-edit-btn" data-edit-product="'+p.id+'">تعديل</button></td></tr>').join('')||'<tr><td colspan="9" class="empty">لا توجد أصناف مسجلة بعد</td></tr>';
   const sold=db.moves.filter(m=>m.type==='بيع');
   $('slowStockRows').innerHTML=db.products.filter(p=>p.qty>0&&!sold.some(m=>m.product===p.id&&Date.now()-new Date(m.date).getTime()<30*86400000)).map(p=>{const last=sold.filter(m=>m.product===p.id).sort((a,b)=>b.date.localeCompare(a.date))[0];return '<tr><td>'+esc(p.name)+'</td><td>'+p.qty+'</td><td>'+(last?esc(last.date):'لم تبع من قبل')+'</td></tr>'}).join('')||'<tr><td colspan="3" class="empty">لا توجد بضائع راكدة حالياً</td></tr>';
   const debts={};db.invoices.filter(i=>i.payment==='آجل').forEach(i=>{const n=(i.customer||'عميل غير محدد').trim();debts[n]=(debts[n]||0)+Number(i.value||0)});db.customerPayments.forEach(p=>{debts[p.customer]=(debts[p.customer]||0)-p.amount});
@@ -4200,6 +4200,8 @@ body.dark #menuInventorySheet article{background:#fff!important;color:#18231f!im
   event.preventDefault();event.stopImmediatePropagation();
   const input=document.getElementById('inboundNewProductName');
   const modal=document.getElementById('inboundProductModal');
+  const unitSelect=document.getElementById('inboundNewProductUnit');
+  const unitType=String(unitSelect&&unitSelect.value||'حبة');
   const name=String(input&&input.value||'').trim();
   if(!name){alert('اكتب اسم الصنف أولاً.');if(input)input.focus();return;}
   try{
@@ -4210,11 +4212,11 @@ body.dark #menuInventorySheet article{background:#fff!important;color:#18231f!im
    if(!Array.isArray(data.products))data.products=[];
    let product=data.products.find(function(p){return String(p&&p.name||'').trim().toLocaleLowerCase()===name.toLocaleLowerCase();});
    const duplicate=!!product;
-   if(!product){product={id:'p'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name:name,category:'عام',qty:0,buy:0,sell:0,min:0,note:'',createdAt:new Date().toISOString().slice(0,10)};data.products.push(product);}
+   if(!product){product={id:'p'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name:name,category:'عام',unitType:unitType,qty:0,buy:0,sell:0,min:0,note:'',createdAt:new Date().toISOString().slice(0,10)};data.products.push(product);}
    localStorage.setItem(key,JSON.stringify(data));
    document.querySelectorAll('#stockInForm select[name="product[]"], #stockInForm select.product-options').forEach(function(select){
     let option=Array.from(select.options).find(function(o){return o.value===String(product.id);});
-    if(!option){option=document.createElement('option');option.value=product.id;option.textContent=product.name+' (متاح '+(product.qty||0)+')';select.appendChild(option);}
+    if(!option){option=document.createElement('option');option.value=product.id;option.textContent=product.name+' · '+(product.unitType||'غير محدد')+' (متاح '+(product.qty||0)+')';select.appendChild(option);}
     if(select===document.querySelector('#stockInForm select[name="product[]"]'))select.value=String(product.id);
    });
    if(typeof window.hisabatiRefreshInventory==='function'){try{window.hisabatiRefreshInventory();}catch(refreshError){console.error('Inventory refresh failed:',refreshError);}}
