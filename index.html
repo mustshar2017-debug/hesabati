@@ -1310,8 +1310,16 @@ function openAppSection(id){
  if(id==='restore'){$('appMenu').hidden=true;$('menuTrigger').setAttribute('aria-expanded','false');$('restoreFile').click();return;}
  if(id==='productsFile'){
   $('appMenu').hidden=true;$('menuTrigger').setAttribute('aria-expanded','false');
-  const inventoryTab=document.querySelector('#nav button[data-tab="inventory"]');
-  if(inventoryTab)inventoryTab.click();
+  // الانتقال إلى المتجر مباشرة دون محاكاة ضغطة زر «كشف حساب»
+  // لأن زر التنقل نفسه مرتبط بفتح نافذة كشف الحساب.
+  const accountStatementModal=document.getElementById('accountStatementModal');
+  if(accountStatementModal)accountStatementModal.style.display='none';
+  const inventoryPanel=document.getElementById('inventory');
+  document.querySelectorAll('.panel').forEach(panel=>{
+   panel.classList.toggle('active',panel===inventoryPanel);
+   panel.classList.remove('quick-stock','quick-transfer','quick-creditHistory','quick-recharge','quick-rechargeHistory','quick-expenses');
+  });
+  document.querySelectorAll('#nav button').forEach(button=>button.classList.toggle('active',button.dataset.tab==='inventory'));
   const productsButton=document.querySelector('#inventorySectionMenu [data-inv-view="products"]');
   if(productsButton)productsButton.click();
   return;
