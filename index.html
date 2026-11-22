@@ -3614,6 +3614,19 @@ document.addEventListener('click',function(event){const button=event.target&&eve
    v.style.setProperty('display',active?(['inboundEntry','outbound','invoice','inbound','stocklist'].includes(name)?'flex':'block'):'none','important');
    v.style.setProperty('visibility',active?'visible':'hidden','important');
   });
+  const productsModal=document.getElementById('remainingProductsModal');
+  if(productsModal){
+   productsModal.style.display=name==='products'?'flex':'none';
+   if(name==='products'){
+    const body=document.getElementById('remainingProductsRows');
+    if(body){
+     let products=[];try{const data=JSON.parse(localStorage.getItem('hisabati_inventory_v1')||'{}');products=Array.isArray(data.products)?data.products.filter(function(p){return Number(p.qty||0)>0;}):[];}catch(_){}
+     body.replaceChildren();
+     if(!products.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=3;td.textContent='لا توجد أصناف بكمية متبقية في المخزون';td.style.padding='20px';td.style.textAlign='center';tr.appendChild(td);body.appendChild(tr);}
+     products.forEach(function(p){const tr=document.createElement('tr');[p.name||'—',Number(p.qty||0).toLocaleString('en-US'),Number(p.sell||0).toLocaleString('en-US')].forEach(function(value){const td=document.createElement('td');td.textContent=String(value);td.style.padding='12px';td.style.border='1px solid #d6e5dd';tr.appendChild(td);});body.appendChild(tr);});
+    }
+   }
+  }
   if(name==='invoice'){
    const rows=document.getElementById('saleInvoiceRows');
    if(rows){let products=[];try{products=JSON.parse(localStorage.getItem('hisabati_inventory_v1')||'{}').products||[];}catch(_){}
