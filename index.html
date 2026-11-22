@@ -3649,7 +3649,7 @@ document.addEventListener('click',function(event){const button=event.target&&eve
    v.classList.toggle('active',active);
    v.classList.toggle('voucher-modal-open',active&&['inboundEntry','outbound','invoice','inbound'].includes(name));
    v.classList.toggle('inbound-report-modal-open',active&&name==='stocklist');
-   v.style.setProperty('display',active?'block':'none','important');
+   v.style.setProperty('display',active?(['inbound','stocklist'].includes(name)?'flex':'block'):'none','important');
   });
   const selected=root.querySelector('.inventory-view[data-inventory-view="'+name+'"]');
   if(selected){selected.hidden=false;selected.style.visibility='visible';}
