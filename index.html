@@ -1308,7 +1308,15 @@ function loadIconNames(){let names={};try{const saved=JSON.parse(localStorage.ge
 function buildIconNameEditor(){const form=$('iconNamesForm');form.innerHTML='';iconNameTargets().forEach((x,i)=>{const current=x.quick?(x.label.firstChild&&x.label.firstChild.nodeType===3?x.label.firstChild.nodeValue.trim():x.original):x.label.textContent.trim();const wrap=document.createElement('div');const lab=document.createElement('label');lab.textContent=(x.quick?'اختصار داخلي: ':'أيقونة الواجهة: ')+current;const input=document.createElement('input');input.name=x.key;input.value=current;input.maxLength=35;wrap.append(lab,input);form.append(wrap);});}
 function openAppSection(id){
  if(id==='restore'){$('appMenu').hidden=true;$('menuTrigger').setAttribute('aria-expanded','false');$('restoreFile').click();return;}
- if(id==='productsFile'||id==='stockFile'){
+ if(id==='productsFile'){
+  $('appMenu').hidden=true;$('menuTrigger').setAttribute('aria-expanded','false');
+  const inventoryTab=document.querySelector('#nav button[data-tab="inventory"]');
+  if(inventoryTab)inventoryTab.click();
+  const productsButton=document.querySelector('#inventorySectionMenu [data-inv-view="products"]');
+  if(productsButton)productsButton.click();
+  return;
+ }
+ if(id==='stockFile'){
   $('appMenu').hidden=true;$('menuTrigger').setAttribute('aria-expanded','false');
   let sheet=$('menuInventorySheet');if(!sheet){sheet=document.createElement('div');sheet.id='menuInventorySheet';sheet.style.cssText='position:fixed;inset:0;z-index:12000;background:#102f34ee;overflow:auto;padding:14px;display:none;direction:rtl';document.body.appendChild(sheet);}
   const escText=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
