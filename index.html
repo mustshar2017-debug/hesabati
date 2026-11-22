@@ -824,7 +824,40 @@ body:not(.dark) .app-menu,body:not(.dark) .app-menu button,body:not(.dark) .app-
 #inventory .stock-list-a4-paper footer{margin-top:16px;padding-top:8px;border-top:1px solid #cbd7d2;text-align:center;color:#526765!important;font-size:10px}
 @media(max-width:650px){#inventory .stock-list-report-modal{padding:7px}#inventory .stock-list-a4-paper{min-height:520px;aspect-ratio:auto;padding:14px 8px}#inventory .stock-list-report-table th,#inventory .stock-list-report-table td{font-size:8px;padding:4px 2px}}
 </style>
-</head>
+<style id="stock-list-a4-fit-v2">
+/* عرض كشف المخزون كاملاً على ورقة A4 أفقية دون تمرير أفقي */
+#stockListReportModal{overflow:auto!important}
+#stockListReportModal .stock-list-report-shell{width:100%;max-width:1123px}
+#stockListReportModal .stock-list-a4-paper{width:100%;aspect-ratio:297/210;min-height:0;height:auto;overflow:hidden}
+#stockListReportModal .stock-list-report-table-wrap{width:100%;overflow:visible!important}
+#stockListReportModal .stock-list-report-table{width:100%;table-layout:fixed}
+#stockListReportModal .stock-list-report-table th,
+#stockListReportModal .stock-list-report-table td{white-space:normal;overflow-wrap:anywhere;word-break:break-word}
+@media(max-width:650px){
+ #stockListReportModal{padding:4px!important}
+ #stockListReportModal .stock-list-report-shell{width:100%;max-width:none}
+ #stockListReportModal .stock-list-a4-paper{width:100%;min-height:0;height:auto;aspect-ratio:297/210;margin:6px auto;padding:5px 4px;overflow:hidden}
+ #stockListReportModal .stock-list-report-heading{padding-bottom:3px;margin-bottom:4px}
+ #stockListReportModal .stock-list-report-heading h2{font-size:10px!important;margin:0 0 2px}
+ #stockListReportModal .stock-list-report-heading p,
+ #stockListReportModal .stock-list-report-heading small{font-size:6px!important;margin:1px}
+ #stockListReportModal .stock-list-report-summary{font-size:6px!important;padding:3px 4px;margin-bottom:3px}
+ #stockListReportModal .stock-list-report-table th,
+ #stockListReportModal .stock-list-report-table td{font-size:5.5px!important;line-height:1.15;padding:2px 1px!important}
+ #stockListReportModal .stock-list-report-total{font-size:7px!important;padding:4px;margin-top:4px}
+ #stockListReportModal .stock-list-a4-paper footer{font-size:6px!important;margin-top:4px;padding-top:3px}
+ #stockListReportModal .stock-list-report-actions{gap:4px;padding:4px}
+ #stockListReportModal .stock-list-report-actions button{min-width:75px;min-height:34px;font-size:11px}
+}
+@media print{
+ @page{size:A4 landscape;margin:8mm}
+ #stockListReportModal .stock-list-a4-paper{width:100%;height:auto;min-height:0;aspect-ratio:auto;margin:0;padding:0;overflow:visible;box-shadow:none;border:0}
+ #stockListReportModal .stock-list-report-table-wrap{overflow:visible!important}
+ #stockListReportModal .stock-list-report-table{width:100%;table-layout:fixed}
+ #stockListReportModal .stock-list-report-table th,
+ #stockListReportModal .stock-list-report-table td{font-size:8pt!important;white-space:normal;overflow-wrap:anywhere}
+}
+</style></head>
 <body>
 <header><div class="wrap header-row"><div><div class="brand-line"><h1>حساباتي</h1><button id="themeToggle" class="theme-toggle" type="button" aria-label="تفعيل الوضع الليلي" title="تفعيل الوضع الليلي">☀️</button></div><div class="sub">إدارة الرصيد وشحن الهواتف · الجنيه السوداني SDG</div></div><div class="header-actions"><button class="menu-trigger" id="menuTrigger" type="button" aria-label="القائمة" aria-expanded="false">⋮</button><button class="secondary" id="languageToggle" type="button" aria-label="تغيير لغة التطبيق">EN</button><button class="secondary" id="lockNow" type="button" aria-label="قفل التطبيق" title="قفل التطبيق"><span class="lock-close-icon" aria-hidden="true"></span></button><div class="app-menu" id="appMenu" hidden><button type="button" data-menu-action="backup"><span class="menu-item-icon" aria-hidden="true">💾</span><span>حفظ نسخة احتياطية</span></button><button type="button" data-menu-action="restore"><span class="menu-item-icon" aria-hidden="true">📥</span><span>استعادة نسخة احتياطي</span></button><button type="button" data-menu-action="charts"><span class="menu-item-icon" aria-hidden="true">📈</span><span>الرسوم البيانية</span></button><button type="button" data-menu-action="productsFile"><span class="menu-item-icon" aria-hidden="true">📦</span><span>ملف الأصناف</span></button><button type="button" data-menu-action="stockFile"><span class="menu-item-icon" aria-hidden="true">📋</span><span>ملف المخزون</span></button><button type="button" data-menu-action="labels"><span class="menu-item-icon" aria-hidden="true">✏️</span><span>تعديل أسماء الأيقونات</span></button><button type="button" data-menu-action="generalReport"><span class="menu-item-icon" aria-hidden="true">📊</span><span>تقرير عام مفصل</span></button><button type="button" data-menu-action="monthlyReport"><span class="menu-item-icon" aria-hidden="true">📅</span><span>التقرير الشهري</span></button><button type="button" data-menu-action="settings"><span class="menu-item-icon" aria-hidden="true">⚙️</span><span>إعدادات التطبيق</span></button><button type="button" data-menu-action="about"><span class="menu-item-icon" aria-hidden="true">ℹ️</span><span>نبذة عنّا</span></button><button type="button" data-menu-action="updateApp"><span class="menu-item-icon" aria-hidden="true">🔄</span><span>تحديث التطبيق</span></button><button type="button" data-menu-action="tutorial"><span class="menu-item-icon" aria-hidden="true">▶️</span><span>شرح التطبيق</span></button><button type="button" data-menu-action="share"><span class="menu-item-icon" aria-hidden="true">📤</span><span>مشاركة التطبيق</span></button><button type="button" data-menu-action="rate"><span class="menu-item-icon" aria-hidden="true">⭐</span><span>تقييم التطبيق</span></button><button type="button" data-menu-action="feedback"><span class="menu-item-icon" aria-hidden="true">✉️</span><span>إرسال ملاحظات أو الإبلاغ عن مشكلة</span></button></div></div></div></header>
 <div class="wrap">
