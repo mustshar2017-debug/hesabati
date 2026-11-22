@@ -2052,128 +2052,6 @@ body.dark #home .quick-section .quick-link:nth-child(6n) .quick-icon{background:
   const rows=Array.from({length:10},(_,i)=>{const x=items[i];return '<tr><td>'+(i+1)+'</td><td>'+(x?safe(x.product.name):'')+'</td><td>'+(x?fmt(x.qty):'')+'</td><td>'+(x?fmt(x.price)+' SDG':'')+'</td><td>'+(x?fmt(x.value)+' SDG':'')+'</td></tr>';}).join('');
   const saleCss='@page{size:A4 portrait;margin:14mm}*{box-sizing:border-box}body{font-family:Tahoma,Arial,sans-serif;color:#17212b;margin:0;font-size:13px}.paper{width:100%;min-height:270mm}.head{display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #176fe0;padding-bottom:13px}.brand{font-size:27px;font-weight:900;color:#176fe0}.meta{text-align:left;line-height:1.9}.title{text-align:center;font-size:22px;font-weight:800;margin:18px 0}.details{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}.details div{border:1px solid #ccc;padding:10px}.items{width:100%;border-collapse:collapse;margin-top:12px}.items th,.items td{border:1px solid #888;padding:9px 7px;text-align:center;height:34px}.items th{background:#edf2f8}.total{margin:18px 0 0 auto;width:48%;border:2px solid #176fe0;padding:12px;font-size:17px;font-weight:bold;display:flex;justify-content:space-between}.foot{display:flex;justify-content:flex-end;margin-top:65px}.sign{width:42%;border-top:1px solid #555;padding-top:10px;text-align:center;font-weight:bold}.note{margin-top:24px;text-align:center;color:#555}';
   const html='<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>فاتورة أبو التيمان فون</title><style>'+saleCss+'</style></head><body><main class="paper"><header class="head"><div><div class="brand">أبو التيمان فون</div><div>لبيع الهواتف ومستلزماتها</div></div><div class="meta"><div>التاريخ: '+safe(d.date)+'</div><div>رقم الفاتورة: '+safe(invoiceNo)+'</div></div></header><div class="title">فاتورة بيع</div><section class="details"><div><b>اسم العميل:</b> '+safe(d.customer||'عميل نقدي')+'</div><div><b>طريقة الدفع:</b> '+safe(d.payment)+'</div></section><table class="items"><thead><tr><th>م</th><th>الصنف</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody>'+rows+'</tbody></table><div class="total"><span>الإجمالي الكلي</span><span>'+fmt(total)+' SDG</span></div><div class="foot"><div class="sign">توقيع محمد عمر محمد اسحق</div></div><div class="note">شكراً لتعاملكم معنا</div></main><script>window.onload=()=>{window.focus();window.print();};<\\/script>
-<style id="bankak-network-icons-size-v1">
-/* تكبير دائرة بنكك قليلاً لتحتوي الكلمة بوضوح، وتوضيح رمز شبكة حساباتي */
-#home #bankProfitLaunch .home-icon-symbol:before{
-  width:56px!important;
-  height:56px!important;
-}
-#home #bankProfitLaunch .home-icon-symbol:after{
-  font-size:19px!important;
-}
-#home #hesabatiNetworkLaunch .home-icon-symbol{
-  font-size:36px!important;
-  line-height:1.15!important;
-}
-@media(max-width:380px){
-  #home #bankProfitLaunch .home-icon-symbol:before{
-    width:52px!important;
-    height:52px!important;
-  }
-  #home #bankProfitLaunch .home-icon-symbol:after{
-    font-size:18px!important;
-  }
-  #home #hesabatiNetworkLaunch .home-icon-symbol{
-    font-size:34px!important;
-  }
-}
-</style>
-
-
-<style id="hn-store-form-list-toggle-fix-v1">
-/* عرض نموذج المتجر أو قائمة المتاجر حسب حالة الحفظ */
-#hesabatiNetworkModal #hnPage-stores .hn-store-form[hidden],
-#hesabatiNetworkModal #hnPage-stores .hn-store-list-wrap[hidden]{
-  display:none!important;
-}
-#hesabatiNetworkModal #hnPage-stores .hn-store-form:not([hidden]){
-  display:block;
-}
-#hesabatiNetworkModal #hnPage-stores .hn-store-list-wrap:not([hidden]){
-  display:block;
-}
-</style>
-
-
-<style id="bankak-home-circle-centered-v2">
-/* تثبيت كلمة بنكك في مركز الدائرة الحمراء داخل أيقونة الرئيسية */
-#home #bankProfitLaunch .home-icon-symbol{
-  position:relative!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  overflow:visible!important;
-}
-#home #bankProfitLaunch .home-icon-symbol:before{
-  content:""!important;
-  position:absolute!important;
-  left:50%!important;
-  top:50%!important;
-  width:76px!important;
-  height:76px!important;
-  transform:translate(-50%,-50%)!important;
-  border-radius:50%!important;
-  background:#e71920!important;
-}
-#home #bankProfitLaunch .home-icon-symbol:after{
-  content:"بنكك"!important;
-  position:relative!important;
-  z-index:2!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  width:100%!important;
-  height:100%!important;
-  color:#fff!important;
-  font-size:20px!important;
-  font-weight:900!important;
-  line-height:1!important;
-  white-space:nowrap!important;
-  text-align:center!important;
-}
-#home #bankProfitLaunch .home-icon-label{display:none!important}
-@media(max-width:380px){
-  #home #bankProfitLaunch .home-icon-symbol:before{width:70px!important;height:70px!important}
-  #home #bankProfitLaunch .home-icon-symbol:after{font-size:19px!important}
-}
-</style>
-
-
-<style id="hesabati-black-site-background-v1">
-:root{
- --bg:#000000!important;
- --card:#101010!important;
- --ink:#f5f5f5!important;
- --muted:#b8b8b8!important;
- --line:#303030!important;
-}
-html,body{background:#000!important;color:#f5f5f5!important}
-body{background:#000!important}
-header{background:#000!important;color:#fff!important;border-bottom:1px solid #292929!important;box-shadow:0 5px 20px #000!important}
-header .sub{color:#c8c8c8!important}
-main,.wrap,.panel,nav{background-color:#000!important;color:#f5f5f5!important}
-nav{background:#000!important}
-.card,.kpi,.app-menu,.category-launcher,.top-actions,.section-card,.report-card,
-.modal-content,.dialog,.settings-card,.account-card,.inventory-card{
- background:#101010!important;color:#f5f5f5!important;border-color:#303030!important;
-}
-input,select,textarea{
- background:#181818!important;color:#fff!important;border-color:#444!important;
-}
-input::placeholder,textarea::placeholder{color:#aaa!important}
-label,.muted,small{color:#c2c2c2}
-table{background:#080808!important;color:#f5f5f5!important}
-th{background:#171717!important;color:#fff!important}
-td{background:#080808!important;color:#eee!important;border-color:#303030!important}
-.secondary{background:#202020!important;color:#f5f5f5!important;border-color:#444!important}
-button:not(.primary):not(.active):not(.danger){color:inherit}
-#remainingProductsModal .remaining-products-paper,
-#allMovementsModal .all-movements-paper,
-#generalReportA4Modal .general-a4-paper,
-.general-a4-paper,.a4-paper,.print-paper,
-body.printing *{background:#fff!important;color:#111!important}
-</style>
-
 </body></html>';
   w.document.open();w.document.write(html);w.document.close();
   setTimeout(()=>{try{w.focus();w.print();}catch(e){}},350);
@@ -4597,4 +4475,128 @@ body.dark #menuInventorySheet article{background:#fff!important;color:#18231f!im
  });
 })();
 </script>
+
+<style id="bankak-network-icons-size-v1">
+/* تكبير دائرة بنكك قليلاً لتحتوي الكلمة بوضوح، وتوضيح رمز شبكة حساباتي */
+#home #bankProfitLaunch .home-icon-symbol:before{
+  width:56px!important;
+  height:56px!important;
+}
+#home #bankProfitLaunch .home-icon-symbol:after{
+  font-size:19px!important;
+}
+#home #hesabatiNetworkLaunch .home-icon-symbol{
+  font-size:36px!important;
+  line-height:1.15!important;
+}
+@media(max-width:380px){
+  #home #bankProfitLaunch .home-icon-symbol:before{
+    width:52px!important;
+    height:52px!important;
+  }
+  #home #bankProfitLaunch .home-icon-symbol:after{
+    font-size:18px!important;
+  }
+  #home #hesabatiNetworkLaunch .home-icon-symbol{
+    font-size:34px!important;
+  }
+}
+</style>
+
+
+<style id="hn-store-form-list-toggle-fix-v1">
+/* عرض نموذج المتجر أو قائمة المتاجر حسب حالة الحفظ */
+#hesabatiNetworkModal #hnPage-stores .hn-store-form[hidden],
+#hesabatiNetworkModal #hnPage-stores .hn-store-list-wrap[hidden]{
+  display:none!important;
+}
+#hesabatiNetworkModal #hnPage-stores .hn-store-form:not([hidden]){
+  display:block;
+}
+#hesabatiNetworkModal #hnPage-stores .hn-store-list-wrap:not([hidden]){
+  display:block;
+}
+</style>
+
+
+<style id="bankak-home-circle-centered-v2">
+/* تثبيت كلمة بنكك في مركز الدائرة الحمراء داخل أيقونة الرئيسية */
+#home #bankProfitLaunch .home-icon-symbol{
+  position:relative!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  overflow:visible!important;
+}
+#home #bankProfitLaunch .home-icon-symbol:before{
+  content:""!important;
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  width:76px!important;
+  height:76px!important;
+  transform:translate(-50%,-50%)!important;
+  border-radius:50%!important;
+  background:#e71920!important;
+}
+#home #bankProfitLaunch .home-icon-symbol:after{
+  content:"بنكك"!important;
+  position:relative!important;
+  z-index:2!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:100%!important;
+  height:100%!important;
+  color:#fff!important;
+  font-size:20px!important;
+  font-weight:900!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+  text-align:center!important;
+}
+#home #bankProfitLaunch .home-icon-label{display:none!important}
+@media(max-width:380px){
+  #home #bankProfitLaunch .home-icon-symbol:before{width:70px!important;height:70px!important}
+  #home #bankProfitLaunch .home-icon-symbol:after{font-size:19px!important}
+}
+</style>
+
+
+<style id="hesabati-black-site-background-v1">
+:root{
+ --bg:#000000!important;
+ --card:#101010!important;
+ --ink:#f5f5f5!important;
+ --muted:#b8b8b8!important;
+ --line:#303030!important;
+}
+html,body{background:#000!important;color:#f5f5f5!important}
+body{background:#000!important}
+header{background:#000!important;color:#fff!important;border-bottom:1px solid #292929!important;box-shadow:0 5px 20px #000!important}
+header .sub{color:#c8c8c8!important}
+main,.wrap,.panel,nav{background-color:#000!important;color:#f5f5f5!important}
+nav{background:#000!important}
+.card,.kpi,.app-menu,.category-launcher,.top-actions,.section-card,.report-card,
+.modal-content,.dialog,.settings-card,.account-card,.inventory-card{
+ background:#101010!important;color:#f5f5f5!important;border-color:#303030!important;
+}
+input,select,textarea{
+ background:#181818!important;color:#fff!important;border-color:#444!important;
+}
+input::placeholder,textarea::placeholder{color:#aaa!important}
+label,.muted,small{color:#c2c2c2}
+table{background:#080808!important;color:#f5f5f5!important}
+th{background:#171717!important;color:#fff!important}
+td{background:#080808!important;color:#eee!important;border-color:#303030!important}
+.secondary{background:#202020!important;color:#f5f5f5!important;border-color:#444!important}
+button:not(.primary):not(.active):not(.danger){color:inherit}
+#remainingProductsModal .remaining-products-paper,
+#allMovementsModal .all-movements-paper,
+#generalReportA4Modal .general-a4-paper,
+.general-a4-paper,.a4-paper,.print-paper,
+body.printing *{background:#fff!important;color:#111!important}
+</style>
+
+
 </body></html>
