@@ -1202,42 +1202,14 @@ $('changePinForm').addEventListener('submit',async e=>{
  window.addEventListener('pageshow',keepLockVisible);
  document.addEventListener('visibilitychange',keepLockVisible);
 </script>
-<script id="hesabati-force-update-v14">
+<script id="hesabati-force-update-v15">
+/*
+ * تم إيقاف فحص وتثبيت التحديثات التلقائية مؤقتاً لعزل مشكلة شاشة القفل
+ * بعد حفظ سند الوارد. يبقى التحديث اليدوي من قائمة التطبيق متاحاً.
+ * لا نسجل Service Worker ولا نرسل SKIP_WAITING ولا نعيد تحميل الصفحة هنا.
+ */
 (function(){
-  if(!('serviceWorker' in navigator))return;
-  let registration=null,checking=false;
-  async function updateApp(){
-    if(checking || !navigator.onLine)return;
-    checking=true;
-    try{
-      if(!registration){
-        registration=await navigator.serviceWorker.register('./service-worker.js',{updateViaCache:'none'});
-        registration.addEventListener('updatefound',function(){
-          const worker=registration.installing;
-          if(!worker)return;
-          worker.addEventListener('statechange',function(){
-            if(worker.state==='installed' && navigator.serviceWorker.controller){
-              worker.postMessage({type:'SKIP_WAITING'});
-            }
-          });
-        });
-      }
-      await registration.update();
-      if(registration.waiting)registration.waiting.postMessage({type:'SKIP_WAITING'});
-    }catch(error){console.warn('Hesabati automatic update check failed',error);}
-    finally{checking=false;}
-  }
-  // لا نعيد تحميل التطبيق تلقائياً عند تفعيل نسخة جديدة؛ إعادة التحميل
-  // أثناء العمل كانت تعيد إظهار شاشة كلمة السر بعد حفظ السند.
-  navigator.serviceWorker.addEventListener('controllerchange',function(){
-    document.documentElement.dataset.appUpdateReady='true';
-  });
-  function start(){updateApp();window.setInterval(function(){if(!document.hidden)updateApp();},60000);}
-  if(document.readyState==='complete')start();
-  else window.addEventListener('load',start,{once:true});
-  window.addEventListener('online',updateApp);
-  window.addEventListener('focus',updateApp);
-  window.addEventListener('pageshow',updateApp);
+  document.documentElement.dataset.autoUpdate='disabled';
 })();
 </script>
 <script>(function(){const targets={phonesHub:function(){return document.getElementById("phonesHub")},stock:function(){return document.getElementById("stockCard")},transfer:function(){return document.getElementById("transferCard")},expenses:function(){return document.querySelector("#expenses .card")},creditHistory:function(){return document.getElementById("creditHistoryBlock")},recharge:function(){return document.getElementById("rechargeCard")},rechargeHistory:function(){return document.getElementById("rechargeHistoryBlock")},serviceHome:function(){document.getElementById('serviceFormTitle').textContent='تسجيل خدمة زبون';return document.getElementById('serviceCard')},serviceZain:function(){document.getElementById('serviceNetwork').value='زين';document.getElementById('serviceFormTitle').textContent='تسجيل خدمة زين';return document.getElementById('serviceCard')},serviceSudani:function(){document.getElementById('serviceNetwork').value='سوداني';document.getElementById('serviceFormTitle').textContent='تسجيل خدمة سوداني';return document.getElementById('serviceCard')}};document.querySelectorAll("[data-phone-menu]").forEach(function(b){b.addEventListener("click",function(){const p=document.getElementById("phonesHub");if(p)p.classList.remove("quick-recharge","quick-rechargeHistory");window.scrollTo({top:0,behavior:"smooth"});});});
