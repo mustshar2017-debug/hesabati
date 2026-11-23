@@ -145,8 +145,9 @@ public class MainActivity extends Activity {
             android.net.Network network = cm.getActiveNetwork();
             if (network == null) return false;
             android.net.NetworkCapabilities caps = cm.getNetworkCapabilities(network);
-            return caps != null && caps.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET)
-                && caps.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_VALIDATED);
+            // INTERNET means the active network can carry internet traffic. VALIDATED can be
+            // temporarily absent on some Android devices even while the app can reach the web.
+            return caps != null && caps.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET);
         }
         @JavascriptInterface public void openNetworkSettings() {
             runOnUiThread(() -> {
