@@ -139,6 +139,27 @@ public class MainActivity extends Activity {
                 } catch (Exception e) { Toast.makeText(MainActivity.this, "تعذرت الطباعة", Toast.LENGTH_SHORT).show(); }
             });
         }
+        @JavascriptInterface public boolean isInternetAvailable() {
+            android.net.ConnectivityManager cm = (android.net.ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
+            if (cm == null) return false;
+            android.net.Network network = cm.getActiveNetwork();
+            if (network == null) return false;
+            android.net.NetworkCapabilities caps = cm.getNetworkCapabilities(network);
+            return caps != null && caps.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                && caps.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_VALIDATED);
+        }
+        @JavascriptInterface public void openNetworkSettings() {
+            runOnUiThread(() -> {
+                Intent intent = new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS);
+                try { startActivity(intent); }
+                catch (ActivityNotFoundException e) {
+                    try { startActivity(new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS)); }
+                    catch (ActivityNotFoundException ignored) {
+                        Toast.makeText(MainActivity.this, "افتح إعدادات الهاتف ثم فعّل Wi-Fi أو بيانات الهاتف", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
     }
 
     @Override public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] results) {

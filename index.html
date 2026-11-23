@@ -3592,7 +3592,29 @@ document.getElementById('hnTogglePassword').addEventListener('click',()=>{const 
  document.getElementById('hnMapMyLocation').addEventListener('click',mapMyLocation);
  document.getElementById('hnMessageInput').addEventListener('keydown',e=>{if(e.key==='Enter')sendMessage();});
 }
-function openModal(){const m=document.getElementById('hesabatiNetworkModal');if(m){m.classList.add('open');m.setAttribute('aria-hidden','false');status('جارٍ تجهيز الاتصال بشبكة حساباتي...');ensureSupabaseLibrary().then(()=>refreshSession()).catch(()=>status('شبكة حساباتي تحتاج إلى اتصال بالإنترنت. يمكنك متابعة العمل المحلي دون اتصال.',true));}}
+function showNetworkOfflineDialog(){
+ let d=document.getElementById('hnOfflineNotice');
+ if(!d){
+  d=document.createElement('div');d.id='hnOfflineNotice';
+  d.style.cssText='position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;padding:20px;background:#0009;direction:rtl';
+  d.innerHTML='<div style="width:min(100%,390px);background:#fff;color:#18332b;border-radius:18px;padding:22px;box-shadow:0 12px 40px #0005;text-align:center"><div style="font-size:34px;margin-bottom:8px">📶</div><h3 style="margin:0 0 10px">الاتصال بالإنترنت غير متاح</h3><p style="line-height:1.8;margin:0 0 18px">يرجى تفعيل بيانات الهاتف أو شبكة Wi-Fi من إعدادات الهاتف، ثم العودة وفتح شبكة حساباتي.</p><div style="display:flex;gap:9px;justify-content:center;flex-wrap:wrap"><button type="button" id="hnOpenNetworkSettings" style="border:0;border-radius:10px;padding:11px 16px;background:#087f5b;color:white;font-weight:700">فتح إعدادات الاتصال</button><button type="button" id="hnCloseOfflineNotice" style="border:1px solid #ccd8d2;border-radius:10px;padding:11px 16px;background:#f5f7f6;color:#18332b">إغلاق</button></div></div>';
+  document.body.appendChild(d);
+  d.querySelector('#hnCloseOfflineNotice').addEventListener('click',()=>d.remove());
+  d.querySelector('#hnOpenNetworkSettings').addEventListener('click',()=>{
+   if(window.HisabatiNative&&typeof window.HisabatiNative.openNetworkSettings==='function')window.HisabatiNative.openNetworkSettings();
+   else {d.querySelector('p').textContent='افتح إعدادات الهاتف ثم الشبكة والإنترنت، وفعّل Wi-Fi أو بيانات الهاتف، وبعدها ارجع إلى حساباتي.';d.querySelector('#hnOpenNetworkSettings').style.display='none';}
+  });
+ }
+}
+function networkInternetAvailable(){
+ try{if(window.HisabatiNative&&typeof window.HisabatiNative.isInternetAvailable==='function')return !!window.HisabatiNative.isInternetAvailable();}catch(e){}
+ return navigator.onLine!==false;
+}
+function openModal(){
+ if(!networkInternetAvailable()){showNetworkOfflineDialog();return;}
+ const m=document.getElementById('hesabatiNetworkModal');
+ if(m){m.classList.add('open');m.setAttribute('aria-hidden','false');status('جارٍ تجهيز الاتصال بشبكة حساباتي...');ensureSupabaseLibrary().then(()=>refreshSession()).catch(()=>status('تعذر الاتصال بشبكة حساباتي. تحقق من الإنترنت وحاول مجدداً.',true));}
+}
 function closeModal(){const m=document.getElementById('hesabatiNetworkModal');if(m){m.classList.remove('open');m.setAttribute('aria-hidden','true');}}
 let supabaseLibraryPromise=null;function ensureSupabaseLibrary(){if(window.supabase&&window.supabase.createClient)return Promise.resolve();if(supabaseLibraryPromise)return supabaseLibraryPromise;supabaseLibraryPromise=new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';script.async=true;script.onload=()=>{if(window.supabase&&window.supabase.createClient)resolve();else reject(new Error('تعذر تهيئة مكتبة شبكة حساباتي.'));};script.onerror=()=>reject(new Error('تعذر تحميل مكتبة شبكة حساباتي. تحقق من الإنترنت.'));document.head.appendChild(script);}).catch(error=>{supabaseLibraryPromise=null;throw error;});return supabaseLibraryPromise;}\nfunction getClient(){if(client)return client;if(!window.supabase||!window.supabase.createClient)throw new Error('افتح شبكة حساباتي مع توفر الإنترنت أولاً.');client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);client.auth.onAuthStateChange((event,session)=>{currentUser=session&&session.user?session.user:null;renderAccount();if(currentUser)ensureProfile(false);});return client;}
 
