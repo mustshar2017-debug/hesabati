@@ -1011,7 +1011,7 @@ body.dark #home .category-launcher button:nth-child(even){color:#f4f5f7!importan
 <button type="button" id="assetsLaunch"><span class="home-icon-symbol">🏢</span><span class="home-icon-label">الأصول</span></button>
 <button type="button" id="bankProfitLaunch"><span class="home-icon-symbol">🏦</span><span class="home-icon-label">بنكك</span></button>
 <button type="button" id="bankLaunchCategory"><span class="home-icon-symbol">🔄</span><span class="home-icon-label">التحويلات البنكية</span></button>
-<button type="button" id="hesabatiNetworkLaunch"><span class="home-icon-symbol">🌐</span><span class="home-icon-label">شبكة حساباتي</span></button>
+<button type="button" id="hesabatiNetworkLaunch" onclick="if(window.openHesabatiNetworkModal)window.openHesabatiNetworkModal();"><span class="home-icon-symbol">🌐</span><span class="home-icon-label">شبكة حساباتي</span></button>
 </div>
 
 
@@ -3489,12 +3489,8 @@ function buildUI(){
  const launcher=document.querySelector('#home .category-launcher');
  let networkButton=document.getElementById('hesabatiNetworkLaunch');
  if(!networkButton&&launcher){
-  networkButton=el('button',{type:'button',id:'hesabatiNetworkLaunch'},'<span class="home-icon-symbol">🌐</span><span class="home-icon-label">شبكة حساباتي</span>');
+  networkButton=el('button',{type:'button',id:'hesabatiNetworkLaunch',onclick:'if(window.openHesabatiNetworkModal)window.openHesabatiNetworkModal();'},'<span class="home-icon-symbol">🌐</span><span class="home-icon-label">شبكة حساباتي</span>');
   launcher.appendChild(networkButton);
- }
- if(networkButton&&!networkButton.dataset.networkBound){
-  networkButton.addEventListener('click',openModal);
-  networkButton.dataset.networkBound='true';
  }
  const modal=el('div',{id:'hesabatiNetworkModal','aria-hidden':'true'});
  modal.innerHTML='<div class="hn-card" role="dialog" aria-modal="true" aria-labelledby="hnTitle"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h2 id="hnTitle">🌐 شبكة حساباتي</h2><button type="button" class="hn-close" id="hnClose">إغلاق</button></div><p class="hn-muted">أنشئ حساباً للشبكة أو ادخل بحسابك. هذا الحساب مستقل عن رمز القفل المحلي وبيانات الرصيد في التطبيق.</p><label for="hnDisplay">الاسم الظاهر</label><input id="hnDisplay" type="text" autocomplete="name" placeholder="اسمك (عند إنشاء الحساب)"><label for="hnUsername">اسم المستخدم الفريد</label><input id="hnUsername" type="text" autocomplete="username" placeholder="@username"><label for="hnEmail">البريد الإلكتروني</label><input id="hnEmail" type="text" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false" placeholder="name@example.com"><label for="hnPassword">كلمة المرور</label><div class="hn-password-wrap"><input id="hnPassword" type="password" autocomplete="current-password" placeholder="أدخل كلمة المرور"><button type="button" id="hnTogglePassword" class="hn-password-toggle" aria-label="إظهار كلمة المرور" aria-pressed="false">إظهار</button></div><div class="hn-password-hint">لإنشاء حساب جديد: 6 أحرف على الأقل. استخدم كلمة مرور شبكة حساباتي، وليس كلمة مرور Google.</div><div class="hn-actions"><button type="button" class="hn-primary" id="hnSignIn">دخول بالبريد</button><button type="button" class="hn-primary" id="hnSignUp">إنشاء حساب</button></div><button type="button" class="hn-google" id="hnGoogle">الدخول باستخدام Google</button><div class="hn-status" id="hnStatus" role="status">جاهز للاتصال بشبكة حساباتي.</div><div class="hn-account" id="hnAccount" hidden></div><section id="hnNetworkApp" hidden><div class="hn-network-head"><strong>البحث عن مستخدمين</strong><button type="button" id="hnRefreshUsers" class="hn-close">تحديث</button></div><div class="hn-search-row"><input id="hnSearchUser" type="search" placeholder="ابحث باسم المستخدم مثل mustshar" autocomplete="off"><button type="button" id="hnSearchButton" class="hn-primary">بحث</button></div><div id="hnSearchResults" class="hn-network-list"></div><div class="hn-inbox-head"><strong>المراسلات</strong><button type="button" id="hnLoadConversations" class="hn-close">تحديث</button></div><div id="hnConversationsList" class="hn-network-list"><div class="hn-empty">اضغط تحديث لعرض محادثاتك.</div></div><div class="hn-contacts-head"><strong>جهات الاتصال</strong><button type="button" id="hnLoadContacts" class="hn-close">تحديث</button></div><div id="hnContactsList" class="hn-network-list"><div class="hn-empty">اضغط تحديث لعرض جهات الاتصال.</div></div><div id="hnChatPanel" hidden><div class="hn-chat-head"><button type="button" id="hnBackSearch" class="hn-close">رجوع</button><strong id="hnChatTitle">المحادثة</strong><button type="button" id="hnReloadChat" class="hn-close">تحديث</button></div><div id="hnMessages" class="hn-messages"></div><div class="hn-send-row"><input id="hnMessageInput" type="text" placeholder="اكتب رسالتك..." maxlength="4000"><button type="button" id="hnSendMessage" class="hn-primary">إرسال</button></div></div></section></div>';
@@ -3615,6 +3611,7 @@ function openModal(){
  const m=document.getElementById('hesabatiNetworkModal');
  if(m){m.classList.add('open');m.setAttribute('aria-hidden','false');status('جارٍ تجهيز الاتصال بشبكة حساباتي...');ensureSupabaseLibrary().then(()=>refreshSession()).catch(()=>status('تعذر الاتصال بشبكة حساباتي. تحقق من الإنترنت وحاول مجدداً.',true));}
 }
+window.openHesabatiNetworkModal=openModal;
 function closeModal(){const m=document.getElementById('hesabatiNetworkModal');if(m){m.classList.remove('open');m.setAttribute('aria-hidden','true');}}
 let supabaseLibraryPromise=null;function ensureSupabaseLibrary(){if(window.supabase&&window.supabase.createClient)return Promise.resolve();if(supabaseLibraryPromise)return supabaseLibraryPromise;supabaseLibraryPromise=new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';script.async=true;script.onload=()=>{if(window.supabase&&window.supabase.createClient)resolve();else reject(new Error('تعذر تهيئة مكتبة شبكة حساباتي.'));};script.onerror=()=>reject(new Error('تعذر تحميل مكتبة شبكة حساباتي. تحقق من الإنترنت.'));document.head.appendChild(script);}).catch(error=>{supabaseLibraryPromise=null;throw error;});return supabaseLibraryPromise;}\nfunction getClient(){if(client)return client;if(!window.supabase||!window.supabase.createClient)throw new Error('افتح شبكة حساباتي مع توفر الإنترنت أولاً.');client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);client.auth.onAuthStateChange((event,session)=>{currentUser=session&&session.user?session.user:null;renderAccount();if(currentUser)ensureProfile(false);});return client;}
 
@@ -3795,7 +3792,7 @@ async function sendMessage(){
 }
 
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',buildUI,{once:true});else buildUI();
-document.addEventListener('click',function(event){const button=event.target&&event.target.closest?event.target.closest('#hesabatiNetworkLaunch'):null;if(button){event.preventDefault();openModal();}},true);
+// The network launcher calls the globally exposed open function directly.
 
 /* Arabic / English interface switch */
 (function(){
