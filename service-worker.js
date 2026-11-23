@@ -1,4 +1,4 @@
-const CACHE = 'hesabati-shell-v23';
+const CACHE = 'hesabati-shell-v24';
 const APP_SHELL = ['./', './index.html', './manifest.webmanifest', './icons/icon.svg'];
 
 self.addEventListener('install', event => {
