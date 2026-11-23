@@ -3602,7 +3602,7 @@ function showNetworkOfflineDialog(){
   d.querySelector('#hnCloseOfflineNotice').addEventListener('click',()=>d.remove());
   d.querySelector('#hnOpenNetworkSettings').addEventListener('click',()=>{
    if(window.HisabatiNative&&typeof window.HisabatiNative.openNetworkSettings==='function')window.HisabatiNative.openNetworkSettings();
-   else {d.querySelector('p').textContent='افتح إعدادات الهاتف ثم الشبكة والإنترنت، وفعّل Wi-Fi أو بيانات الهاتف، وبعدها ارجع إلى حساباتي.';d.querySelector('#hnOpenNetworkSettings').textContent='حسناً';d.querySelector('#hnOpenNetworkSettings').onclick=()=>d.remove();}
+   else {d.querySelector('p').textContent='افتح إعدادات الهاتف ثم الشبكة والإنترنت، وفعّل Wi-Fi أو بيانات الهاتف، وبعدها ارجع إلى حساباتي.';d.querySelector('#hnOpenNetworkSettings').style.display='none';}
   });
  }
 }
