@@ -3471,7 +3471,7 @@ body.dark #home .bank-launch{background:linear-gradient(135deg,#087f55,#10a875);
 @media(max-width:420px){#hesabatiNetworkModal .hn-card{max-height:94vh;padding:15px}#hesabatiNetworkModal .hn-home-grid{gap:8px}#hesabatiNetworkModal .hn-home-tile{min-height:76px;padding:9px;gap:8px}#hesabatiNetworkModal .hn-home-tile .hn-tile-icon{width:36px;height:36px;flex-basis:36px;font-size:20px}}
 </style>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Supabase SDK is loaded only when the user opens شبكة حساباتي. -->
 <script id="hesabati-network-auth-v1">
 (function(){
 'use strict';
@@ -3592,9 +3592,9 @@ document.getElementById('hnTogglePassword').addEventListener('click',()=>{const 
  document.getElementById('hnMapMyLocation').addEventListener('click',mapMyLocation);
  document.getElementById('hnMessageInput').addEventListener('keydown',e=>{if(e.key==='Enter')sendMessage();});
 }
-function openModal(){const m=document.getElementById('hesabatiNetworkModal');if(m){m.classList.add('open');m.setAttribute('aria-hidden','false');refreshSession();}}
+function openModal(){const m=document.getElementById('hesabatiNetworkModal');if(m){m.classList.add('open');m.setAttribute('aria-hidden','false');status('جارٍ تجهيز الاتصال بشبكة حساباتي...');ensureSupabaseLibrary().then(()=>refreshSession()).catch(()=>status('شبكة حساباتي تحتاج إلى اتصال بالإنترنت. يمكنك متابعة العمل المحلي دون اتصال.',true));}}
 function closeModal(){const m=document.getElementById('hesabatiNetworkModal');if(m){m.classList.remove('open');m.setAttribute('aria-hidden','true');}}
-function getClient(){if(client)return client;if(!window.supabase||!window.supabase.createClient)throw new Error('تعذر تحميل مكتبة الاتصال. تحقق من الإنترنت ثم أعد المحاولة.');client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);client.auth.onAuthStateChange((event,session)=>{currentUser=session&&session.user?session.user:null;renderAccount();if(currentUser)ensureProfile(false);});return client;}
+let supabaseLibraryPromise=null;function ensureSupabaseLibrary(){if(window.supabase&&window.supabase.createClient)return Promise.resolve();if(supabaseLibraryPromise)return supabaseLibraryPromise;supabaseLibraryPromise=new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';script.async=true;script.onload=()=>{if(window.supabase&&window.supabase.createClient)resolve();else reject(new Error('تعذر تهيئة مكتبة شبكة حساباتي.'));};script.onerror=()=>reject(new Error('تعذر تحميل مكتبة شبكة حساباتي. تحقق من الإنترنت.'));document.head.appendChild(script);}).catch(error=>{supabaseLibraryPromise=null;throw error;});return supabaseLibraryPromise;}\nfunction getClient(){if(client)return client;if(!window.supabase||!window.supabase.createClient)throw new Error('افتح شبكة حساباتي مع توفر الإنترنت أولاً.');client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);client.auth.onAuthStateChange((event,session)=>{currentUser=session&&session.user?session.user:null;renderAccount();if(currentUser)ensureProfile(false);});return client;}
 
 let storesMap=null,storesMapMarkers=[];
 function storeMsg(msg,bad=false,target='hnStoreStatus'){const n=document.getElementById(target);if(n){n.textContent=msg;n.style.color=bad?'#a32020':'#24543d';}}
